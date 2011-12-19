@@ -1,0 +1,14 @@
+!!!
+%html
+  %head
+    %title StaffPlan
+    = stylesheet_link_tag "application", :media => 'screen, projection'
+    = stylesheet_link_tag 'print.css', :media => 'print'
+    = javascript_include_tag "application"
+    
+    /[if IE]
+      = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
+      
+    = csrf_meta_tags
+  %body
+    = yield
