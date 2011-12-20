@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   
   protect_from_forgery
   force_ssl
+  respond_to_mobile_requests :skip_xhr_requests => false
   
   before_filter :require_user
   
