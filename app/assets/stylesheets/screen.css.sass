@@ -1,0 +1,36 @@
+@import "compass/reset"
+@import "compass/css3/text-shadow"
+@import "compass/css3/box-shadow"
+@import "compass/css3/border-radius"
+@import "compass/utilities/general/float"
+
+body
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif
+  +text-shadow
+  
+  .clear
+    clear: both
+    float: none
+  
+  section.main
+    +box-shadow
+    width: 1000px
+    margin: 10px auto 0
+    +border-radius
+    
+    header
+      padding: 10px
+      
+      > *
+        display: inline-block
+      
+      .right
+        +float-right
+    
+    .content
+      padding: 10px
+  
+    footer
+      font-size: 14px
+      text-align: right
+      padding: 5px 10px

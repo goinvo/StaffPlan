@@ -5,12 +5,11 @@ gem 'compass',     '0.12.alpha.0'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
-gem 'jquery-rails'
 gem 'pg'
 gem 'rails', '3.1.3'
+gem 'rails-behaviors'
 gem 'sass'
 gem "will_paginate"
-gem 'barista' # Must be loaded after HAML
 
 group :assets do
   gem 'coffee-rails', '~> 3.1.1'
@@ -30,4 +29,9 @@ end
 
 group :production do
   gem 'memcache-client'
+end
+
+group :heroku do
+  gem 'heroku'
+  gem 'taps'
 end

@@ -29,10 +29,9 @@ GEM
       activesupport (= 3.1.3)
     activesupport (3.1.3)
       multi_json (~> 1.0)
+    addressable (2.2.6)
     arel (2.2.1)
     awesome_print (1.0.1)
-    barista (1.2.1)
-      coffee-script (~> 2.2)
     bcrypt-ruby (3.0.1)
     builder (3.0.0)
     capybara (1.1.2)
@@ -88,12 +87,16 @@ GEM
       activesupport (~> 3.0)
       haml (~> 3.0)
       railties (~> 3.0)
+    heroku (2.17.0)
+      launchy (>= 0.3.2)
+      rest-client (~> 1.6.1)
+      rubyzip
+      term-ansicolor (~> 1.0.5)
     hike (1.2.1)
     i18n (0.6.0)
-    jquery-rails (1.0.19)
-      railties (~> 3.0)
-      thor (~> 0.14)
     json (1.6.3)
+    launchy (2.0.5)
+      addressable (~> 2.2.6)
     mail (2.3.0)
       i18n (>= 0.4.0)
       mime-types (~> 1.16)
@@ -122,6 +125,8 @@ GEM
       activesupport (= 3.1.3)
       bundler (~> 1.0)
       railties (= 3.1.3)
+    rails-behaviors (0.1.1)
+      sprockets (~> 2.0)
     railties (3.1.3)
       actionpack (= 3.1.3)
       activesupport (= 3.1.3)
@@ -134,6 +139,8 @@ GEM
       rake
     rdoc (3.12)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rr (1.0.4)
     rspec (2.7.0)
       rspec-core (~> 2.7.0)
@@ -160,10 +167,22 @@ GEM
       ffi (~> 1.0.9)
       multi_json (~> 1.0.4)
       rubyzip
+    sequel (3.20.0)
+    sinatra (1.0)
+      rack (>= 1.0)
     sprockets (2.0.3)
       hike (~> 1.2)
       rack (~> 1.0)
       tilt (~> 1.1, != 1.3.0)
+    sqlite3 (1.3.5)
+    sqlite3-ruby (1.3.3)
+      sqlite3 (>= 1.3.3)
+    taps (0.3.23)
+      rack (>= 1.0.1)
+      rest-client (>= 1.4.0, < 1.7.0)
+      sequel (~> 3.20.0)
+      sinatra (~> 1.0.0)
+      sqlite3-ruby (~> 1.2)
     term-ansicolor (1.0.7)
     thor (0.14.6)
     tilt (1.3.3)
@@ -187,7 +206,6 @@ PLATFORMS
 
 DEPENDENCIES
   awesome_print
-  barista
   bcrypt-ruby (~> 3.0.0)
   coffee-rails (~> 3.1.1)
   compass (= 0.12.alpha.0)
@@ -197,14 +215,16 @@ DEPENDENCIES
   faker
   haml
   haml-rails
-  jquery-rails
+  heroku
   memcache-client
   pg
   rails (= 3.1.3)
+  rails-behaviors
   rr
   rspec-rails (= 2.7.0)
   sass
   sass-rails (~> 3.1.5)
+  taps
   uglifier (>= 1.0.3)
   webrat
   will_paginate

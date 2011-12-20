@@ -2,6 +2,8 @@
 %html
   %head
     %title StaffPlan
+    = javascript_include_tag "modernizr.custom"
+    %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans', rel: 'stylesheet', type: 'text/css'}
     = stylesheet_link_tag "application", :media => 'screen, projection'
     = stylesheet_link_tag 'print.css', :media => 'print'
     = javascript_include_tag "application"
@@ -10,5 +12,26 @@
       = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
       
     = csrf_meta_tags
-  %body
-    = yield
+    
+  %body{:id => controller_name, :class => action_name}
+  
+    = render(:partial => "shared/flash")
+    
+    %section.main
+      %header
+        = link_to(t('.my_staff_plan'))
+        = link_to(t('.all_staff'))
+        = link_to(t('.projects'))
+        
+        .header-content
+          = yield(:header_content)
+        
+        .right
+          = link_to(t('.sign_out'), sign_out_path)
+      
+      .content
+        = yield
+      
+      %footer
+        = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
+        = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")

@@ -2,4 +2,16 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  layouts:
+    application:
+      sign_out: Sign Out
+  
+  hello: "Hello!"
+  goodbye: "Goodbye!"
+  invalid_password_or_email: "Invalid email or password"
+  
+  sessions:
+    new:
+      sign_in: Sign in
+      email: Email
+      password: Password
