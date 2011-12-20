@@ -1,1 +1,0 @@
-$(document).delegate("a[data-confirm]","click",function(a){var b;if(b=$(this).attr("data-confirm"))if(!confirm(b))return a.stopImmediatePropagation(),!1})
