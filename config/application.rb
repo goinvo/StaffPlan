@@ -56,5 +56,9 @@ module StaffPlan
       g.test_framework :rspec, :fixture => true, :views => false
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
     end
+    
+    # https://gist.github.com/1184843
+    config.assets.precompile << /(^[^_]|\/[^_])[^\/]*/
+    config.sass.preferred_syntax = :sass
   end
 end
