@@ -30,8 +30,3 @@ end
 group :production do
   gem 'memcache-client'
 end
-
-group :heroku do
-  gem 'heroku'
-  gem 'taps'
-end
