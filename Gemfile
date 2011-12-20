@@ -9,6 +9,7 @@ gem 'pg'
 gem 'rails', '3.1.3'
 gem 'rails-behaviors'
 gem 'sass'
+gem 'thin'
 gem "will_paginate"
 
 group :assets do
