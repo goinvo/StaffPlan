@@ -1,0 +1,1 @@
+$.ajaxSetup&&$.ajaxSetup({beforeSend:function(a,b){var c,d;if(!b.global)return;return c=b.context||document,d=$.Event("ajaxBeforeSend"),$(c).trigger(d,[a,b]),d.result}}),$(document).bind("ajaxBeforeSend",function(a,b,c){if(!c.dataType)return b.setRequestHeader("Accept","*/*;q=0.5, "+c.accepts.script)})

@@ -1,0 +1,1 @@
+$.ajaxSetup&&$.ajaxSetup({beforeSend:function(a,b){var c,d;if(!b.global)return;return c=b.context||document,d=$.Event("ajaxBeforeSend"),$(c).trigger(d,[a,b]),d.result}})
