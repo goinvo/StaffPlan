@@ -192,7 +192,7 @@ DEPENDENCIES
   awesome_print
   bcrypt-ruby (~> 3.0.0)
   coffee-rails (~> 3.1.1)
-  compass (= 0.12.alpha.0)
+  compass (~> 0.12.alpha)
   cucumber-rails (= 1.2.1)
   database_cleaner
   factory_girl_rails
