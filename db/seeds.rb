@@ -11,7 +11,7 @@ User.create(
 )
 
 User.create(
-  name: "Testy McFoo",
-  email: "testy@example.com",
+  name: "Christian Hogan",
+  email: "christian@goinvo.com",
   password: "secret"
 )
