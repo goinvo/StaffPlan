@@ -19,11 +19,12 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
-group :development, :test do
+group :test do
   gem 'awesome_print',            require: 'ap'
   gem 'cucumber-rails',   '1.2.1'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'ruby-debug19',             require: 'ruby-debug'
   gem 'rr'
   gem 'rspec-rails',      '2.7.0'
   gem 'webrat'

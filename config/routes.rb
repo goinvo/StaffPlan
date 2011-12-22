@@ -5,6 +5,7 @@ StaffPlan::Application.routes.draw do
   
   resources :users
   resources :sessions
+  resource :dashboard, :controller => "dashboard", :only => [:show]
   
   root :to => 'dashboard#show'
 end

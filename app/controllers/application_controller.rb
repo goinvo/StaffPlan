@@ -1,10 +1,9 @@
 class ApplicationController < ActionController::Base
   
   protect_from_forgery
-  force_ssl
   respond_to_mobile_requests :skip_xhr_requests => false
   
-  before_filter :require_user
+  before_filter :require_current_user
   
   private
   
@@ -13,7 +12,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
   
-  def require_user
+  def require_current_user
     redirect_to new_session_url unless current_user.present?
   end
 end
