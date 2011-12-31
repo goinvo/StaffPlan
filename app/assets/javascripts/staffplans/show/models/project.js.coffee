@@ -5,7 +5,7 @@ class Project extends Backbone.Model
       model: @
       id: "project_#{@id}"
     
-  urlRoot: "/views"
+  urlRoot: "/projects"
   
 class ProjectList extends Backbone.Collection
   model: Project
