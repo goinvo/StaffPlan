@@ -2,8 +2,22 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  controllers:
+    staffplans:
+      couldnt_find_user: Sorry, we couldn't find what you were looking for.
+    
+    users:
+      problem_finding_user: Problem finding the user, sorry.
+      problem_finding_client: Problem finding the client, sorry.
+      problem_finding_project: Problem finding the project, sorry.
+        
   layouts:
+    shared: &shared
+      staffplan: StaffPlan
+    sessions:
+      <<: *shared
     application:
+      <<: *shared
       sign_out: Sign Out
   
   hello: "Hello!"
@@ -15,3 +29,9 @@ en:
       sign_in: Sign in
       email: Email
       password: Password
+  
+  staffplans:
+    mustache:
+      staffplan:
+        client: Client
+        project: Project

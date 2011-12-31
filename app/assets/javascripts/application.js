@@ -5,8 +5,8 @@
 // the compiled file.
 //
 //= require modernizr.custom
-//= require zepto.min
+//= require jquery.min
 //= require rails
 //= require underscore.min
 //= require backbone.min
-//= require_tree .
+//= require icanhaz

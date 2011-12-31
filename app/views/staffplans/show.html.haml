@@ -1,0 +1,18 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('staffplans')
+  
+- content_for(:javascript_includes) do
+  = javascript_include_tag('staffplans/show/models/user', 'staffplans/show/models/client', 'staffplans/show/models/project')
+  = javascript_include_tag('staffplans/show/views/user_view', 'staffplans/show/views/project_view')
+  
+  :javascript
+    window._meta = {
+      clients: #{@clients.as_json(:only => [:id, :name, :active]).to_json}
+    }
+    
+    $( document ).ready(function() {
+      new User( #{@target_user_json} )
+    })
+
+= render(partial: "staffplans/mustache/user_view")
+= render(partial: "staffplans/mustache/project_view")

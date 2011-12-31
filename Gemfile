@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 
 gem 'bcrypt-ruby',    '~> 3.0.0'
+gem 'coffee-filter'
 gem 'compass',        '~> 0.12.alpha'
 gem 'faker'
 gem 'haml'

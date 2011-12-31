@@ -3,7 +3,7 @@ class CreateClients < ActiveRecord::Migration
     create_table :clients do |t|
       t.string                :name
       t.text                  :description
-      t.boolean               :actve,       default: true
+      t.boolean               :active,       default: true
       t.timestamps
     end
   end

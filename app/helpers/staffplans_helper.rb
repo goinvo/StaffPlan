@@ -1,0 +1,2 @@
+module StaffplansHelper
+end

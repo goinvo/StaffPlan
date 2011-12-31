@@ -1,0 +1,43 @@
+%script#project_view{type: 'text/html'}
+  %td.client-name
+    {{#isNew}}
+    %input{type: 'text', name: 'client[name]'}
+    {{/isNew}}
+  
+    {{^isNew}}
+    {{clientName}}
+    {{/isNew}}
+  
+  %td.new-project= link_to_function('+', '', class: 'add-new-project')
+  %td.project-name
+    {{#isNew}}
+    %input{type: 'text', name: 'project[name]'}
+    {{/isNew}}
+  
+    {{^isNew}}
+    {{ name }}
+    {{/isNew}}
+  
+  %td.months-and-weeks{colspan: 2}
+    %table
+      %tbody
+        %tr
+          %td.plan-actual
+            .row-label Plan
+            - 13.times do
+              %td
+                %input{type: 'text', size: 2}
+            
+          %td.total 10
+          %td.diff-remove-project
+        %tr
+          %td.plan-actual
+            .row-label Actual
+            - 13.times do
+              %td
+                %input{type: 'text', size: 2}
+            
+          %td.total 9
+          %td.diff-remove-project
+            = link_to_function('X', '', class: 'remove-project')
+            &#916; -1

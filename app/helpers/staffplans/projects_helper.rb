@@ -1,0 +1,2 @@
+module Staffplans::ProjectsHelper
+end

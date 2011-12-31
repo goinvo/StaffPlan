@@ -1,0 +1,47 @@
+@import "compass/utilities/tables"
+@import "compass/typography/text/ellipsis"
+
+body#staffplans
+  &.show
+    section.main
+      .content
+        table
+          +table-scaffolding
+          
+          th, td
+            +ellipsis
+            
+            &.client-name, &.project-name
+              max-width: 150px
+              min-width: 150px
+            
+            &.new-project, &.plan-actual, &.total, &.diff-remove-project
+              width: 40px
+              
+            &.months-and-weeks
+              width: 510px
+            
+            &.plan-actual
+              color: #999
+              
+          td
+            &.plan-actual
+              .row-label
+                display: inline-block
+                width: 40px
+          
+          tbody
+            tr
+              td.client-name
+                visibility: hidden
+              
+              &:first-child
+                td.client-name
+                  visibility: visible
+              
+              td.new-project
+                visibility: hidden
+              
+              &:last-child
+                td.new-project
+                  visibility: visible

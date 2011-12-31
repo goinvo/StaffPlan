@@ -9,12 +9,22 @@ require 'ruby-debug'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-def login_user(user)
+def login_user(user=Factory(:user))
   session[:user_id] = user.id
 end
 
 def logout_user
   session[:user_id] = nil
+end
+
+def user_with_clients_and_projects(target_user=Factory(:user))
+  2.times do
+    client = Factory(:client)
+    2.times { Factory(:project, :client => client) }
+  end
+  
+  Project.all.each { |p| p.users << target_user }
+  target_user
 end
 
 RSpec.configure do |config|

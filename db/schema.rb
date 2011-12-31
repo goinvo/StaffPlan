@@ -11,12 +11,12 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111221223843) do
+ActiveRecord::Schema.define(:version => 20111222212832) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
     t.text     "description"
-    t.boolean  "actve",       :default => true
+    t.boolean  "active",      :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -28,6 +28,16 @@ ActiveRecord::Schema.define(:version => 20111221223843) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "projects_users", :id => false, :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "projects_users", ["project_id"], :name => "index_projects_users_on_project_id"
+  add_index "projects_users", ["user_id"], :name => "index_projects_users_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
