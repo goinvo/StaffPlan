@@ -18,13 +18,14 @@
     {{ name }}
     {{/isNew}}
   
+  - cweeks_and_years = number_of_work_weeks
   %td.months-and-weeks{colspan: 2}
     %table
       %tbody
         %tr
           %td.plan-actual
             .row-label Plan
-            - 13.times do
+            - cweeks_and_years.size.times do
               %td
                 %input{type: 'text', size: 2}
             
@@ -33,7 +34,7 @@
         %tr
           %td.plan-actual
             .row-label Actual
-            - 13.times do
+            - cweeks_and_years.size.times do
               %td
                 %input{type: 'text', size: 2}
             

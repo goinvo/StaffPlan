@@ -1,0 +1,10 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('projects')
+  
+%h1 Editing client
+
+= render 'form'
+
+= link_to 'Show', @client
+\|
+= link_to 'Back', clients_path

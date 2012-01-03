@@ -1,0 +1,8 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('projects')
+  
+%h1 New project
+
+= render 'form'
+
+= link_to 'Back', projects_path

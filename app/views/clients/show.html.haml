@@ -1,0 +1,6 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('clients')
+
+= link_to 'Edit', edit_client_path(@client)
+\|
+= link_to 'Back', clients_path

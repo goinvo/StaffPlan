@@ -3,6 +3,6 @@
 FactoryGirl.define do
   factory :project do
     name    Faker::Company.bs
-    client  Factory(:client)
+    client  { Factory(:client) }
   end
 end

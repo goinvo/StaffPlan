@@ -1,6 +1,13 @@
 @import "compass/utilities/tables"
 @import "compass/typography/text/ellipsis"
 
+=inner-tables
+  table
+    tbody
+      tr
+        td
+          min-width: 40px
+          
 body#staffplans
   &.show
     section.main
@@ -30,6 +37,10 @@ body#staffplans
                 display: inline-block
                 width: 40px
           
+          thead
+            tr
+              +inner-tables
+              
           tbody
             tr
               td.client-name
@@ -45,3 +56,5 @@ body#staffplans
               &:last-child
                 td.new-project
                   visibility: visible
+              
+              +inner-tables

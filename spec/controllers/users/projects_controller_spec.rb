@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Staffplans::ProjectsController do
+describe Users::ProjectsController do
 
 end

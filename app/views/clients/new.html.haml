@@ -1,0 +1,8 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('clients')
+
+%h1 New client
+
+= render 'form'
+
+= link_to 'Back', clients_path

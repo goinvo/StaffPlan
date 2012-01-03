@@ -5,6 +5,13 @@ class Project extends Backbone.Model
       model: @
       id: "project_#{@id}"
     
+    @work_weeks = new WorkWeekList @get('work_weeks'),
+      parent: @
+      
+    @bind 'destroy', (event) ->
+      @collection.remove @
+      @view.remove()
+    
   urlRoot: "/projects"
   
 class ProjectList extends Backbone.Collection

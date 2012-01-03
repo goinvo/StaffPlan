@@ -24,7 +24,9 @@ class Users::ProjectsController < ApplicationController
   
   def destroy
     @target_user.projects.delete(@project)
-    render(:nothing => true)
+    render(:json => {
+      status: 'ok'
+    })
   end
   
   private

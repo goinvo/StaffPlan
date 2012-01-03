@@ -37,9 +37,7 @@ class ProjectView extends Backbone.View
       "client_id": $( @el ).closest( 'tbody' ).data().clientId
   
   removeProject: (event) ->
-    @model.collection.remove(@model)
     @model.destroy()
-    @remove()
     
   onKeydown: (event) ->
     console.log event.keyCode == 13

@@ -26,7 +26,7 @@ group :test do
   gem 'database_cleaner'
   gem 'factory_girl_rails'
   gem 'ruby-debug19',             require: 'ruby-debug'
-  gem 'rr'
+  gem 'mocha'
   gem 'rspec-rails',      '2.7.0'
   gem 'webrat'
 end

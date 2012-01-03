@@ -24,15 +24,18 @@ def user_with_clients_and_projects(target_user=Factory(:user))
   end
   
   Project.all.each { |p| p.users << target_user }
+  
   target_user
 end
 
 RSpec.configure do |config|
-  config.mock_with :rr
+  config.mock_with :mocha
   
   config.include Mobylette::Helmet, :type => :controller
   
   config.use_transactional_fixtures = true
   
-  config.infer_base_class_for_anonymous_controllers = false
+  config.filter_run(:focus => true)
+  
+  config.run_all_when_everything_filtered = true
 end
