@@ -1,20 +1,5 @@
 module StaffplansHelper
   
-  def number_of_work_weeks
-    from = Date.today.beginning_of_week
-    to = Date.today.in(3.months).to_date # hard code for now
-    cweeks = []
-    
-    while from <= to
-      cweeks << {
-        from.year => from.cweek
-      }
-      from = from.next_week
-    end
-    
-    cweeks
-  end
-  
   def months_and_weeks_header
     cweeks_and_years = number_of_work_weeks
     current_month, current_year = nil, nil

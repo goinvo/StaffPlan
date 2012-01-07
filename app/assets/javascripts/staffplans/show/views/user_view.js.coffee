@@ -3,6 +3,9 @@ class UserView extends Backbone.View
   tagName: "div"
   className: "staffplan"
   
+  fromDate: ->
+    Date.today()
+    
   table: ->
     $( @el ).find '> table'
   
@@ -14,10 +17,28 @@ class UserView extends Backbone.View
     
   templateData: ->
     name: @model.get("name")
+    fromDate: @model.fromDate()
+  
+  headerTemplateData: ->
+    meta = @model.dateRangeMeta()
     
+    monthNames: ->
+      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
+        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month ] else ""
+      )
+    
+    weeks: ->
+      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
+        name: "W#{dateMeta.mweek}"
+      )
+      
   render: ->
     $( @el )
       .html( ich.user_view( @templateData() ) )
+      .find( 'th.months-and-weeks' )
+      .html( ich.work_week_header( @headerTemplateData() ) )
+    
+    $( @el )
       .appendTo '.content'
     
     @

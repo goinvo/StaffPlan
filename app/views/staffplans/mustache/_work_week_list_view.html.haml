@@ -1,0 +1,31 @@
+%script#work_week_list_view{type: 'text/html'}
+  %tbody
+    %tr
+      %td.plan-actual
+        .row-label Plan
+        {{#yearsAndCweeks}}
+        %td
+          :erb
+            <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="estimated_hours" value="{{ estimated_hours }}" data-work-week-input />
+        {{/yearsAndCweeks}}
+
+      %td.total 10
+      %td.diff-remove-project
+    
+    {{#projectExists}}
+    %tr
+      %td.plan-actual
+        .row-label Actual
+        {{#yearsAndCweeks}}
+        %td
+          {{#weekHasPassed}}
+          :erb
+            <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="actual_hours" value="{{ actual_hours }}" data-work-week-input />
+          {{/weekHasPassed}}
+        {{/yearsAndCweeks}}
+        
+      %td.total 9
+      %td.diff-remove-project
+        = link_to_function('X', '', class: 'remove-project')
+        &#916; -1
+    {{/projectExists}}

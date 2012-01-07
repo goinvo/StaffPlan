@@ -5,7 +5,8 @@ class ProjectView extends Backbone.View
   id: "project-#{@cid}"
   
   initialize: ->
-    @render()
+    setTimeout =>
+      @render()
     
   templateData: ->
     name: @model.get "name"
@@ -24,13 +25,15 @@ class ProjectView extends Backbone.View
   render: ->
     $( @el )
       .html( ich.project_view( @templateData() ) )
-      
+      .find( 'td.months-and-weeks' )
+      .html @model.work_weeks.view.render().el
+    
     @
   
   events:
     "click a.add-new-project" : "addNewProject"
     "click a.remove-project" : 'removeProject'
-    "keydown input[type='text']" : "onKeydown"
+    "keydown input[name='project[name]']" : "onKeydown"
     
   addNewProject: (event) ->
     @model.collection.add
@@ -40,8 +43,6 @@ class ProjectView extends Backbone.View
     @model.destroy()
     
   onKeydown: (event) ->
-    console.log event.keyCode == 13
-    
     if event.keyCode == 13
       event.preventDefault()
       
@@ -55,6 +56,7 @@ class ProjectView extends Backbone.View
               @render()
               
             else
-              alert('ruh roh')
+              alert("Failed to save that project.")
+
 
 window.ProjectView = ProjectView

@@ -6,10 +6,13 @@ en:
     staffplans:
       couldnt_find_user: Sorry, we couldn't find what you were looking for.
     
-    users:
+    shared:
       problem_finding_user: Problem finding the user, sorry.
       problem_finding_client: Problem finding the client, sorry.
       problem_finding_project: Problem finding the project, sorry.
+      project_required: Project is required to find a work week.
+      user_required: User is required to find a work week.
+      user_mismatch: User found via params and on the work week don't match.
         
   layouts:
     shared: &shared

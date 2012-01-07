@@ -6,7 +6,10 @@
     tbody
       tr
         td
-          min-width: 40px
+          width: 35px
+          
+          input
+            width: 28px
           
 body#staffplans
   &.show
@@ -23,7 +26,7 @@ body#staffplans
               min-width: 150px
             
             &.new-project, &.plan-actual, &.total, &.diff-remove-project
-              width: 40px
+              width: 35px
               
             &.months-and-weeks
               width: 510px
@@ -35,11 +38,17 @@ body#staffplans
             &.plan-actual
               .row-label
                 display: inline-block
-                width: 40px
+                width: 35px
           
           thead
             tr
               +inner-tables
+              
+              table
+                tbody
+                  tr
+                    td
+                      width: 34px
               
           tbody
             tr

@@ -9,9 +9,15 @@ class WorkWeekList extends Backbone.Collection
   initialize: (models, attrs) ->
     _.extend @, models
     _.extend @, attrs
+    
+    @view = new WorkWeekListView
+      model: @
+  
+  dateRangeMeta: ->
+    @parent.dateRangeMeta()
   
   url: ->
-    @parent.url() + "/WorkWeek"
+    @parent.url() + "/work_weeks"
 
 window.WorkWeek = WorkWeek
 window.WorkWeekList = WorkWeekList

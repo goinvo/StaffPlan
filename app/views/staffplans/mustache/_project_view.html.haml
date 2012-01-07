@@ -18,27 +18,4 @@
     {{ name }}
     {{/isNew}}
   
-  - cweeks_and_years = number_of_work_weeks
   %td.months-and-weeks{colspan: 2}
-    %table
-      %tbody
-        %tr
-          %td.plan-actual
-            .row-label Plan
-            - cweeks_and_years.size.times do
-              %td
-                %input{type: 'text', size: 2}
-            
-          %td.total 10
-          %td.diff-remove-project
-        %tr
-          %td.plan-actual
-            .row-label Actual
-            - cweeks_and_years.size.times do
-              %td
-                %input{type: 'text', size: 2}
-            
-          %td.total 9
-          %td.diff-remove-project
-            = link_to_function('X', '', class: 'remove-project')
-            &#916; -1

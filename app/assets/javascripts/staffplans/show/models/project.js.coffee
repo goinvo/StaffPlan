@@ -1,16 +1,19 @@
 class Project extends Backbone.Model
   initialize: ->
     
+    @work_weeks = new WorkWeekList @get('work_weeks'),
+      parent: @
+      
     @view = new ProjectView
       model: @
       id: "project_#{@id}"
-    
-    @work_weeks = new WorkWeekList @get('work_weeks'),
-      parent: @
       
     @bind 'destroy', (event) ->
       @collection.remove @
       @view.remove()
+  
+  dateRangeMeta: ->
+    @collection.dateRangeMeta()
     
   urlRoot: "/projects"
   
@@ -21,6 +24,9 @@ class ProjectList extends Backbone.Collection
     _.extend @, models
     _.extend @, attrs
   
+  dateRangeMeta: ->
+    @parent.dateRangeMeta()
+    
   url: ->
     @parent.url() + "/projects"
 

@@ -5,7 +5,10 @@ StaffPlan::Application.routes.draw do
   
   resources :users do
     resources :projects, :only => [:update, :create, :destroy],
-                         :controller => "users/projects"
+                         :controller => "users/projects" do
+      resources :work_weeks, :only => [:show, :update, :create],
+                             :controller => "users/projects/work_weeks"
+    end
   end
   
   resources :sessions, :only => [:new, :create, :destroy]
