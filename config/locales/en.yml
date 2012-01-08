@@ -39,11 +39,37 @@ en:
         client: Client
         project: Project
   
+  crud_shared: &crud_shared
+    delete_confirmation: Are you sure?
+    edit: Edit
+    destroy: Destroy
+    
   clients:
+    index:
+      <<: *crud_shared
+      name: Name
+      listing_clients: Listing clients
+      new_client: New Client
+      
     show:
       active: Active
       inactive: Inactive
       projects: Projects
+    
+    form:
+      cancel: cancel
+      save: Save
+  
+  projects:
+    index:
+      <<: *crud_shared
+      name: Name
+      listing_projects: Listing Projects
+      new_project: New Project
+    
+    show:
+      active: Active
+      inactive: Inactive
     
     form:
       cancel: cancel

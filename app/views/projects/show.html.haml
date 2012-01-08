@@ -1,6 +1,11 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
+%h1= @project.name
+
+.info
+  .active= @project.active ? t('.active') : t('.inactive')
+
 = link_to 'Edit', edit_project_path(@project)
 \|
 = link_to 'Back', projects_path

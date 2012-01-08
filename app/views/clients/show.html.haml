@@ -9,7 +9,7 @@
 
 .info
   .description= "Info: #{@client.description}"
-  .active= @client ? t('.active') : t('.inactive')
+  .active= @client.active ? t('.active') : t('.inactive')
 
 - if @client.projects.any?
   .info

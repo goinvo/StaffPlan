@@ -5,6 +5,15 @@
       %ul
         - @project.errors.full_messages.each do |msg|
           %li= msg
+          
+  .field
+    = f.label(:name)
+    = f.text_field(:name)
 
+  .field
+    = f.label(:active, class: 'inline')
+    = f.check_box(:active)
+    
   .actions
-    = f.submit 'Save'
+    = f.submit(t('.save'))
+    = link_to(t('.cancel'), project_path(@project))

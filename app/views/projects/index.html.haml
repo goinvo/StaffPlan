@@ -1,22 +1,20 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
   
-%h1 Listing projects
+%h1= t('.listing_projects')
 
 %table
   %tr
     %th= t('.name')
     %th
     %th
-    %th
 
   - @projects.each do |project|
     %tr
-      %td= project.name
-      %td= link_to 'Show', project
-      %td= link_to 'Edit', edit_project_path(project)
-      %td= link_to 'Destroy', project, :confirm => 'Are you sure?', :method => :delete
+      %td= link_to("[#{project.client.name}] #{project.name}", project)
+      %td= link_to(t('.edit'), edit_project_path(project))
+      %td= link_to(t('.destroy'), project, :confirm => t('.delete_confirmation'), :method => :delete)
 
 %br
 
-= link_to 'New Project', new_project_path
+= link_to(t('.new_project'), new_project_path)

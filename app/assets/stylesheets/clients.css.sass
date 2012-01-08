@@ -1,32 +1,4 @@
-@import "compass/utilities/tables"
+@import "_mixins"
 
 body#clients
-  h1
-    font-size: 20px
-    padding: 5px
-
-  h2
-    font-size: 16px
-    padding: 5px
-
-  .info
-    padding: 0 5px
-  
-  table
-    margin-top: 10px
-    +table-scaffolding
-  
-    tbody
-      tr
-        td
-          padding: 5px
-  
-  form
-    .field
-      padding: 5px 0
-      
-      label
-        display: block
-        
-        &.inline
-          display: inline
+  +shared-crud-css
