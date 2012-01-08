@@ -4,3 +4,14 @@
 = link_to 'Edit', edit_client_path(@client)
 \|
 = link_to 'Back', clients_path
+
+%h1= @client.name
+
+.info
+  .description= "Info: #{@client.description}"
+  .active= @client ? t('.active') : t('.inactive')
+
+- if @client.projects.any?
+  .info
+    %h2= t('.projects')
+    %ul.projects= render(partial: "project", collection: @client.projects)

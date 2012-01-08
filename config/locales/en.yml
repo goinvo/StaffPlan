@@ -38,3 +38,13 @@ en:
       staffplan:
         client: Client
         project: Project
+  
+  clients:
+    show:
+      active: Active
+      inactive: Inactive
+      projects: Projects
+    
+    form:
+      cancel: cancel
+      save: Save

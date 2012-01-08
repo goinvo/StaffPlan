@@ -1,7 +1,7 @@
 class Project < ActiveRecord::Base
   
   belongs_to  :client
-  has_many :work_weeks do
+  has_many :work_weeks, :dependent => :destroy do
     def for_user(user)
       self.select { |ww| ww.user == user }
     end

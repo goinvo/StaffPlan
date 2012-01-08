@@ -8,12 +8,10 @@
     %th Name
     %th
     %th
-    %th
 
   - @clients.each do |client|
     %tr
-      %td= client.name
-      %td= link_to 'Show', client
+      %td= link_to(client.name, client)
       %td= link_to 'Edit', edit_client_path(client)
       %td= link_to 'Destroy', client, :confirm => 'Are you sure?', :method => :delete
 

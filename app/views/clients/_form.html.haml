@@ -5,6 +5,19 @@
       %ul
         - @client.errors.full_messages.each do |msg|
           %li= msg
+  
+  .field
+    = f.label(:name)
+    = f.text_field(:name)
+  
+  .field
+    = f.label(:description)
+    = f.text_area(:description)
+    
+  .field
+    = f.label(:active, class: 'inline')
+    = f.check_box(:active)
 
   .actions
-    = f.submit 'Save'
+    = f.submit(t('.save').html_safe)
+    = link_to(t('.cancel'), client_path(@client))

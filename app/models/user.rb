@@ -4,6 +4,11 @@ class User < ActiveRecord::Base
   has_secure_password
   
   has_and_belongs_to_many :projects, uniq: true
+  has_many :work_weeks, :dependent => :destroy do
+    def for_project(project)
+      self.select { |ww| ww.project == project }
+    end
+  end
   
   validates_presence_of :email, :name
   validates_presence_of :password,  :on => :create
