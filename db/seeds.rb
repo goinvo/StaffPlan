@@ -16,7 +16,7 @@ User.create(
   password: "secret"
 )
 
-5.times do
+(1 + rand(5)).times do
   Client.create(
     name: Faker::Company.name,
     description: Faker::Company.catch_phrase
@@ -24,7 +24,7 @@ User.create(
 end
 
 Client.all.each do |client|
-  4.times do
+  (1 + rand(4)).times do
     Project.create(
       client: client,
       name: Faker::Company.bs
