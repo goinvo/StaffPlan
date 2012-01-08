@@ -11,6 +11,11 @@ class Project extends Backbone.Model
     @bind 'destroy', (event) ->
       @collection.remove @
       @view.remove()
+    
+    @bind 'change:id', (event) ->
+      setTimeout =>
+        @work_weeks.view.delegateEvents()
+        
   
   dateRangeMeta: ->
     @collection.dateRangeMeta()

@@ -1,6 +1,5 @@
 class WorkWeek extends Backbone.Model
-  initialize: ->
-    
+  
   urlRoot: "/work_weeks"
   
 class WorkWeekList extends Backbone.Collection
@@ -12,6 +11,12 @@ class WorkWeekList extends Backbone.Collection
     
     @view = new WorkWeekListView
       model: @
+    
+    @bind 'change:actual_hours', ->
+      @view.updateTotals()
+
+    @bind 'change:estimated_hours', ->
+      @view.updateTotals()
   
   dateRangeMeta: ->
     @parent.dateRangeMeta()

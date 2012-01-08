@@ -29,14 +29,14 @@ class Users::Projects::WorkWeeksController < ApplicationController
   def render_json_fail
     render(:json => {
       status: "fail",
-      work_week: @work_week.to_json
+      work_week: @work_week
     })
   end
   
   def render_json_ok
     render(:json => {
       status: "ok",
-      work_week: @work_week.to_json
+      work_week: @work_week
     })
   end
   

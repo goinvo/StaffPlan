@@ -9,7 +9,7 @@
             <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="estimated_hours" value="{{ estimated_hours }}" data-work-week-input />
         {{/yearsAndCweeks}}
 
-      %td.total 10
+      %td.total.estimated {{estimatedTotal}}
       %td.diff-remove-project
     
     {{#projectExists}}
@@ -24,8 +24,16 @@
           {{/weekHasPassed}}
         {{/yearsAndCweeks}}
         
-      %td.total 9
+      %td.total.actual {{actualTotal}}
       %td.diff-remove-project
+        {{#isRemoveable}}
         = link_to_function('X', '', class: 'remove-project')
-        &#916; -1
+        {{/isRemoveable}}
+        
+        %span.delta
+          {{#hasDelta}}
+          &#916; {{ delta }}
+          {{/hasDelta}}
+        
+        
     {{/projectExists}}
