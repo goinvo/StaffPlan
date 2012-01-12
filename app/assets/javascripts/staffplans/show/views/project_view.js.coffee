@@ -1,8 +1,8 @@
 class ProjectView extends Backbone.View
   
-  tagName: 'tr'
   className: 'project'
   id: "project-#{@cid}"
+  project_view_template: $('#project_view').remove().text()
   
   initialize: ->
     setTimeout =>
@@ -11,6 +11,10 @@ class ProjectView extends Backbone.View
   templateData: ->
     name: @model.get "name"
     client_id: @model.get "client_id"
+    
+    clientNameInput: =>
+      !@model.get("client_id")? && @model.isNew()
+      
     id: @model.get "id"
     
     isNew: =>
@@ -24,8 +28,8 @@ class ProjectView extends Backbone.View
     
   render: ->
     $( @el )
-      .html( ich.project_view( @templateData() ) )
-      .find( 'td.months-and-weeks' )
+      .html( Mustache.to_html( @project_view_template, @templateData() ) )
+      .find( '.months-and-weeks' )
       .html @model.work_weeks.view.render().el
     
     @
@@ -37,7 +41,7 @@ class ProjectView extends Backbone.View
     
   addNewProject: (event) ->
     @model.collection.add
-      "client_id": $( @el ).closest( 'tbody' ).data().clientId
+      "client_id": $( @el ).closest( 'section' ).data().clientId
   
   removeProject: (event) ->
     @model.destroy()
@@ -46,17 +50,23 @@ class ProjectView extends Backbone.View
     if event.keyCode == 13
       event.preventDefault()
       
-      @model.save
-        name: $( @el ).find("input[name='project[name]']").val(),
-          success: (project, response) =>
-            if response.status == "ok"
-              @model.set
-                id: response.model.id
-                  
-              @render()
-              
-            else
-              alert("Failed to save that project.")
+      attributes =
+        name: $( @el ).find("input[name='project[name]']").val()
+      
+      if @model.isNew()
+        attributes = $.extend attributes,
+          client_name: $( @el ).find("input[name='client[name]']").val()
+        
+      @model.save attributes,
+        success: (project, response) =>
+          if response.status == "ok"
+            @model.set
+              id: response.model.id
+                
+            @render()
+            
+          else
+            alert("Failed to save that project.")
 
 
 window.ProjectView = ProjectView

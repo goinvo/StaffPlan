@@ -9,4 +9,5 @@
 //= require rails
 //= require underscore.min
 //= require backbone.min
-//= require icanhaz
+//= require backbone-support
+//= require mustache

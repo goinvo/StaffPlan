@@ -3,13 +3,13 @@ class UserView extends Backbone.View
   tagName: "div"
   className: "staffplan"
   
+  user_view_template: $('#user_view').remove().text()
+  work_week_header_template: $('#work_week_header').remove().text()
+  
   fromDate: ->
     Date.today()
-    
-  table: ->
-    $( @el ).find '> table'
   
-  initialize: ->
+  initialize: ->  
     @render()
     
     for clientId, projects of @model.projectsByClient()
@@ -34,24 +34,26 @@ class UserView extends Backbone.View
       
   render: ->
     $( @el )
-      .html( ich.user_view( @templateData() ) )
-      .find( 'th.months-and-weeks' )
-      .html( ich.work_week_header( @headerTemplateData() ) )
+      .html( Mustache.to_html( @user_view_template, @templateData() ) )
+      .find( '.months-and-weeks' )
+      .html( Mustache.to_html( @work_week_header_template, @headerTemplateData() ) )
     
     $( @el )
       .appendTo '.content'
     
+    @model.projects.add {}
+    
     @
   
   renderProjectsForClient: (clientId, projects) ->
-    tbody = $( "<tbody data-client-id='#{clientId}'>" ).append projects.map (project, index, projects) -> project.view.el
-    existingTbody = $( @el ).find "tbody[data-client-id='#{clientId}']"
+    section = $( "<section data-client-id='#{clientId}'>" ).append projects.map (project, index, projects) -> project.view.el
+    existingTbody = $( @el ).find "section[data-client-id='#{clientId}']"
     
     if existingTbody.length
       $( @el )
-        .find("tbody[data-client-id='#{clientId}']")
-        .replaceWith( tbody )
+        .find("section[data-client-id='#{clientId}']")
+        .replaceWith( section )
     else
-      @table().append tbody
+      @$('.project-list').append section
       
 window.UserView = UserView

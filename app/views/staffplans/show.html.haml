@@ -4,7 +4,7 @@
 - content_for(:javascript_includes) do
   = javascript_include_tag('staffplans/show/models/user', 'staffplans/show/models/client', 'staffplans/show/models/project', 'staffplans/show/models/work_week')
   = javascript_include_tag('staffplans/show/views/user_view', 'staffplans/show/views/project_view', 'staffplans/show/views/work_week_list_view')
-  = javascript_include_tag('datejs/core', 'datejs/sugarpak', 'datejs/parser', 'datejs/time', "datejs/date-#{request.env["HTTP_ACCEPT_LANGUAGE"].downcase.split(',').first}")
+  = javascript_include_tag('datejs/core', 'datejs/sugarpak', 'datejs/time', "datejs/date-#{request.env["HTTP_ACCEPT_LANGUAGE"].downcase.split(',').first}")
   
   :javascript
     window._meta =

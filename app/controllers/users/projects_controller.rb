@@ -3,7 +3,7 @@ class Users::ProjectsController < ApplicationController
   
   before_filter :find_target_user
   before_filter :find_project, :only => [:update, :destroy]
-  before_filter :find_client, :only => [:create]
+  before_filter :find_or_create_client, :only => [:create]
   
   def create
     @project = Project.new(client: @client, name: params[:name])

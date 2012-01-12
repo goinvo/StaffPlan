@@ -1,16 +1,15 @@
 %script#work_week_header{type: 'text/html'}
-  %table
-    %tbody
-      -# month names
-      %tr
-        %td.plan-acutal &nbsp;
-        {{#monthNames}}
-        %td {{ name }}
-        {{/monthNames}}
-      
-      -# wN
-      %tr
-        %td.plan-acutal &nbsp;
-        {{#weeks}}
-        %td {{ name }}
-        {{/weeks}}
+  %section
+    -# month names
+    .plan-actual
+      .row-label &nbsp;
+      {{#monthNames}}
+      %div {{ name }}
+      {{/monthNames}}
+    
+    -# wN
+    .plan-actual
+      .row-label &nbsp;
+      {{#weeks}}
+      %div {{ name }}
+      {{/weeks}}

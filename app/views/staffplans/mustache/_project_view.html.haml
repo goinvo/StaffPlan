@@ -1,15 +1,15 @@
 %script#project_view{type: 'text/html'}
-  %td.client-name
-    {{#isNew}}
+  .client-name
+    {{#clientNameInput}}
     %input{type: 'text', name: 'client[name]'}
-    {{/isNew}}
+    {{/clientNameInput}}
   
-    {{^isNew}}
+    {{^clientNameInput}}
     {{clientName}}
-    {{/isNew}}
+    {{/clientNameInput}}
   
-  %td.new-project= link_to_function('+', '', class: 'add-new-project')
-  %td.project-name
+  .new-project= link_to_function('+', '', class: 'add-new-project')
+  .project-name
     {{#isNew}}
     %input{type: 'text', name: 'project[name]'}
     {{/isNew}}
@@ -18,4 +18,4 @@
     {{ name }}
     {{/isNew}}
   
-  %td.months-and-weeks{colspan: 2}
+  .months-and-weeks{colspan: 2}

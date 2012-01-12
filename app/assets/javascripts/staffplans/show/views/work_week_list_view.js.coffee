@@ -1,8 +1,9 @@
 class WorkWeekListView extends Backbone.View
   
-  tagName: "table"
+  tagName: "section"
   className: "work-weeks"
-    
+  work_week_list_view_template: $('#work_week_list_view').remove().text()
+  
   dateRangeMeta: ->
     @model.dateRangeMeta()
   
@@ -66,11 +67,11 @@ class WorkWeekListView extends Backbone.View
     
     projectExists: =>
       !@model.parent.isNew()
-  
+    
   # render/DOM updaters
   render: ->
     $( @el )
-      .html( ich.work_week_list_view( @templateData() ) )
+      .html( Mustache.to_html( @work_week_list_view_template, @templateData() ) )
     
     
     @

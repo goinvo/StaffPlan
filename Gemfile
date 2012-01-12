@@ -1,5 +1,6 @@
 source 'http://rubygems.org'
 
+gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.0'
 gem 'coffee-filter'
 gem 'compass',        '~> 0.12.alpha'
@@ -27,7 +28,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'ruby-debug19',             require: 'ruby-debug'
   gem 'mocha'
-  gem 'rspec-rails',      '2.7.0'
+  gem 'rspec-rails',      '2.8.1'
   gem 'webrat'
 end
 

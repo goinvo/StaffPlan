@@ -1,69 +1,51 @@
-@import "compass/utilities/tables"
 @import "compass/typography/text/ellipsis"
 
-=inner-tables
-  table
-    tbody
-      tr
-        td
-          width: 35px
+=staffplan-columns
+  > *
+    display: inline-block
+    +ellipsis
+    
+    &.client-name
+      max-width: 10%
+      min-width: 10%
+    
+    &.project-name
+      max-width: 15%
+      min-width: 15%
+      
+    &.new-project, &.plan-actual, &.total, &.diff-remove-project
+      width: 35px
+      
+    &.months-and-weeks
+      width: 71%
+      
+      section
+        .plan-actual
+          display: block
           
-          input
-            width: 28px
-          
+          > *
+            display: inline-block
+            width: 5%
+        
+    &.plan-actual
+      color: #999
+      
+    &.plan-actual
+      .row-label
+        display: inline-block
+        width: 35px
+        
 body#staffplans
   &.show
     section.main
       .content
-        table
-          +table-scaffolding
-          
-          th, td
-            +ellipsis
+        .headers
+          +staffplan-columns
             
-            &.client-name, &.project-name
-              max-width: 150px
-              min-width: 150px
+        section
+          .project
+            +staffplan-columns
+            padding: 2px 15px
             
-            &.new-project, &.plan-actual, &.total, &.diff-remove-project
-              width: 35px
-              
-            &.months-and-weeks
-              width: 510px
-            
-            &.plan-actual
-              color: #999
-              
-          td
-            &.plan-actual
-              .row-label
-                display: inline-block
-                width: 35px
-          
-          thead
-            tr
-              +inner-tables
-              
-              table
-                tbody
-                  tr
-                    td
-                      width: 34px
-              
-          tbody
-            tr
-              td.client-name
-                visibility: hidden
-              
-              &:first-child
-                td.client-name
-                  visibility: visible
-              
-              td.new-project
-                visibility: hidden
-              
-              &:last-child
-                td.new-project
-                  visibility: visible
-              
-              +inner-tables
+          &:nth-child(2n)
+            background-color: #F5F5F5
