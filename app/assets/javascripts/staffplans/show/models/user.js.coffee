@@ -18,6 +18,10 @@ class User extends Backbone.Model
       setTimeout ->
         $(project.view.el).find('input[name="project[name]"]').focus()
     
+    @projects.bind 'save:complete', (project) =>
+      projects = @projectsByClient()
+      @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
+    
     urlRoot: "/users"
   
   dateRangeMeta: ->

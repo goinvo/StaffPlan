@@ -24,9 +24,13 @@ module StaffPlan::SharedFinderMethods
     @client = Client.find_by_id(params[:client_id] || params[:id])
     
     unless @client.present?
-      unless @client = Client.create(name: params[:client_name])
-        redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_client')
-        return
+      @client = Client.find_by_name(params[:client_name])
+      
+      unless @client.present?
+        unless @client = Client.create(name: params[:client_name])
+          redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_client')
+          return
+        end
       end
     end
   end

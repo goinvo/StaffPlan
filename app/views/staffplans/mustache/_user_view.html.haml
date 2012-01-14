@@ -1,9 +1,12 @@
 %script#user_view{type: "text/html"}
+  .user-info
+    .user-select
+      %img{src: "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(@target_user.email.downcase)}"}
+      .email= @target_user.email
+      
   .project-list
-    .headers
+    %section.headers
       .client-name= t('.client')
       .new-project &nbsp;
       .project-name= t('.project')
       .months-and-weeks
-      .total= t('.total')
-      .diff-remove-project

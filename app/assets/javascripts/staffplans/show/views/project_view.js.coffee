@@ -31,7 +31,6 @@ class ProjectView extends Backbone.View
       .html( Mustache.to_html( @project_view_template, @templateData() ) )
       .find( '.months-and-weeks' )
       .html @model.work_weeks.view.render().el
-    
     @
   
   events:
@@ -60,10 +59,12 @@ class ProjectView extends Backbone.View
       @model.save attributes,
         success: (project, response) =>
           if response.status == "ok"
-            @model.set
-              id: response.model.id
-                
+            @model.set response.model
+            window._meta.clients = response.clients
             @render()
+            @model.trigger 'save:complete'
+            
+            @model.projects.add {}
             
           else
             alert("Failed to save that project.")

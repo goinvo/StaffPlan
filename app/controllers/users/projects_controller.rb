@@ -13,6 +13,7 @@ class Users::ProjectsController < ApplicationController
       
       render(:json => {
         status: 'ok',
+        clients: Client.all,
         model: @project
       })
     else

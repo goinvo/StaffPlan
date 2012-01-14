@@ -46,7 +46,10 @@ class UserView extends Backbone.View
     @
   
   renderProjectsForClient: (clientId, projects) ->
-    section = $( "<section data-client-id='#{clientId}'>" ).append projects.map (project, index, projects) -> project.view.el
+    section = $( "<section data-client-id='#{clientId}'>" ).append(
+      projects.map (project, index, projects) -> project.view.el
+    )
+      
     existingTbody = $( @el ).find "section[data-client-id='#{clientId}']"
     
     if existingTbody.length

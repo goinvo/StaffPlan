@@ -6,6 +6,8 @@
       {{#monthNames}}
       %div {{ name }}
       {{/monthNames}}
+      .total
+      .diff-remove-project
     
     -# wN
     .plan-actual
@@ -13,3 +15,5 @@
       {{#weeks}}
       %div {{ name }}
       {{/weeks}}
+      .total= t('.total')
+      .diff-remove-project

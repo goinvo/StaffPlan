@@ -31,7 +31,7 @@ class WorkWeekListView extends Backbone.View
       estimated = if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       actual = if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       
-      totalDelta += estimated - actual if actual != 0
+      totalDelta += actual - estimated if actual != 0
       totalDelta
     , 0
     
@@ -39,7 +39,7 @@ class WorkWeekListView extends Backbone.View
     meta = @dateRangeMeta()
     
     isRemoveable: =>
-      @actualTotal() == 0 && @estimatedTotal() == 0
+      @model.parent.isNew() || (@actualTotal() == 0 && @estimatedTotal() == 0)
       
     actualTotal: =>
       @actualTotal()
@@ -72,7 +72,6 @@ class WorkWeekListView extends Backbone.View
   render: ->
     $( @el )
       .html( Mustache.to_html( @work_week_list_view_template, @templateData() ) )
-    
     
     @
   
@@ -133,10 +132,11 @@ class WorkWeekListView extends Backbone.View
       newWorkWeek.save {},
         success: (workWeek, response, jqxhr) ->
           if response.status == "ok"
+            window._meta.clients = response.clients
             workWeek.set response.work_week
             
           else
-            alert('error saving that data')
-            # TODO: clear out the input value?
+            alert('Problem saving your entry, please try again')
+            $element.removeAttr('value')
     
 window.WorkWeekListView = WorkWeekListView

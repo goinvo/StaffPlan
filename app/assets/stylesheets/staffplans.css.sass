@@ -1,4 +1,6 @@
 @import "compass/typography/text/ellipsis"
+@import "compass/css3/appearance"
+@import "compass/css3/box-shadow"
 
 =staffplan-columns
   > *
@@ -6,18 +8,16 @@
     +ellipsis
     
     &.client-name
-      max-width: 10%
-      min-width: 10%
+      width: 180px
     
     &.project-name
-      max-width: 15%
-      min-width: 15%
+      width: 150px
       
     &.new-project, &.plan-actual, &.total, &.diff-remove-project
       width: 35px
       
     &.months-and-weeks
-      width: 71%
+      width: 675px
       
       section
         .plan-actual
@@ -25,7 +25,14 @@
           
           > *
             display: inline-block
-            width: 5%
+            width: 35px
+          
+          div
+            input
+              +appearance(none)
+              border: 1px solid #eee
+              height: 25px
+              text-align: center
         
     &.plan-actual
       color: #999
@@ -39,13 +46,60 @@ body#staffplans
   &.show
     section.main
       .content
+        .user-info
+          height: 75px
+          
+          .user-select
+            width: 350px
+            line-height: 75px
+            padding-left: 15px
+            
+            > *
+              display: inline
+              
+            img
+              width: 35px
+              +box-shadow
+              
+            .email
+              font-size: 22px
+              
         .headers
           +staffplan-columns
+          
+          padding: 2px 15px
+          
+          .months-and-weeks
+            width: 660px
+            
+            section
+              .plan-actual
+                .row-label
+                  width: 40px
             
         section
           .project
             +staffplan-columns
             padding: 2px 15px
+            height: 75px
             
+            .client-name
+              visibility: hidden
+              
+            &:first-child
+              .client-name
+                visibility: visible
+            
+            .new-project
+              visibility: hidden
+              
+            &:last-child
+              .new-project
+                visibility: visible
+              
+              
+            .plan-actual
+              height: 35px
+                      
           &:nth-child(2n)
             background-color: #F5F5F5

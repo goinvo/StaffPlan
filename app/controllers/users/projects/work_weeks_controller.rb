@@ -36,7 +36,8 @@ class Users::Projects::WorkWeeksController < ApplicationController
   def render_json_ok
     render(:json => {
       status: "ok",
-      work_week: @work_week
+      work_week: @work_week,
+      clients: Client.all
     })
   end
   
