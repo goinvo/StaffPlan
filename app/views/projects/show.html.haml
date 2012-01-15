@@ -4,6 +4,7 @@
 %h1= @project.name
 
 .info
+  .client= @project.client.name
   .active= @project.active ? t('.active') : t('.inactive')
 
 = link_to 'Edit', edit_project_path(@project)

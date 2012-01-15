@@ -9,6 +9,10 @@
   .field
     = f.label(:name)
     = f.text_field(:name)
+  
+  .field
+    = f.label(:client_id, t('.client'))
+    = f.select(:client_id, options_from_collection_for_select(Client.all, 'id', 'name'))
 
   .field
     = f.label(:active, class: 'inline')
