@@ -11,7 +11,7 @@
 
   - @projects.each do |project|
     %tr
-      %td= link_to("[#{project.client.present? ? project.client.name : "No client?"}] #{project.name}", project)
+      %td= link_to("[#{project.client.name}] #{project.name}", project)
       %td= link_to(t('.edit'), edit_project_path(project))
       %td= link_to(t('.destroy'), project, :confirm => t('.delete_confirmation'), :method => :delete)
 
