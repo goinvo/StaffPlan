@@ -21,7 +21,7 @@ class User extends Backbone.Model
     @projects.bind 'project:created', (project) =>
       projects = @projectsByClient()
       @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
-      @projects.add {}
+      @view.addNewProjectRow()
     
     urlRoot: "/users"
   

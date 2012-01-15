@@ -41,7 +41,7 @@ class UserView extends Backbone.View
     $( @el )
       .appendTo '.content'
     
-    @model.projects.add {}
+    @addNewProjectRow()
     
     @
   
@@ -58,5 +58,9 @@ class UserView extends Backbone.View
         .replaceWith( section )
     else
       @$('.project-list').append section
+  
+  addNewProjectRow: ->
+    unless @$('section[data-client-id="undefined"]').length
+      @model.projects.add {}
       
 window.UserView = UserView

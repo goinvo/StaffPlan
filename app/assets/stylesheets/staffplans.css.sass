@@ -23,6 +23,10 @@
         .plan-actual
           display: block
           
+          .row-label
+            visibility: hidden
+            color: #ccc
+          
           > *
             display: inline-block
             width: 35px
@@ -33,14 +37,6 @@
               border: 1px solid #eee
               height: 25px
               text-align: center
-        
-    &.plan-actual
-      color: #999
-      
-    &.plan-actual
-      .row-label
-        display: inline-block
-        width: 35px
         
 body#staffplans
   &.show
@@ -78,6 +74,13 @@ body#staffplans
                   width: 40px
             
         section
+          .project:nth-child(1)
+            .months-and-weeks
+              .work-weeks
+                .plan-actual
+                  .row-label
+                    visibility: visible
+                
           .project
             +staffplan-columns
             padding: 2px 15px
@@ -89,7 +92,7 @@ body#staffplans
             &:first-child
               .client-name
                 visibility: visible
-            
+                
             .new-project
               visibility: hidden
               
