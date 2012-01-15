@@ -18,9 +18,10 @@ class User extends Backbone.Model
       setTimeout ->
         $(project.view.el).find('input[name="project[name]"]').focus()
     
-    @projects.bind 'save:complete', (project) =>
+    @projects.bind 'project:created', (project) =>
       projects = @projectsByClient()
       @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
+      @projects.add {}
     
     urlRoot: "/users"
   
@@ -46,7 +47,6 @@ class User extends Backbone.Model
       
     
   projectsByClient: ->
-    
     _.reduce @projects.models, (projectsByClient, project) ->
         projectsByClient[ project.get( 'client_id' ) ] ||= []
         projectsByClient[ project.get( 'client_id' ) ].push project

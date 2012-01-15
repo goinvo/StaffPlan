@@ -62,7 +62,7 @@ class ProjectView extends Backbone.View
             @model.set response.model
             window._meta.clients = response.clients
             @render()
-            @model.trigger 'save:complete'
+            @model.trigger 'project:created', @model
             
             @model.projects.add {}
             
