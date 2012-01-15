@@ -43,7 +43,7 @@ class ProjectsController < ApplicationController
     client = Client.find_by_id(params[:project].delete(:client_id))
     
     unless client.present?
-      redirect_to projects_url, notice: "Client is required."
+      redirect_to projects_url, notice: "Client is required." and return
     end
     
     @project = Project.new(params[:project])
