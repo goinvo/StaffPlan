@@ -6,6 +6,16 @@
 .info
   .client= @project.client.name
   .active= @project.active ? t('.active') : t('.inactive')
+  .users
+    %h3 Team Members:
+    %ul
+      - if @project.users.any?
+        - @project.users.each do |project_user|
+          %li= link_to(project_user.email, project_user)
+      - else
+        %li None!
+      
+    
 
 = link_to 'Edit', edit_project_path(@project)
 \|
