@@ -2,7 +2,7 @@ class User extends Backbone.Model
   initialize: (userdata) ->
     
     @fromDate = Date.today().addWeeks(-2).moveToDayOfWeek Date.getDayNumberFromName 'Monday', -1
-    @toDate   = Date.today().add(3).months() 
+    @toDate   = @fromDate.clone().add(3).months()
     
     @projects = new ProjectList @get( "projects" ),
       parent: @
@@ -25,27 +25,34 @@ class User extends Backbone.Model
     
     urlRoot: "/users"
     
+  dateChanged: (event) ->
+    advance = $( event.currentTarget ).data().changePage == 'next'
+    if advance then @fromDate.addMonths(3) else @fromDate.addMonths(-3)
+    if advance then @toDate.addMonths(3) else @fromDate.addMonths(-3)
+    @view.renderAllProjects()
+    
   dateRangeMeta: ->
     fromDate: @fromDate
     toDate: @toDate
-    dates: ( =>
-      yearsAndWeeks = []
-      from = @fromDate.clone()
+    dates: @getYearsAndWeeks()
       
-      while from.isBefore @toDate
-        yearsAndWeeks.push
-          year: from.getFullYear()
-          cweek: from.getISOWeek()
-          month: from.getMonth()
-          mweek: from.getWeek()
-          weekHasPassed: from.isBefore Date.today()
-        
-        from = from.add(1).week()
-      
-      yearsAndWeeks
-    )()
-      
+  getYearsAndWeeks: ->
+    yearsAndWeeks = []
+    from = @fromDate.clone()
+    to = @toDate.clone()
     
+    while from.isBefore to 
+      yearsAndWeeks.push
+        year: from.getFullYear()
+        cweek: from.getISOWeek()
+        month: from.getMonth()
+        mweek: from.getWeek()
+        weekHasPassed: from.isBefore Date.today()
+      
+      from = from.add(1).week()
+    
+    yearsAndWeeks
+  
   projectsByClient: ->
     _.reduce @projects.models, (projectsByClient, project) ->
         projectsByClient[ project.get( 'client_id' ) ] ||= []

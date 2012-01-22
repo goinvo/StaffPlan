@@ -5,9 +5,6 @@ class ProjectView extends Backbone.View
   project_view_template: $('#project_view').remove().text()
   
   initialize: ->
-    # this is whack.  fix this chicken/egg problem correctly.
-    setTimeout =>
-      @render()
     
   templateData: ->
     name: @model.get "name"

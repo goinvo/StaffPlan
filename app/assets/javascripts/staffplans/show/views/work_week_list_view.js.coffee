@@ -73,6 +73,8 @@ class WorkWeekListView extends Backbone.View
     $( @el )
       .html( Mustache.to_html( @work_week_list_view_template, @templateData() ) )
     
+    @delegateEvents()
+    
     @
   
   updateTotals: ->

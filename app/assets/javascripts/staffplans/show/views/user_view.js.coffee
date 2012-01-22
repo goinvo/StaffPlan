@@ -9,17 +9,18 @@ class UserView extends Backbone.View
   events:
     "click a[data-change-page]" : "changePage"
   
-  changePage: ->
+  changePage: (event) ->
+    @model.dateChanged event
     
+    @$( '.headers .months-and-weeks' )
+      .html( Mustache.to_html( @work_week_header_template, @headerTemplateData() ) )
     
   fromDate: ->
     Date.today()
   
   initialize: ->  
     @render()
-    
-    for clientId, projects of @model.projectsByClient()
-      @renderProjectsForClient clientId, projects
+    @renderAllProjects()
     
   templateData: ->
     name: @model.get("name")
@@ -51,9 +52,13 @@ class UserView extends Backbone.View
     
     @
   
+  renderAllProjects: ->
+    for clientId, projects of @model.projectsByClient()
+      @renderProjectsForClient clientId, projects
+  
   renderProjectsForClient: (clientId, projects) ->
     section = $( "<section data-client-id='#{clientId}'>" ).append(
-      projects.map (project, index, projects) -> project.view.el
+      projects.map (project, index, projects) -> project.view.render().el
     )
       
     existingTbody = $( @el ).find "section[data-client-id='#{clientId}']"
