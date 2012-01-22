@@ -6,6 +6,7 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def create
     @work_week = WorkWeek.new(whitelist_attributes)
+    
     if @work_week.save
       render_json_ok
     else

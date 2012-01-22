@@ -132,7 +132,7 @@ class WorkWeekListView extends Backbone.View
       newWorkWeek.save {},
         success: (workWeek, response, jqxhr) ->
           if response.status == "ok"
-            window._meta.clients = response.clients
+            window._meta.clients.reset response.clients
             workWeek.set response.work_week
             
           else

@@ -1,11 +1,12 @@
 %script#project_view{type: 'text/html'}
   .client-name
     {{#clientNameInput}}
-    %input{type: 'text', name: 'client[name]'}
+    .ui-widget
+      %input.client-select{type: 'text', name: "client[name]"}
     {{/clientNameInput}}
   
     {{^clientNameInput}}
-    {{clientName}}
+    %a{href: '/clients/{{ clientId }}'} {{clientName}}
     {{/clientNameInput}}
   
   .new-project= link_to_function('+', '', class: 'add-new-project')
@@ -15,7 +16,7 @@
     {{/isNew}}
   
     {{^isNew}}
-    {{ name }}
+    %a{href: "/projects/{{ projectId }}"}{{ name }}
     {{/isNew}}
   
   .months-and-weeks{colspan: 2}

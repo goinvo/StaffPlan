@@ -1,14 +1,14 @@
 - content_for(:stylesheet_includes) do
-  = stylesheet_link_tag('staffplans')
+  = stylesheet_link_tag('staffplans', 'jquery-ui-1.8.17')
   
 - content_for(:javascript_includes) do
   = javascript_include_tag('staffplans/show/models/user', 'staffplans/show/models/client', 'staffplans/show/models/project', 'staffplans/show/models/work_week')
   = javascript_include_tag('staffplans/show/views/user_view', 'staffplans/show/views/project_view', 'staffplans/show/views/work_week_list_view')
-  = javascript_include_tag('datejs/core', 'datejs/sugarpak', 'datejs/time', "datejs/date-#{request.env["HTTP_ACCEPT_LANGUAGE"].downcase.split(',').first}")
+  = javascript_include_tag('datejs/core', 'datejs/sugarpak', 'datejs/time', "datejs/date-#{request.env["HTTP_ACCEPT_LANGUAGE"].downcase.split(',').first}", 'jquery-ui-1.8.17.custom.min')
   
   :javascript
     window._meta =
-      { clients: #{@clients.as_json(:only => [:id, :name, :active]).to_json}
+      { clients: new ClientList(#{@clients.as_json(:only => [:id, :name, :active], include: :projects).to_json})
       , days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       , months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
       , abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']

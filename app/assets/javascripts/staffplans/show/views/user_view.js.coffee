@@ -60,7 +60,9 @@ class UserView extends Backbone.View
       @$('.project-list').append section
   
   addNewProjectRow: ->
-    unless @$('section[data-client-id="undefined"]').length
+    undefinedClientId = @$('section[data-client-id="undefined"]')
+    if undefinedClientId.length == 0 || undefinedClientId.is(":empty")
+      undefinedClientId.remove()
       @model.projects.add {}
       
 window.UserView = UserView

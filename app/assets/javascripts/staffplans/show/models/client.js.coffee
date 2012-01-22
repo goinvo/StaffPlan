@@ -1,5 +1,4 @@
 class Client extends Backbone.Model
-  initialize: ->
   
 class ClientList extends Backbone.Collection
   model: Client

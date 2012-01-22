@@ -13,9 +13,17 @@ class Project extends Backbone.Model
       @view.remove()
     
     @bind 'change:id', (event) ->
+      @view.render()
+      
       setTimeout =>
         @work_weeks.view.delegateEvents()
-        
+    
+    @bind 'save', (event) -> @view.render()
+  
+  validate: (attributes) ->
+    if @get('name') == ''
+      # alert("")
+      return "Project name is required"
   
   dateRangeMeta: ->
     @collection.dateRangeMeta()
