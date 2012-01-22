@@ -78,14 +78,33 @@ class ProjectView extends Backbone.View
     $currentTarget.autocomplete.destroy() if $currentTarget.autocomplete?.destroy?
     
     $( event.currentTarget ).autocomplete
-      source: window._meta.clients.pluck 'name'
+      source: _.uniq( window._meta.clients.pluck 'name' )
     
   initProjectAutocomplete: (event) ->
     $currentTarget = $( event.currentTarget )
     $currentTarget.autocomplete.destroy() if $currentTarget.autocomplete?.destroy?
     
+    # TODO: optimize this a bit?
+    client = if @model.get('client_id')?
+      window._meta.clients.get( @model.get('client_id') )
+    else
+      clientName = this.$('input[name="client[name]"]').val()
+      window._meta.clients.detect (_client) ->
+        _client.get('name') == clientName
+    
+    clientProjectNames = if client? then _.pluck client.get('projects'), 'name' else []
+    
+    currentClientProjects = @model.collection.parent.projects.select((project) ->
+      project.get('client_id') == @
+    , client?.id)
+    
+    currentClientProjectNames = currentClientProjects.map (project) ->
+      project.get('name')
+    
+    projectNames = _.reject clientProjectNames, (projectName) ->
+      currentClientProjectNames.indexOf( projectName ) >= 0
+    
     $( event.currentTarget ).autocomplete
-      # source: if @model.get('client_id')? then window._meta.clients.get( @model.get('client_id') )?.get('projects').pluck 'name' else []
-      source : []
+      source: projectNames
     
 window.ProjectView = ProjectView
