@@ -1,8 +1,8 @@
 class User extends Backbone.Model
   initialize: (userdata) ->
     
-    @fromDate = -> Date.today().addWeeks(-2).moveToDayOfWeek Date.getDayNumberFromName 'Monday', -1
-    @toDate   = -> Date.today().add(3).months()
+    @fromDate = Date.today().addWeeks(-2).moveToDayOfWeek Date.getDayNumberFromName 'Monday', -1
+    @toDate   = Date.today().add(3).months() 
     
     @projects = new ProjectList @get( "projects" ),
       parent: @
@@ -24,15 +24,15 @@ class User extends Backbone.Model
       @view.addNewProjectRow()
     
     urlRoot: "/users"
-  
+    
   dateRangeMeta: ->
-    fromDate: @fromDate()
-    toDate: @toDate()
+    fromDate: @fromDate
+    toDate: @toDate
     dates: ( =>
       yearsAndWeeks = []
-      from = @fromDate()
+      from = @fromDate.clone()
       
-      while from.isBefore @toDate()
+      while from.isBefore @toDate
         yearsAndWeeks.push
           year: from.getFullYear()
           cweek: from.getISOWeek()

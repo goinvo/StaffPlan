@@ -6,6 +6,12 @@ class UserView extends Backbone.View
   user_view_template: $('#user_view').remove().text()
   work_week_header_template: $('#work_week_header').remove().text()
   
+  events:
+    "click a[data-change-page]" : "changePage"
+  
+  changePage: ->
+    
+    
   fromDate: ->
     Date.today()
   
@@ -17,7 +23,7 @@ class UserView extends Backbone.View
     
   templateData: ->
     name: @model.get("name")
-    fromDate: @model.fromDate()
+    fromDate: @model.fromDate
   
   headerTemplateData: ->
     meta = @model.dateRangeMeta()

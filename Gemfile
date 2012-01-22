@@ -26,7 +26,7 @@ group :test do
   gem 'cucumber-rails',   '1.2.1'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'ruby-debug19',             require: 'ruby-debug'
+  # gem 'ruby-debug19',             require: 'ruby-debug'
   gem 'mocha'
   gem 'rspec-rails',      '2.8.1'
   gem 'webrat'

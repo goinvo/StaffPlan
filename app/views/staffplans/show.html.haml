@@ -16,7 +16,7 @@
     }
     
     $(function() {
-      new User( #{@target_user_json} )
+      window._User = new User( #{@target_user_json} )
     })
 
 = render(partial: "staffplans/mustache/user_view")

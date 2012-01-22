@@ -49,9 +49,10 @@ body#staffplans
           height: 75px
           
           .user-select
-            width: 350px
+            width: 390px
             line-height: 75px
             padding-left: 15px
+            display: inline-block
             
             > *
               display: inline
@@ -62,6 +63,18 @@ body#staffplans
               
             .email
               font-size: 22px
+          
+          .date-pagination
+            display: inline-block
+            width: 650px
+            
+            > *
+              display: inline
+              
+            .next, .previous
+              width: 50px
+              
+            .weeks
               
         .headers
           +staffplan-columns
