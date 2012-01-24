@@ -99,6 +99,8 @@ class WorkWeekListView extends Backbone.View
     , 500
     
   updateOrCreateWorkWeek: (event) ->
+    return if @model.parent.isNew()
+    
     event.currentTarget.timeout = null
     
     $element = $( event.currentTarget )

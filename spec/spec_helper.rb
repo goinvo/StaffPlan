@@ -10,6 +10,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 def login_user(user=Factory(:user))
   session[:user_id] = user.id
+  user
 end
 
 def logout_user

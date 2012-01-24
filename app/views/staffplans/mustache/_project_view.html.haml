@@ -7,6 +7,7 @@
   
     {{^clientNameInput}}
     %a{href: '/clients/{{ clientId }}'} {{clientName}}
+    %input.client-select{type: 'hidden', name: "client[name]", value: "{{ clientName }}"}
     {{/clientNameInput}}
   
   .new-project= link_to_function('+', '', class: 'add-new-project')
@@ -17,6 +18,7 @@
   
     {{^isNew}}
     %a{href: "/projects/{{ projectId }}"}{{ name }}
+    %input{type: 'hidden', name: 'project[name]'}
     {{/isNew}}
   
   .months-and-weeks{colspan: 2}

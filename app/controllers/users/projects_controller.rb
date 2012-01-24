@@ -10,17 +10,17 @@ class Users::ProjectsController < ApplicationController
     
     if @project.save
       @target_user.projects << @project
-      
-      render(:json => {
-        status: 'ok',
-        clients: Client.all,
-        model: @project
-      })
+      render_json_ok
     else
-      render(:json => {
-        status: 'fail',
-        model: @project
-      })
+      render_json_fail
+    end
+  end
+  
+  def update
+    if @project.update_attributes(params[:project])
+      render_json_ok
+    else
+      render_json_fail
     end
   end
   
@@ -28,6 +28,24 @@ class Users::ProjectsController < ApplicationController
     @target_user.projects.delete(@project)
     render(:json => {
       status: 'ok'
-    })
+    }) and return
+  end
+  
+  private
+  
+  def render_json_ok
+    render(json: {
+      status: "ok",
+      clients: Client.staff_plan_json,
+      attributes: @project
+    }) and return
+  end
+  
+  def render_json_fail
+    render(json: {
+      status: 'fail',
+      attributes: @project,
+      errors: @project.errors.full_messages
+    }) and return
   end
 end

@@ -60,13 +60,13 @@ class ProjectView extends Backbone.View
     if @model.isNew()
       clientName = $( @el ).find("input[name='client[name]']").val()
       client = window._meta.clients.detect (client) -> client.get('name') == clientName
-      @model.set { client_name: clientName, client_id:  client.get('id') }
+      @model.set { client_name: clientName, client_id: client?.get('id') }
         silent: true
       
     @model.save {},
       success: (project, response) =>
         if response.status == "ok"
-          @model.set response.model
+          @model.set response.attributes
           window._meta.clients.reset response.clients
           @model.trigger 'project:created', @model
           
