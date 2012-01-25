@@ -21,10 +21,11 @@
     
     %section.main
       %header
-        = link_to(t('.my_staff_plan'), staffplan_path(current_user))
-        = link_to(t('.all_staff'), users_path)
-        = link_to(t('.clients'), clients_path)
-        = link_to(t('.projects'), projects_path)
+        %ul
+          %li= link_to(t('.my_staff_plan'), staffplan_path(current_user))
+          %li= link_to(t('.all_staff'), users_path)
+          %li= link_to(t('.clients'), clients_path)
+          %li= link_to(t('.projects'), projects_path)
         
         .header-content
           = yield(:header_content)

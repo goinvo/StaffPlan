@@ -24,7 +24,7 @@
     .total.actual {{actualTotal}}
     .diff-remove-project
       {{#isRemoveable}}
-      = link_to_function('X', '', class: 'remove-project')
+      = link_to_function('&times;'.html_safe, '', class: 'remove-project')
       {{/isRemoveable}}
       
       %span.delta

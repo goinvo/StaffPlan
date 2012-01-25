@@ -1,6 +1,5 @@
+@import "compass/css3"
 @import "compass/typography/text/ellipsis"
-@import "compass/css3/appearance"
-@import "compass/css3/box-shadow"
 
 =staffplan-columns
   > *
@@ -28,7 +27,7 @@
           
           .row-label
             visibility: hidden
-            color: #ccc
+            color: #9F9F9F
           
           > *
             display: inline-block
@@ -46,11 +45,14 @@ body#staffplans
     section.main
       .content
         .user-info
+          position: relative
           height: 75px
           
           .user-select
+            position: absolute
+            bottom: 0
             width: 390px
-            line-height: 75px
+            line-height: 35px
             padding-left: 15px
             display: inline-block
             
@@ -58,38 +60,80 @@ body#staffplans
               display: inline
               
             img
+              padding: 2px
               width: 35px
-              +box-shadow
+              +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+              +box-sizing(border-box)
+              background-color: #FFF
+              vertical-align: text-bottom
               
             .email
-              font-size: 22px
+              padding-left: 5px
+              font-size: 18px
+              line-height: 35px
           
           .date-pagination
-            display: inline-block
+            position: absolute
+            left: 414px
+            bottom: 10px
+            display: block
             width: 650px
             
             > *
               display: inline
               
             .next, .previous
-              width: 50px
+              display: inline-block
+              width: 10px
+              min-height: 17px
+              height: 100%
+              text-indent: -9999px
+            
+            .next
+              background: transparent image-url("arr-forward.png") left top no-repeat
               
-            .weeks
+            .previous
+              background: transparent image-url("arr-back.png") left top no-repeat
+              
+            .week-hour-counter
+              margin: 0
+              padding: 0
+              list-style-type: none
+              li
+                display: inline-block
+                margin: 0 3px
+                padding: 0
+                width: 32px
+                height: 10px
+                background: #5E9B69
+                +box-sizing(border-box)
+                vertical-align: bottom
+
               
         .headers
           +staffplan-columns
           
-          padding: 2px 15px
+          padding: 6px 15px
+          border: 1px solid #E0E0E0
+          border-right: none
+          border-left: none
+          background-color: #F7F7F7
           
           .months-and-weeks
             width: 660px
             
             section
               .plan-actual
+                & + .plan-actual
+                  margin-top: 6px
+                  color: #9F9F9F
                 .row-label
                   width: 40px
             
         section
+          padding-top: 6px
+          padding-bottom: 6px
+
           .project:nth-child(1)
             .months-and-weeks
               .work-weeks
@@ -116,9 +160,12 @@ body#staffplans
               .new-project
                 visibility: visible
               
-              
             .plan-actual
               height: 35px
                       
-          &:nth-child(2n)
-            background-color: #F5F5F5
+          &[data-client-id]:nth-child(2n+1)
+            border: 1px solid #E0E0E0
+            border-right: none
+            border-left: none
+            background-color: #F7F7F7
+

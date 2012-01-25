@@ -44,6 +44,10 @@ class UserView extends Backbone.View
       .html( Mustache.to_html( @user_view_template, @templateData() ) )
       .find( '.months-and-weeks' )
       .html( Mustache.to_html( @work_week_header_template, @headerTemplateData() ) )
+    
+    $( @el )
+      .find( '.week-hour-counter' )
+      .append( Array(@model.weekInterval + 1).join('<li></li>') )
 
     $( @el )
       .appendTo '.content'
@@ -69,6 +73,9 @@ class UserView extends Backbone.View
         .replaceWith( section )
     else
       @$('.project-list').append section
+
+  renderWeekHourCounter: ->
+
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
