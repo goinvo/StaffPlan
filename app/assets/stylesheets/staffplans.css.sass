@@ -100,6 +100,7 @@ body#staffplans
               padding: 0
               list-style-type: none
               li
+                position: relative
                 display: inline-block
                 margin: 0 3px
                 padding: 0
@@ -108,7 +109,12 @@ body#staffplans
                 background: #5E9B69
                 +box-sizing(border-box)
                 vertical-align: bottom
-
+                span
+                  position: absolute
+                  display: block
+                  top: -15px
+                &.passed
+                  background: #D6D6D6
               
         .headers
           +staffplan-columns
@@ -118,6 +124,18 @@ body#staffplans
           border-right: none
           border-left: none
           background-color: #F7F7F7
+
+          .client-name span
+            padding-left: 16px + 6px
+            height: 24px
+            line-height: 24px
+            background: transparent image-url("icons/factory-flat.png") left center no-repeat
+          
+          .project-name span
+            padding-left: 16px + 6px
+            height: 24px
+            line-height: 24px
+            background: transparent image-url("icons/cube-flat.png") left center no-repeat
           
           .months-and-weeks
             width: 660px
