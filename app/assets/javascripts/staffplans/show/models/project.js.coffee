@@ -22,7 +22,6 @@ class Project extends Backbone.Model
   
   validate: (attributes) ->
     if @get('name') == ''
-      # alert("")
       return "Project name is required"
   
   dateRangeMeta: ->

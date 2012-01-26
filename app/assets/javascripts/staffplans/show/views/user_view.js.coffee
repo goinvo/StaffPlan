@@ -93,10 +93,17 @@ class UserView extends Backbone.View
     weekHourCounters = @$( '.week-hour-counter li' )
     _.each dateRange, (date, idx) ->
       # Map week to <li>
+      li = weekHourCounters.eq(idx)
       total = _.reduce ww["#{date.year}-#{date.mweek}"], (m, o) ->
-        m + o.get('estimated_hours')
+        m + o.get(if date.weekHasPassed then 'actual_hours' else 'estimated_hours')
       , 0
-      weekHourCounters.eq(idx).height(total)
+      li
+        .height(total)
+        .html("<span>" + total + "</span>")
+      if date.weekHasPassed
+        li.addClass("passed")
+      else
+        li.removeClass("passed")
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
