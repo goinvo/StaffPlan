@@ -60,9 +60,11 @@ class UserView extends Backbone.View
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
 
+    @renderWeekHourCounter()
+
   renderProjectsForClient: (clientId, projects) ->
     section = $( "<section data-client-id='#{clientId}'>" ).append(
-      projects.map (project, index, projects) -> project.view.render().el
+      projects.map (project) -> project.view.render().el
     )
 
     existingTbody = $( @el ).find "section[data-client-id='#{clientId}']"
@@ -74,8 +76,27 @@ class UserView extends Backbone.View
     else
       @$('.project-list').append section
 
-  renderWeekHourCounter: ->
 
+  renderWeekHourCounter: () ->
+    # Gompute
+    dateRange = @model.dateRangeMeta().dates
+    ww = _.map @model.projects.models, (p) ->
+      _.map dateRange, (date) ->
+        p.work_weeks.find (m) ->
+          m.get('cweek') == date.mweek and m.get('year') == date.year
+
+    # Format data
+    ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
+      "#{w.get('year')}-#{w.get('cweek')}"
+
+    # Draw
+    weekHourCounters = @$( '.week-hour-counter li' )
+    _.each dateRange, (date, idx) ->
+      # Map week to <li>
+      total = _.reduce ww["#{date.year}-#{date.mweek}"], (m, o) ->
+        m + o.get('estimated_hours')
+      , 0
+      weekHourCounters.eq(idx).height(total)
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
