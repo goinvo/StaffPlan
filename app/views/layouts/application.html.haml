@@ -19,8 +19,8 @@
   
     = render(:partial => "shared/flash", locals: {flash: flash})
     
-    %section.main
-      %header
+    %header
+      .inner
         %ul
           %li#nav-my-staff-plan= link_to(t('.my_staff_plan'), staffplan_path(current_user))
           %li#nav-all-staff= link_to(t('.all_staff'), users_path)
@@ -33,12 +33,11 @@
         .right
           = link_to(t('.sign_out'), sign_out_path)
       
-      .content
-        = yield
+    %section.main
+      .content= yield
       
-      
-      %footer
-        = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
-        = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
+    %footer
+      = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
+      = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
     
     = yield(:javascript_includes)
