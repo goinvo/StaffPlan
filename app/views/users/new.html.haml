@@ -1,8 +1,9 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
   
-%h1 New user
+%section
+  %header
+    %h2 Add Staff
 
-= render 'form'
+  = render 'form'
 
-= link_to 'Back', users_path

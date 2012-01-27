@@ -1,6 +1,12 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
-= link_to 'Edit', edit_user_path(@user)
-\|
-= link_to 'Back', users_path
+%section
+  %header
+    %h2= @user.name
+    = link_to 'Edit', edit_user_path(@user)
+    = link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete
+
+  %ul
+    %li= @user.email
+
