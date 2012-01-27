@@ -33,7 +33,8 @@ class User < ActiveRecord::Base
         name: project.name,
         client_id: project.client_id,
         work_weeks: project.work_weeks.for_user(self).map do |ww|
-          { project_id: ww.project_id,
+          { id: ww.id,
+            project_id: ww.project_id,
             actual_hours: ww.actual_hours,
             estimated_hours: ww.estimated_hours,
             cweek: ww.cweek,
