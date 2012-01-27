@@ -1,22 +1,16 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
   
-%h1 Listing users
+%section
+  %header
+    %h2 Staff
+    = link_to 'Add Staff', new_user_path
 
-%table
-  %tr
-    %th login
-    %th
-    %th
-    %th
+  %ul
+    - @users.each do |user|
+      %li
+        = link_to "#{user.name} <#{user.email}>", user
+        .controls
+          = link_to 'Edit', edit_user_path(user)
+          = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
 
-  - @users.each do |user|
-    %tr
-      %td= user.email
-      %td= link_to 'Show', user
-      %td= link_to 'Edit', edit_user_path(user)
-      %td= link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
-
-%br
-
-= link_to 'New User', new_user_path

@@ -1,20 +1,16 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('clients')
 
-%h1= t('.listing_clients')
+%section
+  %header
+    %h2= t('.listing_clients')
+    = link_to t('.new_client'), new_client_path
 
-%table
-  %tr
-    %th= t('.name')
-    %th
-    %th
+  %ul
+    - @clients.each do |client|
+      %li
+        = link_to client.name, client
+        .controls
+          = link_to t('.edit'), edit_client_path(client)
+          = link_to t('.destroy'), client, :confirm => t('.delete_confirmation'), :method => :delete
 
-  - @clients.each do |client|
-    %tr
-      %td= link_to(client.name, client)
-      %td= link_to(t('.edit'), edit_client_path(client))
-      %td= link_to(t('.destroy'), client, :confirm => t('.delete_confirmation'), :method => :delete)
-
-%br
-
-= link_to(t('.new_client'), new_client_path)
