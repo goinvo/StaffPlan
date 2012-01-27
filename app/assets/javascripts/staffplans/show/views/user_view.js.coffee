@@ -8,6 +8,8 @@ class UserView extends Backbone.View
 
   events:
     "click a[data-change-page]" : "changePage"
+    "change input[data-work-week-input]" : "renderWeekHourCounter"
+    
 
   changePage: (event) ->
     @model.dateChanged event
