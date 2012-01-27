@@ -1,6 +1,9 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('clients')
   
-%h1 Editing client
+%section
+  %header
+    %h2= @client.name
 
-= render 'form'
+  = render 'form'
+

@@ -1,17 +1,18 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('clients')
 
-= link_to 'Edit', edit_client_path(@client)
-\|
-= link_to 'Back', clients_path
+%section
+  %header
+    %h2= @client.name
+    = link_to 'Edit', edit_client_path(@client)
+    = link_to 'Destroy', @client, :confirm => 'Are you sure?', :method => :delete
 
-%h1= @client.name
-
-.info
-  .description= "Info: #{@client.description}"
-  .active= @client.active ? t('.active') : t('.inactive')
-
-- if @client.projects.any?
   .info
-    %h2= t('.projects')
-    %ul.projects= render(partial: "project", collection: @client.projects)
+    %pre.description= @client.description
+    .active= @client.active ? t('.active') : t('.inactive')
+
+  - if @client.projects.any?
+    .info
+      %h3= t('.projects')
+      %ul.projects= render(partial: "project", collection: @client.projects)
+

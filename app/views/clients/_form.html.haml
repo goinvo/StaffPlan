@@ -1,23 +1,16 @@
-= form_for @client do |f|
+= form_for @client, :builder => StaffPlanFormBuilder do |f|
   -if @client.errors.any?
     #error_explanation
-      %h2= "#{pluralize(@client.errors.count, "error")} prohibited this client from being saved:"
+      %h3= "#{pluralize(@client.errors.count, "error")} prohibited this client from being saved:"
       %ul
         - @client.errors.full_messages.each do |msg|
           %li= msg
   
-  .field
-    = f.label(:name)
-    = f.text_field(:name)
-  
-  .field
-    = f.label(:description)
-    = f.text_area(:description)
-    
-  .field
-    = f.label(:active, class: 'inline')
-    = f.check_box(:active)
+  = f.text_field :name
+  = f.text_area :description
+  = f.check_box :active
 
   .actions
-    = f.submit(t('.save'))
-    = link_to(t('.cancel'), clients_path)
+    = f.submit t('.save')
+    = link_to t('.cancel'), clients_path
+
