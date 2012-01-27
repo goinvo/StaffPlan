@@ -113,77 +113,85 @@ body#staffplans
                   position: absolute
                   display: block
                   top: -15px
+                  width: 32px
+                  text-align: center
                 &.passed
                   background: #D6D6D6
               
-        .headers
-          +staffplan-columns
-          
-          padding: 6px 15px
-          border: 1px solid #E0E0E0
-          border-right: none
-          border-left: none
-          background-color: #F7F7F7
+        .project-list
+          // -moz-mask-image:       -moz-linear-gradient(left, hsla(0, 0%, 0%, 0), #000 3%, #000 97%, hsla(0, 0%, 0%, 0))
+          // -o-mask-image:           -o-linear-gradient(left, hsla(0, 0%, 0%, 0), #000 3%, #000 97%, hsla(0, 0%, 0%, 0))
+          // -webkit-mask-image: -webkit-linear-gradient(left, hsla(0, 0%, 0%, 0), #000 3%, #000 97%, hsla(0, 0%, 0%, 0))
+          // mask-image:                 linear-gradient(left, hsla(0, 0%, 0%, 0), #000 3%, #000 97%, hsla(0, 0%, 0%, 0))
 
-          .client-name span
-            padding-left: 16px + 6px
-            height: 24px
-            line-height: 24px
-            background: transparent image-url("icons/factory-flat.png") left center no-repeat
-          
-          .project-name span
-            padding-left: 16px + 6px
-            height: 24px
-            line-height: 24px
-            background: transparent image-url("icons/cube-flat.png") left center no-repeat
-          
-          .months-and-weeks
-            width: 660px
-            
-            section
-              .plan-actual
-                & + .plan-actual
-                  margin-top: 6px
-                  color: #9F9F9F
-                .row-label
-                  width: 40px
-            
-        section
-          padding-top: 6px
-          padding-bottom: 6px
-
-          .project:nth-child(1)
-            .months-and-weeks
-              .work-weeks
-                .plan-actual
-                  .row-label
-                    visibility: visible
-                
-          .project
+          .headers
             +staffplan-columns
-            padding: 2px 15px
-            height: 75px
             
-            .client-name
-              visibility: hidden
-              
-            &:first-child
-              .client-name
-                visibility: visible
-                
-            .new-project
-              visibility: hidden
-              
-            &:last-child
-              .new-project
-                visibility: visible
-              
-            .plan-actual
-              height: 35px
-                      
-          &[data-client-id]:nth-child(2n+1)
+            padding: 6px 15px
             border: 1px solid #E0E0E0
             border-right: none
             border-left: none
             background-color: #F7F7F7
+
+            .client-name span
+              padding-left: 16px + 6px
+              height: 24px
+              line-height: 24px
+              background: transparent image-url("icons/factory-flat.png") left center no-repeat
+            
+            .project-name span
+              padding-left: 16px + 6px
+              height: 24px
+              line-height: 24px
+              background: transparent image-url("icons/cube-flat.png") left center no-repeat
+            
+            .months-and-weeks
+              width: 660px
+              
+              section
+                .plan-actual
+                  & + .plan-actual
+                    margin-top: 6px
+                    color: #9F9F9F
+                  .row-label
+                    width: 40px
+              
+          section
+            padding-top: 6px
+            padding-bottom: 6px
+
+            .project:nth-child(1)
+              .months-and-weeks
+                .work-weeks
+                  .plan-actual
+                    .row-label
+                      visibility: visible
+                  
+            .project
+              +staffplan-columns
+              padding: 2px 15px
+              height: 75px
+              
+              .client-name
+                visibility: hidden
+                
+              &:first-child
+                .client-name
+                  visibility: visible
+                  
+              .new-project
+                visibility: hidden
+                
+              &:last-child
+                .new-project
+                  visibility: visible
+                
+              .plan-actual
+                height: 35px
+                        
+            &[data-client-id]:nth-child(2n+1)
+              border: 1px solid #E0E0E0
+              border-right: none
+              border-left: none
+              background-color: #F7F7F7
 
