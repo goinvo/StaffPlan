@@ -112,6 +112,15 @@ section.main
         line-height: 35px
         font-size: 18px
 
+        img
+          margin-right: 5px
+          padding: 2px
+          width: 35px
+          +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+          +box-sizing(border-box)
+          background-color: #FFF
+          vertical-align: text-bottom
+
       > a
         display: inline-block
         padding: 6px
@@ -141,6 +150,15 @@ section.main
           & + li
             border-top: 1px solid #E0E0E0
 
+          img
+            margin-right: 5px
+            padding: 1px
+            width: 15px
+            +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+            +box-sizing(border-box)
+            background-color: #FFF
+            vertical-align: text-bottom
+
           .controls
             position: absolute
             right: -200px
@@ -159,6 +177,20 @@ section.main
             background-color: #F7F7F7
             .controls
               right: 15px
+
+      .info
+        ul
+          list-style-type: none
+          li
+            padding: 5px 0
+            img
+              margin-right: 5px
+              padding: 1px
+              width: 15px
+              +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+              +box-sizing(border-box)
+              background-color: #FFF
+              vertical-align: text-bottom
 
 #projects
   ul
