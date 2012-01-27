@@ -1,0 +1,37 @@
+//\\//\\//\\//\\//\\
+//     Forms      \\
+//\\//\\//\\//\\//\\
+form
+  .input
+    position: relative
+    padding: 12px 15px
+    overflow: hidden
+    +transition(background-color .2s ease-out)
+
+    & + .input
+      border-top: 1px solid #E0E0E0
+
+    label
+      display: inline-block
+      min-width: 15%
+      text-transform: capitalize
+
+  .actions
+    padding-top: 15px
+
+  input[type=submit]
+    +appearance(none)
+    display: inline-block
+    padding: 6px
+    border: solid #CCC 1px
+    background: transparent
+    color: #424242
+    font: inherit
+    cursor: pointer
+    +border-radius(3px)
+    +box-shadow(0 1px 0 #FFF)
+    +transition(all .2s ease-out)
+
+    &:hover
+      border-color: #AAA
+      text-decoration: none

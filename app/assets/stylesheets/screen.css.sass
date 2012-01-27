@@ -8,24 +8,32 @@
 body
   margin: 0
   padding: 0
-  background: #fff
   background: #EEEEEE
   color: #424242
-  font-family: Helvetica, Arial
-  font-size: 12px
+  font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Calibri, sans-serif
+  font-size: 13px
   
   a
-    text-decoration: none
-    color: #505050
     +transition(all .2s ease-out)
+    color: #505050
+    text-decoration: none
     
+    &:link
+      text-decoration: none
+    &:visited
+      text-decoration: none
     &:hover
+      color: lighten(#505050, 20%)
       text-decoration: underline
+    &:active
+      text-decoration: none
       
+@import forms
+
 //\\//\\//\\//\\//\\
 //     Header     \\
 //\\//\\//\\//\\//\\
-header
+body > header
   margin: 0
   padding: 6px 0
   line-height: 24px
@@ -56,19 +64,18 @@ header
         padding-left: 16px + 6px
         height: 24px
         line-height: 24px
-        font-weight: bold
 
       &#nav-my-staff-plan a
-        background: transparent image-url("icons/chart.png") left center no-repeat
+        background: transparent image-url("icons/chart.png") left top no-repeat
   
       &#nav-all-staff a
-        background: transparent image-url("icons/people.png") left center no-repeat
+        background: transparent image-url("icons/people.png") left top no-repeat
   
       &#nav-clients a
-        background: transparent image-url("icons/factory.png") left center no-repeat
+        background: transparent image-url("icons/factory.png") left top no-repeat
   
       &#nav-projects a
-        background: transparent image-url("icons/cube.png") left center no-repeat
+        background: transparent image-url("icons/cube.png") left top no-repeat
   
   .right
     position: absolute
@@ -87,13 +94,82 @@ section.main
     padding: 10px
     min-height: 400px
 
+  section
+    > header
+      padding-top: 30px
+      margin-bottom: 10px
+
+      h2
+        display: inline-block
+        margin-right: 25px
+        line-height: 35px
+        font-size: 18px
+
+      > a
+        display: inline-block
+        padding: 6px
+        border: solid #CCC 1px
+        +border-radius(3px)
+        +box-shadow(0 1px 0 #FFF)
+
+        &:hover
+          border-color: #AAA
+          text-decoration: none
+
+#users, #clients, #projects
+  section.main
+    section
+      > ul
+        > li
+          position: relative
+          padding: 12px 15px
+          overflow: hidden
+          +transition(background-color .2s ease-out)
+
+          & + li
+            border-top: 1px solid #E0E0E0
+
+          .controls
+            position: absolute
+            right: -200px
+            bottom: 12px
+            +transition(right .2s ease-out)
+            a
+              &:hover
+                text-decoration: none
+            > * + *
+              &:before
+                content: "\2022"
+                margin-right: 4px
+                text-decoration: none
+
+          &:hover
+            background-color: #F7F7F7
+            .controls
+              right: 15px
+
+#projects
+  ul
+    li
+      .client-name
+        font-weight: bold
+
 //\\//\\//\\//\\//\\
 //     Footer     \\
 //\\//\\//\\//\\//\\
 footer
-  font-size: 14px
-  text-align: right
-  padding: 5px 10px
+  padding: 15px 0
+  text-align: center
+  
+  a
+    &:hover
+      text-decoration: none
+
+  > * + *
+    &:before
+      content: "\2022"
+      margin-right: 3px
+      text-decoration: none
 
 //\\//\\//\\//\\//\\
 //     Misc.      \\
