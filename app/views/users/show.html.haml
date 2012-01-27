@@ -3,7 +3,9 @@
 
 %section
   %header
-    %h2= @user.name
+    %h2
+      = image_tag @user.gravatar
+      = @user.name
     = link_to 'Edit', edit_user_path(@user)
     = link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete
 

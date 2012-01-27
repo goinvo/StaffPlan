@@ -9,13 +9,16 @@
 
   .info
     .client= @project.client.name
-    .active= @project.active ? t('.active') : t('.inactive')
+    .active{ 'data-active' => @project.active }= @project.active ? t('.active') : t('.inactive')
     .users
       %h3 Team Members:
       %ul
         - if @project.users.any?
           - @project.users.each do |project_user|
-            %li= link_to(project_user.email, project_user)
+            %li
+              = image_tag project_user.gravatar
+              = link_to "#{project_user.name} <#{project_user.email}>", project_user
         - else
-          %li None!
+          %li
+            %em None!
         
