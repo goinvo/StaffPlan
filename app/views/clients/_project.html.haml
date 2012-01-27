@@ -1,2 +1,2 @@
-%li.project{class: project.active? ? 'active' : 'inactive'}
+%li.project{:class => 'active', 'data-active' => project.active? }
   = link_to(project.name, project)
