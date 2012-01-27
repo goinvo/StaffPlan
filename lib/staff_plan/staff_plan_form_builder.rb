@@ -1,14 +1,10 @@
 class StaffPlanFormBuilder < ActionView::Helpers::FormBuilder
 
-  def text_field(attribute, options={})
-    @template.content_tag :div, :class => "input" do
-      label(attribute) + super
-    end
-  end
-
-  def password_field(attribute, options={})
-    @template.content_tag :div, :class => "input" do
-      label(attribute) + super
+  %w[text_field text_area password_field check_box].each do |method_name|
+    define_method(method_name) do |field_name, *args|
+      @template.content_tag :div, :class => "input" do
+        label(field_name) + super(field_name, *args)
+      end
     end
   end
 
