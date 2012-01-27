@@ -1,22 +1,21 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
-%h1= @project.name
+%section
+  %header
+    %h2= @project.name
+    = link_to 'Edit', edit_project_path(@project)
+    = link_to 'Destroy', @project, :confirm => 'Are you sure?', :method => :delete
 
-.info
-  .client= @project.client.name
-  .active= @project.active ? t('.active') : t('.inactive')
-  .users
-    %h3 Team Members:
-    %ul
-      - if @project.users.any?
-        - @project.users.each do |project_user|
-          %li= link_to(project_user.email, project_user)
-      - else
-        %li None!
-      
-    
-
-= link_to 'Edit', edit_project_path(@project)
-\|
-= link_to 'Back', projects_path
+  .info
+    .client= @project.client.name
+    .active= @project.active ? t('.active') : t('.inactive')
+    .users
+      %h3 Team Members:
+      %ul
+        - if @project.users.any?
+          - @project.users.each do |project_user|
+            %li= link_to(project_user.email, project_user)
+        - else
+          %li None!
+        

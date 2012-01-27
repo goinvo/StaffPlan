@@ -1,6 +1,9 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
   
-%h1 Editing project
+%section
+  %header
+    %h2= @project.name
 
-= render 'form'
+  = render 'form'
+
