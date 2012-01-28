@@ -179,10 +179,18 @@ section.main
               right: 15px
 
       .info
+        .active
+          padding-left: 16px + 6px
+          line-height: 18px
+          background: transparent image-url("icons/inactive.png") left top no-repeat
+          &[data-active]
+            background-image: image-url("icons/active.png")
+
         ul
           list-style-type: none
           li
-            padding: 5px 0
+            margin: 5px 0
+            // padding: 5px 0
             img
               margin-right: 5px
               padding: 1px
@@ -196,6 +204,7 @@ section.main
   ul
     li
       .client-name
+        padding-right: 5px
         font-weight: bold
 
 //\\//\\//\\//\\//\\
@@ -221,6 +230,11 @@ footer
 .clear
   clear: both
   float: none
-  
+
+// *[data-active]
+  // padding-left: 16px + 6px
+  // line-height: 18px
+  // background: transparent image-url("icons/active.png") left top no-repeat
+
 @import "_flash"
 
