@@ -95,7 +95,7 @@ class UserView extends Backbone.View
       # Map week to <li>
       li = weekHourCounters.eq(idx)
       total = _.reduce ww["#{date.year}-#{date.mweek}"], (m, o) ->
-        m + o.get(if date.weekHasPassed then 'actual_hours' else 'estimated_hours')
+        m + parseInt(o.get(if date.weekHasPassed then 'actual_hours' else 'estimated_hours'), 10) or 0
       , 0
       li
         .height(total)
