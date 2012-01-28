@@ -24,6 +24,9 @@ class User extends Backbone.Model
       projects = @projectsByClient()
       @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
       @view.addNewProjectRow()
+    
+    $( document.body ).bind 'work_week:value:updated', =>
+      @view.renderWeekHourCounter()
 
     urlRoot: "/users"
 

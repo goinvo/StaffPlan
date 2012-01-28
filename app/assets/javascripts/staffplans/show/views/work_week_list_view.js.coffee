@@ -116,12 +116,19 @@ class WorkWeekListView extends Backbone.View
       @workWeekByCweekAndYear cweek, year
     
     if workWeek?
-      hash = if attributeName == "estimated_hours"
-        {"estimated_hours": $element.val()}
+      if $element.val() != ""
+        value = parseInt($element.val(), 10)
       else
-        {"actual_hours": $element.val()}
+        value = 0
       
-      workWeek.save hash
+      hash = if attributeName == "estimated_hours"
+        {"estimated_hours": value}
+      else
+        {"actual_hours": value}
+      
+      workWeek.save hash,
+        success: (workWeek, response, jqxhr) =>
+          $( document.body ).trigger 'work_week:value:updated'
         
     else
       attributes =
@@ -138,6 +145,7 @@ class WorkWeekListView extends Backbone.View
           if response.status == "ok"
             window._meta.clients.reset response.clients
             workWeek.set response.work_week
+            $( document.body ).trigger 'work_week:value:updated'
             
           else
             alert('Problem saving your entry, please try again')
