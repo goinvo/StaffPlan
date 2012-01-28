@@ -10,7 +10,7 @@
     - @projects.each do |project|
       %li
         = link_to project do
-          %span.client-name= project.client.name
+          %span.client-name= project.client.try(:name) || "N/A"
           %span.project-name= project.name
         .controls
           = link_to t('.edit'), edit_project_path(project)
