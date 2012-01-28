@@ -148,6 +148,7 @@ class WorkWeekListView extends Backbone.View
             $( document.body ).trigger 'work_week:value:updated'
             
           else
+            # TODO: Flash instead of alert
             alert('Problem saving your entry, please try again')
             $element.removeAttr('value')
     
