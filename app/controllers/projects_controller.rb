@@ -2,7 +2,7 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.order("client_id ASC").all
+    @projects = Project.all
 
     respond_to do |format|
       format.html # index.html.erb

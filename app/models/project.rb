@@ -11,5 +11,5 @@ class Project < ActiveRecord::Base
   
   validates_presence_of :name, :client
   
-  default_scope(order: "name ASC")
+  default_scope(order: "client_id ASC, name ASC")
 end
