@@ -17,5 +17,7 @@ StaffPlan::Application.routes.draw do
   resources :projects
   resources :staffplans, :only => [:show]
   
-  root :to => 'dashboard#show'
+  match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
+  
+  root :to => 'staffplans#my_staffplan'
 end

@@ -7,4 +7,8 @@ class StaffplansController < ApplicationController
     @target_user_json = @target_user.staff_plan_json
     @clients = Client.staff_plan_json
   end
+  
+  def my_staffplan
+    redirect_to staffplan_url(current_user)
+  end
 end
