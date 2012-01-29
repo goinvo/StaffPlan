@@ -6,6 +6,14 @@
     display: inline-block
     +ellipsis
     
+    &.client-name, &.project-name
+      padding-top: 15px
+      vertical-align: top
+      -moz-mask-image:       -moz-linear-gradient(left, #000, #000 80%, hsla(0, 0%, 0%, 0))
+      -o-mask-image:           -o-linear-gradient(left, #000, #000 80%, hsla(0, 0%, 0%, 0))
+      -webkit-mask-image: -webkit-linear-gradient(left, #000, #000 80%, hsla(0, 0%, 0%, 0))
+      mask-image:                 linear-gradient(left, #000, #000 80%, hsla(0, 0%, 0%, 0))
+
     &.client-name
       width: 180px
       
