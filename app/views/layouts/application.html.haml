@@ -31,7 +31,7 @@
           = yield(:header_content)
         
         .right
-          = link_to(t('.feedback'), "mailto:staffplan-feedback@goinvo.com?subject=Staffplan Feedback")
+          = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "Staffplan Feedback")
           |
           = link_to(t('.sign_out'), sign_out_path)
       
