@@ -6,10 +6,9 @@ class Users::ProjectsController < ApplicationController
   before_filter :find_or_create_client, :only => [:create]
   
   def create
-    @project = Project.new(client: @client, name: params[:name])
+    @project = @client.projects.find_by_name(params[:name]) || @client.projects.build(name: params[:name])
     
-    if @project.save
-      @target_user.projects << @project
+    if @target_user.projects << @project
       render_json_ok
     else
       render_json_fail
