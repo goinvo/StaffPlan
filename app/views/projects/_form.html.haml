@@ -7,7 +7,7 @@
           %li= msg
           
   = f.text_field :name
-  = f.select :client_id, options_from_collection_for_select(Client.all, 'id', 'name')
+  = f.select :client_id, options_from_collection_for_select(Client.all, 'id', 'name', selected: @project.client.try(:id))
   = f.check_box :active
     
   .actions
