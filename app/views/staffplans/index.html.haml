@@ -1,0 +1,37 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('staffplans')
+  
+%section
+  %header
+    %h2 All Staff
+    
+    .from-to== From #{@from.strftime("%m/%e/%Y")} to #{@to.strftime("%m/%e/%Y")}
+    
+  .user-header
+    .user-info &nbsp;
+    %table.weeks
+      %tr
+        %td.month{rowspan: 2}= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.ago(@from)), class: 'previous')
+          
+        - @date_range.each do |date|
+          %td.month= Date::ABBR_MONTHNAMES[ date.month ]
+        
+        %td.month{rowspan: 2}= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.from_now(@from)), class: 'next')
+        
+      %tr
+        - @date_range.each do |date|
+          %td.month= "W#{date.cweek}"
+        
+        
+  %ul.users
+    - @users.each do |user|
+      %li
+        .user-info
+          = image_tag(user.gravatar, class: 'gravatar')
+          = link_to("#{user.name}", user, class: 'user')
+        
+        %ul.week-hour-counter
+          - @date_range.each do |date|
+            - total = user.work_weeks.select { |ww| ww.cweek == date.cweek && ww.year == date.year }.map { |ww| ww.estimated_hours || 0 }.inject(:+) || 0
+            %li{class: ((date <= Date.today) ?  'passed' : ''), style: "height: #{total}px"}
+              %span= total

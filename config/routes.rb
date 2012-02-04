@@ -15,7 +15,7 @@ StaffPlan::Application.routes.draw do
   resource :dashboard, :controller => "dashboard", :only => [:show]
   resources :clients
   resources :projects
-  resources :staffplans, :only => [:show]
+  resources :staffplans, :only => [:show, :index]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
