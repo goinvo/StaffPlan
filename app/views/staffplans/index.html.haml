@@ -12,15 +12,22 @@
     %table.weeks
       %tr
         %td.month{rowspan: 2}= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.ago(@from)), class: 'previous')
-          
-        - @date_range.each do |date|
-          %td.month= Date::ABBR_MONTHNAMES[ date.month ]
         
+        - last_month = @date_range.first.month
+        
+        - @date_range.each_with_index do |date, idx|
+          %td.month
+            - if idx == 0 || last_month != date.month
+              = Date::ABBR_MONTHNAMES[ date.month ]
+              
+          - last_month = date.month
+          
         %td.month{rowspan: 2}= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.from_now(@from)), class: 'next')
         
       %tr
         - @date_range.each do |date|
-          %td.month= "W#{date.cweek}"
+          
+          %td.month= "W#{(date.mday / 7) + 1}"
         
         
   %ul.users
