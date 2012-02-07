@@ -3,7 +3,7 @@ class WorkWeekListView extends Backbone.View
   tagName: "section"
   className: "work-weeks"
   work_week_list_view_template: $('#work_week_list_view').remove().text()
-  
+
   dateRangeMeta: ->
     @model.dateRangeMeta()
   
@@ -72,6 +72,8 @@ class WorkWeekListView extends Backbone.View
   render: ->
     $( @el )
       .html( Mustache.to_html( @work_week_list_view_template, @templateData() ) )
+
+    @rowFiller = @$('.row-filler').hide()
     
     @delegateEvents()
     
@@ -90,8 +92,42 @@ class WorkWeekListView extends Backbone.View
   
   # events/handlers
   events:
-    "keyup input[data-work-week-input]" : "queueUpdateOrCreate"
-    
+    "focus  input[data-work-week-input]": "showRowFiller"
+    "blur   input[data-work-week-input]": "hideRowFiller"
+    "keyup  input[data-work-week-input]": "queueUpdateOrCreate"
+    "change input[data-work-week-input]": "queueUpdateOrCreate"
+    "click  .row-filler": "fillNextRows"
+
+  showRowFiller: (event) ->
+    clearTimeout @_rowFillerTimer
+
+    $el = $(event.currentTarget)
+    event.currentTarget.type = "number"
+
+    offset = $el.offset()
+    offset.top += $el.height()
+
+    @rowFiller
+      .show()
+      .width($el.outerWidth() - 2)
+      .offset(offset)
+
+  hideRowFiller: (event) ->
+    event.currentTarget.type = "text"
+    @_lastFocused = event.currentTarget
+    @_rowFillerTimer = setTimeout =>
+      @rowFiller.hide()
+    , 150
+
+  fillNextRows: (event) ->
+    clearTimeout @_rowFillerTimer
+    event.preventDefault()
+    event.stopPropagation()
+    @_lastFocused.focus()
+    $(@_lastFocused).parent().nextAll().find('input[data-work-week-input]')
+      .val(@_lastFocused.value)
+      .trigger('change')
+
   queueUpdateOrCreate: (event) ->
     window.clearTimeout event.currentTarget.timeout
     event.currentTarget.timeout = setTimeout =>
