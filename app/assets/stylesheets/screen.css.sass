@@ -3,6 +3,7 @@
 @import "compass/utilities/general/float"
 
 @import init
+@import mixins
 
 //\\//\\//\\//\\//\\
 //     Default    \\
@@ -78,6 +79,7 @@ body > header
     position: absolute
     right: 15px
     bottom: 0
+    +inline-bullets
 
 // Nav sprites
 $icons-spacing: 20px
@@ -163,11 +165,7 @@ section.main
             a
               &:hover
                 text-decoration: none
-            > * + *
-              &:before
-                content: "\2022"
-                margin-right: 4px
-                text-decoration: none
+            +inline-bullets
 
           &:hover
             background-color: #F7F7F7
@@ -209,16 +207,7 @@ section.main
 footer
   padding: 15px 0
   text-align: center
-  
-  a
-    &:hover
-      text-decoration: none
-
-  > * + *
-    &:before
-      content: "\2022"
-      margin-right: 3px
-      text-decoration: none
+  +inline-bullets
 
 //\\//\\//\\//\\//\\
 //     Misc.      \\

@@ -27,7 +27,7 @@ $arrows-spacing: 20px
 //\\//\\//\\//\\//\\//\\
 =week-hour-counter
   margin: 0
-  padding: 0
+  padding: 15px 0 0
   list-style-type: none
   font-size: $font-size
   
@@ -104,10 +104,6 @@ $arrows-spacing: 20px
 body#staffplans.index
   section.main
     .content
-      header
-        .from-to
-          float: right
-          
       .user-header
         position: relative
         margin-bottom: 15px
@@ -133,6 +129,7 @@ body#staffplans.index
 
           tr:nth-child(2)
             .month
+              margin-top: 6px
               color: $color-light
           
       ul.users
@@ -141,8 +138,7 @@ body#staffplans.index
             display: inline-block
             
           .user-info
-            width: 345px
-            padding-left: 25px
+            width: 360px
 
           .week-hour-counter
             +week-hour-counter

@@ -5,7 +5,7 @@
   %header
     %h2 All Staff
     
-    .from-to== From #{@from.strftime("%m/%e/%Y")} to #{@to.strftime("%m/%e/%Y")}
+    %span.from-to== #{@from.strftime("%b %e, %Y")} &mdash; #{@to.strftime("%b %e, %Y")}
     
   .user-header
     %table.weeks

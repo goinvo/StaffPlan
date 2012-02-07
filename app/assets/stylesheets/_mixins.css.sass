@@ -1,5 +1,14 @@
 @import "compass/utilities/tables"
 
+=inline-bullets
+  > li, span, div, a
+    & +
+      & li, span, div, a
+        &:before
+          content: "\2022"
+          margin-right: 3px
+          text-decoration: none
+
 =shared-crud-css
   h1
     font-size: 20px
