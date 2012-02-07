@@ -19,19 +19,32 @@ form
   .actions
     padding-top: 15px
 
-  input[type=submit]
-    +appearance(none)
-    display: inline-block
-    padding: 6px
-    border: solid #CCC 1px
-    background: transparent
-    color: #424242
-    font: inherit
-    cursor: pointer
-    +border-radius(3px)
-    +box-shadow(0 1px 0 #FFF)
-    +transition(all .2s ease-out)
+input[type=text]
+  +appearance(none)
 
-    &:hover
-      border-color: #AAA
-      text-decoration: none
+input[type=text], input[type=number]
+  border: 1px solid #E0E0E0
+  height: 25px
+  +transition(all .2s ease-out)
+  +box-sizing(border-box)
+
+  &:focus
+    border-color: darken(#E0E0E0, 20%)
+    outline: none
+
+input[type=submit]
+  +appearance(none)
+  display: inline-block
+  padding: 6px
+  border: solid #CCC 1px
+  background: transparent
+  color: #424242
+  font: inherit
+  cursor: pointer
+  +border-radius(3px)
+  +box-shadow(0 1px 0 #FFF)
+  +transition(all .2s ease-out)
+
+  &:hover
+    border-color: #AAA
+    text-decoration: none

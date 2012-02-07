@@ -72,22 +72,34 @@ body > header
         height: 24px
         line-height: 24px
 
-      &#nav-my-staff-plan a
-        background: transparent image-url("icons/chart.png") left top no-repeat
-  
-      &#nav-all-staff a
-        background: transparent image-url("icons/people.png") left top no-repeat
-  
-      &#nav-clients a
-        background: transparent image-url("icons/factory.png") left top no-repeat
-  
-      &#nav-projects a
-        background: transparent image-url("icons/cube.png") left top no-repeat
-  
   .right
     position: absolute
     right: 15px
     bottom: 0
+
+// Nav sprites
+$icons-spacing: 20px
+@import "icons/*.png"
+
+body > header
+  ul
+    li#nav-my-staff-plan a
+      @include icons-sprite(chart)
+    li#nav-all-staff a
+      @include icons-sprite(people)
+    li#nav-clients a
+      @include icons-sprite(factory)
+    li#nav-projects a
+      @include icons-sprite(cube)
+
+body#staffplans
+  section.main
+    .project-list
+      .headers
+        .client-name span
+          @include icons-sprite(factory-flat)
+        .project-name span
+          @include icons-sprite(cube-flat)
     
 //\\//\\//\\//\\//\\
 //      Main      \\
