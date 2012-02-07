@@ -1,8 +1,9 @@
 - small ||= nil
 - email ||= nil
+- url   ||= user
 
 .user-info{ class: small ? "small" : "" }
-  = link_to user do
+  = link_to url do
     = image_tag user.gravatar, class: 'gravatar'
     %span.name=  user.name
     - if email

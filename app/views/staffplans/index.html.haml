@@ -36,7 +36,7 @@
   %ul.users
     - @users.each do |user|
       %li
-        = render partial: 'shared/user-info', locals: {user: user}
+        = render partial: 'shared/user-info', locals: {user: user, url: staffplan_url(user)}
         
         %ul.week-hour-counter
           - @date_range.each do |date|
