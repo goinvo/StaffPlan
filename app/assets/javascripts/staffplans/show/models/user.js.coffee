@@ -49,10 +49,11 @@ class User extends Backbone.Model
 
     while from.isBefore to
       yearsAndWeeks.push
-        year: from.getFullYear()
+        year:  from.getFullYear()
         cweek: from.getISOWeek()
         month: from.getMonth()
         mweek: from.getWeek()
+        mday:  from.getDate()
         weekHasPassed: from.isBefore Date.today()
 
       from = from.add(1).week()
