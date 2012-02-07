@@ -15,6 +15,7 @@ gem 'rails-behaviors'
 gem 'sass-rails',     '~> 3.1.5'
 gem 'thin'
 gem "will_paginate"
+gem 'awesome_print',            require: 'ap'
 
 group :assets do
   gem 'coffee-rails', '~> 3.1.1'
