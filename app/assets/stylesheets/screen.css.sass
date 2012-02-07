@@ -15,6 +15,7 @@ body
   color: $color
   font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Calibri, sans-serif
   font-size: $font-size
+  line-height: $line-height
   
   a
     +transition(color .2s ease-out)
@@ -232,7 +233,13 @@ footer
     background-color: #FFF
     vertical-align: text-bottom
 
+  .email
+    color: $color-light
+
   &.small
+    line-height: $line-height
+    font-size: $font-size
+
     img
       padding: 1px
       width: 15px

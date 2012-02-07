@@ -9,8 +9,7 @@
   %ul
     - @users.each do |user|
       %li
-        = image_tag user.gravatar
-        = link_to "#{user.name} <#{user.email}>", user
+        = render partial: 'shared/user-info', locals: {user: user, small: true}
         .controls
           = link_to 'Edit', edit_user_path(user)
           = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete

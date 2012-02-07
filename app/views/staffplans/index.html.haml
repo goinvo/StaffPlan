@@ -36,9 +36,7 @@
   %ul.users
     - @users.each do |user|
       %li
-        .user-info
-          = image_tag(user.gravatar, class: 'gravatar')
-          = link_to("#{user.name}", user, class: 'user')
+        = render partial: 'shared/user-info', locals: {user: user}
         
         %ul.week-hour-counter
           - @date_range.each do |date|
