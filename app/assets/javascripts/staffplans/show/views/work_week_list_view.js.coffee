@@ -59,8 +59,8 @@ class WorkWeekListView extends Backbone.View
         workWeek = @workWeekByCweekAndYear dateObject.mweek, dateObject.year
         
         if workWeek?
-          dateObject.actual_hours = workWeek.get('actual_hours')
-          dateObject.estimated_hours = workWeek.get('estimated_hours')
+          dateObject.actual_hours =    (workWeek.get('actual_hours') or '')
+          dateObject.estimated_hours = (workWeek.get('estimated_hours') or '')
           dateObject.cid = workWeek.cid
           
         dateObject
@@ -113,6 +113,7 @@ class WorkWeekListView extends Backbone.View
       .offset(offset)
 
   hideRowFiller: (event) ->
+    @zeroToBlank event # XXX Can't bind multiple methods to the same event via Backbone :(
     event.currentTarget.type = "text"
     @_lastFocused = event.currentTarget
     @_rowFillerTimer = setTimeout =>
@@ -127,6 +128,10 @@ class WorkWeekListView extends Backbone.View
     $(@_lastFocused).parent().nextAll().find('input[data-work-week-input]')
       .val(@_lastFocused.value)
       .trigger('change')
+
+  zeroToBlank: (event) ->
+    if (event.currentTarget.value == '0')
+      event.currentTarget.value = ''
 
   queueUpdateOrCreate: (event) ->
     window.clearTimeout event.currentTarget.timeout
