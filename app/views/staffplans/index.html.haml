@@ -8,7 +8,6 @@
     .from-to== From #{@from.strftime("%m/%e/%Y")} to #{@to.strftime("%m/%e/%Y")}
     
   .user-header
-    .user-info &nbsp;
     %table.weeks
       %tr
         %td.month{rowspan: 2}= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.ago(@from)), class: 'previous')
