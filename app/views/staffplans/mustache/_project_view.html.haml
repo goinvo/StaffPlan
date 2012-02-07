@@ -10,7 +10,7 @@
     %input.client-select{type: 'hidden', name: "client[name]", value: "{{ clientName }}"}
     {{/clientNameInput}}
   
-  .new-project= link_to_function('+', '', class: 'add-new-project')
+  .new-project= link_to_function('+', '', class: 'add-new-project button-minimal')
   .project-name
     {{#isNew}}
     %input{type: 'text', name: 'project[name]'}
