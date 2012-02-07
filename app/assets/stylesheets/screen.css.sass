@@ -1,7 +1,9 @@
 @import "compass/reset"
 @import "compass/css3"
 @import "compass/utilities/general/float"
-          
+
+@import init
+
 //\\//\\//\\//\\//\\
 //     Default    \\
 //\\//\\//\\//\\//\\
@@ -11,7 +13,7 @@ body
   background: #EEEEEE
   color: #424242
   font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Calibri, sans-serif
-  font-size: 13px
+  font-size: $font-size
   
   a
     +transition(all .2s ease-out)
@@ -124,15 +126,6 @@ section.main
         line-height: 35px
         font-size: 18px
 
-        img
-          margin-right: 5px
-          padding: 2px
-          width: 35px
-          +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
-          +box-sizing(border-box)
-          background-color: #FFF
-          vertical-align: text-bottom
-
       > a
         display: inline-block
         padding: 6px
@@ -148,7 +141,7 @@ section.main
       padding: 10px 0 5px
       font-size: 16px
 
-#users, #clients, #projects
+#staffplans.index, #users, #clients, #projects
   section.main
     section
       > ul
@@ -161,15 +154,6 @@ section.main
 
           & + li
             border-top: 1px solid #E0E0E0
-
-          img
-            margin-right: 5px
-            padding: 1px
-            width: 15px
-            +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
-            +box-sizing(border-box)
-            background-color: #FFF
-            vertical-align: text-bottom
 
           .controls
             position: absolute
@@ -243,10 +227,26 @@ footer
   clear: both
   float: none
 
-// *[data-active]
-  // padding-left: 16px + 6px
-  // line-height: 18px
-  // background: transparent image-url("icons/active.png") left top no-repeat
+
+.user-info
+  display: inline-block
+  margin-right: 25px
+  line-height: 35px
+  font-size: 18px
+
+  img
+    margin-right: 5px
+    padding: 2px
+    width: 35px
+    +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+    +box-sizing(border-box)
+    background-color: #FFF
+    vertical-align: text-bottom
+
+  &.small
+    img
+      padding: 1px
+      width: 15px
 
 @import "_flash"
 

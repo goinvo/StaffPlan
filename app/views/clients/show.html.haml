@@ -9,7 +9,7 @@
 
   .info
     %pre.description= @client.description
-    .active= @client.active ? t('.active') : t('.inactive')
+    .active{ 'data-active' => @client.active }= @client.active ? t('.active') : t('.inactive')
 
   - if @client.projects.any?
     .info

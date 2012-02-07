@@ -1,8 +1,8 @@
 %script#user_view{type: "text/html"}
-  .user-info
-    .user-select
+  .user-select
+    .user-info
       %img{src: "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(@target_user.email.downcase)}"}
-      .email= @target_user.email
+      .email= @target_user.name
     
     .date-pagination
       %a.previous{href: '#', 'data-change-page' => 'previous'} &larr;
