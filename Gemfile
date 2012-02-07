@@ -3,7 +3,7 @@ source 'http://rubygems.org'
 gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.0'
 gem 'coffee-filter'
-gem 'compass',        '~> 0.12.alpha'
+gem 'compass',        '~> 0.12.rc1'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
@@ -17,6 +17,7 @@ gem 'thin'
 gem "will_paginate"
 
 group :assets do
+  gem 'compass-rails'
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier',     '>= 1.0.3'
 end
