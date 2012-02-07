@@ -3,7 +3,6 @@
 
 @import init
 
-
 //\\//\\//\\//\\//\\
 //   Arrow Icons  \\
 //\\//\\//\\//\\//\\
@@ -124,17 +123,17 @@ body#staffplans.index
         
         .weeks
           position: absolute
-          left: 370px - 28px
+          left: 373px
           width: 600px
           
-          & > *
-            display: inline-block
-          
           .month
+            display: block
             width: 41px
+            +box-sizing(border-box)
 
           tr:nth-child(2)
-            color: $color-light
+            .month
+              color: $color-light
           
       ul.users
         > li
