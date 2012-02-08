@@ -92,8 +92,8 @@ class WorkWeekListView extends Backbone.View
   
   # events/handlers
   events:
-    "focus  input[data-work-week-input]": "showRowFiller"
-    "blur   input[data-work-week-input]": "hideRowFiller"
+    "focus  input[data-work-week-input][data-attribute=estimated_hours]": "showRowFiller"
+    "blur   input[data-work-week-input][data-attribute=estimated_hours]": "hideRowFiller"
     "keyup  input[data-work-week-input]": "queueUpdateOrCreate"
     "change input[data-work-week-input]": "queueUpdateOrCreate"
     "click  .row-filler": "fillNextRows"

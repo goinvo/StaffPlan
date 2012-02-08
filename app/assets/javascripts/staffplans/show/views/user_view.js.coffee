@@ -36,7 +36,7 @@ class UserView extends Backbone.View
 
     weeks: ->
       _.map(meta.dates, (dateMeta, idx, dateMetas) ->
-        name: "W#{dateMeta.mweek}"
+        name: "W#{Math.ceil dateMeta.mday / 7}"
       )
 
   render: ->

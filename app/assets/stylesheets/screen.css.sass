@@ -1,7 +1,10 @@
 @import "compass/reset"
 @import "compass/css3"
 @import "compass/utilities/general/float"
-          
+
+@import init
+@import mixins
+
 //\\//\\//\\//\\//\\
 //     Default    \\
 //\\//\\//\\//\\//\\
@@ -9,12 +12,13 @@ body
   margin: 0
   padding: 0
   background: #EEEEEE
-  color: #424242
+  color: $color
   font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Calibri, sans-serif
-  font-size: 13px
+  font-size: $font-size
+  line-height: $line-height
   
   a
-    +transition(all .2s ease-out)
+    +transition(color .2s ease-out)
     color: #505050
     text-decoration: none
     
@@ -24,7 +28,7 @@ body
       text-decoration: none
     &:hover
       color: lighten(#505050, 20%)
-      text-decoration: underline
+      text-decoration: none
     &:active
       text-decoration: none
       
@@ -76,6 +80,7 @@ body > header
     position: absolute
     right: 15px
     bottom: 0
+    +inline-bullets
 
 // Nav sprites
 $icons-spacing: 20px
@@ -124,15 +129,6 @@ section.main
         line-height: 35px
         font-size: 18px
 
-        img
-          margin-right: 5px
-          padding: 2px
-          width: 35px
-          +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
-          +box-sizing(border-box)
-          background-color: #FFF
-          vertical-align: text-bottom
-
       > a
         display: inline-block
         padding: 6px
@@ -148,7 +144,7 @@ section.main
       padding: 10px 0 5px
       font-size: 16px
 
-#users, #clients, #projects
+#staffplans.index, #users, #clients, #projects
   section.main
     section
       > ul
@@ -162,15 +158,6 @@ section.main
           & + li
             border-top: 1px solid #E0E0E0
 
-          img
-            margin-right: 5px
-            padding: 1px
-            width: 15px
-            +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
-            +box-sizing(border-box)
-            background-color: #FFF
-            vertical-align: text-bottom
-
           .controls
             position: absolute
             right: -200px
@@ -179,11 +166,7 @@ section.main
             a
               &:hover
                 text-decoration: none
-            > * + *
-              &:before
-                content: "\2022"
-                margin-right: 4px
-                text-decoration: none
+            +inline-bullets
 
           &:hover
             background-color: #F7F7F7
@@ -225,16 +208,7 @@ section.main
 footer
   padding: 15px 0
   text-align: center
-  
-  a
-    &:hover
-      text-decoration: none
-
-  > * + *
-    &:before
-      content: "\2022"
-      margin-right: 3px
-      text-decoration: none
+  +inline-bullets
 
 //\\//\\//\\//\\//\\
 //     Misc.      \\
@@ -243,10 +217,32 @@ footer
   clear: both
   float: none
 
-// *[data-active]
-  // padding-left: 16px + 6px
-  // line-height: 18px
-  // background: transparent image-url("icons/active.png") left top no-repeat
+
+.user-info
+  display: inline-block
+  margin-right: 25px
+  line-height: 35px
+  font-size: 18px
+
+  img
+    margin-right: 5px
+    padding: 2px
+    width: 35px
+    +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+    +box-sizing(border-box)
+    background-color: #FFF
+    vertical-align: text-bottom
+
+  .email
+    color: $color-light
+
+  &.small
+    line-height: $line-height
+    font-size: $font-size
+
+    img
+      padding: 1px
+      width: 15px
 
 @import "_flash"
 

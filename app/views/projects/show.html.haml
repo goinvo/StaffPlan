@@ -15,9 +15,7 @@
       %ul
         - if @project.users.any?
           - @project.users.each do |project_user|
-            %li
-              = image_tag project_user.gravatar
-              = link_to "#{project_user.name} <#{project_user.email}>", project_user
+            %li= render partial: 'shared/user-info', locals: {user: project_user, small: true}
         - else
           %li
             %em None!
