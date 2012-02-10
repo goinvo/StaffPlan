@@ -88,15 +88,20 @@ class UserView extends Backbone.View
     ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
       "#{w.get('year')}-#{w.get('cweek')}"
 
+    # Total hours for each week
+    _.each ww, (hours, key) ->
+      ww[key] = _.reduce hours, (m, o) ->
+        m.actual += (parseInt(o.get('actual_hours'), 10) or 0)
+        m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
+        m
+      , {actual: 0, estimated: 0}
+
     # Draw
     weekHourCounters = @$( '.week-hour-counter li' )
     _.each dateRange, (date, idx) ->
       # Map week to <li>
-      whichHours = if date.weekHasPassed then 'actual_hours' else 'estimated_hours'
       li = weekHourCounters.eq(idx)
-      total = _.reduce ww["#{date.year}-#{date.mweek}"], (m, o) ->
-        m + (parseInt(o.get(whichHours), 10) or 0)
-      , 0
+      total = ww["#{date.year}-#{date.mweek}"][if date.weekHasPassed then 'actual' else 'estimated']
       li
         .height(total)
         .html("<span>" + total + "</span>")
