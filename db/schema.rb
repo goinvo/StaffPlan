@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111222212832) do
+ActiveRecord::Schema.define(:version => 20120216194728) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,19 @@ ActiveRecord::Schema.define(:version => 20111222212832) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "companies", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "companies_users", :id => false, :force => true do |t|
+    t.integer "company_id"
+    t.integer "user_id"
+  end
+
+  add_index "companies_users", ["company_id", "user_id"], :name => "index_companies_users_on_company_id_and_user_id"
 
   create_table "projects", :force => true do |t|
     t.integer  "client_id"
@@ -52,8 +65,8 @@ ActiveRecord::Schema.define(:version => 20111222212832) do
     t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek",           :limit => 2
-    t.integer  "year",            :limit => 2
+    t.integer  "cweek"
+    t.integer  "year"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
