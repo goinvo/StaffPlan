@@ -20,7 +20,9 @@ class StaffplansController < ApplicationController
       start = start + 7.days
     end
     
-    @users = User.includes(projects: :work_weeks).all
+    # Retrieve all users associated with the company the current user is currently viewing the pages for
+    # as well as the associated projects and work_weeks estimates    
+    @users = User.where(current_company: current_user.current_company).includes(projects: :work_weeks).all
   end
   
   def my_staffplan
