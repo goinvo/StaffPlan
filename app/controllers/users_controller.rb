@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
+    @users = User.where(current_company: current_user.current_company).all
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,11 +13,22 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find(params[:id])
-
+    @user = User.find_by_id(params[:id])
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @user }
+      if @user.current_company == current_user.current_company
+        format.html # show.html.erb
+        format.json { render json: @user }
+      else
+        # FIXME: What exactly should we be sending back in both cases
+        # The request couldn't be fulfilled since the current_user doesn't 
+        # have authorization or privileges to view that user's profile
+        # We thus render the index for HTML and an "error code" for JSON
+        format.html {
+          flash.now.alert = "Request denied"
+          redirect_to users_path
+        }
+        format.json {render json: {status: "fail"}}
+      end
     end
   end
 
@@ -34,7 +45,7 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id])
   end
 
   # POST /users
