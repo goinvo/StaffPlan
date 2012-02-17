@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_and_belongs_to_many :companies, uniq: true
   has_many :work_weeks, :dependent => :destroy do
     def for_project(project)
-      self.select { |ww| ww.project == project }
+      self.select { |ww| ww.project_id == project.id }
     end
   end
   
