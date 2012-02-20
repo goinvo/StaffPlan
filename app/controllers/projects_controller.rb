@@ -2,7 +2,10 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    # A project belongs_to a company/account
+    # Let's retrieve all the projects associated with the account
+    # the current_user is currently browsing the app through
+    @projects = current_user.current_company.projects 
 
     respond_to do |format|
       format.html # index.html.erb
