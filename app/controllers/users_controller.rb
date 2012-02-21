@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = Company.find_by_id(current_user.current_company).users
+    @users = Company.find_by_id(current_user.current_company).first.users
     
     respond_to do |format|
       format.html # index.html.erb
