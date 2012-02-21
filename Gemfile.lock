@@ -211,6 +211,7 @@ DEPENDENCIES
   faker
   haml
   haml-rails
+  journey
   memcache-client
   mobylette
   mocha
