@@ -19,6 +19,10 @@ class User < ActiveRecord::Base
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
 
+  def current_company
+    Company.where(id: current_company_id).first
+  end
+
   # TODO: custom finder SQL
   def staff_plan_json
     json = {
