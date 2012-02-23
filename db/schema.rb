@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(:version => 20120223194930) do
 
   create_table "companies", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "companies_users", :id => false, :force => true do |t|
@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20120223194930) do
     t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek"
-    t.integer  "year"
+    t.integer  "cweek",           :limit => 2
+    t.integer  "year",            :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

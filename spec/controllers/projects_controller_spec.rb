@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ProjectsController do
   
   before(:each) do
-    login_user
+    @current_user = login_user
   end
   
   def valid_attributes(client = Factory(:client))
@@ -11,12 +11,24 @@ describe ProjectsController do
     attributes.delete(:client)
     attributes.merge!(client_id: client.id)
   end
-  
+ 
   describe "GET index" do
-    it "assigns all projects as @projects" do
+    it "assigns all projects as @projects but only returns projects associated to the current user's account" do
       project = Factory(:project)
+      company = Factory(:company)
+      
+      project.update_attributes(company_id: company.id)
+      
+      @current_user.update_attributes(current_company_id: company.id)
+      
       get :index
+      # Now you see me
       assigns(:projects).should eq([project])
+      
+      project.update_attributes(company_id: company.id + 1)
+      get :index
+      # Now you don't
+      assigns(:projects).should eq([])
     end
   end
 

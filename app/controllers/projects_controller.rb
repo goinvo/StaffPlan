@@ -5,7 +5,7 @@ class ProjectsController < ApplicationController
     # A project belongs_to a company/account
     # Let's retrieve all the projects associated with the account
     # the current_user is currently browsing the app through
-    @projects = Company.find_by_id(current_user.current_company).projects 
+    @projects = current_user.current_company.projects 
 
     respond_to do |format|
       format.html # index.html.erb
