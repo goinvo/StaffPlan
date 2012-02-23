@@ -1,5 +1,6 @@
 class Client < ActiveRecord::Base
   has_many :projects
+  belongs_to :company
   
   validates_presence_of :name
   
