@@ -8,6 +8,9 @@ describe UsersController do
   
   describe "GET index" do
     it "assigns all users as @users" do
+      company = Factory(:company)
+      @user.update_attributes(current_company_id: company.id) 
+      @user.companies << company
       get :index
       assigns(:users).should eq([@user])
     end

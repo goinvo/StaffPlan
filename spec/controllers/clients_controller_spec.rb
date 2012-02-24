@@ -3,12 +3,15 @@ require 'spec_helper'
 describe ClientsController do
   
   before(:each) do
-    login_user
+    @current_user = login_user
   end
   
   describe "GET index" do
     it "assigns all clients as @clients" do
+      company = Factory(:company)
+      @current_user.update_attributes(current_company_id: company.id)
       client = Factory(:client)
+      company.clients << client
       get :index
       assigns(:clients).should eq([client])
     end
@@ -53,7 +56,8 @@ describe ClientsController do
 
       it "redirects to the created client" do
         post :create, :client => Factory.attributes_for(:client)
-        response.should redirect_to(Client.last)
+        # Due to the default_scope being ORDER BY name DESC we need to bypass the scope here
+        response.should redirect_to(Client.send(:with_exclusive_scope){Client.last})
       end
     end
 
