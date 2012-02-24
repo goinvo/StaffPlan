@@ -24,6 +24,7 @@ class User < ActiveRecord::Base
   end
 
   def has_access_to?(resource)
+    return false unless resource.present?
     case resource.class.name
     when "Project", "Client"
       current_company == resource.company
