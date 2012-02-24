@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
-  before_filter :find_target_user, only: [:show, :edit, :update, :destroy]
+  before_filter only: [:show, :edit, :update, :destroy] do |c|
+    c.find_target
+  end
   # GET /users
   # GET /users.json
   def index
@@ -84,11 +86,4 @@ class UsersController < ApplicationController
     end
   end
 
-  def find_target_user
-    @user = current_user.current_company.users.find(params[:id])
-    if @user.nil?
-      flash[:error] = "This is a message stub for unauthorized access or missing resource. FIXME"
-      redirect_to users_path
-    end
-  end
 end

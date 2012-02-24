@@ -4,7 +4,18 @@ class ApplicationController < ActionController::Base
   respond_to_mobile_requests :skip_xhr_requests => false
   
   before_filter :require_current_user
-  
+ 
+  protected 
+
+  def find_target
+    c = controller_name.singularize
+    instance_variable_set("@#{c}", current_user.current_company.send(controller_name).find_by_id(params[:id]))
+    if instance_variable_get("@#{c}").nil?
+      flash[:error] = "Couldn't locate or access the #{c}"
+      redirect_to url_for(c.classify.constantize)
+    end
+  end
+ 
   private
   
   def current_user
@@ -19,4 +30,5 @@ class ApplicationController < ActionController::Base
   def render_not_found
     render file: File.join(Rails.root, "public", "404.html"), layout: false, status: :not_found
   end
+
 end

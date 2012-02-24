@@ -1,5 +1,7 @@
 class ProjectsController < ApplicationController
-  before_filter :find_target_project, only: [:show, :edit, :update, :destroy]
+  before_filter only: [:show, :edit, :update, :destroy] do |c|
+    c.find_target
+  end
   # GET /projects
   # GET /projects.json
   def index
@@ -79,16 +81,6 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to projects_url }
       format.json { head :ok }
-    end
-  end
-
-  private
-
-  def find_target_project
-    @project = current_user.current_company.projects.find(params[:id])
-    if @project.nil?
-      flash[:error] = "This is a message stub for unauthorized access or missing resource. FIXME"
-      redirect_to projects_path
     end
   end
 

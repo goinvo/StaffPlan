@@ -1,5 +1,8 @@
 class ClientsController < ApplicationController
-  before_filter :find_target_client, only: [:show, :edit, :update, :destroy]
+  before_filter only: [:show, :edit, :update, :destroy] do |c| 
+    c.find_target
+  end
+
   # GET /clients
   # GET /clients.json
   def index
@@ -72,13 +75,4 @@ class ClientsController < ApplicationController
     end
   end
 
-  private
-
-  def find_target_client
-    @client = current_user.current_company.clients.find_by_id(params[:id])
-    if @client.nil?
-      flash[:error] = "This is a message stub for unauthorized access or missing resource. FIXME"
-      redirect_to clients_path
-    end
-  end
 end
