@@ -1,4 +1,5 @@
 class ProjectsController < ApplicationController
+  before_filter :find_target_project, only: [:show, :edit, :update, :destroy]
   # GET /projects
   # GET /projects.json
   def index
@@ -16,8 +17,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @project = Project.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }
@@ -33,11 +32,6 @@ class ProjectsController < ApplicationController
       format.html # new.html.erb
       format.json { render json: @project }
     end
-  end
-
-  # GET /projects/1/edit
-  def edit
-    @project = Project.find(params[:id])
   end
 
   # POST /projects
@@ -66,8 +60,6 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    @project = Project.find(params[:id])
-
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
@@ -82,7 +74,6 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project = Project.find(params[:id])
     @project.destroy
 
     respond_to do |format|
@@ -90,4 +81,15 @@ class ProjectsController < ApplicationController
       format.json { head :ok }
     end
   end
+
+  private
+
+  def find_target_project
+    @project = current_user.current_company.projects.find(params[:id])
+    if @project.nil?
+      flash[:error] = "This is a message stub for unauthorized access or missing resource. FIXME"
+      redirect_to projects_path
+    end
+  end
+
 end

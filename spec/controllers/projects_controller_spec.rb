@@ -4,6 +4,8 @@ describe ProjectsController do
   
   before(:each) do
     @current_user = login_user
+    @company = Factory(:company)
+    @current_user.update_attributes(current_company_id: @company.id)
   end
   
   def valid_attributes(client = Factory(:client))
@@ -15,17 +17,14 @@ describe ProjectsController do
   describe "GET index" do
     it "assigns all projects as @projects but only returns projects associated to the current user's account" do
       project = Factory(:project)
-      company = Factory(:company)
       
-      project.update_attributes(company_id: company.id)
-      
-      @current_user.update_attributes(current_company_id: company.id)
+      @company.projects << project
       
       get :index
       # Now you see me
       assigns(:projects).should eq([project])
       
-      project.update_attributes(company_id: company.id + 1)
+      @company.projects.delete_all
       get :index
       # Now you don't
       assigns(:projects).should eq([])
@@ -35,6 +34,7 @@ describe ProjectsController do
   describe "GET show" do
     it "assigns the requested project as @project" do
       project = Factory(:project)
+      @company.projects << project
       get :show, :id => project.id
       assigns(:project).should eq(project)
     end
@@ -50,6 +50,7 @@ describe ProjectsController do
   describe "GET edit" do
     it "assigns the requested project as @project" do
       project = Factory(:project)
+      @company.projects << project
       get :edit, :id => project.id
       assigns(:project).should eq(project)
     end
@@ -96,6 +97,7 @@ describe ProjectsController do
     describe "with valid params" do
       it "updates the requested project" do
         project = Factory(:project)
+      @company.projects << project
         # Assuming there are no other projects in the database, this
         # specifies that the Project created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -106,12 +108,14 @@ describe ProjectsController do
 
       it "assigns the requested project as @project" do
         project = Factory(:project)
+      @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         assigns(:project).should eq(project)
       end
 
       it "redirects to the project" do
         project = Factory(:project)
+      @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         response.should redirect_to(project)
       end
@@ -120,6 +124,7 @@ describe ProjectsController do
     describe "with invalid params" do
       it "assigns the project as @project" do
         project = Factory(:project)
+      @company.projects << project
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
         put :update, :id => project.id, :project => {}
@@ -128,6 +133,7 @@ describe ProjectsController do
 
       it "re-renders the 'edit' template" do
         project = Factory(:project)
+      @company.projects << project
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
         put :update, :id => project.id, :project => {}
@@ -139,6 +145,7 @@ describe ProjectsController do
   describe "DELETE destroy" do
     it "destroys the requested project" do
       project = Factory(:project)
+      @company.projects << project
       expect {
         delete :destroy, :id => project.id
       }.to change(Project, :count).by(-1)
@@ -146,6 +153,7 @@ describe ProjectsController do
 
     it "redirects to the projects list" do
       project = Factory(:project)
+      @company.projects << project
       delete :destroy, :id => project.id
       response.should redirect_to(projects_url)
     end
