@@ -13,8 +13,11 @@ class ClientsController < ApplicationController
   # GET /clients/1
   # GET /clients/1.json
   def show
-    @client = Client.find(params[:id])
-
+    # FIXME: This version is awful but it's basically what will need to be encapsulated in the error handling mechanism
+    @client = Client.find_by_id(params[:id])
+    unless @client and current_user.current_company == @client.company
+      render file: File.join(Rails.root, "public", "404.html"), layout: false, status: :not_found and return
+    end 
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @client }
