@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @users = current_user.current_company.users
+    @users = User.where(current_company_id: current_user.current_company_id)
     
     respond_to do |format|
       format.html # index.html.erb

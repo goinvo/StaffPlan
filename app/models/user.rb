@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   attr_accessible :name, :email, :password, :password_confirmation, :current_company_id
-  
+
   has_secure_password
-  
+
   has_and_belongs_to_many :projects, uniq: true
   has_and_belongs_to_many :companies, uniq: true
   has_many :work_weeks, :dependent => :destroy do
@@ -10,17 +10,28 @@ class User < ActiveRecord::Base
       self.select { |ww| ww.project == project }
     end
   end
-  
+
   validates_presence_of :email, :name
   validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
-  
-  def gravatar
-    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
-  end
+
+    def gravatar
+      "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+    end
 
   def current_company
     Company.where(id: current_company_id).first
+  end
+
+  def has_access_to?(resource)
+    case resource.class.name
+    when "Project", "Client"
+      current_company == resource.company
+    when "User"
+      current_company == resource.current_company
+    else
+      false
+    end
   end
 
   # TODO: custom finder SQL
@@ -31,23 +42,23 @@ class User < ActiveRecord::Base
       email: self.email,
       projects: []
     }
-    
+
     self.projects.each do |project|
       json[:projects] << {
         id: project.id,
         name: project.name,
         client_id: project.client_id,
         work_weeks: project.work_weeks.for_user(self).map do |ww|
-          { id: ww.id,
-            project_id: ww.project_id,
-            actual_hours: ww.actual_hours,
-            estimated_hours: ww.estimated_hours,
-            cweek: ww.cweek,
-            year: ww.year }
+        { id: ww.id,
+          project_id: ww.project_id,
+          actual_hours: ww.actual_hours,
+          estimated_hours: ww.estimated_hours,
+          cweek: ww.cweek,
+          year: ww.year }
         end
       }
     end
-    
+
     json.to_json
   end
 end

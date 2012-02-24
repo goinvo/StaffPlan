@@ -15,4 +15,8 @@ class ApplicationController < ActionController::Base
   def require_current_user
     redirect_to new_session_url unless current_user.present?
   end
+
+  def render_not_found
+    render file: File.join(Rails.root, "public", "404.html"), layout: false, status: :not_found
+  end
 end
