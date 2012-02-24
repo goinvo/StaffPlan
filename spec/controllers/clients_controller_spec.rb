@@ -4,14 +4,14 @@ describe ClientsController do
   
   before(:each) do
     @current_user = login_user
+    @company = Factory(:company)
+    @current_user.update_attributes(current_company_id: @company.id)
   end
   
   describe "GET index" do
     it "assigns all clients as @clients" do
-      company = Factory(:company)
-      @current_user.update_attributes(current_company_id: company.id)
       client = Factory(:client)
-      company.clients << client
+      @company.clients << client
       get :index
       assigns(:clients).should eq([client])
     end
@@ -20,6 +20,7 @@ describe ClientsController do
   describe "GET show" do
     it "assigns the requested client as @client" do
       client = Factory(:client)
+      @company.clients << client
       get :show, :id => client.id
       assigns(:client).should eq(client)
     end
@@ -35,6 +36,7 @@ describe ClientsController do
   describe "GET edit" do
     it "assigns the requested client as @client" do
       client = Factory(:client)
+      @company.clients << client
       get :edit, :id => client.id
       assigns(:client).should eq(client)
     end
@@ -82,6 +84,7 @@ describe ClientsController do
     context "with valid params" do
       it "updates the requested client" do
         client = Factory(:client)
+        @company.clients << client
         # Assuming there are no other clients in the database, this
         # specifies that the Client created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -93,12 +96,14 @@ describe ClientsController do
 
       it "assigns the requested client as @client" do
         client = Factory(:client)
+        @company.clients << client
         put :update, :id => client.id, :client => Factory.attributes_for(:client)
         assigns(:client).should eq(client)
       end
 
       it "redirects to the client" do
         client = Factory(:client)
+        @company.clients << client
         put :update, :id => client.id, :client => Factory.attributes_for(:client)
         response.should redirect_to(client)
       end
@@ -107,6 +112,7 @@ describe ClientsController do
     context "with invalid params" do
       it "assigns the client as @client" do
         client = Factory(:client)
+        @company.clients << client
         # Trigger the behavior that occurs when invalid params are submitted
         Client.any_instance.expects(:save).returns(false)
         put :update, :id => client.id, :client => {}
@@ -115,6 +121,7 @@ describe ClientsController do
 
       it "re-renders the 'edit' template" do
         client = Factory(:client)
+        @company.clients << client
         # Trigger the behavior that occurs when invalid params are submitted
         Client.any_instance.expects(:save).returns(false)
         put :update, :id => client.id, :client => {}
@@ -126,6 +133,7 @@ describe ClientsController do
   describe "DELETE destroy" do
     it "destroys the requested client" do
       client = Factory(:client)
+      @company.clients << client
       expect {
         delete :destroy, :id => client.id
       }.to change(Client, :count).by(-1)
