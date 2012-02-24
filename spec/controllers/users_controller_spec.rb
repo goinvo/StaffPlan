@@ -1,24 +1,26 @@
 require 'spec_helper'
 
 describe UsersController do
-  
+
   before(:each) do
-    login_user(@user = Factory(:user))
+    @current_user = login_user
+    @company = Factory(:company)
+    @current_user.update_attributes(current_company_id: @company.id)
   end
-  
+
   describe "GET index" do
     it "assigns all users as @users" do
-      company = Factory(:company)
-      @user.update_attributes(current_company_id: company.id) 
-      @user.companies << company
+      user = Factory(:user)
+      @company.users << user
       get :index
-      assigns(:users).should eq([@user])
+      assigns(:users).should eq([user])
     end
   end
 
   describe "GET show" do
     it "assigns the requested user as @user" do
       user = Factory(:user)
+      @company.users << user
       get :show, :id => user.id
       assigns(:user).should eq(user)
     end
@@ -34,6 +36,7 @@ describe UsersController do
   describe "GET edit" do
     it "assigns the requested user as @user" do
       user = Factory(:user)
+      @company.users << user
       get :edit, :id => user.id
       assigns(:user).should eq(user)
     end
@@ -80,6 +83,7 @@ describe UsersController do
     describe "with valid params" do
       it "updates the requested user" do
         user = Factory(:user)
+        @company.users << user
         # Assuming there are no other users in the database, this
         # specifies that the User created on the previous line
         # receives the :update_attributes message with whatever params are
@@ -90,12 +94,14 @@ describe UsersController do
 
       it "assigns the requested user as @user" do
         user = Factory(:user)
+        @company.users << user
         put :update, :id => user.id, :user => Factory.attributes_for(:user)
         assigns(:user).should eq(user)
       end
 
       it "redirects to the user" do
         user = Factory(:user)
+        @company.users << user
         put :update, :id => user.id, :user => Factory.attributes_for(:user)
         response.should redirect_to(user)
       end
@@ -104,6 +110,7 @@ describe UsersController do
     describe "with invalid params" do
       it "assigns the user as @user" do
         user = Factory(:user)
+        @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.expects(:save).returns(false)
         put :update, :id => user.id, :user => {}
@@ -112,6 +119,7 @@ describe UsersController do
 
       it "re-renders the 'edit' template" do
         user = Factory(:user)
+        @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.expects(:save).returns(false)
         put :update, :id => user.id, :user => {}
@@ -123,6 +131,7 @@ describe UsersController do
   describe "DELETE destroy" do
     it "destroys the requested user" do
       user = Factory(:user)
+      @company.users << user
       expect {
         delete :destroy, :id => user.id
       }.to change(User, :count).by(-1)
@@ -130,6 +139,7 @@ describe UsersController do
 
     it "redirects to the users list" do
       user = Factory(:user)
+      @company.users << user
       delete :destroy, :id => user.id
       response.should redirect_to(users_url)
     end

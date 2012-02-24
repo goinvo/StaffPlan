@@ -1,8 +1,9 @@
 class UsersController < ApplicationController
+  before_filter :find_target_user, only: [:show, :edit, :update, :destroy]
   # GET /users
   # GET /users.json
   def index
-    @users = User.where(current_company_id: current_user.current_company_id)
+    @users = current_user.current_company.users 
     
     respond_to do |format|
       format.html # index.html.erb
@@ -13,7 +14,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = User.find_by_id(params[:id])
     respond_to do |format|
       if @user.current_company == current_user.current_company
         format.html # show.html.erb
@@ -43,11 +43,6 @@ class UsersController < ApplicationController
     end
   end
 
-  # GET /users/1/edit
-  def edit
-    @user = User.find_by_id(params[:id])
-  end
-
   # POST /users
   # POST /users.json
   def create
@@ -67,8 +62,6 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    @user = User.find(params[:id])
-
     respond_to do |format|
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
@@ -83,12 +76,19 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user = User.find(params[:id])
     @user.destroy
 
     respond_to do |format|
       format.html { redirect_to users_url }
       format.json { head :ok }
+    end
+  end
+
+  def find_target_user
+    @user = current_user.current_company.users.find(params[:id])
+    if @user.nil?
+      flash[:error] = "This is a message stub for unauthorized access or missing resource. FIXME"
+      redirect_to users_path
     end
   end
 end
