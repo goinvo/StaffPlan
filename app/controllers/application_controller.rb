@@ -1,8 +1,7 @@
 class ApplicationController < ActionController::Base
   
   protect_from_forgery
-  respond_to_mobile_requests :skip_xhr_requests => false
-  
+  has_mobile_fu
   before_filter :require_current_user
   
   private
