@@ -17,20 +17,8 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     respond_to do |format|
-      if @user.current_company == current_user.current_company
-        format.html # show.html.erb
-        format.json { render json: @user }
-      else
-        # FIXME: What exactly should we be sending back in both cases
-        # The request couldn't be fulfilled since the current_user doesn't 
-        # have authorization or privileges to view that user's profile
-        # We thus render the index for HTML and an "error code" for JSON
-        format.html {
-          flash.now.alert = "Request denied"
-          redirect_to users_path
-        }
-        format.json {render json: {status: "fail"}}
-      end
+      format.html # show.html.erb
+      format.json { render json: @user }
     end
   end
 
