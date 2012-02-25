@@ -1,0 +1,188 @@
+@import "compass/reset"
+@import "compass/css3"
+@import "compass/utilities/general/float"
+
+@import init
+@import mixins
+
+//\\//\\//\\//\\//\\
+//     Default    \\
+//\\//\\//\\//\\//\\
+body
+  margin: 0
+  padding: 0
+  background: #EEEEEE
+  color: $color
+  font-family: MyriadPro-Regular, 'Myriad Pro Regular', MyriadPro, 'Myriad Pro', Calibri, sans-serif
+  font-size: $font-size
+  line-height: $line-height
+  
+  a
+    +transition(color .2s ease-out)
+    color: #505050
+    text-decoration: none
+    
+    &:link
+      text-decoration: none
+    &:visited
+      text-decoration: none
+    &:hover
+      color: lighten(#505050, 20%)
+      text-decoration: none
+    &:active
+      text-decoration: none
+      
+@import forms
+
+ul, ol, dl, p, form
+  margin-bottom: 15px
+
+ul
+  list-style-position: inside
+  list-style-type: disc
+
+//\\//\\//\\//\\//\\
+//     Header     \\
+//\\//\\//\\//\\//\\
+body > header
+  margin: 0
+  padding: 6px 0
+  line-height: 24px
+  border-bottom: 1px solid #CCCCCC
+  +box-shadow(0 1px 0 #FFF)
+  
+  .inner
+    position: relative
+    margin: 0 auto
+    padding: 0 10px
+    width: 100%
+    +box-sizing(border-box)
+
+  ul
+    display: inline
+    margin: 0
+    padding: 0
+    list-style-type: none
+    li
+      display: inline-block
+      margin-left: 5px
+      & + li
+        margin-left: 20px
+
+      a
+        display: inline-block
+        padding-left: 16px + 6px
+        height: 24px
+        line-height: 24px
+
+  .right
+    position: absolute
+    right: 15px
+    bottom: 0
+    +inline-bullets
+
+// Nav sprites
+$icons-spacing: 20px
+@import "icons/*.png"
+
+body > header
+  ul
+    li#nav-my-staff-plan a
+      @include icons-sprite(chart)
+    li#nav-all-staff a
+      @include icons-sprite(people)
+    li#nav-clients a
+      @include icons-sprite(factory)
+    li#nav-projects a
+      @include icons-sprite(cube)
+
+body#staffplans
+  section.main
+    .project-list
+      .headers
+        .client-name span
+          @include icons-sprite(factory-flat)
+        .project-name span
+          @include icons-sprite(cube-flat)
+    
+//\\//\\//\\//\\//\\
+//      Main      \\
+//\\//\\//\\//\\//\\
+section.main
+  width: 100%
+  margin: 0 auto
+  
+  .content
+    padding: 10px
+    min-height: 400px
+
+  section
+    > header
+      padding-top: 30px
+      margin-bottom: 10px
+
+      h2
+        display: inline-block
+        margin-right: 25px
+        line-height: 35px
+        font-size: 18px
+
+      > a
+        display: inline-block
+        padding: 6px
+        border: solid #CCC 1px
+        +border-radius(3px)
+        +box-shadow(0 1px 0 #FFF)
+
+        &:hover
+          border-color: #AAA
+          text-decoration: none
+
+    h3
+      padding: 10px 0 5px
+      font-size: 16px
+
+//\\//\\//\\//\\//\\
+//     Footer     \\
+//\\//\\//\\//\\//\\
+footer
+  padding: 15px 0
+  text-align: center
+  +inline-bullets
+
+//\\//\\//\\//\\//\\
+//     Misc.      \\
+//\\//\\//\\//\\//\\
+.clear
+  clear: both
+  float: none
+
+
+.user-info
+  display: inline-block
+  margin-right: 25px
+  line-height: 35px
+  font-size: 18px
+
+  img
+    margin-right: 5px
+    padding: 2px
+    width: 35px
+    +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
+    +box-sizing(border-box)
+    background-color: #FFF
+    vertical-align: text-bottom
+
+  .email
+    color: $color-light
+
+  &.small
+    line-height: $line-height
+    font-size: $font-size
+
+    img
+      padding: 1px
+      width: 15px
+
+@import "_flash"
+
