@@ -101,7 +101,8 @@ class UserView extends Backbone.View
     _.each dateRange, (date, idx) ->
       # Map week to <li>
       li = weekHourCounters.eq(idx)
-      total = ww["#{date.year}-#{date.mweek}"][if date.weekHasPassed then 'actual' else 'estimated']
+      workWeek = ww["#{date.year}-#{date.mweek}"]
+      total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
       li
         .height(total)
         .html("<span>" + total + "</span>")
