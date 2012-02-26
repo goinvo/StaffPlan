@@ -1,7 +1,7 @@
 class StaffplansController < ApplicationController
   
   def show
-    @target_user = User.where(id: params[:id]).first
+    @target_user = current_user.current_company.users.where(id: params[:id]).first
     redirect_to root_url, error: I18n.t('controllers.staffplans.couldnt_find_user') and return unless @target_user.present?
     
     @target_user_json = @target_user.staff_plan_json
@@ -22,7 +22,7 @@ class StaffplansController < ApplicationController
     
     # Retrieve all users associated with the company the current user is currently viewing the pages for
     # as well as the associated projects and work_weeks estimates    
-    @users = User.where(current_company_id: current_user.current_company_id).includes(projects: :work_weeks).all
+    @users = current_user.current_company.users.includes(projects: :work_weeks).all
   end
   
   def my_staffplan

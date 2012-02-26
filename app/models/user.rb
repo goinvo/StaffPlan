@@ -23,18 +23,6 @@ class User < ActiveRecord::Base
     Company.where(id: current_company_id).first
   end
 
-  def has_access_to?(resource)
-    return false unless resource.present?
-    case resource.class.name
-    when "Project", "Client"
-      current_company == resource.company
-    when "User"
-      current_company == resource.current_company
-    else
-      false
-    end
-  end
-
   # TODO: custom finder SQL
   def staff_plan_json
     json = {
