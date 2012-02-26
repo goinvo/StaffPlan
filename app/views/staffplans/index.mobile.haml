@@ -1,0 +1,6 @@
+%section
+  %header
+    %h2 All Staff
+  %ul.users
+    - @users.each do |user|
+      %li= link_to(user.name, staffplan_path(user))

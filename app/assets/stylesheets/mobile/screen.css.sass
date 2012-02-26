@@ -63,12 +63,15 @@ body > header
     margin: 0
     padding: 0
     list-style-type: none
+    
     li
       display: inline-block
       margin-left: 5px
       & + li
         margin-left: 20px
-
+      
+      &.name
+        font-weight: bold
       a
         display: inline-block
         padding-left: 16px + 6px
@@ -87,24 +90,9 @@ $icons-spacing: 20px
 
 body > header
   ul
-    li#nav-my-staff-plan a
-      @include icons-sprite(chart)
     li#nav-all-staff a
       @include icons-sprite(people)
-    li#nav-clients a
-      @include icons-sprite(factory)
-    li#nav-projects a
-      @include icons-sprite(cube)
 
-body#staffplans
-  section.main
-    .project-list
-      .headers
-        .client-name span
-          @include icons-sprite(factory-flat)
-        .project-name span
-          @include icons-sprite(cube-flat)
-    
 //\\//\\//\\//\\//\\
 //      Main      \\
 //\\//\\//\\//\\//\\
@@ -112,6 +100,14 @@ section.main
   width: 100%
   margin: 0 auto
   
+  ul
+    list-style-type: none
+    
+    &.clients-and-projects
+      .client-name
+        font-weight: bold
+      
+      
   .content
     padding: 10px
     min-height: 400px
@@ -157,32 +153,5 @@ footer
   clear: both
   float: none
 
-
-.user-info
-  display: inline-block
-  margin-right: 25px
-  line-height: 35px
-  font-size: 18px
-
-  img
-    margin-right: 5px
-    padding: 2px
-    width: 35px
-    +box-shadow(0 0 2px hsla(0, 0%, 0%, .6))
-    +box-sizing(border-box)
-    background-color: #FFF
-    vertical-align: text-bottom
-
-  .email
-    color: $color-light
-
-  &.small
-    line-height: $line-height
-    font-size: $font-size
-
-    img
-      padding: 1px
-      width: 15px
-
-@import "_flash"
+@import flash
 

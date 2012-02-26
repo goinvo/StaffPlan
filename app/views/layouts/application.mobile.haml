@@ -11,8 +11,7 @@
     %title= t('.staffplan')
     
     = stylesheet_link_tag "mobile/application", :media => 'screen, projection'
-    = yield(:stylesheet_includes)
-    = javascript_include_tag "application"
+    = javascript_include_tag 'mobile/application'
     = csrf_meta_tags
     
   %body{:id => controller_name, :class => action_name}
@@ -23,13 +22,9 @@
       .inner
         %ul
           %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
-          = current_user.name
-          
-        .header-content
-          = yield(:header_content)
+          %li.name= (@target_user || current_user).name
         
         .right
-          = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "Staffplan Feedback")
           = link_to(t('.sign_out'), sign_out_path)
       
     %section.main
@@ -38,5 +33,3 @@
     %footer
       = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
       = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
-    
-    = yield(:javascript_includes)

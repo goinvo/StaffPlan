@@ -8,9 +8,15 @@ class Users::Projects::WorkWeeksController < ApplicationController
     @work_week = WorkWeek.new(whitelist_attributes)
     
     if @work_week.save
-      render_json_ok
+      respond_to do |format|
+        format.js { render_json_ok }
+        format.mobile { render_project_partial }
+      end
     else
-      render_json_fail
+      respond_to do |format|
+        format.js { render_json_fail }
+        format.mobile { render_project_partial }
+      end
     end
   rescue ActiveRecord::RecordNotUnique => e
     render_json_ok
@@ -18,14 +24,24 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def update
     if @work_week.update_attributes(whitelist_attributes)
-      render_json_ok
+      respond_to do |format|
+        format.js { render_json_ok }
+        format.mobile { render_project_partial }
+      end
     else
-      render_json_fail
+      respond_to do |format|
+        format.js { render_json_fail }
+        format.mobile { render_project_partial }
+      end
     end
-    
   end
   
   private
+  
+  def render_project_partial
+    @date = Date.parse(params[:date])
+    render(partial: 'staffplans/project', locals: {project: @project})
+  end
   
   def render_json_fail
     render(:json => {

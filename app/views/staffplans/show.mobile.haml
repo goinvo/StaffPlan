@@ -1,1 +1,7 @@
-I'll be the sweet mobile view.  Aww yeah!
+%nav.date-range
+  
+%ul.clients-and-projects
+  - if @target_user.projects.any?
+    = render(partial: 'client', collection: @projects.keys.sort)
+  - else
+    %li No projects
