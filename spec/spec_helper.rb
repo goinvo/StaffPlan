@@ -31,8 +31,6 @@ end
 RSpec.configure do |config|
   config.mock_with :mocha
   
-  config.include Mobylette::Helmet, :type => :controller
-  
   config.use_transactional_fixtures = true
   
   config.filter_run(:focus => true)
