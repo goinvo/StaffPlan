@@ -12,7 +12,6 @@ StaffPlan::Application.routes.draw do
   end
   
   resources :sessions, :only => [:new, :create, :destroy]
-  resource :dashboard, :controller => "dashboard", :only => [:show]
   resources :clients
   resources :projects
   resources :staffplans, :only => [:show, :index]
