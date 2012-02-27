@@ -104,13 +104,45 @@ section.main
     list-style-type: none
     
     &.clients-and-projects
-      .client-name
-        font-weight: bold
+      padding: 0 10px
+      
+      li
+        &.client-name
+          font-weight: bold
       
       
   .content
-    padding: 10px
+    padding: 10px 0
     min-height: 400px
+    
+  
+  .user-header
+    position: relative
+    margin-bottom: 15px
+    padding: 10px 0
+    border: 1px solid #E0E0E0
+    border-left: none
+    border-right: none
+    background-color: #F7F7F7
+    text-align: center
+    
+    +next-and-previous
+    
+    .next
+      position: absolute
+      right: 10px
+    
+    span.to
+      color: #aaa
+      
+    .previous
+      position: absolute
+      left: 10px
+        
+    & > *
+      display: inline-block
+    
+  
 
   section
     > header

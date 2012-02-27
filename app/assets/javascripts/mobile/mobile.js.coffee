@@ -5,11 +5,15 @@ $( document ).ready ->
     window.scrollTo(0, 1) if !pageYOffset
   
   # change on staffplan actual_hours
-  $( 'ul.clients-and-projects' ).delegate 'input.submit-on-change', 'change', (event) ->
-    $( this ).closest( 'form.work-week-actual' ).trigger 'submit.rails'
+  $( '.content' ).delegate 'input.submit-on-change', 'change', (event) ->
+    $( @ ).closest( 'form.work-week-actual' ).trigger 'submit.rails'
   
-  $( 'ul.clients-and-projects' ).delegate 'form.work-week-actual', 'ajax:success', (event, responseData, status, jqxhr) ->
-    $( this ).closest( 'li' ).replaceWith( responseData );
+  $( '.content' ).delegate 'form.work-week-actual', 'ajax:success', (event, responseData, status, jqxhr) ->
+    $( @ ).closest( 'li' ).replaceWith( responseData );
   
-  $( 'ul.clients-and-projects' ).delegate 'form.work-week-actual', 'ajax:error', (event) ->
+  $( '.content' ).delegate 'form.work-week-actual', 'ajax:error', (event) ->
     alert('Something really bad happened.  Sorry.')
+  
+  # next/prev date
+  $( '.content' ).delegate 'a.next-previous', 'ajax:success', (event, responseData, status, jqxhr) ->
+    $( '.content' ).html( responseData )

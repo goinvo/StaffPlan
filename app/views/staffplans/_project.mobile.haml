@@ -1,4 +1,5 @@
-%li.client-project
+- updated = updated || false
+%li.client-project{class: ('updated' if updated)}
   - work_week = project.work_weeks.for_user_and_cweek_and_year(@target_user, @date.cweek, @date.year)
   - url = work_week.nil? ? user_project_work_weeks_path(@target_user, project, format: :mobile) : user_project_work_week_path(@target_user, project, work_week, format: :mobile)
   - method = work_week.nil? ? :post : :put

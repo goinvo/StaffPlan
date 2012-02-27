@@ -39,8 +39,8 @@ class Users::Projects::WorkWeeksController < ApplicationController
   private
   
   def render_project_partial
-    @date = Date.parse(params[:date])
-    render(partial: 'staffplans/project', locals: {project: @project})
+    @date = (params[:date].present? ? Date.parse(params[:date]) : Date.today).at_beginning_of_week
+    render(partial: 'staffplans/project', locals: {project: @project, updated: true})
   end
   
   def render_json_fail

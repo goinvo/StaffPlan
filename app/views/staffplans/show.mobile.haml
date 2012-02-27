@@ -1,4 +1,7 @@
-%nav.date-range
+%nav.user-header
+  = link_to("&nbsp;".html_safe, staffplan_path(@target_user, format: :mobile, date: 1.week.ago(@date)), class: 'previous next-previous', remote: true)
+  == #{@date.strftime("%a %e.%b")} <span class='to'>to</span> #{4.days.from_now(@date).strftime("%a %e.%b")}
+  = link_to("&nbsp;".html_safe, staffplan_path(@target_user, format: :mobile, date: 1.week.from_now(@date)), class: 'next next-previous', remote: true)
   
 %ul.clients-and-projects
   - if @target_user.projects.any?

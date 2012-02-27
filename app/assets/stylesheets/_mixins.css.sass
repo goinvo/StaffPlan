@@ -39,3 +39,22 @@
         
         &.inline
           display: inline
+
+//\\//\\//\\//\\//\\
+//   Arrow Icons  \\
+//\\//\\//\\//\\//\\
+$arrows-spacing: 20px
+@import "arrows/*.png"
+
+=next-and-previous
+  .next, .previous
+    display: inline-block
+    width: 10px
+    height: 17px
+    text-indent: -9999px
+  
+  .next
+    @include arrows-sprite(forward)
+    
+  .previous
+    @include arrows-sprite(back)
