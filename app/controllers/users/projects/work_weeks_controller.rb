@@ -60,9 +60,10 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def whitelist_attributes
     base = { cweek: params[:cweek],
-             year: params[:year],
-             actual_hours: params[:actual_hours],
-             estimated_hours: params[:estimated_hours] }
+             year: params[:year] }
+             
+    base.merge!(estimated_hours: params[:estimated_hours]) if params[:estimated_hours].present?
+    base.merge!(actual_hours: params[:actual_hours]) if params[:actual_hours].present?
     
     if action_name == "create"
       base.merge!(
