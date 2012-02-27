@@ -41,5 +41,8 @@
     %footer
       = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
       = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
+      
+      - if is_mobile_device?
+        = link_to("Mobile Site", "?mobile_view=true")
     
     = yield(:javascript_includes)

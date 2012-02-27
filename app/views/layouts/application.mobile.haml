@@ -26,10 +26,13 @@
         
         .right
           = link_to(t('.sign_out'), sign_out_path)
-      
+          
     %section.main
       .content= yield
       
     %footer
       = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
       = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
+      
+      - if is_mobile_device?
+        = link_to("Full Site", "?mobile_view=false")
