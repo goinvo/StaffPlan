@@ -26,10 +26,13 @@
           %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
           %li#nav-clients= link_to(t('.clients'), clients_path)
           %li#nav-projects= link_to(t('.projects'), projects_path)
+          %li#current-company
+            = form_for current_user, remote: true, html: {:"data-type" => "json"} do |f|
+              = select(:user, :current_company_id, current_user.companies.map{|c| [c.name, c.id]}, {}, {class: "current-company-switcher"})
         
         .header-content
           = yield(:header_content)
-        
+         
         .right
           = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "Staffplan Feedback")
           = link_to(t('.sign_out'), sign_out_path)

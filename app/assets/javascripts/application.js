@@ -11,3 +11,15 @@
 //= require backbone.min
 //= require backbone-support
 //= require mustache
+$(document).ready(function(){
+  $('select.current-company-switcher').live('change', function(){
+    // This needs to be improved
+    $(this).closest('form').submit();
+  });
+  $('form.edit_user').live('ajax:success', function(event, data, status, xhr){
+    console.log("EVENT: " + event);
+    console.log("DATA: " + data); 
+    console.log("STATUS: " + status);
+    console.log("XHR " + xhr);
+  });
+});
