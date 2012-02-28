@@ -25,6 +25,7 @@ class User < ActiveRecord::Base
       id: self.id,
       name: self.name,
       email: self.email,
+      gravatar: self.gravatar,
       projects: []
     }
     
