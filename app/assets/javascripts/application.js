@@ -12,14 +12,14 @@
 //= require backbone-support
 //= require mustache
 $(document).ready(function(){
-  $('select.current-company-switcher').live('change', function(){
-    // This needs to be improved
+  $('select#user_current_company_id').live('change', function(){
     $(this).closest('form').submit();
   });
-  $('form.edit_user').live('ajax:success', function(event, data, status, xhr){
-    console.log("EVENT: " + event);
-    console.log("DATA: " + data); 
-    console.log("STATUS: " + status);
-    console.log("XHR " + xhr);
+
+  // Documentation online is anything but clear about the order of those parameters
+  $('#company-switcher-form').live('ajax:success', function(data, status, xhr){
+    console.log(data);
+    console.log(status);
+    console.log(xhr);
   });
 });
