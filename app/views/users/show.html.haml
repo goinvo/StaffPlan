@@ -13,3 +13,8 @@
   %ul
     %li= @user.email
 
+  = form_for(current_user) do |f|
+    = f.label :current_company
+    = select(:user, :current_company_id, current_user.companies.collect{|c| [ c.name, c.id ]})
+    %br
+    = f.submit
