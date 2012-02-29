@@ -16,7 +16,6 @@ class ApplicationController < ActionController::Base
       redirect_to url_for(c.classify.constantize)
     end
   end
-
   private
 
   def current_user
