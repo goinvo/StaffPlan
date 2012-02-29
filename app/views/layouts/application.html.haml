@@ -28,6 +28,7 @@
           %li#nav-projects= link_to(t('.projects'), projects_path)
           %li#current-company
             = form_for current_user, html: {:id => "company-switcher-form"} do |f|
+              = f.hidden_field :cc_foo, :value => "bar"
               = select(:user, :current_company_id, options_from_collection_for_select(current_user.companies, :id, :name, selected: current_user.current_company_id))
         
         .header-content
