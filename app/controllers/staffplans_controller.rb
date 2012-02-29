@@ -4,12 +4,28 @@ class StaffplansController < ApplicationController
     @target_user = current_user.current_company.users.where(id: params[:id]).first
     redirect_to root_url, error: I18n.t('controllers.staffplans.couldnt_find_user') and return unless @target_user.present?
     
-    @target_user_json = @target_user.staff_plan_json
-    @clients = Client.staff_plan_json
+    respond_to do |format|
+      format.html do
+        @target_user_json = @target_user.staff_plan_json
+        @clients = Client.staff_plan_json
+      end
+    
+      format.mobile do
+        @date = (params[:date].present? ? Date.parse(params[:date]) : Date.today.at_beginning_of_week).at_beginning_of_week
+        @projects = @target_user.projects.inject({}) do |hash, project|
+          hash[project.client.name] ||= []
+          hash[project.client.name] << project
+          hash
+        end
+        
+        render(layout: false) if request.xhr?
+      end
+    end
   end
   
   def index
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
+    @from = 1.week.ago(@from)
     @to = 3.months.from_now(@from)
     
     @date_range = []

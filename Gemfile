@@ -7,7 +7,6 @@ gem 'compass',        '~> 0.12.rc1'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
-gem 'mobylette'
 gem 'paper_trail',    '~> 2.5'
 gem 'pg'
 gem 'rails',          '3.2.1'
@@ -17,6 +16,10 @@ gem 'sass-rails',     '~> 3.2.1'
 gem 'thin'
 gem "will_paginate"
 gem 'awesome_print',            require: 'ap'
+
+group :development do
+  gem 'pry', require: 'pry'
+end
 
 group :assets do
   gem 'compass-rails'

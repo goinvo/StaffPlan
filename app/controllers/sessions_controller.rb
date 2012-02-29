@@ -13,8 +13,8 @@ class SessionsController < ApplicationController
       # TODO: redirect to the originally requested resource if it was a GET request
       redirect_to root_url, :notice => t(:hello)
     else
-      flash.now.alert = t(:invalid_password_or_email)
-      render :new
+      flash.alert = t(:invalid_password_or_email)
+      redirect_to new_session_url
     end
   end
 

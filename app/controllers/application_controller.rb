@@ -1,10 +1,10 @@
 class ApplicationController < ActionController::Base
-  
+
   protect_from_forgery
-  respond_to_mobile_requests :skip_xhr_requests => false
-  
-  before_filter :require_current_user
- 
+
+  has_mobile_fu
+  before_filter :require_current_user, :set_mobile_view
+
   protected 
 
   def find_target
@@ -16,14 +16,14 @@ class ApplicationController < ActionController::Base
       redirect_to url_for(c.classify.constantize)
     end
   end
- 
+
   private
-  
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
-  
+
   def require_current_user
     redirect_to new_session_url unless current_user.present?
   end
@@ -32,4 +32,10 @@ class ApplicationController < ActionController::Base
     render file: File.join(Rails.root, "public", "404.html"), layout: false, status: :not_found
   end
 
+  def set_mobile_view
+    if params[:mobile_view].present?
+      session[:mobile_view] = params[:mobile_view] == "true"
+      set_mobile_format
+    end
+  end
 end
