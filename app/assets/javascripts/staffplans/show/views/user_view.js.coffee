@@ -71,9 +71,9 @@ class UserView extends Backbone.View
     <div class='user-select'>
       {{> user_info }}
       <div class='date-pagination'>
-        <a class='previous'>&larr;</a>
+        <a href='#' data-change-page='previous' class='previous'>&larr;</a>
         <ul class='week-hour-counter'></ul>
-        <a class='next'>&rarr;</a>
+        <a href='#' data-change-page='next' class='next'>&rarr;</a>
       </div>
     </div>
     <div class='project-list'>
