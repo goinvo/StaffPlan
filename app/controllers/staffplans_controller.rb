@@ -25,6 +25,7 @@ class StaffplansController < ApplicationController
   
   def index
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
+    @from = 1.week.ago(@from)
     @to = 3.months.from_now(@from)
     
     @date_range = []
