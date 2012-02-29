@@ -2,7 +2,9 @@ require 'spec_helper'
 
 describe StaffplansController do
   before(:each) do
-    login_user
+    @current_user = login_user
+    @company = Factory(:company)
+    @current_user.update_attributes(current_company_id: @company.id)
   end
   
   describe 'GET#show' do
@@ -14,6 +16,7 @@ describe StaffplansController do
     
     it "should find the targeted user and populate some instance variables when the ID is valid" do
       target_user = user_with_clients_and_projects
+      @company.users << target_user
       get :show, :id => target_user.id
       response.should be_success
       response.should render_template("staffplans/show")
