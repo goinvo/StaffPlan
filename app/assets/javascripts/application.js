@@ -15,11 +15,4 @@ $(document).ready(function(){
   $('select#user_current_company_id').live('change', function(){
     $(this).closest('form').submit();
   });
-
-  // Documentation online is anything but clear about the order of those parameters
-  $('#company-switcher-form').live('ajax:success', function(data, status, xhr){
-    console.log(data);
-    console.log(status);
-    console.log(xhr);
-  });
 });
