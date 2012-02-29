@@ -40,6 +40,6 @@
         
         %ul.week-hour-counter
           - @date_range.each do |date|
-            - total = user.work_weeks.select { |ww| ww.cweek == date.cweek && ww.year == date.year }.map { |ww| ww.estimated_hours || 0 }.inject(:+) || 0
+            - total = user.work_weeks.select { |ww| ww.cweek == date.cweek && ww.year == date.year }.map { |ww| ww.send((date.past? || date.today?) ? :actual_hours : :estimated_hours) || 0 }.inject(:+) || 0
             %li{class: ((date <= Date.today) ?  'passed' : ''), style: "height: #{total}px"}
               %span= total

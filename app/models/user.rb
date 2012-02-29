@@ -5,9 +5,9 @@ class User < ActiveRecord::Base
 
   has_and_belongs_to_many :projects, uniq: true
   has_and_belongs_to_many :companies, uniq: true
-  has_many :work_weeks, :dependent => :destroy do
+  has_many :work_weeks, dependent: :destroy do
     def for_project(project)
-      self.select { |ww| ww.project == project }
+      self.select { |ww| ww.project_id == project.id }
     end
   end
 
@@ -29,6 +29,7 @@ class User < ActiveRecord::Base
       id: self.id,
       name: self.name,
       email: self.email,
+      gravatar: self.gravatar,
       projects: []
     }
 

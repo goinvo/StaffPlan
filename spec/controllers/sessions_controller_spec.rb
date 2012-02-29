@@ -20,15 +20,13 @@ describe SessionsController do
     
     it "should re-render the login form if the user can't be found" do
       post :create, :email => "thiswont@befound.com"
-      response.should be_success
-      response.should render_template("sessions/new")
+      response.should redirect_to new_session_url
       session[:user_id].should be_nil
     end
     
     it "should re-render the login form if the credentials are invalid" do
       post :create
-      response.should be_success
-      response.should render_template("sessions/new")
+      response.should redirect_to new_session_url
       session[:user_id].should be_nil
     end
   end

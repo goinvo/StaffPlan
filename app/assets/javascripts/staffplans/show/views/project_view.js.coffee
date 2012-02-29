@@ -2,7 +2,6 @@ class ProjectView extends Backbone.View
   
   className: 'project'
   id: "project-#{@cid}"
-  project_view_template: $('#project_view').remove().text()
   
   initialize: ->
     
@@ -28,10 +27,38 @@ class ProjectView extends Backbone.View
     
   render: ->
     $( @el )
-      .html( Mustache.to_html( @project_view_template, @templateData() ) )
+      .html( Mustache.to_html( @templates.project, @templateData() ) )
       .find( '.months-and-weeks' )
       .html @model.work_weeks.view.render().el
     @
+  
+  templates:
+    project: """
+    <div class='client-name'>
+      {{#clientNameInput}}
+      <div class='ui-widget'>
+        <input class='client-select' />
+      </div>
+      {{/clientNameInput}}
+      {{^clientNameInput}}
+      <a href='/clients/{{ clientId }}'>{{clientName}}</a>
+      <input class='client-select' type='hidden' name='client[name]' value='{{ clientName }}'/>
+      {{/clientNameInput}}
+    </div>
+    <div class='new-project'>
+      <a class='add-new-project button-minimal'>+</a>
+    </div>
+    <div class='project-name'>
+      {{#isNew}}
+      <input type='text' name='project[name]' />
+      {{/isNew}}
+      {{^isNew}}
+      <a href='/projects/{{ projectId }}'>{{ name }}</a>
+      <input type='hidden' name='project[name]' />
+      {{/isNew}}
+    </div>
+    <div class='months-and-weeks'></div>
+    """
   
   events:
     "click a.add-new-project" : "addNewProject"

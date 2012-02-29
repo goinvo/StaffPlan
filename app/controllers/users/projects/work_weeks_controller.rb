@@ -8,9 +8,15 @@ class Users::Projects::WorkWeeksController < ApplicationController
     @work_week = WorkWeek.new(whitelist_attributes)
     
     if @work_week.save
-      render_json_ok
+      respond_to do |format|
+        format.js { render_json_ok }
+        format.mobile { render_project_partial }
+      end
     else
-      render_json_fail
+      respond_to do |format|
+        format.js { render_json_fail }
+        format.mobile { render_project_partial }
+      end
     end
   rescue ActiveRecord::RecordNotUnique => e
     render_json_ok
@@ -18,14 +24,24 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def update
     if @work_week.update_attributes(whitelist_attributes)
-      render_json_ok
+      respond_to do |format|
+        format.js { render_json_ok }
+        format.mobile { render_project_partial }
+      end
     else
-      render_json_fail
+      respond_to do |format|
+        format.js { render_json_fail }
+        format.mobile { render_project_partial }
+      end
     end
-    
   end
   
   private
+  
+  def render_project_partial
+    @date = (params[:date].present? ? Date.parse(params[:date]) : Date.today).at_beginning_of_week
+    render(partial: 'staffplans/project', locals: {project: @project, updated: true})
+  end
   
   def render_json_fail
     render(:json => {
@@ -44,9 +60,10 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def whitelist_attributes
     base = { cweek: params[:cweek],
-             year: params[:year],
-            actual_hours: params[:actual_hours],
-            estimated_hours: params[:estimated_hours] }
+             year: params[:year] }
+             
+    base.merge!(estimated_hours: params[:estimated_hours]) if params[:estimated_hours].present?
+    base.merge!(actual_hours: params[:actual_hours]) if params[:actual_hours].present?
     
     if action_name == "create"
       base.merge!(

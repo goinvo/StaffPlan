@@ -2,8 +2,9 @@ class ApplicationController < ActionController::Base
   
   protect_from_forgery
   respond_to_mobile_requests :skip_xhr_requests => false
+  has_mobile_fu
   
-  before_filter :require_current_user
+  before_filter :require_current_user, :set_mobile_view
  
   protected 
 
@@ -32,4 +33,10 @@ class ApplicationController < ActionController::Base
     render file: File.join(Rails.root, "public", "404.html"), layout: false, status: :not_found
   end
 
+  def set_mobile_view
+    if params[:mobile_view].present?
+      session[:mobile_view] = params[:mobile_view] == "true"
+      set_mobile_format
+    end
+  end
 end

@@ -2,7 +2,6 @@ class WorkWeekListView extends Backbone.View
   
   tagName: "section"
   className: "work-weeks"
-  work_week_list_view_template: $('#work_week_list_view').remove().text()
 
   dateRangeMeta: ->
     @model.dateRangeMeta()
@@ -67,11 +66,51 @@ class WorkWeekListView extends Backbone.View
     
     projectExists: =>
       !@model.parent.isNew()
+  
+  templates:
+    work_week_list: """
+    <div class='row-filler'>
+      <a href='#'>&rarr;</a>
+    </div>
+    <div class='plan-actual'>
+      <div class='row-label'>Plan</div>
+      {{#yearsAndCweeks}}
+      <div>
+        <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="estimated_hours" value="{{ estimated_hours }}" data-work-week-input />
+      </div>
+      {{/yearsAndCweeks}}
+      <div class='total estimated'>{{estimatedTotal}}</div>
+      <div class='diff-remove-project'></div>
+    </div>
+    {{#projectExists}}
+    <div class='plan-actual'>
+      <div class='row-label'>Actual</div>
+      {{#yearsAndCweeks}}
+      <div>
+        {{#weekHasPassed}}
+        <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="actual_hours" value="{{ actual_hours }}" data-work-week-input />
+        {{/weekHasPassed}}
+      </div>
+      {{/yearsAndCweeks}}
+      <div class='total actual'>{{actualTotal}}</div>
+      <div class='diff-remove-project'>
+        {{#isRemoveable}}
+        <a href='#' class='remove-project button-minimal'>&times;</a>
+        {{/isRemoveable}}
+        <span class='delta'>
+          {{#hasDelta}}
+          &#916; {{ delta }}
+          {{/hasDelta}}
+        </span>
+      </div>
+    </div>
+    {{/projectExists}}
+    """
     
   # render/DOM updaters
   render: ->
     $( @el )
-      .html( Mustache.to_html( @work_week_list_view_template, @templateData() ) )
+      .html( Mustache.to_html( @templates.work_week_list, @templateData() ) )
 
     @rowFiller = @$('.row-filler').hide()
     

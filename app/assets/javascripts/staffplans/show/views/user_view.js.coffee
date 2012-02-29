@@ -3,9 +3,6 @@ class UserView extends Backbone.View
   tagName: "div"
   className: "staffplan"
 
-  user_view_template: $('#user_view').remove().text()
-  work_week_header_template: $('#work_week_header').remove().text()
-
   events:
     "click a[data-change-page]" : "changePage"
 
@@ -13,7 +10,7 @@ class UserView extends Backbone.View
     @model.dateChanged event
 
     @$( '.headers .months-and-weeks' )
-      .html( Mustache.to_html( @work_week_header_template, @headerTemplateData() ) )
+      .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
   fromDate: ->
     Date.today()
@@ -25,6 +22,8 @@ class UserView extends Backbone.View
   templateData: ->
     name: @model.get("name")
     fromDate: @model.fromDate
+    gravatar: @model.get("gravatar")
+    id: @model.get("id")
 
   headerTemplateData: ->
     meta = @model.dateRangeMeta()
@@ -41,9 +40,9 @@ class UserView extends Backbone.View
 
   render: ->
     $( @el )
-      .html( Mustache.to_html( @user_view_template, @templateData() ) )
+      .html( Mustache.to_html( @templates.user, @templateData(), @partials ) )
       .find( '.months-and-weeks' )
-      .html( Mustache.to_html( @work_week_header_template, @headerTemplateData() ) )
+      .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
     $( @el )
       .find( '.week-hour-counter' )
@@ -55,6 +54,59 @@ class UserView extends Backbone.View
     @addNewProjectRow()
 
     @
+  
+  partials:
+    user_info: """
+    <div class='user-info'>
+      <a href='/users/{{ id }}'>
+        <img class='gravatar' src='{{ gravatar }}' />
+        <span class='name'>{{ name }}</span>
+        <span class='email'>{{ email }}</span>
+      </a>
+    </div>
+    """
+    
+  templates:
+    user: """
+    <div class='user-select'>
+      {{> user_info }}
+      <div class='date-pagination'>
+        <a href='#' data-change-page='previous' class='previous'>&larr;</a>
+        <ul class='week-hour-counter'></ul>
+        <a href='#' data-change-page='next' class='next'>&rarr;</a>
+      </div>
+    </div>
+    <div class='project-list'>
+      <section class='headers'>
+        <div class='client-name'></div>
+        <div class='new-project'>&nbsp;</div>
+        <div class='project-name'></div>
+        <div class='months-and-weeks'></div>
+      </section>
+    </div>
+    """
+    
+    work_week_header: """
+    <section>
+      <div class='plan-actual'>
+        <div class='row-label'>&nbsp;</div>
+        {{#monthNames}}
+        <div>{{ name }}</div>
+        {{/monthNames}}
+        <div class='total'></div>
+        <div class='diff-remove-project'></div>
+      </div>
+      <div class='plan-actual'>
+        <div class='row-label'>&nbsp;</div>
+        {{#weeks}}
+        <div>{{ name }}</div>
+        {{/weeks}}
+        <div class='total'></div>
+        <div class='diff-remove-project'></div>
+      </div>
+    </section>
+    """
+    
 
   renderAllProjects: ->
     for clientId, projects of @model.projectsByClient()
@@ -101,7 +153,8 @@ class UserView extends Backbone.View
     _.each dateRange, (date, idx) ->
       # Map week to <li>
       li = weekHourCounters.eq(idx)
-      total = ww["#{date.year}-#{date.mweek}"][if date.weekHasPassed then 'actual' else 'estimated']
+      workWeek = ww["#{date.year}-#{date.mweek}"]
+      total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
       li
         .height(total)
         .html("<span>" + total + "</span>")
