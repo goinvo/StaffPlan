@@ -3,8 +3,8 @@ class User extends Backbone.Model
 
   initialize: (userdata) ->
 
-    @fromDate = Date.today().addWeeks(-2).moveToDayOfWeek Date.getDayNumberFromName 'Monday', -1
-    @toDate   = @fromDate.clone().addWeeks @weekInterval
+    @fromDate = new Time().advanceDays(-14).beginningOfWeek()
+    @toDate   = @fromDate.clone().advanceDays @weekInterval * 7
 
     @projects = new ProjectList @get( "projects" ),
       parent: @
@@ -33,8 +33,8 @@ class User extends Backbone.Model
   dateChanged: (event) ->
     event.preventDefault()
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.addWeeks interval
-    @toDate.addWeeks   interval
+    @fromDate.advanceDays interval * 7
+    @toDate.advanceDays   interval * 7
     @view.renderAllProjects()
 
   dateRangeMeta: ->
@@ -49,14 +49,14 @@ class User extends Backbone.Model
 
     while from.isBefore to
       yearsAndWeeks.push
-        year:  from.getFullYear()
-        cweek: from.getISOWeek()
-        month: from.getMonth()
-        mweek: from.getWeek()
-        mday:  from.getDate()
-        weekHasPassed: from.isBefore Date.today()
+        year:  from.year()
+        cweek: from.week()
+        month: from.month()
+        mweek: from.week()
+        mday:  from.day()
+        weekHasPassed: from.isBefore new Date
 
-      from = from.add(1).week()
+      from = from.advanceDays(7)
 
     yearsAndWeeks
 

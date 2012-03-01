@@ -13,7 +13,7 @@ class UserView extends Backbone.View
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
   fromDate: ->
-    Date.today()
+    new Date
 
   initialize: ->
     @render()
