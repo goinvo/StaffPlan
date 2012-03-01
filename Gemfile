@@ -16,6 +16,7 @@ gem 'sass-rails',     '~> 3.2.1'
 gem 'thin'
 gem "will_paginate"
 gem 'awesome_print',            require: 'ap'
+gem 'jbuilder'
 
 group :development do
   gem 'pry', require: 'pry'

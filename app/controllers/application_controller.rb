@@ -10,12 +10,15 @@ class ApplicationController < ActionController::Base
   def find_target
     return unless %w(projects users clients).include? controller_name
     c = controller_name.singularize
-    instance_variable_set("@#{c}", current_user.current_company.send(controller_name).find_by_id(params[:id]))
-    if instance_variable_get("@#{c}").nil?
+    target = current_user.current_company.send(controller_name).find_by_id(params[:id])
+    if target.present?
+      instance_variable_set("@#{c}", target)
+    else
       flash[:error] = "Couldn't locate or access the #{c}"
       redirect_to url_for(c.classify.constantize)
     end
   end
+
   private
 
   def current_user
@@ -37,4 +40,5 @@ class ApplicationController < ActionController::Base
       set_mobile_format
     end
   end
+
 end
