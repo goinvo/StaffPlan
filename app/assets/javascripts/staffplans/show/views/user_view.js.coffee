@@ -29,14 +29,12 @@ class UserView extends Backbone.View
     meta = @model.dateRangeMeta()
 
     monthNames: ->
-      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
-        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month ] else ""
-      )
+      _.map meta.dates, (dateMeta, idx, dateMetas) ->
+        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
 
     weeks: ->
-      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
+      _.map meta.dates, (dateMeta, idx, dateMetas) ->
         name: "W#{Math.ceil dateMeta.mday / 7}"
-      )
 
   render: ->
     $( @el )
