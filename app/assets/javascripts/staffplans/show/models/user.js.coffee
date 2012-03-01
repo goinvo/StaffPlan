@@ -3,8 +3,8 @@ class User extends Backbone.Model
 
   initialize: (userdata) ->
 
-    @fromDate = new Time().advanceDays(-14).beginningOfWeek()
-    @toDate   = @fromDate.clone().advanceDays @weekInterval * 7
+    @fromDate = new Time().advanceWeeks(-2).beginningOfWeek()
+    @toDate   = @fromDate.clone().advanceWeeks @weekInterval
 
     @projects = new ProjectList @get( "projects" ),
       parent: @
@@ -33,8 +33,8 @@ class User extends Backbone.Model
   dateChanged: (event) ->
     event.preventDefault()
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.advanceDays interval * 7
-    @toDate.advanceDays   interval * 7
+    @fromDate.advanceWeeks interval
+    @toDate.advanceWeeks   interval
     @view.renderAllProjects()
 
   dateRangeMeta: ->
@@ -43,6 +43,7 @@ class User extends Backbone.Model
     dates: @getYearsAndWeeks()
 
   getYearsAndWeeks: ->
+    # XXX Needs cacheing or memoization badly
     yearsAndWeeks = []
     from = @fromDate.clone()
     to = @toDate.clone()
@@ -56,7 +57,7 @@ class User extends Backbone.Model
         mday:  from.day()
         weekHasPassed: from.isBefore new Date
 
-      from = from.advanceDays(7)
+      from = from.advanceWeeks(1)
 
     yearsAndWeeks
 

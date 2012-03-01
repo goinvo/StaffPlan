@@ -161,10 +161,14 @@ class UserView extends Backbone.View
       li
         .height(total * ratio)
         .html("<span>" + total + "</span>")
-      if date.weekHasPassed
-        li.addClass("passed")
+        .removeClass "present"
+
+      if isThisWeek(date)
+        li.addClass "present"
+      else if date.weekHasPassed
+        li.addClass "passed"
       else
-        li.removeClass("passed")
+        li.removeClass "passed"
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
@@ -173,3 +177,8 @@ class UserView extends Backbone.View
       @model.projects.add {}
 
 window.UserView = UserView
+
+isThisWeek = (date) ->
+  now = new Time
+  date.year == now.year() and date.mweek == now.week()
+

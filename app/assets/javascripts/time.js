@@ -166,9 +166,21 @@
 
         // ------------
 
+        nextWeek: function(){
+            this.epoch(this.endOfWeek().epoch() + MILLISECONDS_IN_DAY);
+            this.beginningOfWeek();
+            return this;
+        },
+
         nextMonth: function(){
             this.epoch(this.beginningOfMonth().epoch() + THIRTY_TWO_DAYS);
             this.beginningOfMonth();
+            return this;
+        },
+
+        previousWeek: function(){
+            this.epoch(this.beginningOfWeek().epoch() - 1);
+            this.beginningOfWeek();
             return this;
         },
 
@@ -185,6 +197,17 @@
             // Adding 1 hour, in case this is a day where daylight savings change
             this.epoch(this.epoch() + (MILLISECONDS_IN_DAY * days) + MILLISECONDS_IN_HOUR);
             this.beginningOfDay();
+
+            return this;
+        },
+
+        advanceWeeks: function(weeks) {
+            var dir = weeks > 0 ? "next" : "previous",
+                i = 0;
+            for (i; i < Math.abs(weeks); i++)
+                this[dir + "Week"]();
+            // this.epoch(this.epoch() + (MILLISECONDS_IN_WEEK * weeks));
+            // this.beginningOfWeek();
 
             return this;
         },
