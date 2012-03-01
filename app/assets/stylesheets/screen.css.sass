@@ -55,8 +55,7 @@ body > header
     position: relative
     margin: 0 auto
     padding: 0 10px
-    width: 1100px
-    min-width: 1100px
+    width: 100%
     +box-sizing(border-box)
 
   ul
@@ -110,13 +109,14 @@ body#staffplans
 //      Main      \\
 //\\//\\//\\//\\//\\
 section.main
-  width: 1100px
-  min-width: 1100px
-  margin: 0 auto
-  
+  margin: 0
+  width: 100%
+  min-width: 100%
+  +box-sizing(border-box)
+
   .content
-    padding: 10px
-    min-height: 400px
+    padding-right: 0
+    padding-left: 0
 
   section
     > header
@@ -143,6 +143,29 @@ section.main
     h3
       padding: 10px 0 5px
       font-size: 16px
+
+// Responsiveness
+@media screen and (min-width: 768px)
+@media screen and (min-width: 1024px)
+@media screen and (min-width: 1200px)
+  body > header .inner
+    width: 1100px
+    min-width: 1100px
+
+  section.main
+    width: 1100px
+    min-width: 1100px
+    margin: 0 auto
+    
+    .content
+      padding: 10px
+      min-height: 400px
+
+  .client-name
+    display: inline-block !important
+
+  .date-pagination
+    left: 414px
 
 #staffplans.index, #users, #clients, #projects
   section.main
