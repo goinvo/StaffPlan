@@ -148,15 +148,20 @@ class UserView extends Backbone.View
         m
       , {actual: 0, estimated: 0}
 
+    # Scale
+    whc = @$ '.user-select'
+    max = Math.max.apply( null, _.pluck( ww, 'actual' ).concat( _.pluck( ww, 'estimated' ) ) ) || 1
+    ratio = ( whc.height() - 20 ) / max
+
     # Draw
-    weekHourCounters = @$( '.week-hour-counter li' )
+    weekHourCounters = whc.find '.week-hour-counter li'
     _.each dateRange, (date, idx) ->
       # Map week to <li>
       li = weekHourCounters.eq(idx)
       workWeek = ww["#{date.year}-#{date.mweek}"]
       total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
       li
-        .height(total)
+        .height(total * ratio)
         .html("<span>" + total + "</span>")
       if date.weekHasPassed
         li.addClass("passed")
