@@ -8,7 +8,7 @@
   
   :javascript
     window._meta =
-      { clients: new ClientList(#{@clients.to_json})
+      { clients: new ClientList(_.map(#{@clients}, function(e){JSON.parse(e)}))
       , days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       , months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
       , abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
