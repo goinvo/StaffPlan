@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
     end
 
   def current_company
-    Company.where(id: current_company_id).first
+    companies.where(id: current_company_id).first
   end
 
   def staff_plan_json
