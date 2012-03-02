@@ -6,6 +6,7 @@ describe Users::ProjectsController do
     @user = login_user
     @company = Factory(:company)
     @user.update_attributes(current_company_id: @company.id)
+    @company.users << @user
   end
   
   describe 'all actions' do

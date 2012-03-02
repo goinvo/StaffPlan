@@ -6,14 +6,13 @@ describe UsersController do
     @current_user = login_user
     @company = Factory(:company)
     @current_user.update_attributes(current_company_id: @company.id)
+    @company.users << @current_user
   end
 
   describe "GET index" do
     it "assigns all users as @users" do
-      user = Factory(:user)
-      @company.users << user
       get :index
-      assigns(:users).should eq([user])
+      assigns(:users).should eq([@current_user])
     end
   end
 

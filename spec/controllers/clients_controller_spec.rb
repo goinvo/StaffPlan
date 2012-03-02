@@ -6,6 +6,7 @@ describe ClientsController do
     @current_user = login_user
     @company = Factory(:company)
     @current_user.update_attributes(current_company_id: @company.id)
+    @company.users << @current_user
   end
   
   describe "GET index" do

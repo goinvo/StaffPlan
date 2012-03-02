@@ -17,6 +17,7 @@ describe StaffplansController do
 
   describe 'GET#show' do
     it "should redirect to root_url if a user can't be found" do
+      @company.users << @current_user
       get :show, :id => "bogus"
       response.should be_redirect
       response.should redirect_to(root_url)
@@ -25,6 +26,7 @@ describe StaffplansController do
     it "should find the targeted user and populate some instance variables when the ID is valid" do
       target_user = user_with_clients_and_projects
       @company.users << target_user
+      @company.users << @current_user
       target_user.update_attributes(current_company_id: @company.id)
       get :show, :id => target_user.id
       response.should be_success
