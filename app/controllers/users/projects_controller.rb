@@ -35,7 +35,7 @@ class Users::ProjectsController < ApplicationController
   def render_json_ok
     render(json: {
       status: "ok",
-      clients: Client.staff_plan_json,
+      clients: current_user.current_company.clients.map(&:staff_plan_json),
       attributes: @project
     }) and return
   end

@@ -1,13 +1,13 @@
 class StaffplansController < ApplicationController
   
   def show
-    @target_user = current_user.current_company.users.where(id: params[:id]).first
+    @target_user = current_user.current_company.users.find_by_id(params[:id])
     redirect_to root_url, error: I18n.t('controllers.staffplans.couldnt_find_user') and return unless @target_user.present?
     
     respond_to do |format|
       format.html do
         @target_user_json = @target_user.staff_plan_json
-        @clients = Client.staff_plan_json
+        @clients = current_user.current_company.clients.map(&:staff_plan_json)
       end
     
       format.mobile do

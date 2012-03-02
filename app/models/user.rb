@@ -23,11 +23,11 @@ class User < ActiveRecord::Base
     Company.where(id: current_company_id).first
   end
 
-  # TODO: custom finder SQL
   def staff_plan_json
     Jbuilder.encode do |json|
       json.(self, :id, :name, :email, :gravatar)
-      json.projects self.projects do |json, project|
+      # The projects we're showing on the my staffplan page should be scoped by current_company
+      json.projects self.current_company.projects do |json, project|
         json.(project, :id, :name, :client_id)
         json.work_weeks project.work_weeks.for_user(self) do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
@@ -35,30 +35,5 @@ class User < ActiveRecord::Base
       end
     end
   end
-    # json = {
-    #   id: self.id,
-    #   name: self.name,
-    #   email: self.email,
-    #   gravatar: self.gravatar,
-    #   projects: []
-    # }
 
-    # self.projects.each do |project|
-    #   json[:projects] << {
-    #     id: project.id,
-    #     name: project.name,
-    #     client_id: project.client_id,
-    #     work_weeks: project.work_weeks.for_user(self).map do |ww|
-    #     { id: ww.id,
-    #       project_id: ww.project_id,
-    #       actual_hours: ww.actual_hours,
-    #       estimated_hours: ww.estimated_hours,
-    #       cweek: ww.cweek,
-    #       year: ww.year }
-    #     end
-    #   }
-    # end
-
-    # json.to_json
-    # end
 end

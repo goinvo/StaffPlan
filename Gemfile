@@ -20,6 +20,7 @@ gem 'jbuilder'
 
 group :development do
   gem 'pry', require: 'pry'
+  gem 'jbuilder'
 end
 
 group :assets do
@@ -37,6 +38,8 @@ group :test do
   gem 'mocha'
   gem 'rspec-rails',      '2.8.1'
   gem 'webrat'
+  gem 'jbuilder'
+  gem 'pry', require: 'pry'
 end
 
 group :production do

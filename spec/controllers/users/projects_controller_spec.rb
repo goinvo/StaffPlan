@@ -4,6 +4,8 @@ describe Users::ProjectsController do
   
   before(:each) do
     @user = login_user
+    @company = Factory(:company)
+    @user.update_attributes(current_company_id: @company.id)
   end
   
   describe 'all actions' do
