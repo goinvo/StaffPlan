@@ -53,7 +53,13 @@ class UsersController < ApplicationController
     
     respond_to do |format|
       if @user.update_attributes(params[:user].except(:cc_foo))
-        format.html { redirect_to (params[:user].has_key?(:cc_foo) ? :back : @user), notice: 'User was successfully updated.' }
+        format.html { 
+          if params[:user].has_key?(:cc_foo)
+            redirect_to :back 
+          else
+            redirect_to @user, notice: "User was successfully updated"
+          end
+        }
         format.json { head :ok }
       else
         format.html { render action: "edit" }
