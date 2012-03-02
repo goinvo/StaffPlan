@@ -13,7 +13,7 @@ class UserView extends Backbone.View
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
   fromDate: ->
-    Date.today()
+    new Date
 
   initialize: ->
     @render()
@@ -29,14 +29,12 @@ class UserView extends Backbone.View
     meta = @model.dateRangeMeta()
 
     monthNames: ->
-      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
-        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month ] else ""
-      )
+      _.map meta.dates, (dateMeta, idx, dateMetas) ->
+        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
 
     weeks: ->
-      _.map(meta.dates, (dateMeta, idx, dateMetas) ->
+      _.map meta.dates, (dateMeta, idx, dateMetas) ->
         name: "W#{Math.ceil dateMeta.mday / 7}"
-      )
 
   render: ->
     $( @el )
@@ -148,20 +146,29 @@ class UserView extends Backbone.View
         m
       , {actual: 0, estimated: 0}
 
+    # Scale
+    whc = @$ '.user-select'
+    max = Math.max.apply( null, _.pluck( ww, 'actual' ).concat( _.pluck( ww, 'estimated' ) ) ) || 1
+    ratio = ( whc.height() - 20 ) / max
+
     # Draw
-    weekHourCounters = @$( '.week-hour-counter li' )
+    weekHourCounters = whc.find '.week-hour-counter li'
     _.each dateRange, (date, idx) ->
       # Map week to <li>
       li = weekHourCounters.eq(idx)
       workWeek = ww["#{date.year}-#{date.mweek}"]
       total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
       li
-        .height(total)
+        .height(total * ratio)
         .html("<span>" + total + "</span>")
-      if date.weekHasPassed
-        li.addClass("passed")
+        .removeClass "present"
+
+      if isThisWeek(date)
+        li.addClass "present"
+      else if date.weekHasPassed
+        li.addClass "passed"
       else
-        li.removeClass("passed")
+        li.removeClass "passed"
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
@@ -170,3 +177,8 @@ class UserView extends Backbone.View
       @model.projects.add {}
 
 window.UserView = UserView
+
+isThisWeek = (date) ->
+  now = new Time
+  date.year == now.year() and date.mweek == now.week()
+

@@ -68,8 +68,8 @@ ActiveRecord::Schema.define(:version => 20120301015924) do
     t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek"
-    t.integer  "year"
+    t.integer  "cweek",           :limit => 2
+    t.integer  "year",            :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -11,6 +11,8 @@
 //= require backbone.min
 //= require backbone-support
 //= require mustache
+//= require time
+
 $(document).ready(function(){
   $('select#user_current_company_id').live('change', function(){
     $(this).closest('form').submit();
