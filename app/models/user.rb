@@ -21,9 +21,9 @@ class User < ActiveRecord::Base
   validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
 
-    def gravatar
-      "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
-    end
+  def gravatar
+    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+  end
 
   def current_company
     companies.where(id: current_company_id).first
