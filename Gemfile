@@ -7,6 +7,7 @@ gem 'compass',        '~> 0.12.rc1'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
+gem 'mobile-fu'
 gem 'paper_trail',    '~> 2.5'
 gem 'pg'
 gem 'rails',          '3.2.1'
@@ -19,7 +20,7 @@ gem 'awesome_print',            require: 'ap'
 gem 'jbuilder'
 
 group :development do
-  gem 'pry', require: 'pry'
+  gem 'pry',                    require: 'pry'
   gem 'jbuilder'
 end
 
@@ -34,12 +35,11 @@ group :test do
   gem 'cucumber-rails',   '1.2.1'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
-  # gem 'ruby-debug19',             require: 'ruby-debug'
   gem 'mocha'
   gem 'rspec-rails',      '2.8.1'
   gem 'webrat'
   gem 'jbuilder'
-  gem 'pry', require: 'pry'
+  gem 'pry',                      require: 'pry'
 end
 
 group :production do
