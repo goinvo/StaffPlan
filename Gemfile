@@ -9,7 +9,7 @@ gem 'haml-rails'
 gem 'mobile-fu'
 gem 'paper_trail',    '~> 2.5'
 gem 'pg'
-gem 'rails',          '3.2.1'
+gem 'rails',          '3.1.3'
 gem 'journey'
 gem 'rails-behaviors'
 gem 'thin'
@@ -23,9 +23,9 @@ group :development do
 end
 
 group :assets do
-  gem 'sass-rails',     '~> 3.2.1'
+  gem 'sass-rails',     '~> 3.1.5'
   gem 'compass-rails'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier',     '>= 1.0.3'
 end
 
