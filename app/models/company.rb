@@ -6,7 +6,7 @@ class Company < ActiveRecord::Base
 
   def clients_as_json
     Jbuilder.encode do |json|
-      json.clients self.clients do |json, client|
+      json.array! self.clients do |json, client|
       json.(client, :id, :name, :active)
         json.projects client.projects
       end
