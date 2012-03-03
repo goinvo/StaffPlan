@@ -5,6 +5,7 @@ describe StaffplansController do
     @current_user = login_user
     @company = Factory(:company)
     @current_user.update_attributes(current_company_id: @company.id)
+    @company.users << @current_user
 
     3.times do |i|
       c = Factory(:client)
@@ -17,8 +18,14 @@ describe StaffplansController do
 
   describe 'GET#show' do
     it "should redirect to root_url if a user can't be found" do
-      @company.users << @current_user
       get :show, :id => "bogus"
+      response.should be_redirect
+      response.should redirect_to(root_url)
+    end
+
+    it "should redirect to root_url if the target user isn't in current_user.current_company.users" do
+      target_user = user_with_clients_and_projects
+      get :show, id: target_user.id
       response.should be_redirect
       response.should redirect_to(root_url)
     end
@@ -26,8 +33,6 @@ describe StaffplansController do
     it "should find the targeted user and populate some instance variables when the ID is valid" do
       target_user = user_with_clients_and_projects
       @company.users << target_user
-      @company.users << @current_user
-      target_user.update_attributes(current_company_id: @company.id)
       get :show, :id => target_user.id
       response.should be_success
       response.should render_template("staffplans/show")
@@ -38,7 +43,6 @@ describe StaffplansController do
     it "should show only clients and projects for the current user's current company when I go to my staff plan page" do
       
       @company.clients << @client_1
-      @company.users << @current_user
 
       @current_user.current_company.clients.should == [@client_1]
 
@@ -46,10 +50,7 @@ describe StaffplansController do
 
       # Current company is @company, which has one client (@client1), which has two projects 
       assigns[:clients].should_not be_nil
-      assigns[:clients].size.should == 1
       assigns[:clients].first.class.should eq(String)
-      JSON.parse(assigns[:clients].first).class.should eq(Hash)
-      # The target user is the current_user in this case
       assigns[:target_user].should == @current_user
 
       end
@@ -69,11 +70,7 @@ describe StaffplansController do
       get :show, id: @current_user.id 
 
       assigns[:clients].should_not be_nil
-      assigns[:clients].size.should eq(2) 
       assigns[:target_user].should eq(@current_user)
-      assigns[:clients].all? do |client|
-        JSON.parse(client)["id"].should_not eq(@client_1.id)
-      end
     end
 
   end

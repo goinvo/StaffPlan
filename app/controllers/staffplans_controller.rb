@@ -6,8 +6,9 @@ class StaffplansController < ApplicationController
     
     respond_to do |format|
       format.html do
-        @target_user_json = @target_user.staff_plan_json
-        @clients = current_user.current_company.clients.map(&:staff_plan_json)
+        @target_user_json = @target_user.staff_plan_json(current_user.current_company_id)
+        @clients = current_user.current_company.clients_as_json
+
       end
     
       format.mobile do
