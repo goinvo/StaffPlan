@@ -4,5 +4,6 @@ class AddInvoToCompanies < ActiveRecord::Migration
     all_users = User.all
     invo.users << all_users
     all_users.each { |u| u.update_attributes(current_company_id: invo.id) }
+    Project.all.each { |p| p.update_attributes(company_id: invo.id) }
   end
 end
