@@ -33,7 +33,6 @@ GEM
     awesome_print (1.0.2)
     backbone-support (0.2.0)
     bcrypt-ruby (3.0.1)
-    blankslate (2.1.2.4)
     builder (3.0.0)
     capybara (1.1.2)
       mime-types (>= 1.16)
@@ -56,10 +55,12 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.2.0)
-    compass (0.11.7)
+    compass (0.12.rc.1)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.1)
+    compass-rails (1.0.0.rc.3)
+      compass (~> 0.12.rc.0)
     cucumber (1.1.9)
       builder (>= 2.1.2)
       diff-lcs (>= 1.1.2)
@@ -96,10 +97,6 @@ GEM
       railties (~> 3.0)
     hike (1.2.1)
     i18n (0.6.0)
-    jbuilder (0.3.2)
-      activesupport (>= 3.0.0)
-      blankslate (>= 2.1.2.4)
-    journey (1.0.3)
     json (1.6.5)
     mail (2.3.0)
       i18n (>= 0.4.0)
@@ -216,15 +213,14 @@ DEPENDENCIES
   bcrypt-ruby (~> 3.0.0)
   coffee-filter
   coffee-rails (~> 3.1.1)
-  compass (= 0.11.7)
+  compass (~> 0.12.rc1)
+  compass-rails
   cucumber-rails (= 1.2.1)
   database_cleaner
   factory_girl_rails
   faker
   haml
   haml-rails
-  jbuilder
-  journey
   memcache-client
   mobile-fu
   mocha
