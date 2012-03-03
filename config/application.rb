@@ -6,7 +6,6 @@ require "action_controller/railtie"
 require "action_mailer/railtie"
 require "active_resource/railtie"
 require "sprockets/railtie"
-require "sass-rails"
 
 if defined?(Bundler)
   # If you precompile assets before deploying to production, use this line
@@ -57,8 +56,8 @@ module StaffPlan
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
     end
     
-    # add these three lines:
-    config.sass.load_paths ||= []
-    config.sass.load_paths << "#{Rails.root}/app/assets/stylesheets"
-  end
+    # https://gist.github.com/1184843
+    config.assets.precompile << 'jquery-ui-1.8.17.css' 	
+    config.assets.precompile << /(^[^_]|\/[^_])[^\/]*/
+    config.sass.preferred_syntax = :sass
 end
