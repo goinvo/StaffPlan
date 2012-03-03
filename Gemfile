@@ -3,7 +3,6 @@ source 'http://rubygems.org'
 gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.0'
 gem 'coffee-filter'
-gem 'compass',        '~> 0.12.rc1'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
@@ -13,7 +12,6 @@ gem 'pg'
 gem 'rails',          '3.2.1'
 gem 'journey'
 gem 'rails-behaviors'
-gem 'sass-rails',     '~> 3.2.1'
 gem 'thin'
 gem "will_paginate"
 gem 'awesome_print',            require: 'ap'
@@ -25,6 +23,7 @@ group :development do
 end
 
 group :assets do
+  gem 'sass-rails',     '~> 3.2.1'
   gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier',     '>= 1.0.3'
