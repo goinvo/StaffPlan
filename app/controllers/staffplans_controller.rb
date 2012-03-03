@@ -8,7 +8,6 @@ class StaffplansController < ApplicationController
       format.html do
         @target_user_json = @target_user.staff_plan_json(current_user.current_company_id)
         @clients = current_user.current_company.clients_as_json
-
       end
     
       format.mobile do

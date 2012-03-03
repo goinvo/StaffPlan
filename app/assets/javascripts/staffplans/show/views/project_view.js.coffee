@@ -37,7 +37,7 @@ class ProjectView extends Backbone.View
     <div class='client-name'>
       {{#clientNameInput}}
       <div class='ui-widget'>
-        <input class='client-select' />
+        <input class='client-select' type='text' name='client[name]' />
       </div>
       {{/clientNameInput}}
       {{^clientNameInput}}

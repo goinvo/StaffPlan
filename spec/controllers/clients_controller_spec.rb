@@ -56,6 +56,11 @@ describe ClientsController do
         assigns(:client).should be_a(Client)
         assigns(:client).should be_persisted
       end
+      
+      it "should add the new client to the current_user.current_company" do
+        post :create, :client => Factory.attributes_for(:client)
+        @current_user.current_company.clients.find_by_name(Factory.attributes_for(:client)[:name]).should_not be_nil
+      end
 
       it "redirects to the created client" do
         post :create, :client => Factory.attributes_for(:client)
