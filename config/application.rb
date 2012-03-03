@@ -60,4 +60,5 @@ module StaffPlan
     config.assets.precompile << 'jquery-ui-1.8.17.css' 	
     config.assets.precompile << /(^[^_]|\/[^_])[^\/]*/
     config.sass.preferred_syntax = :sass
+  end
 end
