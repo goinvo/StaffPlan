@@ -6,7 +6,7 @@ class Users::ProjectsController < ApplicationController
   before_filter :find_or_create_client, :only => [:create]
   
   def create
-    @project = @client.projects.find_by_name(params[:name]) || @client.projects.build(name: params[:name])
+    @project = @client.projects.find_by_name(params[:name]) || @client.projects.build(company_id: current_user.current_company_id, name: params[:name])
     
     if @target_user.projects << @project
       render_json_ok
@@ -35,7 +35,7 @@ class Users::ProjectsController < ApplicationController
   def render_json_ok
     render(json: {
       status: "ok",
-      clients: Client.staff_plan_json,
+      clients: current_user.current_company.clients.map(&:staff_plan_json),
       attributes: @project
     }) and return
   end
