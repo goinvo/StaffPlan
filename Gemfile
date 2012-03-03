@@ -3,6 +3,7 @@ source 'http://rubygems.org'
 gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.0'
 gem 'coffee-filter'
+gem 'compass',         '0.11.7'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
@@ -24,7 +25,6 @@ end
 
 group :assets do
   gem 'sass-rails',     '~> 3.1.5'
-  gem 'compass-rails'
   gem 'coffee-rails', '~> 3.1.1'
   gem 'uglifier',     '>= 1.0.3'
 end
