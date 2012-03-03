@@ -1,8 +1,14 @@
 class ProjectsController < ApplicationController
+  before_filter only: [:show, :edit, :update, :destroy] do |c|
+    c.find_target
+  end
   # GET /projects
   # GET /projects.json
   def index
-    @projects = Project.all
+    # A project belongs_to a company/account
+    # Let's retrieve all the projects associated with the account
+    # the current_user is currently browsing the app through
+    @projects = current_user.current_company.projects 
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,8 +19,6 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
-    @project = Project.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }
@@ -32,11 +36,6 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/1/edit
-  def edit
-    @project = Project.find(params[:id])
-  end
-
   # POST /projects
   # POST /projects.json
   def create
@@ -51,6 +50,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        current_user.current_company.projects << @project
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render json: @project, status: :created, location: @project }
       else
@@ -63,8 +63,6 @@ class ProjectsController < ApplicationController
   # PUT /projects/1
   # PUT /projects/1.json
   def update
-    @project = Project.find(params[:id])
-
     respond_to do |format|
       if @project.update_attributes(params[:project])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
@@ -79,7 +77,6 @@ class ProjectsController < ApplicationController
   # DELETE /projects/1
   # DELETE /projects/1.json
   def destroy
-    @project = Project.find(params[:id])
     @project.destroy
 
     respond_to do |format|
@@ -87,4 +84,5 @@ class ProjectsController < ApplicationController
       format.json { head :ok }
     end
   end
+
 end

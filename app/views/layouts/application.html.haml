@@ -27,10 +27,17 @@
           %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
           %li#nav-clients= link_to(t('.clients'), clients_path)
           %li#nav-projects= link_to(t('.projects'), projects_path)
+          %li#current-company
+            - if current_user.companies.length > 1
+              = form_for current_user, html: {:id => "company-switcher-form"} do |f|
+                = f.hidden_field :cc_foo, :value => "bar"
+                = select(:user, :current_company_id, options_from_collection_for_select(current_user.companies, :id, :name, selected: current_user.current_company_id))
+            - else
+              = current_user.current_company.name
         
         .header-content
           = yield(:header_content)
-        
+         
         .right
           = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "Staffplan Feedback")
           = link_to(t('.sign_out'), sign_out_path)

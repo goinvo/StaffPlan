@@ -4,6 +4,9 @@ describe Users::ProjectsController do
   
   before(:each) do
     @user = login_user
+    @company = Factory(:company)
+    @user.update_attributes(current_company_id: @company.id)
+    @company.users << @user
   end
   
   describe 'all actions' do
@@ -38,6 +41,11 @@ describe Users::ProjectsController do
         client = Client.find_by_name(@client_name)
         client.should_not be_nil
         client.projects.map(&:name).should == [@project_name]
+      end
+      
+      it "should assign the client to the current_user.current_company" do
+        post :create, :user_id => @user.id, :client_name => @client_name, :name => @project_name
+        @user.current_company.clients.find_by_name(@client_name).should_not be_nil
       end
       
       it "should redirect if the new Client fails to save" do
