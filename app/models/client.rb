@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+  attr_accessible :name, :description, :active, :company_id
   has_many :projects
   belongs_to :company
 
