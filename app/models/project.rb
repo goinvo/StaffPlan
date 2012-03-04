@@ -1,5 +1,5 @@
 class Project < ActiveRecord::Base
-  attr_accessible :client_id, :name, :active, :company_id 
+  attr_accessible :client, :name, :active, :company 
   belongs_to  :client
   belongs_to  :company
   has_many :work_weeks, dependent: :destroy do
