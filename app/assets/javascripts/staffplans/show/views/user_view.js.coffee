@@ -76,9 +76,9 @@ class UserView extends Backbone.View
     </div>
     <div class='project-list'>
       <section class='headers'>
-        <div class='client-name'></div>
+        <div class='client-name'>Client</div>
         <div class='new-project'>&nbsp;</div>
-        <div class='project-name'></div>
+        <div class='project-name'>Project</div>
         <div class='months-and-weeks'></div>
       </section>
     </div>
@@ -99,7 +99,7 @@ class UserView extends Backbone.View
         {{#weeks}}
         <div>{{ name }}</div>
         {{/weeks}}
-        <div class='total'></div>
+        <div class='total'>Total</div>
         <div class='diff-remove-project'></div>
       </div>
     </section>
