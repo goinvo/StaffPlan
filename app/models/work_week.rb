@@ -1,5 +1,5 @@
 class WorkWeek < ActiveRecord::Base
-  attr_accessible :user_id, :project_id, :estimated_hours, :actual_hours, :cweek, :year
+  attr_accessible :user, :project, :estimated_hours, :actual_hours, :cweek, :year
   belongs_to :user
   belongs_to :project
   
