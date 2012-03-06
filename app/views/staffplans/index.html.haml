@@ -2,12 +2,10 @@
   = stylesheet_link_tag('staffplans')
   
 %section
-  %header
-    %h2 All Staff
-    
-    %span.from-to== #{@from.strftime("%b %e, %Y")} &mdash; #{@to.strftime("%b %e, %Y")}
-    
   .user-header
+    %header
+      %h2 All Staff
+    
     %table.weeks
       %tr
         %td{rowspan: 2}
