@@ -4,7 +4,7 @@ gem 'rails',          '3.2.2'
 
 gem 'heroku'
 gem "backbone-support"
-gem 'bcrypt-ruby',    '~> 3.0.0'
+gem 'bcrypt-ruby',    '~> 3.0.1'
 gem 'coffee-filter'
 gem 'compass',        '~> 0.12.rc1'
 gem 'faker'

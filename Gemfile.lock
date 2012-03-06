@@ -221,7 +221,7 @@ PLATFORMS
 DEPENDENCIES
   awesome_print
   backbone-support
-  bcrypt-ruby (~> 3.0.0)
+  bcrypt-ruby (~> 3.0.1)
   coffee-filter
   coffee-rails (~> 3.2.1)
   compass (~> 0.12.rc1)
