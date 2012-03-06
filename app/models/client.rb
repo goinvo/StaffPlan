@@ -4,6 +4,7 @@ class Client < ActiveRecord::Base
   belongs_to :company
 
   validates_presence_of :name
+  validates_uniqueness_of :name, case_sensitive: false, scope: :company_id
 
   default_scope(order: "name ASC")
 

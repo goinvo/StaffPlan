@@ -22,7 +22,7 @@ module StaffPlan::SharedFinderMethods
     @client = Client.find_by_id(params[:client_id] || params[:id])
     
     unless @client.present?
-      @client = Client.find_by_name(params[:client_name])
+      @client = Client.where(["lower(name) = ?", (params[:client_name] || '').downcase]).first
       
       unless @client.present?
         @client = Client.create(name: params[:client_name], company_id: current_user.current_company_id)

@@ -6,7 +6,7 @@ class Users::ProjectsController < ApplicationController
   before_filter :find_or_create_client, :only => [:create]
   
   def create
-    @project = @client.projects.find_by_name(params[:name]) || @client.projects.build(company_id: current_user.current_company_id, name: params[:name])
+    @project = @client.projects.where(["lower(name) = ?", (params[:name] || '').downcase]).first || @client.projects.build(company_id: current_user.current_company_id, name: params[:name])
     
     if @target_user.projects << @project
       render_json_ok
