@@ -5,14 +5,21 @@ class CompaniesController < ApplicationController
   end
 
   def create
+    @user = User.where(email: params[:user][:email]).first || User.new(params[:user])
     @company = Company.new(params[:company])
-    @user = User.where(email: params[:user][:email]).first
-    @user ||= User.create(params[:user])
-    @company.users << @user
-    if @company.save!
-      redirect_to root_url, notice: "Company was successfully created"
+    if @user.save
+      @company.users << @user
+      if @company.save
+        # That notice thing doesn't really work
+        redirect_to root_url, notice: "Company was successfully created" and return
+      else
+        flash[:errors] = @company.errors.full_messages
+        render action: :new
+      end
     else
-      redirect_to :back, notice: "oops, something went wrong"
+      flash[:errors] = @user.errors.full_messages
+      render action: :new 
     end
   end
+
 end

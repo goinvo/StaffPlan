@@ -1,16 +1,31 @@
+%section
+  %header
+    %h2 Add Company 
+
 = form_for @company do |f|
   .company-info
-    = f.label :name
+    = f.label :name, "Company Name"
+    %br
     = f.text_field :name
-  .user-info
+  .company-user-info
+    %h3
+      = "User Information"
+    %br
     = fields_for @user do |u|
       = u.label :name
+      %br
       = u.text_field :name
       %br
       = u.label :email
+      %br
       = u.text_field :email
       %br
       = u.label :password
+      %br
       = u.password_field :password
+      %br
+      = u.label :password_confirmation
+      %br
+      = u.password_field :password_confirmation
   .submit
     = f.submit "Create" 
