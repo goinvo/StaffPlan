@@ -1,5 +1,5 @@
 class Client < ActiveRecord::Base
-  attr_accessible :name, :description, :active, :company_id
+  attr_accessible :name, :description, :active
   has_many :projects
   belongs_to :company
 
@@ -11,7 +11,9 @@ class Client < ActiveRecord::Base
   def staff_plan_json
     Jbuilder.encode do |json|
       json.(self, :id, :name, :active)
-      json.projects self.projects
+      json.projects(self.projects) do |json, project|
+        json.extract! project, :id, :name, :active, :company_id
+      end
     end
   end
 end

@@ -94,7 +94,7 @@ class ProjectView extends Backbone.View
       success: (project, response) =>
         if response.status == "ok"
           @model.set response.attributes
-          window._meta.clients.reset response.clients
+          window._meta.clients.reset response.clients.map (client) -> JSON.parse(client)
           @model.trigger 'project:created', @model
           
         else
