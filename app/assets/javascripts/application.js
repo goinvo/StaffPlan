@@ -13,8 +13,8 @@
 //= require mustache
 //= require time
 
-$(document).ready(function(){
-  $('select#user_current_company_id').live('change', function(){
-    $(this).closest('form').submit();
+$( document ).ready(function() {
+  $( 'select#user_current_company_id' ).live( 'change', function() {
+    $( this ).closest( 'form' ).submit();
   });
 });
