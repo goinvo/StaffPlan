@@ -34,7 +34,7 @@ describe SessionsController do
   describe "GET#destroy" do
     it "should set session[:user_id] to nil" do
       @current_user = Factory(:user)
-      login_user(@current_user)
+      login_user(user: @current_user)
       
       get :destroy
       session[:user_id].should be_nil

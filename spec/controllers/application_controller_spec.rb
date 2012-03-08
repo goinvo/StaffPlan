@@ -26,7 +26,7 @@ describe ApplicationController do
     
     context "with a logged in user" do
       before(:each) do
-        @user = login_user
+        @user, @company = login_user
       end
       
       it "should let the user pass" do
@@ -39,7 +39,7 @@ describe ApplicationController do
   
   describe 'Full/Mobile switching' do
     before(:each) do
-      @user = login_user
+      @user, @company = login_user
     end
     
     it "should not change the session[:mobile_view] if the param isn't present" do

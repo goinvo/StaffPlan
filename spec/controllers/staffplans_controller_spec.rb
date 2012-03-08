@@ -2,10 +2,7 @@ require 'spec_helper'
 
 describe StaffplansController do
   before(:each) do
-    @current_user = login_user
-    @company = Factory(:company)
-    @current_user.update_attributes(current_company_id: @company.id)
-    @company.users << @current_user
+    @current_user, @company = login_user
 
     3.times do |i|
       c = Factory(:client)
@@ -63,7 +60,9 @@ describe StaffplansController do
       
       @other_company.users << @current_user
       
-      @current_user.update_attributes(current_company_id: @other_company.id)
+      @current_user.current_company = @other_company
+      @current_user.save!
+      @current_user.reload
 
       @current_user.current_company.clients.should_not include(@client_1)
       @current_user.current_company.clients.size.should eq(2)

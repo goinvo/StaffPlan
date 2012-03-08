@@ -49,17 +49,17 @@ class UsersController < ApplicationController
   # PUT /users/1
   # PUT /users/1.json
   def update
-    # For the case where the user simply updated his current_company, we redirect_to :back
-    
     respond_to do |format|
-      if @user.update_attributes(params[:user].except(:cc_foo))
-        format.html { 
-          if params[:user].has_key?(:cc_foo)
-            redirect_to :back 
-          else
-            redirect_to @user, notice: "User was successfully updated"
-          end
-        }
+      if new_current_company_id = params[:user].present? ? params[:user].delete(:current_company_id) : nil
+        company = current_user.companies.find_by_id(new_current_company_id)
+        redirect_to :back and return if company.nil?
+        @user.current_company_id = company.id
+        @user.save
+        redirect_to :back and return
+      end
+      
+      if @user.update_attributes(params[:user])
+        format.html { redirect_to @user, notice: "User was successfully updated" }
         format.json { head :ok }
       else
         format.html { render action: "edit" }

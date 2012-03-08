@@ -3,9 +3,7 @@ require 'spec_helper'
 describe ClientsController do
   
   before(:each) do
-    @current_user = login_user
-    @company = Factory(:company)
-    @current_user.update_attributes(current_company_id: @company.id)
+    @current_user, @company = login_user
     @company.users << @current_user
   end
   

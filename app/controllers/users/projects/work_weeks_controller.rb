@@ -6,6 +6,8 @@ class Users::Projects::WorkWeeksController < ApplicationController
   
   def create
     @work_week = WorkWeek.new(whitelist_attributes)
+    @work_week.project_id = @project.id
+    @work_week.user_id = @target_user.id
     
     if @work_week.save
       respond_to do |format|
@@ -54,7 +56,7 @@ class Users::Projects::WorkWeeksController < ApplicationController
     render(:json => {
       status: "ok",
       work_week: @work_week,
-      clients: Client.all
+      clients: current_user.current_company.clients.includes(:projects).map(&:staff_plan_json)
     })
   end
   
@@ -64,13 +66,6 @@ class Users::Projects::WorkWeeksController < ApplicationController
              
     base.merge!(estimated_hours: params[:estimated_hours]) if params[:estimated_hours].present?
     base.merge!(actual_hours: params[:actual_hours]) if params[:actual_hours].present?
-    
-    if action_name == "create"
-      base.merge!(
-        project_id: @project.id,
-        user_id: @target_user.id
-      )
-    end
     
     base
   end

@@ -3,10 +3,7 @@ require 'spec_helper'
 describe ProjectsController do
 
   before(:each) do
-    @current_user = login_user
-    @company = Factory(:company)
-    @current_user.update_attributes(current_company_id: @company.id)
-    @company.users << @current_user
+    @current_user, @company = login_user
   end
 
   def valid_attributes(client = Factory(:client))

@@ -3,8 +3,8 @@ require 'spec_helper'
 describe Users::Projects::WorkWeeksController do
 
   before(:each) do
-    @user = login_user
-    @project = Factory(:project, :users => [@user])
+    @user, @company = login_user
+    @project = Factory(:project, :users => [@user], company: @company)
   end
 
   def base_params

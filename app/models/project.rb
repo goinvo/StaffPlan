@@ -1,6 +1,6 @@
 class Project < ActiveRecord::Base
   
-  attr_accessible :client, :name, :active, :company 
+  attr_accessible :name, :active
   
   belongs_to  :client
   belongs_to  :company

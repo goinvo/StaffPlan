@@ -7,10 +7,9 @@ describe Project do
     end
     
     it "should be valid? with valid attributes" do
-      Project.new(
-        name: Faker::Company.bs,
-        client: Factory(:client)
-      ).valid?.should be_true
+      project = Project.new(name: Faker::Company.bs)
+      project.client = Factory(:client)
+      project.valid?.should be_true
     end
   end
 end

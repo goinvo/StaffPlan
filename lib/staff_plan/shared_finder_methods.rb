@@ -3,7 +3,7 @@ module StaffPlan::SharedFinderMethods
   private
   
   def find_target_user
-    @target_user = User.find_by_id(params[:user_id] || params[:id])
+    @target_user = current_user.current_company.users.find_by_id(params[:user_id] || params[:id])
     
     unless @target_user.present?
       redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_user') and return
@@ -11,7 +11,7 @@ module StaffPlan::SharedFinderMethods
   end
   
   def find_project
-    @project = Project.find_by_id(params[:project_id] || params[:id])
+    @project = current_user.current_company.projects.find_by_id(params[:project_id] || params[:id])
     
     unless @project.present?
       redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_project') and return
@@ -19,15 +19,16 @@ module StaffPlan::SharedFinderMethods
   end
   
   def find_or_create_client
-    @client = Client.find_by_id(params[:client_id] || params[:id])
+    @client = current_user.current_company.clients.find_by_id(params[:client_id] || params[:id])
     
     unless @client.present?
-      @client = Client.where(["lower(name) = ?", (params[:client_name] || '').downcase]).first
+      @client = current_user.current_company.clients.where(["lower(name) = ?", (params[:client_name] || '').downcase]).first
       
       unless @client.present?
-        @client = Client.create(name: params[:client_name], company_id: current_user.current_company_id)
+        @client = current_user.current_company.clients.create(name: params[:client_name])
+        @client.company_id = current_user.current_company_id
         
-        if @client.new_record?
+        unless @client.save
           redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_client') and return
         end
       end
@@ -35,7 +36,7 @@ module StaffPlan::SharedFinderMethods
   end
   
   def find_client
-    @client = Client.find_by_id(params[:client_id] || params[:id])
+    @client = current_user.current_company.clients.find_by_id(params[:client_id] || params[:id])
     
     unless @client.present?
       redirect_to root_url, notice: I18n.t('controllers.shared.problem_finding_client') and return

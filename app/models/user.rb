@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
-  attr_accessible :name, :email, :password, :password_confirmation, :current_company_id
+  # TODO: remove password and password_confirmation from attr_accessible
+  attr_accessible :name, :email, :password, :password_confirmation
 
   has_secure_password
 
@@ -28,6 +29,12 @@ class User < ActiveRecord::Base
 
   def current_company
     companies.where(id: current_company_id).first
+  end
+  
+  def current_company=(company)
+    return false unless self.companies.include?(company)
+    self.current_company_id = company.id
+    self.save
   end
 
   def staff_plan_json(company_id)

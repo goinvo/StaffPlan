@@ -8,9 +8,24 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
-def login_user(user=Factory(:user))
+def login_user(*options)
+  options = options.extract_options!
+  company = options[:company] || Factory(:company)
+  
+  user = unless options[:user].nil?
+    company.users << options[:user]
+    options[:user].current_company = company
+    options[:user]
+  else
+    user = Factory(:user)
+    company.users << user
+    user.current_company = company
+    user
+  end
+  
   session[:user_id] = user.id
-  user
+  
+  return user, company
 end
 
 def logout_user
