@@ -38,7 +38,7 @@ describe StaffplansController do
     end
 
     it "should show only clients and projects for the current user's current company when I go to my staff plan page" do
-      
+
       @company.clients << @client_1
 
       @current_user.current_company.clients.should == [@client_1]
@@ -50,16 +50,16 @@ describe StaffplansController do
       assigns[:clients].first.class.should eq(String)
       assigns[:target_user].should == @current_user
 
-      end
+    end
 
     it "should only show clients and projects for the current user's current company when I go to my staff plan page" do
 
       @other_company = Factory(:company)
       @other_company.clients << @client_2
       @other_company.clients << @client_3
-      
+
       @other_company.users << @current_user
-      
+
       @current_user.current_company = @other_company
       @current_user.save!
       @current_user.reload
@@ -72,6 +72,75 @@ describe StaffplansController do
       assigns[:target_user].should eq(@current_user)
     end
 
+  end
+
+  describe "GET#index" do 
+    context "General" do
+      it "should assign @users with a list of alphabetically ordered users" do
+        @company.users << Array.new(3) { user_with_clients_and_projects }
+        get :index
+        assigns[:users].should_not be_empty
+        assigns[:users].sort {|a,b| a.name <=> b.name}.should eq(assigns[:users])
+      end
+
+      it "should show the index template" do
+        get :index
+        response.should render_template(:index)
+      end
+
+      it "should only show workload estimates for users belonging to the current user's current company" do
+        @company.users << Array.new(rand(1..10)) { user_with_clients_and_projects }
+        other_user = user_with_clients_and_projects
+        other_company = Factory(:company)
+        other_company.users << other_user
+        get :index
+        assigns[:users].size.should eq(@company.users.size)
+        assigns[:users].should_not include(other_user)
+      end
+
+      it "should show the workload estimates for a time window of 13 weeks" do
+        get :index
+        # Not sure this should be hardcoded, but the interface seems to only display 
+        # a time frame of -1 week and 3 months in the future, for a total of 13 weeks
+        assigns[:date_range].size.should eq(13)
+      end
+      
+      it "should assign an array of Date objects to @date_range" do
+        get :index
+        assigns[:date_range].should be_a(Array)
+        assigns[:date_range].all? do |date| 
+          date.should be_a(Date)
+        end
+      end
+    end
+
+    context "I want to see the staffplans for the next 3 months" do
+      it "should assign the time frame going from one week ago to the week before 3 months from now to @date_range" do
+        get :index
+        assigns[:from].should eq(1.week.ago(Date.today.at_beginning_of_week))
+        assigns[:date_range].first.should eq(assigns[:from])
+        assigns[:date_range].last.should < 3.month.from_now(assigns[:from])
+      end
+    end
+
+    context "I want to see the staff plans for a period of 3 months from the given date" do
+      it "should fall back to showing the staff plans for the next three months if I pass an invalid from parameter" do
+        get :index, from: "bogus"
+        assigns[:from].should eq(1.week.ago(Date.today.at_beginning_of_week))
+      end
+
+      it "should assign the time frame going from one week before the given date to the week before 3 months after that date to @date_range" do
+        from_date = rand(1..100).days.ago.strftime("%Y-%m-%d")
+        get :index, from: from_date 
+        assigns[:from].should eq(1.week.ago(Date.parse(from_date).at_beginning_of_week))
+
+        # See above, not too sure about this and how useful it is
+        assigns[:date_range].size.should eq(13)
+
+        assigns[:date_range].first.should eq(assigns[:from])
+        assigns[:date_range].last.should < 3.month.from_now(assigns[:from])
+      end 
+    end
   end
 
 end
