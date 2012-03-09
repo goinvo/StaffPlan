@@ -33,7 +33,7 @@ class UsersController < ApplicationController
   # POST /users.json
   def create
     @user = User.new(params[:user])
-
+    @user.current_company_id = current_user.current_company_id
     respond_to do |format|
       if @user.save
         current_user.current_company.users << @user
