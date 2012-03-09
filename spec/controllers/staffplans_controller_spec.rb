@@ -89,7 +89,7 @@ describe StaffplansController do
       end
 
       it "should only show workload estimates for users belonging to the current user's current company" do
-        @company.users << Array.new(rand(1..10)) { user_with_clients_and_projects }
+        @company.users << user_with_clients_and_projects
         other_user = user_with_clients_and_projects
         other_company = Factory(:company)
         other_company.users << other_user
@@ -98,13 +98,6 @@ describe StaffplansController do
         assigns[:users].should_not include(other_user)
       end
 
-      it "should show the workload estimates for a time window of 13 weeks" do
-        get :index
-        # Not sure this should be hardcoded, but the interface seems to only display 
-        # a time frame of -1 week and 3 months in the future, for a total of 13 weeks
-        assigns[:date_range].size.should eq(13)
-      end
-      
       it "should assign an array of Date objects to @date_range" do
         get :index
         assigns[:date_range].should be_a(Array)
@@ -133,10 +126,6 @@ describe StaffplansController do
         from_date = rand(1..100).days.ago.strftime("%Y-%m-%d")
         get :index, from: from_date 
         assigns[:from].should eq(1.week.ago(Date.parse(from_date).at_beginning_of_week))
-
-        # See above, not too sure about this and how useful it is
-        assigns[:date_range].size.should eq(13)
-
         assigns[:date_range].first.should eq(assigns[:from])
         assigns[:date_range].last.should < 3.month.from_now(assigns[:from])
       end 
