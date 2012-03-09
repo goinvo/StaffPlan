@@ -11,24 +11,48 @@ describe Users::Projects::WorkWeeksController do
     {user_id: @user.id, project_id: @project.id}
   end
 
-  describe "all actions" do
-    it "should redirect if the target user can't be found" do
-    end
-  end
-
   describe '#create' do
-    it "should return the JSON OK response for a successful work_week creation" do
+    it "should redirect if the target user can't be found" do
+      # FIXME: Not really good... Ideally I'd like to stub the call to find_by_id in
+      # SharedFinderMethods to return an empty array 
       post(:create, {
-        user_id: @user.id, 
+        user_id: "bogus", 
         project_id: @project.id, 
         cweek: Date.today.cweek, 
         year: Date.today.year, 
         format: "js"
       })
-      assigns[:project].should be_a(Project)
-      @body = JSON.parse(response.body)
-      @body.should be_a(Hash)
-      @body['status'].should eq("ok")
+
+      response.should redirect_to(root_url)
+    end
+    context "js" do
+      it "should return a JSON OK response and keep WorkWeek.count unchanged if the user tries to save a work_week that already exists" do
+        parameters = {
+          user_id: @user.id, 
+          project_id: @project.id, 
+          cweek: Date.today.cweek, 
+          year: Date.today.year 
+        } 
+        ww = Factory(:work_week, parameters) 
+        lambda {post :create, parameters.merge(format: "js")}.should_not change(WorkWeek, :count) 
+
+        @body = JSON.parse(response.body)
+        @body.should be_a(Hash)
+        @body['status'].should eq("ok")
+      end
+
+      it "should return the JSON OK response for a successful work_week creation" do
+        post(:create, {
+          user_id: @user.id, 
+          project_id: @project.id, 
+          cweek: Date.today.cweek, 
+          year: Date.today.year, 
+          format: "js"
+        })
+        @body = JSON.parse(response.body)
+        @body.should be_a(Hash)
+        @body['status'].should eq("ok")
+      end
     end
   end
 
@@ -39,6 +63,19 @@ describe Users::Projects::WorkWeeksController do
     end
 
     context "format: 'js'" do
+      it "should redirect if the target user can't be found" do
+        # FIXME: Not really good... Ideally I'd like to stub the call to find_by_id in
+        # SharedFinderMethods to return an empty array 
+        put :update, {
+          user_id: "bogus", 
+          project_id: @project.id, 
+          id: @work_week.id, 
+          cweek: 19, 
+          format: 'js'
+        }
+
+        response.should redirect_to(root_url)
+      end
       it "should render the fail JSON response if update_attributes fails" do
         WorkWeek.any_instance.stubs(:update_attributes).returns(false) 
         put :update, {
