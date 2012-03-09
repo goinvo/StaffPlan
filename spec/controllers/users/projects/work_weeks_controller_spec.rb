@@ -27,12 +27,10 @@ describe Users::Projects::WorkWeeksController do
     end
     context "js" do
       it "should return a JSON OK response and keep WorkWeek.count unchanged if the user tries to save a work_week that already exists" do
-        parameters = {
-          user_id: @user.id, 
-          project_id: @project.id, 
+        parameters = base_params.merge({
           cweek: Date.today.cweek, 
           year: Date.today.year 
-        } 
+        }) 
         ww = Factory(:work_week, parameters) 
         lambda {post :create, parameters.merge(format: "js")}.should_not change(WorkWeek, :count) 
 
