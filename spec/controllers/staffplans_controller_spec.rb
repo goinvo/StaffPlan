@@ -90,6 +90,11 @@ describe StaffplansController do
         assigns[:date].should eq(Date.parse(date).at_beginning_of_week)
       end
 
+      it "should assign the beginning of the current week to @date if the user supplies an invalid date parameter" do
+        get :show, @parameters.merge(date: "bogus") 
+        assigns[:date].should eq(Date.today.at_beginning_of_week)
+      end
+
       it "should assign a list of projects grouped by client name to @projects" do
         get :show, @parameters
         assigns[:projects].should be_a(Hash)
