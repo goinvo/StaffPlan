@@ -72,6 +72,35 @@ describe StaffplansController do
       assigns[:target_user].should eq(@current_user)
     end
 
+    context "mobile" do
+      before(:each) do
+        visited_user = user_with_clients_and_projects
+        @company.users << visited_user
+        @parameters = {id: visited_user.id, format: "mobile"}
+      end
+
+      it "should assign the beginning of the current week to @date if the user doesn't pass any date parameter" do
+        get :show, @parameters 
+        assigns[:date].should eq(Date.today.at_beginning_of_week)
+      end
+
+      it "should assign the beginning of the week for the date passed as a parameter if the user supplies a valid one" do
+        date = rand(1..6).weeks.ago(Date.today).strftime("%Y-%m-%d")
+        get :show, @parameters.merge(date: date)
+        assigns[:date].should eq(Date.parse(date).at_beginning_of_week)
+      end
+
+      it "should assign a list of projects grouped by client name to @projects" do
+        get :show, @parameters
+        assigns[:projects].should be_a(Hash)
+        assigns[:projects].all? do |client_name, projects|
+          projects.all? do |project| 
+            project.client.name.should eq(client_name)
+          end
+        end
+      end
+    end
+
   end
 
   describe "GET#my_staffplan" do
