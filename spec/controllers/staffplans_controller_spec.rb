@@ -99,6 +99,11 @@ describe StaffplansController do
           end
         end
       end
+
+      it "should render the show.mobile.haml template with no layout for a XHR request" do
+        xhr :get, :show, @parameters
+        response.should render_template("staffplans/show", layout: false)
+      end
     end
 
   end
