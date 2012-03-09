@@ -188,6 +188,10 @@ GEM
       ffi (~> 1.0)
       multi_json (~> 1.0)
       rubyzip
+    simplecov (0.6.1)
+      multi_json (~> 1.0)
+      simplecov-html (~> 0.5.3)
+    simplecov-html (0.5.3)
     slop (2.4.4)
     sprockets (2.1.2)
       hike (~> 1.2)
@@ -244,6 +248,7 @@ DEPENDENCIES
   rails-behaviors
   rspec-rails (= 2.8.1)
   sass-rails (~> 3.2.3)
+  simplecov
   thin
   uglifier (>= 1.0.3)
   webrat
