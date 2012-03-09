@@ -52,6 +52,11 @@ describe UsersController do
         assigns(:user).should be_persisted
       end
 
+      it "should set the current user's current_company_id on the newly created user" do
+        post :create, :user => Factory.attributes_for(:user)
+        assigns(:user).current_company_id.should eq(@company.id)
+      end
+
       it "redirects to the created user" do
         post :create, :user => Factory.attributes_for(:user)
         response.should redirect_to(User.last)
