@@ -74,6 +74,13 @@ describe StaffplansController do
 
   end
 
+  describe "GET#my_staffplan" do
+    it "should redirect the current_user to his/her staffplan page" do
+      get :my_staffplan
+      response.should redirect_to(staffplan_url(@current_user))
+    end
+  end
+
   describe "GET#index" do 
     context "General" do
       it "should assign @users with a list of alphabetically ordered users" do
