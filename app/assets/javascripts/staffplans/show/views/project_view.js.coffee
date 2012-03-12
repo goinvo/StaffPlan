@@ -91,6 +91,7 @@ class ProjectView extends Backbone.View
         silent: true
       
     @model.save {},
+      wait: true
       success: (project, response) =>
         if response.status == "ok"
           @model.set response.attributes
