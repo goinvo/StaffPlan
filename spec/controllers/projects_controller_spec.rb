@@ -72,6 +72,20 @@ describe ProjectsController do
         post :create, :project => valid_attributes
         response.should redirect_to(Project.last)
       end
+
+      it "should create a new client if the user selects New Client in the client list" do 
+        expect {
+          post :create, project: {name: Faker::Company.name, client_id: "new", active: "1"}, client: {name: Faker::Company.name}
+        }.to change(Client, :count).by(1)
+      end
+
+      it "should assign the new client to the new project if the user selects New Client in the clients list" do
+        client_name = Faker::Company.name
+        post :create, project: {name: Faker::Company.name, client_id: "new", active: "1"}, client: {name: client_name}
+        assigns[:project].client.should_not be_nil
+        assigns[:project].client.name.should eq(client_name)
+        assigns[:project].client.company_id.should eq(@company.id)
+      end
     end
 
     describe "with invalid params" do
