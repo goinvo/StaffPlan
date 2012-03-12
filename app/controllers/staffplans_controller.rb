@@ -11,13 +11,8 @@ class StaffplansController < ApplicationController
       end
     
       format.mobile do
-        @date = (params[:date].present? ? Date.parse(params[:date]) : Date.today.at_beginning_of_week).at_beginning_of_week
-        @projects = @target_user.projects.inject({}) do |hash, project|
-          hash[project.client.name] ||= []
-          hash[project.client.name] << project
-          hash
-        end
-        
+        @date = (Date.parse(params[:date]) rescue Date.today).at_beginning_of_week
+        @projects = @target_user.projects.group_by { |project| project.client.name }
         render(layout: false) if request.xhr?
       end
     end

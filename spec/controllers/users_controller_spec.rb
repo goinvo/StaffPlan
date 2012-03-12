@@ -106,6 +106,24 @@ describe UsersController do
         put :update, :id => user.id, :user => Factory.attributes_for(:user)
         response.should redirect_to(user)
       end
+
+      it "should let people change their current_company" do
+        request.env["HTTP_REFERER"] = staffplan_url(@current_user)
+        other_company = Factory(:company)
+        other_company.users << @current_user
+        put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
+        assigns[:user].current_company.should eq(other_company)
+        response.should redirect_to :back
+      end
+
+      it "should just redirect to back and do nothing if the specified company_id is not one the user belongs to" do
+        request.env["HTTP_REFERER"] = staffplan_url(@current_user)
+        other_company = Factory(:company)
+        lambda {
+          put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
+        }.should_not change(@current_user, :current_company_id)
+        response.should redirect_to :back
+      end
     end
 
     describe "with invalid params" do
