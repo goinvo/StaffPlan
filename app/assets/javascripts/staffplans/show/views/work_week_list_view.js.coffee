@@ -207,6 +207,7 @@ class WorkWeekListView extends Backbone.View
         {"actual_hours": value}
       
       workWeek.save hash,
+        wait: true
         success: (workWeek, response, jqxhr) =>
           $( document.body ).trigger 'work_week:value:updated'
         
@@ -221,6 +222,7 @@ class WorkWeekListView extends Backbone.View
       
       @model.add newWorkWeek
       newWorkWeek.save {},
+        wait: true
         success: (workWeek, response, jqxhr) ->
           if response.status == "ok"
             window._meta.clients.reset response.clients.map (client) -> JSON.parse(client)
