@@ -26,6 +26,13 @@ describe CompaniesController do
         response.should redirect_to(root_url)
       end
 
+      it "should create a new user and set the company's id as his/her current_company_id on a successful POST" do
+        expect {
+          post :create, company: {name: Faker::Company.name}, user: Factory.attributes_for(:user) 
+        }.to change(User, :count).by(1)
+        assigns[:user].current_company_id.should eq(assigns[:company].id)
+      end
+
       it "should not save anything if the new user's name already exists" do
         parameters = {
           company: Factory.attributes_for(:company), 

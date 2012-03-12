@@ -10,6 +10,8 @@ class CompaniesController < ApplicationController
     if @user.save
       @company.users << @user
       if @company.save
+        @user.current_company_id = @company.id
+        @user.save
         # That notice thing doesn't really work
         redirect_to root_url, notice: "Company was successfully created" and return
       else
