@@ -9,6 +9,10 @@
   = f.text_field :name
   .client_selector
     = f.select :client_id, current_user.current_company.clients.map { |client| [client.name, client.id] } << ["New Client", "new"], selected: @project.client.try(:id)
+    = fields_for @project.build_client do |c|
+      .input.new-client
+        = c.label :name, "Client Name"
+        = c.text_field :name 
   = f.check_box :active
     
   .actions
