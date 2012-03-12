@@ -7,7 +7,8 @@
           %li= msg
           
   = f.text_field :name
-  = f.select :client_id, options_from_collection_for_select(current_user.current_company.clients, 'id', 'name', selected: @project.client.try(:id))
+  .client_selector
+    = f.select :client_id, current_user.current_company.clients.map { |client| [client.name, client.id] } << ["New Client", "new"], selected: @project.client.try(:id)
   = f.check_box :active
     
   .actions
