@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe User do
+
   describe 'validations' do
     it "should not be valid? for new instances" do
       User.new.valid?.should be_false
@@ -17,6 +18,39 @@ describe User do
     
     it "should validate the email format" do
       User.create(email: "thisisnotanemailaddress").errors[:email].should_not be_empty
+    end
+
+    it "should return 0 when I try to get the number of estimated hours for a new user" do
+      @user = User.new(email: Faker::Internet.email, name: Faker::Name.name, password: "23kj23k2j")
+      @company = Factory(:company)
+      @company.users << @user
+      @user.current_company_id = @company.id
+      @user.save
+
+      @user.plan_for(@company.id).should eq(0)
+      
+      @client = Client.new(name: Faker::Company.name, description: Faker::Lorem.sentences(2), active: true)
+      @client.company_id = @company.id
+      @client.save
+      
+      @project = Project.new(name: Faker::Company.name, name: Faker::Company.bs)
+      @project.company_id = @company.id
+      @project.client_id = @client.id
+      @project.save
+
+      @work_week = WorkWeek.new(cweek: 2.weeks.from_now(Date.today).cweek, year: Date.today.year, estimated_hours: 20, actual_hours: 12)
+      @work_week.project_id = @project.id
+      @work_week.user_id = @user.id
+      @work_week.save
+      @user.plan_for(@company.id).should eq(20)
+
+      @work_week.update_attributes(estimated_hours: 200)
+      @user.plan_for(@company.id).should eq(200)
+
+      @work_week.update_attributes(year: 2.years.ago(Date.today).year)
+      @user.plan_for(@company.id).should eq(0)
+
+      
     end
   end
 end
