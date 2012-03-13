@@ -7,7 +7,9 @@ class WorkWeek < ActiveRecord::Base
   validates_numericality_of :estimated_hours, :actual_hours, greater_than_or_equal_to: 0, allow_nil: true
 
   scope :for_user_and_company, lambda { |user_id, company_id|
-    joins(:project).where("projects.company_id = ? AND work_weeks.user_id = ? AND ((work_weeks.year > ?) OR (work_weeks.cweek > ? AND work_weeks.year = ?))", company_id, user_id, Date.today.at_beginning_of_week.year, Date.today.at_beginning_of_week.cweek, Date.today.at_beginning_of_week.year)
+    date = Date.today.at_beginning_of_week
+    query = "projects.company_id = ? AND work_weeks.user_id = ? AND (work_weeks.year > ? OR (work_weeks.cweek > ? AND work_weeks.year = ?))"
+    joins(:project).where(query, company_id, user_id, date.year, date.cweek, date.year)
   }
 
 end
