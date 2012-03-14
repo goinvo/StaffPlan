@@ -23,7 +23,7 @@ class User < ActiveRecord::Base
   after_update do |user|
     terminator = user.versions.last.try(:terminator)
     if terminator.present? and terminator.to_i != user.id
-      User.find_by_id(terminator).update_timestamp!
+      User.find_by_id(terminator.to_i).update_timestamp!
     end
   end
 
