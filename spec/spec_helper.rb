@@ -46,6 +46,17 @@ def user_with_clients_and_projects(target_user=Factory(:user))
   target_user
 end
 
+def with_versioning
+  was_enabled = PaperTrail.enabled?
+  PaperTrail.enabled = true
+  begin
+    yield
+  ensure
+    PaperTrail.enabled = was_enabled
+  end
+end
+
+
 RSpec.configure do |config|
   config.mock_with :mocha
   
@@ -54,4 +65,9 @@ RSpec.configure do |config|
   config.filter_run(:focus => true)
   
   config.run_all_when_everything_filtered = true
+
+  config.before :each do
+    PaperTrail.controller_info = {}
+    PaperTrail.whodunnit = nil
+  end
 end
