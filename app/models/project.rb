@@ -1,4 +1,5 @@
 class Project < ActiveRecord::Base
+  has_paper_trail
   
   attr_accessible :name, :active
   
@@ -17,6 +18,11 @@ class Project < ActiveRecord::Base
   
   has_and_belongs_to_many :users, uniq: true
   
+  after_update do |p|
+    terminator = p.versions.last.try(:terminator)
+    User.find_by_id(terminator.to_i).update_timestamp! if terminator.present?
+  end
+
   validates_presence_of :name, :client
   validates_uniqueness_of :name, case_sensitive: false, scope: :company_id
   
