@@ -7,7 +7,7 @@ class Company < ActiveRecord::Base
 
   after_update do |c|
     terminator = c.versions.last.try(:terminator)
-    User.find_by_id(terminator.to_i).update_attributes! if terminator.present?
+    User.find_by_id(terminator.to_i).update_timestamp! if terminator.present?
   end
 
   def clients_as_json
