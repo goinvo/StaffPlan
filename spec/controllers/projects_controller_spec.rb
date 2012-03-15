@@ -19,12 +19,11 @@ describe ProjectsController do
       @company.projects << project
 
       get :index
-      # Now you see me
       assigns(:projects).should eq([project])
 
-      @company.projects.delete_all
+      @company.projects.destroy_all
+      
       get :index
-      # Now you don't
       assigns(:projects).should eq([])
     end
   end
