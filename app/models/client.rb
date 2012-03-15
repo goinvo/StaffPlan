@@ -1,4 +1,5 @@
 class Client < ActiveRecord::Base
+  include StaffPlan::AuditMethods
   has_paper_trail
 
   attr_accessible :name, :description, :active
@@ -10,10 +11,7 @@ class Client < ActiveRecord::Base
 
   default_scope(order: "name ASC")
 
-  after_update do |c|
-    terminator = c.versions.last.try(:terminator)
-    User.find_by_id(terminator.to_i).update_timestamp! if terminator.present?
-  end
+  after_update :update_originator_timestamp
 
   def staff_plan_json
     Jbuilder.encode do |json|

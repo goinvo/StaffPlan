@@ -19,7 +19,6 @@ class User < ActiveRecord::Base
     end
   end
 
-  # FIXME: That pattern is going to be repeated across all the models, DRY that up
   after_update do |user|
     terminator = user.versions.last.try(:terminator)
     if terminator.present? and terminator.to_i != user.id
