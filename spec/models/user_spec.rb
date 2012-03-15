@@ -19,4 +19,9 @@ describe User do
       User.create(email: "thisisnotanemailaddress").errors[:email].should_not be_empty
     end
   end
+  
+  describe '#current_company' do
+    it "should return false if the company isn't associated with the user"
+    it "should set current_company_id to the company's id"
+  end
 end
