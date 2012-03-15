@@ -1,6 +1,6 @@
 class Client < ActiveRecord::Base
   attr_accessible :name, :description, :active
-  has_many :projects
+  has_many :projects, dependent: :destroy
   belongs_to :company
 
   validates_presence_of :name
