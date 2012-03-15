@@ -1,4 +1,4 @@
-class WorkWeekListView extends Backbone.View
+class views.staffplans.WorkWeekListView extends Backbone.View
   
   tagName: "section"
   className: "work-weeks"
@@ -234,4 +234,4 @@ class WorkWeekListView extends Backbone.View
             alert('Problem saving your entry, please try again')
             $element.removeAttr('value')
     
-window.WorkWeekListView = WorkWeekListView
+window.views.staffplans.WorkWeekListView = views.staffplans.WorkWeekListView

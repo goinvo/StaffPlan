@@ -1,4 +1,4 @@
-class UserView extends Backbone.View
+class views.staffplans.UserView extends Backbone.View
 
   tagName: "div"
   className: "staffplan"
@@ -155,16 +155,22 @@ class UserView extends Backbone.View
     weekHourCounters = whc.find '.week-hour-counter li'
     _.each dateRange, (date, idx) ->
       # Map week to <li>
+      noActualsForWeek = false
       li = weekHourCounters.eq(idx)
       workWeek = ww["#{date.year}-#{date.mweek}"]
       total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
+      if total == 0 && date.weekHasPassed
+        noActualsForWeek = true
+        total = workWeek['estimated'] || 0
+        
       li
         .height(total * ratio)
         .html("<span>" + total + "</span>")
         .removeClass "present"
 
-      if isThisWeek(date)
+      if isThisWeek(date) || noActualsForWeek
         li.addClass "present"
+        li.removeClass "passed"
       else if date.weekHasPassed
         li.addClass "passed"
       else
@@ -176,9 +182,4 @@ class UserView extends Backbone.View
       undefinedClientId.remove()
       @model.projects.add {}
 
-window.UserView = UserView
-
-isThisWeek = (date) ->
-  now = new Time
-  date.year == now.year() and date.mweek == now.week()
-
+views.staffplans.UserView= views.staffplans.UserView

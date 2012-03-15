@@ -122,11 +122,12 @@ describe StaffplansController do
 
   describe "GET#index" do 
     context "General" do
-      it "should assign @users with a list of alphabetically ordered users" do
+      it "should assign @users with a list of users ordered by ascending estimated workload in the future" do
         @company.users << Array.new(3) { user_with_clients_and_projects }
         get :index
         assigns[:users].should_not be_empty
-        assigns[:users].sort {|a,b| a.name <=> b.name}.should eq(assigns[:users])
+        users = assigns[:users].map{|u| u.plan_for(@company.id)}
+        users.sort.should == users
       end
 
       it "should show the index template" do

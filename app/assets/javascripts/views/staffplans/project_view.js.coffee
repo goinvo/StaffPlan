@@ -1,4 +1,4 @@
-class ProjectView extends Backbone.View
+class views.staffplans.ProjectView extends Backbone.View
   
   className: 'project'
   id: "project-#{@cid}"
@@ -135,4 +135,4 @@ class ProjectView extends Backbone.View
     $( event.currentTarget ).autocomplete
       source: projectNames
     
-window.ProjectView = ProjectView
+window.views.staffplans.ProjectView = views.staffplans.ProjectView

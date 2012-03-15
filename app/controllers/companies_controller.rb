@@ -7,18 +7,20 @@ class CompaniesController < ApplicationController
   def create
     @user = User.where(email: params[:user][:email]).first || User.new(params[:user])
     @company = Company.new(params[:company])
-    if @user.save
-      @company.users << @user
-      if @company.save
-        # That notice thing doesn't really work
-        redirect_to root_url, notice: "Company was successfully created" and return
+    
+    Company.transaction do
+      if @company.save && @company.users << @user
+        @user.current_company = @company if @user.current_company.nil?
       else
-        flash[:errors] = @company.errors.full_messages
-        render action: :new
+        raise ActiveRecord::Rollback
       end
+    end
+    
+    if @company.persisted?
+      redirect_to root_url, notice: "Company was successfully created"
     else
-      flash[:errors] = @user.errors.full_messages
-      render action: :new 
+      flash[:errors] = @company.errors.full_messages
+      render action: :new
     end
   end
 

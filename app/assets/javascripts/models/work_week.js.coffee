@@ -9,7 +9,7 @@ class WorkWeekList extends Backbone.Collection
     _.extend @, models
     _.extend @, attrs
     
-    @view = new WorkWeekListView
+    @view = new views.staffplans.WorkWeekListView
       model: @
     
     @bind 'change:actual_hours', ->

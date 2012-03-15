@@ -9,7 +9,7 @@ class User extends Backbone.Model
     @projects = new ProjectList @get( "projects" ),
       parent: @
 
-    @view = new UserView
+    @view = new views.staffplans.UserView
       model: @
       id: "staffplan_#{@id || @cid}"
 
