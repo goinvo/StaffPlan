@@ -1,4 +1,4 @@
-class UserView extends Backbone.View
+class views.staffplans.UserView extends Backbone.View
 
   tagName: "div"
   className: "staffplan"
@@ -176,7 +176,7 @@ class UserView extends Backbone.View
       undefinedClientId.remove()
       @model.projects.add {}
 
-window.UserView = UserView
+views.staffplans.UserView= views.staffplans.UserView
 
 isThisWeek = (date) ->
   now = new Time

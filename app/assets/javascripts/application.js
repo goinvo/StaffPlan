@@ -10,8 +10,10 @@
 //= require underscore.min
 //= require backbone.min
 //= require backbone-support
+//= require backbone-bootstrap
 //= require mustache
 //= require time
+//= require_tree .
 
 $( document ).ready(function() {
   $( 'select#user_current_company_id' ).live( 'change', function() {

@@ -4,7 +4,7 @@ class Project extends Backbone.Model
     @work_weeks = new WorkWeekList @get('work_weeks'),
       parent: @
       
-    @view = new ProjectView
+    @view = new views.staffplans.ProjectView
       model: @
       id: "project_#{@id}"
       
