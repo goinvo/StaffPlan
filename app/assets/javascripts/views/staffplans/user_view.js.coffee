@@ -177,8 +177,3 @@ class views.staffplans.UserView extends Backbone.View
       @model.projects.add {}
 
 views.staffplans.UserView= views.staffplans.UserView
-
-isThisWeek = (date) ->
-  now = new Time
-  date.year == now.year() and date.mweek == now.week()
-
