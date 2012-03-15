@@ -39,8 +39,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    client = Client.find_by_id(params[:project].delete(:client_id))
-    
+    client = params[:client].present? ? Client.new(params[:client]) : Client.find_by_id(params[:project].delete(:client_id))
     unless client.present?
       redirect_to projects_url, notice: "Client is required." and return
     end
@@ -51,6 +50,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.save
         current_user.current_company.projects << @project
+        current_user.current_company.clients << @project.client
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
         format.json { render json: @project, status: :created, location: @project }
       else
