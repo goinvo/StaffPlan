@@ -37,6 +37,10 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def plan_for(company_id)
+    WorkWeek.for_user_and_company(self.id, company_id).sum(:estimated_hours) 
+  end
+
   def staff_plan_json(company_id)
     Jbuilder.encode do |json|
       json.(self, :id, :name, :email, :gravatar)
