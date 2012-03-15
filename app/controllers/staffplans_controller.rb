@@ -33,7 +33,9 @@ class StaffplansController < ApplicationController
     
     # Retrieve all users associated with the company the current user is currently viewing the pages for
     # as well as the associated projects and work_weeks estimates    
-    @users = current_user.current_company.users.includes(projects: :work_weeks).order("name ASC").all
+    @users = current_user.current_company.users.includes(projects: :work_weeks).all.sort do |a,b| 
+      a.plan_for(current_user.current_company.id) <=> b.plan_for(current_user.current_company.id)
+    end 
   end
   
   def my_staffplan
