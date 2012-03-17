@@ -38,4 +38,7 @@ StaffPlan::Application.configure do
   config.active_support.deprecation = :stderr
   
   config.force_ssl = false
+  config.after_initialize do
+    PaperTrail.enabled = false
+  end
 end

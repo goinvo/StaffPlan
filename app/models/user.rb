@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
   # TODO: remove password and password_confirmation from attr_accessible
   attr_accessible :name, :email, :password, :password_confirmation
+  has_paper_trail
 
   has_secure_password
 
@@ -18,10 +19,23 @@ class User < ActiveRecord::Base
     end
   end
 
+  after_update do |user|
+    terminator = user.versions.last.try(:terminator)
+    if terminator.present? and terminator.to_i != user.id
+      User.find_by_id(terminator.to_i).update_timestamp!
+    end
+  end
+
+  def update_timestamp!(time = Time.now)
+    self.updated_at = time
+    self.save
+  end
+
   validates_presence_of :email, :name
   validates_uniqueness_of :name, case_sensitive: false
   validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"

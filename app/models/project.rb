@@ -1,4 +1,6 @@
 class Project < ActiveRecord::Base
+  include StaffPlan::AuditMethods
+  has_paper_trail
   
   attr_accessible :name, :active
   
@@ -17,6 +19,8 @@ class Project < ActiveRecord::Base
   
   has_and_belongs_to_many :users, uniq: true
   
+  after_update :update_originator_timestamp
+
   validates_presence_of :name, :client
   validates_uniqueness_of :name, case_sensitive: false, scope: :company_id
   
