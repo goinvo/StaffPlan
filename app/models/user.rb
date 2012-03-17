@@ -51,8 +51,16 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  def plan_for(company_id)
-    WorkWeek.for_user_and_company(self.id, company_id).sum(:estimated_hours) 
+  def plan_for(project_ids)
+    date = Date.today.at_beginning_of_week
+    
+    self.work_weeks.inject(0) do |sum, ww|
+      if project_ids.include?(ww.project_id) && (ww.year > date.year || (ww.year == date.year && ww.cweek >= date.cweek))
+        sum += ww.estimated_hours || 0
+      end
+      
+      sum
+    end
   end
 
   def staff_plan_json(company_id)
