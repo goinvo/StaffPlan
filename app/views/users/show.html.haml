@@ -7,6 +7,8 @@
       %h2
         = image_tag @user.gravatar
         = @user.name
+      %span.last-updated
+        = "(as of #{time_ago_in_words(@user.updated_at)} ago)"
     = link_to 'Edit', edit_user_path(@user)
     = link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete
 
