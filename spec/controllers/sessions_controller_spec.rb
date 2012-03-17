@@ -18,6 +18,15 @@ describe SessionsController do
       response.should redirect_to(root_url)
     end
     
+    it "should log the user in if the credentials are valid and redirect him/her to the resource he/she wanted to access initially" do
+      user = Factory(:user)
+      request.cookies[:original_request] = Marshal.dump({controller: "staffplans", action: "index"}) 
+      post :create, email: user.email, password: user.password
+      response.should be_redirect
+      response.cookies[:original_request].should be_nil
+      response.should redirect_to(staffplans_url)
+    end
+    
     it "should re-render the login form if the user can't be found" do
       post :create, :email => "thiswont@befound.com"
       response.should redirect_to new_session_url
