@@ -1,33 +1,38 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
-  
-= form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
-  .user-name
-    .label
-      = f.label :name, "Your name:"
-    .field
-      = f.text_field :name
-  .user-email
-    .label
-      = f.label :email, "Your email address:"
-    .field
-      = f.text_field :email
-  .user-password
-    %span.password
-      .label
-        = f.label :password, "Choose a password"
-      .field
-        = f.password_field :password
-    %span.password-confirmation
-      .label
-        = f.label :password, "Confirm your password"
-      .field
-        = f.password_field :password_confirmation
-  .company-information
-    = fields_for @company do |c|
-      .label
-        = c.label :name, "What company do you work for?"
-      .field
-        = c.text_field :name
-  .submit
-    = f.submit "Create account"
+
+%section
+  %h2 
+    = "Welcome to StaffPlan, you can sign up for a new account"
+ 
+  .new-registration
+    = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
+      .user-name
+        .label
+          = f.label :name, "Your name:"
+        .field
+          = f.text_field :name
+      .user-email
+        .label
+          = f.label :email, "Your email address:"
+        .field
+          = f.text_field :email
+      .user-password
+        %span.password
+          .label
+            = f.label :password, "Choose a password"
+          .field
+            = f.password_field :password
+        %span.password-confirmation
+          .label
+            = f.label :password, "Confirm your password"
+          .field
+            = f.password_field :password_confirmation
+      .company-information
+        = fields_for @company do |c|
+          .label
+            = c.label :name, "What company do you work for?"
+          .field
+            = c.text_field :name
+      .submit
+        = f.submit "Create account"
