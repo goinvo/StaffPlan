@@ -51,6 +51,14 @@ describe RegistrationsController do
           flash[:errors].should_not be_nil
           response.should render_template(:new)
         end
+        
+        it "should not add the newly created user to a pre-existing company if the company name provided already exists" do
+          @company = Company.create(name: Faker::Company.name)
+          @parameters[:company].merge!({name: @company.name})
+          lambda {
+            post :create, @parameters
+          }.should_not change(@company.users, :size)
+        end
 
         it "should display errors to the user if the email they're using is invalid" do
           @parameters[:user].merge!({email: "bogus"})
