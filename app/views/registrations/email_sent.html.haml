@@ -1,3 +1,2 @@
 .confirmation-instructions
   = "A confirmation email has been sent to #{@user.email}. Please follow the instructions inside that email to wrap your registration up."
-  = link_to confirm_registration_url(token: @user.registration_token), confirm_registration_url(token: @user.registration_token), method: :put

@@ -11,6 +11,7 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(params[:user])
     @company = Company.new(params[:company])
+    # Heavily inspired from CompaniesController, DRTW
     Company.transaction do
       if @company.save && @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
@@ -18,8 +19,13 @@ class RegistrationsController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
-    @user.send_registration_confirmation
-    render template: "registrations/email_sent", layout: "registration"
+    if @company.persisted?
+      @user.send_registration_confirmation
+      render template: "registrations/email_sent", layout: "registration"
+    else
+      flash[:errors] = @company.errors.full_messages + @user.errors.full_messages
+      render action: :new, layout: "registration"
+    end
   end
 
   def confirm

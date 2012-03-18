@@ -9,7 +9,7 @@ describe RegistrationsController do
       @parameters.store(:company, {
         name: Faker::Company.name
       })
-      
+
       @parameters.store(:user, {
         name: Faker::Name.name, 
         email: Faker::Internet.email, 
@@ -31,47 +31,84 @@ describe RegistrationsController do
     end
 
     describe "POST#create" do
-      it "should render a page notifying the user that an email was sent to him" do
-        post :create, @parameters
-        assigns(:navigation_bar).should be_false
-        response.should render_template(:email_sent) 
-      end
+      context "user/company creation somehow fails" do 
+        it "should display errors to the user if the user they're trying to create already exists" do
+          @user = Factory(:user)
+          @parameters[:user].merge!({name: @user.name})
+          lambda {
+            post :create, @parameters
+          }.should_not change(User, :count)
+          flash[:errors].should_not be_nil
+          response.should render_template(:new)
+        end
 
-      it "should send an email to the user with a link to finalize his registration" do
-        User.any_instance.expects(:send_registration_confirmation)
-        post :create, @parameters
-      end
+        it "should display errors to the user if the company they're trying to create already exists" do
+          @company = Company.create(name: Faker::Company.name)
+          @parameters[:company].merge!({name: @company.name})
+          lambda {
+            post :create, @parameters
+          }.should_not change(Company, :count)
+          flash[:errors].should_not be_nil
+          response.should render_template(:new)
+        end
 
-      it "should send the email to the proper user" do
-        post :create, @parameters
-        ActionMailer::Base.deliveries.last.to.first.should eq(@parameters[:user][:email])
-      end
-
-      it "should send an actual email to the user" do
-        lambda {
+        it "should display errors to the user if the email they're using is invalid" do
+          @parameters[:user].merge!({email: "bogus"})
+          company_count = Company.count
+          user_count = User.count
           post :create, @parameters
-        }.should change(ActionMailer::Base.deliveries, :size).by(1)
+          flash[:errors].should_not be_nil
+          response.should render_template(:new)
+          Company.count.should eq(company_count)
+          User.count.should eq(user_count)
+        end
       end
 
-      it "should add a company to the database" do
-        company_count = Company.count
-        lambda {
+      context "user/company creation succeeds" do
+        it "should render a page notifying the user that an email was sent to him" do
           post :create, @parameters
-        }.should change(Company, :count).from(company_count).to(company_count + 1)
-      end
-      
-      it "should set a token and its related timestamp on the user" do
-        post :create, @parameters
-        assigns(:user).registration_token.should_not be_nil
-        assigns(:user).registration_token_sent_at.should > 10.seconds.ago
+          assigns(:navigation_bar).should be_false
+          response.should render_template(:email_sent) 
+        end
+
+
+        it "should send an email to the user with a link to finalize his registration" do
+          User.any_instance.expects(:send_registration_confirmation)
+          post :create, @parameters
+        end
+
+        it "should send the email to the proper user" do
+          post :create, @parameters
+          ActionMailer::Base.deliveries.last.to.first.should eq(@parameters[:user][:email])
+        end
+
+        it "should send an actual email to the user" do
+          lambda {
+            post :create, @parameters
+          }.should change(ActionMailer::Base.deliveries, :size).by(1)
+        end
+
+        it "should add a company to the database" do
+          company_count = Company.count
+          lambda {
+            post :create, @parameters
+          }.should change(Company, :count).from(company_count).to(company_count + 1)
+        end
+
+        it "should set a token and its related timestamp on the user" do
+          post :create, @parameters
+          assigns(:user).registration_token.should_not be_nil
+          assigns(:user).registration_token_sent_at.should > 10.seconds.ago
+        end
+
+        it "should add a user to the database" do
+          user_count = User.count
+          lambda {
+            post :create, @parameters
+          }.should change(User, :count).from(user_count).to(user_count + 1)
+        end
       end
 
-      it "should add a user to the database" do
-        user_count = User.count
-        lambda {
-          post :create, @parameters
-        }.should change(User, :count).from(user_count).to(user_count + 1)
-      end
     end
 
     describe "PUT#confirm" do
@@ -90,12 +127,12 @@ describe RegistrationsController do
       end
 
       it "should set the user as the current user by stuffing his id in session" do
-          @user = Factory(:user)
-          @user.registration_token = SecureRandom.urlsafe_base64
-          @user.registration_token_sent_at = 30.minutes.ago
-          User.stubs(:with_registration_token).with(anything).returns(@user)
-          put :confirm, token: "donkey"
-          session[:user_id].should eq(@user.id)
+        @user = Factory(:user)
+        @user.registration_token = SecureRandom.urlsafe_base64
+        @user.registration_token_sent_at = 30.minutes.ago
+        User.stubs(:with_registration_token).with(anything).returns(@user)
+        put :confirm, token: "donkey"
+        session[:user_id].should eq(@user.id)
       end
 
       context "User is NOT found with his token" do
