@@ -41,6 +41,24 @@ class User < ActiveRecord::Base
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
 
+  def send_registration_confirmation
+    self.registration_token_sent_at = Time.now
+    set_token(:registration_token)
+    RegistrationMailer.registration_confirmation(self).deliver
+  end
+
+  def self.with_registration_token(token)
+    self.where("registration_token = ? AND registration_token_sent_at > ?", token, 2.hours.ago).first
+  end
+
+  # FIXME: This does NOT ensure that the token will be unique. The odds of it not being unique are virtually non-existent though
+  # Two ways to handle this better:
+  # Either we add an index on the tokens in the DB or some validation, I don't know...
+  def set_token(column)
+    self[column] = SecureRandom.urlsafe_base64
+    self.save
+  end
+
   def current_company
     companies.where(id: current_company_id).first
   end

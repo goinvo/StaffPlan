@@ -1,0 +1,7 @@
+Hi, #{@user.name}
+
+We'd like to thank you for registering on StaffPlan. To confirm your registration, please on the link below:
+
+#{link_to confirm_registration_url(token: @user.registration_token), confirm_registration_url(token: @user.registration_token), method: :put}
+
+
