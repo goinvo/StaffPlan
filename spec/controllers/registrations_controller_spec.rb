@@ -38,7 +38,6 @@ describe RegistrationsController do
           lambda {
             post :create, @parameters
           }.should_not change(User, :count)
-          flash[:errors].should_not be_nil
           response.should render_template(:new)
         end
 
@@ -48,7 +47,6 @@ describe RegistrationsController do
           lambda {
             post :create, @parameters
           }.should_not change(Company, :count)
-          flash[:errors].should_not be_nil
           response.should render_template(:new)
         end
         
@@ -65,7 +63,6 @@ describe RegistrationsController do
           company_count = Company.count
           user_count = User.count
           post :create, @parameters
-          flash[:errors].should_not be_nil
           response.should render_template(:new)
           Company.count.should eq(company_count)
           User.count.should eq(user_count)
