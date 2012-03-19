@@ -69,11 +69,9 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  def plan_for(project_ids)
-    date = Date.today.at_beginning_of_week
-    
+  def plan_for(project_ids, from_date)
     self.work_weeks.inject(0) do |sum, ww|
-      if project_ids.include?(ww.project_id) && (ww.year > date.year || (ww.year == date.year && ww.cweek >= date.cweek))
+      if project_ids.include?(ww.project_id) && (ww.year > from_date.year || (ww.year == from_date.year && ww.cweek >= from_date.cweek))
         sum += ww.estimated_hours || 0
       end
       

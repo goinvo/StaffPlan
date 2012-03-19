@@ -32,7 +32,7 @@ class StaffplansController < ApplicationController
     end
     
     project_ids = current_user.current_company.projects.map(&:id)
-    @users = current_user.current_company.users.includes(:projects).all.sort { |a, b| a.plan_for(project_ids) <=> b.plan_for(project_ids) }
+    @users = current_user.current_company.users.includes(:projects).all.sort { |a, b| a.plan_for(project_ids, @from) <=> b.plan_for(project_ids, @from) }
   end
   
   def my_staffplan

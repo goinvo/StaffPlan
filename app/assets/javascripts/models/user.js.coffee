@@ -3,7 +3,7 @@ class User extends Backbone.Model
 
   initialize: (userdata) ->
 
-    @fromDate = new Time().advanceWeeks(-2).beginningOfWeek()
+    @fromDate = new Time().advanceWeeks(-1).beginningOfWeek()
     @toDate   = @fromDate.clone().advanceWeeks @weekInterval
 
     @projects = new ProjectList @get( "projects" ),
