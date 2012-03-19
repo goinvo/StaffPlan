@@ -6,6 +6,6 @@ class RegistrationMailer < ActionMailer::Base
   #
   def registration_confirmation user
     @user = user
-    mail to: @user.email, subject: "Confirm your registration"
+    mail to: @user.email, subject: "Welcome to StaffPlan"
   end
 end
