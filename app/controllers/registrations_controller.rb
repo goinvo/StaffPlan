@@ -13,7 +13,7 @@ class RegistrationsController < ApplicationController
     @company = Company.new(params[:company])
     # Heavily inspired from CompaniesController, DRTW
     Company.transaction do
-      if @company.save && @company.users << @user
+      if @company.save and @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
       else
         raise ActiveRecord::Rollback
@@ -23,7 +23,8 @@ class RegistrationsController < ApplicationController
       @user.send_registration_confirmation
       render template: "registrations/email_sent", layout: "registration"
     else
-      flash[:errors] = @company.errors.full_messages + @user.errors.full_messages
+      @company.valid?
+      @user.valid?
       render action: :new, layout: "registration"
     end
   end

@@ -1,9 +1,24 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
+
 %section
   %h2 
     = "Welcome to StaffPlan, you can sign up for a new account"
+  - if @user.errors.any? || @company.errors.any?
+    #error_explanation
+      - if @user.errors.any?
+        .user-errors
+          %h3= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+          %ul
+            - @user.errors.full_messages.each do |msg|
+              %li= msg
+      - if @company.errors.any?
+        .company-errors
+          %h3= "#{pluralize(@company.errors.count, "error")} prohibited this company from being saved:"
+          %ul
+            - @company.errors.full_messages.each do |msg|
+              %li= msg
  
   .new-registration
     = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
