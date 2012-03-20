@@ -53,28 +53,34 @@ describe UsersController do
       before(:each) do
         @company.administrator_id = @current_user.id
         @company.save
+        @parameters = {first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: Faker::Internet.email} 
       end
 
       describe "with valid params" do
         it "creates a new User" do
           expect {
-            post :create, :user => Factory.attributes_for(:user)
+            post :create, :user => @parameters 
           }.to change(User, :count).by(1)
         end
 
+        it "should send an invitation to the newly created user" do
+          post :create, user: @parameters 
+          ActionMailer::Base.deliveries.last.to.first.should eq(@parameters[:email])
+        end
+
         it "assigns a newly created user as @user" do
-          post :create, :user => Factory.attributes_for(:user)
+          post :create, :user => @parameters 
           assigns(:user).should be_a(User)
           assigns(:user).should be_persisted
         end
 
         it "should set the current user's current_company_id on the newly created user" do
-          post :create, :user => Factory.attributes_for(:user)
+          post :create, :user => @parameters 
           assigns(:user).current_company_id.should eq(@company.id)
         end
 
         it "redirects to the created user" do
-          post :create, :user => Factory.attributes_for(:user)
+          post :create, :user => @parameters 
           response.should redirect_to(User.last)
         end
       end
