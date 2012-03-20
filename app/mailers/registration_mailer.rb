@@ -11,6 +11,7 @@ class RegistrationMailer < ActionMailer::Base
 
   def invitation user
     @user = user
+    @admin = @user.current_company.administrator
     mail to: @user.email, subject: "You're invited to join our project planning and collaboration system"
   end
 

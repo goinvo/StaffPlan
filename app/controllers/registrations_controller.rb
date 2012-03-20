@@ -42,4 +42,12 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  def invites
+    if (@user = User.with_registration_token(params[:token])).present?
+      redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
+    else
+      render :text => "Your token has expired. Contact your StaffPlan company administrator at #{@user.current_company.administrator.email} to get a new invitation"
+    end
+  end
+
 end
