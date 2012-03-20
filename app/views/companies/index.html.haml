@@ -1,0 +1,14 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('clients')
+
+%section
+  %header
+    %h2= "Companies you belong to" 
+
+  %ul
+    - @companies.each do |company|
+      %li
+        = link_to company.name, company
+        .controls
+          = link_to "Edit", edit_company_path(company)
+          = link_to "Destroy", company_path(company), :confirm => "Are you sure you want to delete this company?", :method => :delete

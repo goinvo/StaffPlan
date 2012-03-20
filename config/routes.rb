@@ -17,7 +17,7 @@ StaffPlan::Application.routes.draw do
   resources :projects
   resources :staffplans, :only => [:show, :index]
   # Let's have only creation for now, we can think about the rest later
-  resources :companies, only: [:new, :create]  
+  resources :companies
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
   match "/registrations/confirm/:token" => "registrations#confirm", via: :put, as: "confirm_registration"
