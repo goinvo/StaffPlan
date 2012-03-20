@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   before_filter only: [:show, :edit, :update, :destroy] do |c|
     c.find_target
   end
+
+  before_filter :check_admin_privileges, only: [:new, :create]
   # GET /users
   # GET /users.json
   def index
@@ -34,7 +36,7 @@ class UsersController < ApplicationController
   def create
     # Since we're creating a new user, we need to set the 
     # password to a default value until he clicks on the invite and changes it
-    @user = User.new(params[:user].merge({password: SecureRandom.hex(4), password_confirmation: SecureRandom(4)})
+    @user = User.new(params[:user].merge({password: SecureRandom.hex(4), password_confirmation: SecureRandom(4)}))
     @user.current_company_id = current_user.current_company_id
     @user.send_invitation
     respond_to do |format|
@@ -82,4 +84,9 @@ class UsersController < ApplicationController
     end
   end
 
+  private
+
+  def check_admin_privileges
+    redirect_to staffplans_path unless current_user.administrates?(current_user.current_company)
+  end
 end
