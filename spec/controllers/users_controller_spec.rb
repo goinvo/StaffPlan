@@ -23,9 +23,19 @@ describe UsersController do
   end
 
   describe "GET new" do
-    it "assigns a new user as @user" do
-      get :new
-      assigns(:user).should be_a_new(User)
+    context "@current_user is the administrator of @company" do
+      it "assigns a new user as @user" do
+        @company.administrator = @current_user
+        get :new
+        assigns(:user).should be_a_new(User)
+      end
+    end
+    context "@current_user is NOT the administrator of @company" do
+      it "should do nothing and redirect to the staffplans page" do
+        get :new
+        assigns(:user).should be_nil
+        response.should redirect_to(staffplans_path)
+      end
     end
   end
 
@@ -39,43 +49,58 @@ describe UsersController do
   end
 
   describe "POST create" do
-    describe "with valid params" do
-      it "creates a new User" do
-        expect {
+    context "@current_user is the administrator for @company" do
+      before(:each) do
+        @company.administrator_id = @current_user.id
+        @company.save
+      end
+
+      describe "with valid params" do
+        it "creates a new User" do
+          expect {
+            post :create, :user => Factory.attributes_for(:user)
+          }.to change(User, :count).by(1)
+        end
+
+        it "assigns a newly created user as @user" do
           post :create, :user => Factory.attributes_for(:user)
-        }.to change(User, :count).by(1)
+          assigns(:user).should be_a(User)
+          assigns(:user).should be_persisted
+        end
+
+        it "should set the current user's current_company_id on the newly created user" do
+          post :create, :user => Factory.attributes_for(:user)
+          assigns(:user).current_company_id.should eq(@company.id)
+        end
+
+        it "redirects to the created user" do
+          post :create, :user => Factory.attributes_for(:user)
+          response.should redirect_to(User.last)
+        end
       end
 
-      it "assigns a newly created user as @user" do
-        post :create, :user => Factory.attributes_for(:user)
-        assigns(:user).should be_a(User)
-        assigns(:user).should be_persisted
-      end
+      describe "with invalid params" do
+        it "assigns a newly created but unsaved user as @user" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          User.any_instance.expects(:save).returns(false)
+          post :create, :user => {}
+          assigns(:user).should be_a_new(User)
+        end
 
-      it "should set the current user's current_company_id on the newly created user" do
-        post :create, :user => Factory.attributes_for(:user)
-        assigns(:user).current_company_id.should eq(@company.id)
-      end
-
-      it "redirects to the created user" do
-        post :create, :user => Factory.attributes_for(:user)
-        response.should redirect_to(User.last)
+        it "re-renders the 'new' template" do
+          # Trigger the behavior that occurs when invalid params are submitted
+          User.any_instance.expects(:save).returns(false)
+          post :create, :user => {}
+          response.should render_template("new")
+        end
       end
     end
-
-    describe "with invalid params" do
-      it "assigns a newly created but unsaved user as @user" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.expects(:save).returns(false)
-        post :create, :user => {}
-        assigns(:user).should be_a_new(User)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.expects(:save).returns(false)
-        post :create, :user => {}
-        response.should render_template("new")
+    context "@current_user is not the administrator of @company" do
+      it "should do nothing and redirect to the staffplans page" do
+        lambda {
+          post :create, :user => Factory.attributes_for(:user)
+        }.should_not change(User, :count)
+        response.should redirect_to(staffplans_path)
       end
     end
   end
