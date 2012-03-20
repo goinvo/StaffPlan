@@ -11,7 +11,14 @@ class Company < ActiveRecord::Base
 
   after_update :update_originator_timestamp 
 
+  def administrator
+    User.where(id: administrator_id).first
+  end
 
+  def administrator=(user)
+    self.administrator_id = user.id
+    self.save
+  end
   def clients_as_json
     Jbuilder.encode do |json|
       json.array! self.clients do |json, client|

@@ -1,0 +1,12 @@
+Hi #{@user.first_name}, 
+#{@user.current_company.administrator.name} just set up an account for you.”
+
+All you need to do is follow the link below, make sure your credentials are A-OK and pick a password. 
+It takes less than 20 seconds.
+
+Click this link to get started:
+
+#{link_to some confirmation page}
+
+Have questions? Contact #{@user.current_company.administrator.name} – your account administrator – at #{@user.current_company.administrator.email}"
+

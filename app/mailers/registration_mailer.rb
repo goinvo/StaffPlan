@@ -8,4 +8,10 @@ class RegistrationMailer < ActionMailer::Base
     @user = user
     mail to: @user.email, subject: "Welcome to StaffPlan"
   end
+
+  def invitation user
+    @user = user
+    mail to: @user.email, subject: "You're invited to join our project planning and collaboration system"
+  end
+
 end

@@ -15,6 +15,7 @@ class RegistrationsController < ApplicationController
     Company.transaction do
       if @company.save and @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
+        @company.administrator = @user
       else
         raise ActiveRecord::Rollback
       end

@@ -1,5 +1,7 @@
+Hi #{@user.first_name}
+
 Thank you for registering an account on StaffPlan.
-Your username is #{@user.email} 
+
 Please click the link below to activate your account:
 
 #{link_to confirm_registration_url(token: @user.registration_token), confirm_registration_url(token: @user.registration_token), method: :put}

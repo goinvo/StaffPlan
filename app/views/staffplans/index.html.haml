@@ -4,7 +4,8 @@
 %section
   .user-header
     %header
-      = link_to("Add Staff", new_user_path)
+      - if current_user.administrates?(current_user.current_company)
+        = link_to("Add Staff", new_user_path)
     %table.weeks
       %tr
         %td{rowspan: 2}

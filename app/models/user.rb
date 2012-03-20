@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def administrates?(company_id)
+    Company.find_by_id(company_id).administrator_id == self.id
+  end
+
   def name
     [first_name, last_name].join(" ")
   end
@@ -49,6 +53,12 @@ class User < ActiveRecord::Base
     self.registration_token_sent_at = Time.now
     set_token(:registration_token)
     RegistrationMailer.registration_confirmation(self).deliver
+  end
+
+  def send_invitation
+    self.registration_token_sent_at = Time.now
+    set_token(:registration_token)
+    RegistrationMailer.invitation(self).deliver
   end
 
   def self.with_registration_token(token)

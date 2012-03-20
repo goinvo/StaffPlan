@@ -11,21 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120320153524) do
+ActiveRecord::Schema.define(:version => 20120320171504) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
     t.text     "description"
     t.boolean  "active",      :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
   create_table "companies", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.integer  "administrator_id"
   end
 
   create_table "companies_users", :id => false, :force => true do |t|
@@ -39,8 +40,8 @@ ActiveRecord::Schema.define(:version => 20120320153524) do
     t.integer  "client_id"
     t.string   "name"
     t.boolean  "active",     :default => true
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
@@ -55,8 +56,8 @@ ActiveRecord::Schema.define(:version => 20120320153524) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "current_company_id"
     t.string   "authentication_token"
     t.string   "registration_token"
@@ -81,10 +82,10 @@ ActiveRecord::Schema.define(:version => 20120320153524) do
     t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek",           :limit => 2
-    t.integer  "year",            :limit => 2
-    t.datetime "created_at",                   :null => false
-    t.datetime "updated_at",                   :null => false
+    t.integer  "cweek"
+    t.integer  "year"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "work_weeks", ["user_id", "project_id", "cweek", "year"], :name => "index_work_weeks_on_user_id_and_project_id_and_cweek_and_year", :unique => true
