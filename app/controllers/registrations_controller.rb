@@ -42,8 +42,14 @@ class RegistrationsController < ApplicationController
     end
   end
 
+  # We might want to merge those two actions in the future, they do the same thing, except for the else case
+  # and the path we redirect to
   def invites
     if (@user = User.with_registration_token(params[:token])).present?
+      session[:user_id] = @user.id
+      @user.registration_token = nil
+      @user.registration_token_sent_at = nil
+      @user.save
       redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
     else
       render :text => "Your token has expired. Contact your StaffPlan company administrator at #{@user.current_company.administrator.email} to get a new invitation"

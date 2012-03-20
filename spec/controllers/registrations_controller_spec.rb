@@ -73,10 +73,13 @@ describe RegistrationsController do
       context "user/company creation succeeds" do
         it "should render a page notifying the user that an email was sent to him" do
           post :create, @parameters
-          assigns(:navigation_bar).should be_false
           response.should render_template(:email_sent) 
         end
 
+        it "should set the newly created user as the administrator of the newly created company" do
+          post :create, @parameters
+          assigns(:company).administrator_id.should eq(assigns(:user).id)
+        end
 
         it "should send an email to the user with a link to finalize his registration" do
           User.any_instance.expects(:send_registration_confirmation)
@@ -150,6 +153,10 @@ describe RegistrationsController do
           response.should redirect_to(new_registration_path)
         end
       end
+    end
+
+    describe "PUT#invites" do
+      # ADD SPECS FOR INVITES OR MERGE THE TWO ACTIONS CONFIRM AND INVITES
     end
 
   end
