@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
   # TODO: remove password and password_confirmation from attr_accessible
-  attr_accessible :name, :email, :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
   has_paper_trail
 
   has_secure_password
@@ -31,8 +31,12 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def name
+    [first_name, last_name].join(" ")
+  end
+
   validates_presence_of :email, :name
-  validates_uniqueness_of :name, case_sensitive: false
+  validates_uniqueness_of :first_name, :scope => :last_name , :case_sensitive => false
   validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
 

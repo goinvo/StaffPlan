@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120317210641) do
+ActiveRecord::Schema.define(:version => 20120320153524) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
@@ -55,13 +55,14 @@ ActiveRecord::Schema.define(:version => 20120317210641) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.string   "name"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.integer  "current_company_id"
     t.string   "authentication_token"
     t.string   "registration_token"
     t.datetime "registration_token_sent_at"
+    t.string   "first_name"
+    t.string   "last_name"
   end
 
   create_table "versions", :force => true do |t|

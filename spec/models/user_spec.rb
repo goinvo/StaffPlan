@@ -9,7 +9,8 @@ describe User do
 
     it "should be valid? with valid attributes" do
       User.new(
-        name: Faker::Name.name,
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
         email: Faker::Internet.email,
         password: 'password',
         password_confirmation: 'password'
@@ -24,7 +25,7 @@ describe User do
 
   describe 'User#plan_for' do
     before(:each) do
-      @user = User.new(email: Faker::Internet.email, name: Faker::Name.name, password: "23kj23k2j")
+      @user = User.new(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "23kj23k2j")
       @company = Factory(:company)
       @company.users << @user
       @user.current_company_id = @company.id
@@ -79,7 +80,7 @@ describe User do
         time = @source.updated_at
         @target = Factory(:user)
         PaperTrail.whodunnit = @source.id.to_s
-        @target.update_attributes(name: Faker::Name.name)
+        @target.update_attributes(first_name: Faker::Name.first_name)
         @source.reload.updated_at.should > time
       end
     end
@@ -91,7 +92,7 @@ describe User do
         @bystander = Factory(:user)
         bystander_time = @bystander.updated_at
         PaperTrail.whodunnit = @source.id.to_s
-        @target.update_attributes(name: Faker::Name.name)
+        @target.update_attributes(first_name: Faker::Name.first_name)
         @bystander.reload.updated_at.should == bystander_time
       end
     end

@@ -9,14 +9,19 @@
  
   .new-registration
     = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
-      .user-name
+      .user-first-name
         .label
-          = f.label :name, "Your name:"
+          = f.label :first_name, "Your first name:"
         .field
-          = f.text_field :name
+          = f.text_field :first_name
+      .user-last-name
+        .label
+          = f.label :last_name, "Your last name:"
+        .field
+          = f.text_field :last_name
       .user-email
         .label
-          = f.label :email, "Your email address:"
+          = f.label :email, "Enter your email address:"
         .field
           = f.text_field :email
       .user-password
@@ -25,11 +30,6 @@
             = f.label :password, "Choose a password"
           .field
             = f.password_field :password
-        %span.password-confirmation
-          .label
-            = f.label :password, "Confirm your password"
-          .field
-            = f.password_field :password_confirmation
       .company-information
         = fields_for @company do |c|
           .label

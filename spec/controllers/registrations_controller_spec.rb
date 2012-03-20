@@ -11,7 +11,8 @@ describe RegistrationsController do
       })
 
       @parameters.store(:user, {
-        name: Faker::Name.name, 
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
         email: Faker::Internet.email, 
         password: "secret",
         password_confirmation: "secret"
@@ -34,7 +35,7 @@ describe RegistrationsController do
       context "user/company creation somehow fails" do 
         it "should display errors to the user if the user they're trying to create already exists" do
           @user = Factory(:user)
-          @parameters[:user].merge!({name: @user.name})
+          @parameters[:user].merge!({first_name: @user.first_name, last_name: @user.last_name})
           lambda {
             post :create, @parameters
           }.should_not change(User, :count)
