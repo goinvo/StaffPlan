@@ -24,8 +24,9 @@ class RegistrationsController < ApplicationController
       @user.send_registration_confirmation
       render template: "registrations/email_sent", layout: "registration"
     else
-      @company.valid?
+      # I don't get the error messages for some reason, laughable.
       @user.valid?
+      flash.now[:errors] = @company.errors.full_messages + @user.errors.full_messages
       render action: :new, layout: "registration"
     end
   end
