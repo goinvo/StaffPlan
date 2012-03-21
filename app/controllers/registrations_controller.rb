@@ -22,9 +22,10 @@ class RegistrationsController < ApplicationController
     end
     if @company.persisted?
       @user.send_registration_confirmation
+      # FIXME: Remove link from template
       render template: "registrations/email_sent", layout: "registration"
     else
-      # I don't get the error messages for some reason, laughable.
+      # I have to call valid? here or I don't get the error messages for the user 
       @user.valid?
       flash.now[:errors] = @company.errors.full_messages + @user.errors.full_messages
       render action: :new, layout: "registration"
