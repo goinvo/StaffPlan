@@ -1,39 +1,44 @@
 - content_for(:stylesheet_includes) do
-  = stylesheet_link_tag('projects')
+  = stylesheet_link_tag('registrations')
 
-
-%section
-  %h2 
-    = "Welcome to StaffPlan, you can sign up for a new account"
- 
-  .new-registration
-    = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
-      .user-first-name
+.new-registration
+  %section
+    %h2 
+      .title
+        = "Account Creation"
+      .notice   
+        = "Let's start with the fundamentals: "
+  = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
+    .user-first-name
+      .label
+        = f.label :first_name, "Your first name:"
+      .field
+        = f.text_field :first_name
+    .user-last-name
+      .label
+        = f.label :last_name, "Your last name:"
+      .field
+        = f.text_field :last_name
+    .user-email
+      .label
+        = f.label :email, "Enter your email address:"
+      .field
+        = f.text_field :email
+        .disclaimer
+          = "We will never disclose your email address to third parties."
+    .user-password
+      %span.password
         .label
-          = f.label :first_name, "Your first name:"
+          = f.label :password, "Choose a password"
         .field
-          = f.text_field :first_name
-      .user-last-name
+          = f.password_field :password
+          .disclaimer
+            = "Must be at least 6 characters long."
+    .company-information
+      = fields_for @company do |c|
         .label
-          = f.label :last_name, "Your last name:"
+          = c.label :name, "What company do you work for?"
         .field
-          = f.text_field :last_name
-      .user-email
-        .label
-          = f.label :email, "Enter your email address:"
-        .field
-          = f.text_field :email
-      .user-password
-        %span.password
-          .label
-            = f.label :password, "Choose a password"
-          .field
-            = f.password_field :password
-      .company-information
-        = fields_for @company do |c|
-          .label
-            = c.label :name, "What company do you work for?"
-          .field
-            = c.text_field :name
-      .submit
-        = f.submit "Create account"
+          = c.text_field :name
+    .submit
+      = f.submit "Create account"
