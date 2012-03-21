@@ -1,14 +1,43 @@
-@import "_mixins"
+@import compass
+@import compass/reset
+@import compass/css3/text-shadow
 
-body#registrations
-  .new-registration
+body
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif
+  +text-shadow
+  
+  section.main
+    width: 1000px
+    margin: auto
+    .logo
+      text-align: center
+      font-size: 72px
+      color: #222
     section
-      h2
-        font-size: 14pt
-    form
-      margin-top: 32px
-      .field
-        margin-bottom: 12px
-      .disclaimer
-        font-size: 7pt
-        margin-left: 4px
+      width: 256px
+      margin: 15px auto 0
+      padding: 15px
+      
+      h1
+        font-size: 22px
+        padding: 20px 0
+      
+      form
+        .user
+          margin-bottom: 16px
+        .field
+          label
+            display: block
+            font-size: 14px
+        
+          input
+            font-size: 16px
+            width: 100%
+            margin: 2px 0 2px 0
+            +border-radius
+          .disclaimer
+            font-size: 7pt
+        .submit
+          input[type="submit"]
+            border: 1px #444 solid 
+@import _flash

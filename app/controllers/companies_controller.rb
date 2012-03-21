@@ -19,6 +19,8 @@ class CompaniesController < ApplicationController
   def update
     @company = current_user.companies.find_by_id(params[:id])
     # FIXME: I made the administrator_id mass-assignable, discuss with Rob
+    # Also, we might want to check that the administrator_id is actually the id of a 
+    # user that belongs to that company
     if @company.update_attributes(params[:company])
       redirect_to @company
     else
