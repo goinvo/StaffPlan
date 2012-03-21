@@ -50,7 +50,7 @@ describe RegistrationsController do
           }.should_not change(Company, :count)
           response.should render_template(:new)
         end
-        
+
         it "should not add the newly created user to a pre-existing company if the company name provided already exists" do
           @company = Company.create(name: Faker::Company.name)
           @parameters[:company].merge!({name: @company.name})
@@ -117,7 +117,6 @@ describe RegistrationsController do
           }.should change(User, :count).from(user_count).to(user_count + 1)
         end
       end
-
     end
 
     describe "PUT#confirm" do
@@ -156,7 +155,21 @@ describe RegistrationsController do
     end
 
     describe "PUT#invites" do
-      # ADD SPECS FOR INVITES OR MERGE THE TWO ACTIONS CONFIRM AND INVITES
+      it "should redirect to the invited user's edit user page on successful invitation" do
+        @user = Factory(:user)
+        User.stubs(:with_registration_token).with(anything).returns(@user)
+        put :invites, token: "bogus"
+        response.should redirect_to edit_user_path(@user)
+      end
+
+      it "should set the invited user as the current user on a successful invite" do
+        @user = Factory(:user)
+        @user.registration_token = SecureRandom.urlsafe_base64
+        @user.registration_token_sent_at = 30.minutes.ago
+        User.stubs(:with_registration_token).with(anything).returns(@user)
+        put :invites, token: "whatevs"
+        session[:user_id].should eq(@user.id)
+      end
     end
 
   end
