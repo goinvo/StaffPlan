@@ -1,31 +1,9 @@
 class CompaniesController < ApplicationController
 
-  def index
-    @companies = current_user.companies
-  end
-
-  def show
-    @company = current_user.companies.find_by_id(params[:id])
-  end
 
   def new
     @company = Company.new 
     @user = @company.users.build
-  end
-  def edit
-    @company = current_user.companies.find_by_id(params[:id])
-  end
-
-  def update
-    @company = current_user.companies.find_by_id(params[:id])
-    # FIXME: I made the administrator_id mass-assignable, discuss with Rob
-    # Also, we might want to check that the administrator_id is actually the id of a 
-    # user that belongs to that company
-    if @company.update_attributes(params[:company])
-      redirect_to @company
-    else
-      render action: "edit"
-    end
   end
 
   def create
@@ -47,13 +25,4 @@ class CompaniesController < ApplicationController
       render action: :new
     end
   end
-
-  def destroy
-    @company.destroy
-    respond_to do |format|
-      format.html { redirect_to my_staffplan_path, notice: "Company was succesfully detroyed" }
-      format.json { head :ok }
-    end
-  end
-
 end

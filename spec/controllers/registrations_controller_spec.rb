@@ -76,11 +76,6 @@ describe RegistrationsController do
           response.should render_template(:email_sent) 
         end
 
-        it "should set the newly created user as the administrator of the newly created company" do
-          post :create, @parameters
-          assigns(:company).administrator_id.should eq(assigns(:user).id)
-        end
-
         it "should send an email to the user with a link to finalize his registration" do
           User.any_instance.expects(:send_registration_confirmation)
           post :create, @parameters

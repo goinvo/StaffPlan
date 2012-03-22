@@ -2,8 +2,7 @@ class UsersController < ApplicationController
   before_filter only: [:show, :edit, :update, :destroy] do |c|
     c.find_target
   end
-
-  before_filter :check_admin_privileges, only: [:new, :create]
+  
   # GET /users
   # GET /users.json
   def index
@@ -83,11 +82,5 @@ class UsersController < ApplicationController
       format.html { redirect_to users_url }
       format.json { head :ok }
     end
-  end
-
-  private
-
-  def check_admin_privileges
-    redirect_to staffplans_path unless current_user.administrates?(current_user.current_company)
   end
 end

@@ -15,7 +15,6 @@ class RegistrationsController < ApplicationController
     Company.transaction do
       if @company.save and @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
-        @company.administrator = @user
       else
         raise ActiveRecord::Rollback
       end
@@ -54,7 +53,7 @@ class RegistrationsController < ApplicationController
       @user.save
       redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
     else
-      render :text => "Your token has expired. Contact your StaffPlan company administrator at #{@user.current_company.administrator.email} to get a new invitation"
+      render :text => "Your token has expired" #. Contact your StaffPlan company administrator at #{@user.current_company.administrator.email} to get a new invitation"
     end
   end
 
