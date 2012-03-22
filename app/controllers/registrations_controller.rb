@@ -26,7 +26,9 @@ class RegistrationsController < ApplicationController
     else
       # I have to call valid? here or I don't get the error messages for the user 
       flash.now[:errors] = {}
-      [@user, @company].each { |obj| flash.now[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid? }
+      [@user, @company].each do |obj| 
+        flash.now[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid?
+      end
       render action: :new, layout: "registration"
     end
   end
@@ -43,7 +45,8 @@ class RegistrationsController < ApplicationController
     end
   end
 
-  # We might want to merge those two actions in the future, they do the same thing, except for the else case
+  # We might want to merge those two actions in the future, they 
+  # do the same thing, except for the else case
   # and the path we redirect to
   def invites
     if (@user = User.with_registration_token(params[:token])).present?
@@ -53,7 +56,8 @@ class RegistrationsController < ApplicationController
       @user.save
       redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
     else
-      render :text => "Your token has expired" #. Contact your StaffPlan company administrator at #{@user.current_company.administrator.email} to get a new invitation"
+      # FIXME: Better message here or even redirect???
+      render :text => "Your token has expired" 
     end
   end
 

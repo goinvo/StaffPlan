@@ -166,11 +166,47 @@ describe RegistrationsController do
         session[:user_id].should eq(@user.id)
       end
     end
-
   end
 
   context "with invalid parameters" do 
+    describe "POST#create" do
+      before(:each) do
+        @company = Company.create(name: "Corporate Inc.")
+        @parameters = {}
+        @parameters.store(:company, {
+          name: "Corporate Inc."
+        })
+        @parameters.store(:user, {
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name,
+          email: Faker::Internet.email,
+          password: Faker::Lorem.words(2).join("")
+        })
+      end
 
+      it "should not add a company to the database if the parameters are invalid" do
+        lambda {
+          post :create, @parameters
+        }.should_not change(Company, :count)
+      end
+
+      it "should not add a user to the database even though only the company parameters are invalid" do
+        lambda {
+          post :create, @parameters
+        }.should_not change(User, :count)
+      end
+
+      it "should put the errors in the flash message" do
+        post :create, @parameters
+        flash[:errors].keys.first.should eq("company")
+      end
+
+      it "should render the template for the new action again" do
+        post :create, @parameters
+        response.should render_template(:new)
+      end
+
+    end
   end
 
 end
