@@ -26,8 +26,8 @@ class RegistrationsController < ApplicationController
       render template: "registrations/email_sent", layout: "registration"
     else
       # I have to call valid? here or I don't get the error messages for the user 
-      @user.valid?
-      flash.now[:errors] = @company.errors.full_messages + @user.errors.full_messages
+      flash.now[:errors] = {}
+      [@user, @company].each { |obj| flash.now[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid? }
       render action: :new, layout: "registration"
     end
   end

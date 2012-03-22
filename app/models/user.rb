@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
     [first_name, last_name].join(" ")
   end
 
-  validates_presence_of :email, :name
+  validates_presence_of :email, :first_name, :last_name
   validates_uniqueness_of :first_name, :scope => :last_name , :case_sensitive => false
   validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/

@@ -18,7 +18,7 @@
     
   %body{:id => controller_name, :class => action_name}
   
-    = render(:partial => "shared/flash", locals: {flash: flash})
+    = render(:partial => "shared/formatted_flash")
       
     %section.main
       .content= yield
