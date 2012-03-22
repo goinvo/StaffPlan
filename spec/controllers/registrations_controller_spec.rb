@@ -206,6 +206,15 @@ describe RegistrationsController do
         response.should render_template(:new)
       end
 
+      it "should not add a company and a user to the database if the company or the user are invalid" do
+        Company.any_instance.stubs(:save).returns(false)
+        User.any_instance.stubs(:save).returns(false)
+        lambda {
+          post :create, @parameters
+        }.should_not change(Company, :count)
+        response.should render_template(:new)
+      end
+
     end
   end
 
