@@ -26,8 +26,11 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
 
-  def require_current_user
-    redirect_to new_session_url unless current_user.present?
+  def require_current_user 
+    unless current_user.present?
+      cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now} if request.get?
+      redirect_to new_session_url
+    end
   end
 
   def render_not_found
