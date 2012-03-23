@@ -45,6 +45,7 @@ company.users << all_users
 
 all_users.each do |user|
   user.current_company_id = company.id
+  user.save
 end
 
 Project.all.each do |project|
