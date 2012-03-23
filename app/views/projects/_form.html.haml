@@ -12,7 +12,7 @@
     = fields_for @project.build_client do |c|
       .input.new-client
         = c.label :name, "Client Name"
-        = c.text_field :name 
+        = c.text_field :name, disabled: "disabled" 
   = f.check_box :active
     
   .actions
