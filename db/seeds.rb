@@ -32,7 +32,20 @@ Client.all.each do |client|
   end
 end
 
+Company.create(
+  name: Faker::Company.name
+)
+
+company = Company.first
+
+
 all_users = User.all
+
+company.users << all_users
+
+all_users.each do |user|
+  user.current_company_id = company.id
+end
 
 Project.all.each do |project|
   project.users << all_users
