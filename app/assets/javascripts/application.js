@@ -10,9 +10,9 @@
 //= require underscore.min
 //= require backbone.min
 //= require backbone-support
-//= require backbone-bootstrap
 //= require mustache
 //= require time
+//= require backbone-bootstrap
 //= require_tree .
 
 $( document ).ready(function() {

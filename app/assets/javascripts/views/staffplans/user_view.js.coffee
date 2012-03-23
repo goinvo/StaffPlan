@@ -161,16 +161,15 @@ class views.staffplans.UserView extends Backbone.View
       total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
       if total == 0 && date.weekHasPassed
         noActualsForWeek = true
-        total = workWeek['estimated'] || 0
+        total = (if workWeek? then workWeek['estimated'] else 0)  || 0
         
       li
         .height(total * ratio)
         .html("<span>" + total + "</span>")
         .removeClass "present"
 
-      if isThisWeek(date) || noActualsForWeek
-        li.addClass "present"
-        li.removeClass "passed"
+      if isThisWeek(date)
+        if noActualsForWeek then li.addClass "present" else li.addClass "passed"
       else if date.weekHasPassed
         li.addClass "passed"
       else

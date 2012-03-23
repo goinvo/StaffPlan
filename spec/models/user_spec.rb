@@ -43,7 +43,7 @@ describe User do
     end 
 
     it "should return 0 when I try to get the number of estimated hours for a new user" do
-      @user.plan_for(@company.id).should eq(0)
+      @user.plan_for(@company.id, Date.today).should eq(0)
     end
 
     it "should return 0 when the user hasn't put any estimates for the future" do
@@ -51,7 +51,7 @@ describe User do
       @work_week.project_id = @project.id
       @work_week.user_id = @user.id
       @work_week.save
-      @user.plan_for(@project_ids).should eq(0)
+      @user.plan_for(@project_ids, Date.today).should eq(0)
     end
 
     it "should return the sum of workload estimates for the future" do
@@ -63,7 +63,7 @@ describe User do
 
       @user.work_weeks << [@w1, @w2]
       @user.save
-      @user.plan_for(@project_ids).should eq(100)
+      @user.plan_for(@project_ids, Date.today).should eq(100)
     end
   end
   

@@ -1,3 +1,5 @@
+Time.firstDayOfWeek = 2
+
 window.views =
   staffplans: {}
   projects: {}
