@@ -31,10 +31,6 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  # def administrates?(company_id)
-  #   Company.find_by_id(company_id).administrator_id == self.id
-  # end
-
   def name
     [first_name, last_name].join(" ")
   end

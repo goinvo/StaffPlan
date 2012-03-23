@@ -11,7 +11,9 @@ class RegistrationMailer < ActionMailer::Base
 
   def invitation user
     @user = user
-    @admin = @user.current_company.users.first #administrator
+    # FIXME: Right now I take the first user to make it work, but I need to know what goes in that email precisely
+    # Should we remove the mention to an admin altogether?
+    @admin = @user.current_company.users.first 
     mail to: @user.email, subject: "You're invited to join our project planning and collaboration system"
   end
 
