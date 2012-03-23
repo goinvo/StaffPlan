@@ -28,7 +28,7 @@ class ApplicationController < ActionController::Base
 
   def require_current_user 
     unless current_user.present?
-      cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now}
+      cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now} if request.get?
       redirect_to new_session_url
     end
   end
