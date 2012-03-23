@@ -10,14 +10,12 @@ class SessionsController < ApplicationController
     
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      # TODO: redirect to the originally requested resource if it was a GET request
       if cookies[:original_request].present?
-        target = url_for Marshal.load(cookies[:original_request])
         cookies.delete :original_request
+        redirect_to url_for Marshal.load(cookies[:original_request])
       else
-        target = root_url
+        redirect_to root_url, notice: t(:hello)
       end
-      redirect_to target 
     else
       flash.alert = t(:invalid_password_or_email)
       redirect_to new_session_url
