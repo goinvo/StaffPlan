@@ -1,8 +1,8 @@
-class views.staffplans.UserView extends Backbone.View
+class views.staffplans.UserView extends Support.CompositeView
 
   tagName: "div"
   className: "staffplan"
-
+    
   events:
     "click a[data-change-page]" : "changePage"
 
@@ -16,6 +16,21 @@ class views.staffplans.UserView extends Backbone.View
     new Date
 
   initialize: ->
+    @model.view = @
+    
+    @model.projects.bind 'add', (project) =>
+      projects = @model.projectsByClient()
+      @renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
+
+      setTimeout ->
+        $(project.view.el).find('input[name="project[name]"]').focus()
+    
+    @model.projects.bind 'project:created', (project) =>
+      projects = @model.projectsByClient()
+      @renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
+      @addNewProjectRow()
+    
+    
     @render()
     @renderAllProjects()
 
@@ -38,6 +53,9 @@ class views.staffplans.UserView extends Backbone.View
 
   render: ->
     $( @el )
+      .attr(
+        id: "staffplan_#{@model.id || @model.cid}"
+      )
       .html( Mustache.to_html( @templates.user, @templateData(), @partials ) )
       .find( '.months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
@@ -114,7 +132,13 @@ class views.staffplans.UserView extends Backbone.View
 
   renderProjectsForClient: (clientId, projects) ->
     section = $( "<section data-client-id='#{clientId}'>" ).append(
-      projects.map (project) -> project.view.render().el
+      projects.map (project) ->
+        unless project.view?
+          project.view = new views.staffplans.ProjectView
+            model: project
+            user: @model
+        
+        project.view.render().el
     )
 
     existingTbody = $( @el ).find "section[data-client-id='#{clientId}']"

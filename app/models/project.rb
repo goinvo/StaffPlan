@@ -22,7 +22,7 @@ class Project < ActiveRecord::Base
   after_update :update_originator_timestamp
 
   validates_presence_of :name, :client
-  validates_uniqueness_of :name, case_sensitive: false, scope: :company_id
+  validates_uniqueness_of :name, case_sensitive: false, scope: :client_id
   
   default_scope(order: "client_id ASC, name ASC")
 end

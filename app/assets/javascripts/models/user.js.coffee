@@ -8,22 +8,6 @@ class User extends Backbone.Model
 
     @projects = new ProjectList @get( "projects" ),
       parent: @
-
-    @view = new views.staffplans.UserView
-      model: @
-      id: "staffplan_#{@id || @cid}"
-
-    @projects.bind 'add', (project) =>
-      projects = @projectsByClient()
-      @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
-
-      setTimeout ->
-        $(project.view.el).find('input[name="project[name]"]').focus()
-
-    @projects.bind 'project:created', (project) =>
-      projects = @projectsByClient()
-      @view.renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
-      @view.addNewProjectRow()
     
     $( document.body ).bind 'work_week:value:updated', =>
       @view.renderWeekHourCounter()

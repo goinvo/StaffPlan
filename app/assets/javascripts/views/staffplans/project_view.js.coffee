@@ -1,9 +1,23 @@
-class views.staffplans.ProjectView extends Backbone.View
+class views.staffplans.ProjectView extends Support.CompositeView
   
   className: 'project'
   id: "project-#{@cid}"
   
   initialize: ->
+    @work_weeks = new views.staffplans.WorkWeekListView
+      model: @model.work_weeks
+      project: @
+      user: @model.user
+    
+    @model.work_weeks.view = @work_weeks
+    
+    @model.bind 'save', (event) => @render()
+    @model.bind 'destroy', (event) => @remove()
+    @model.bind 'change:id', (event) =>
+      @render()
+      
+      setTimeout =>
+        @work_weeks.delegateEvents()
     
   templateData: ->
     name: @model.get "name"
@@ -27,9 +41,12 @@ class views.staffplans.ProjectView extends Backbone.View
     
   render: ->
     $( @el )
+      .attr(
+        id: "project_#{@model.id}"
+      )
       .html( Mustache.to_html( @templates.project, @templateData() ) )
       .find( '.months-and-weeks' )
-      .html @model.work_weeks.view.render().el
+      .html @work_weeks.render().el
     @
   
   templates:
