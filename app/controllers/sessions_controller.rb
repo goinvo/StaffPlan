@@ -11,8 +11,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       if cookies[:original_request].present?
-        cookies.delete :original_request
-        redirect_to url_for Marshal.load(cookies[:original_request])
+        redirect_to url_for Marshal.load(cookies.delete(:original_request))
       else
         redirect_to root_url, notice: t(:hello)
       end
