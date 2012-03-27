@@ -148,24 +148,6 @@ describe RegistrationsController do
         end
       end
     end
-
-    describe "PUT#invites" do
-      it "should redirect to the invited user's edit user page on successful invitation" do
-        @user = Factory(:user)
-        User.stubs(:with_registration_token).with(anything).returns(@user)
-        put :invites, token: "bogus"
-        response.should redirect_to edit_user_path(@user)
-      end
-
-      it "should set the invited user as the current user on a successful invite" do
-        @user = Factory(:user)
-        @user.registration_token = SecureRandom.urlsafe_base64
-        @user.registration_token_sent_at = 30.minutes.ago
-        User.stubs(:with_registration_token).with(anything).returns(@user)
-        put :invites, token: "whatevs"
-        session[:user_id].should eq(@user.id)
-      end
-    end
   end
 
   context "with invalid parameters" do 

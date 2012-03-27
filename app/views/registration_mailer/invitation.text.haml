@@ -6,7 +6,7 @@ It takes less than 20 seconds.
 
 Click this link to get started:
 
-#{link_to confirm_registration_url(token: @user.registration_token, type: "invite"), confirm_invitation_url(token: @user.registration_token, type: "invite"), method: :put}
+#{link_to confirm_registration_url(token: @user.registration_token, type: "invite"), confirm_registration_url(token: @user.registration_token, type: "invite"), method: :put}
 
 Have questions? Contact #{@admin.name} at #{@admin.email}"
 
