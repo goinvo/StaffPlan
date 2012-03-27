@@ -20,16 +20,16 @@ class views.staffplans.UserView extends Support.CompositeView
     
     @model.projects.bind 'add', (project) =>
       projects = @model.projectsByClient()
-      @renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
+      clientId = project.getClientId()
+      @renderProjectsForClient clientId, projects[ clientId ]
 
-      setTimeout ->
-        $(project.view.el).find('input[name="project[name]"]').focus()
+      setTimeout -> $(project.view.el).find('input[name="project[name]"]').focus()
     
     @model.projects.bind 'project:created', (project) =>
       projects = @model.projectsByClient()
       @renderProjectsForClient project.get("client_id"), projects[ project.get("client_id") ]
-      @addNewProjectRow()
-    
+      
+      setTimeout => @addNewProjectRow()
     
     @render()
     @renderAllProjects()
@@ -67,7 +67,7 @@ class views.staffplans.UserView extends Support.CompositeView
     $( @el )
       .appendTo '.content'
 
-    @addNewProjectRow()
+    setTimeout => @addNewProjectRow()
 
     @
   
@@ -200,7 +200,7 @@ class views.staffplans.UserView extends Support.CompositeView
         li.removeClass "passed"
 
   addNewProjectRow: ->
-    undefinedClientId = @$('section[data-client-id="undefined"]')
+    undefinedClientId = @$('section[data-client-id="new_client"]')
     if undefinedClientId.length == 0 || undefinedClientId.is(":empty")
       undefinedClientId.remove()
       @model.projects.add {}

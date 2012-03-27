@@ -13,6 +13,9 @@ class Project extends Backbone.Model
   
   dateRangeMeta: ->
     @collection.dateRangeMeta()
+  
+  getClientId: ->
+    @get("client_id") || "new_client"
     
   urlRoot: "/projects"
   

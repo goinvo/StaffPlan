@@ -47,8 +47,9 @@ class User extends Backbone.Model
 
   projectsByClient: ->
     _.reduce @projects.models, (projectsByClient, project) ->
-        projectsByClient[ project.get( 'client_id' ) ] ||= []
-        projectsByClient[ project.get( 'client_id' ) ].push project
+        clientId = project.getClientId()
+        projectsByClient[ clientId ] ||= []
+        projectsByClient[ clientId ].push project
         projectsByClient
       , {}
 
