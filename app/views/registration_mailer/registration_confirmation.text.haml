@@ -4,7 +4,7 @@ Thank you for registering an account on StaffPlan.
 
 Please click the link below to activate your account:
 
-#{link_to confirm_registration_url(token: @user.registration_token), confirm_registration_url(token: @user.registration_token), method: :put}
+#{link_to confirm_registration_url(token: @user.registration_token, type: "confirm"), confirm_registration_url(token: @user.registration_token, type: "confirm"), method: :put}
 
 Plan away,
 

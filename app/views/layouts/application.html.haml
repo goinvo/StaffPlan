@@ -11,9 +11,6 @@
     = yield(:stylesheet_includes)
     = javascript_include_tag "application"
     
-    /[if IE]
-      = stylesheet_link_tag 'ie.css', :media => 'screen, projection'
-      
     = csrf_meta_tags
     
   %body{:id => controller_name, :class => action_name}

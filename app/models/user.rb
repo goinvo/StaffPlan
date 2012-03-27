@@ -51,14 +51,14 @@ class User < ActiveRecord::Base
     RegistrationMailer.registration_confirmation(self).deliver
   end
 
-  def send_invitation
+  def send_invitation(inviting_user)
     self.registration_token_sent_at = Time.now
     set_token(:registration_token)
-    RegistrationMailer.invitation(self).deliver
+    RegistrationMailer.invitation(self, inviting_user).deliver
   end
 
   def self.with_registration_token(token)
-    self.where("registration_token = ? AND registration_token_sent_at > ?", token, 2.hours.ago).first
+    self.where("registration_token = ?", token).first
   end
 
   # FIXME: This does NOT ensure that the token will be unique. The odds of it not being unique are virtually non-existent though

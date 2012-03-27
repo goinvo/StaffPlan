@@ -6,7 +6,7 @@ It takes less than 20 seconds.
 
 Click this link to get started:
 
-#{link_to accept_invite_url(token: @user.registration_token), accept_invite_url(token: @user.registration_token), method: :put}
+#{link_to confirm_registration_url(token: @user.registration_token, type: "invite"), confirm_invitation_url(token: @user.registration_token, type: "invite"), method: :put}
 
-Have questions? Contact #{@admin.name} (your Staffplan company account administrator) at #{@admin.email}"
+Have questions? Contact #{@admin.name} at #{@admin.email}"
 

@@ -20,7 +20,6 @@ StaffPlan::Application.routes.draw do
   resources :companies, only: [:new, :create]
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
-  match "/registrations/confirm/:token" => "registrations#confirm", via: :put, as: "confirm_registration"
-  match "/registrations/invites/:token" => "registrations#invites", via: :put, as: "accept_invite"
+  match "/registrations/:type/:token" => "registrations#confirm", via: :put, as: "confirm_registration", constraints: {:type => /(?:confirm|invite)/}
   root :to => 'staffplans#my_staffplan'
 end

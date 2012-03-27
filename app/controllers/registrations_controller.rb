@@ -21,7 +21,6 @@ class RegistrationsController < ApplicationController
     end
     if @company.persisted?
       @user.send_registration_confirmation
-      # FIXME: Remove link from template
       render template: "registrations/email_sent", layout: "registration"
     else
       # I have to call valid? here or I don't get the error messages for the user 
@@ -39,25 +38,13 @@ class RegistrationsController < ApplicationController
       @user.registration_token_sent_at = nil
       @user.save
       session[:user_id] = @user.id
-      redirect_to staffplan_path(@user), notice: "Hi #{@user.name}, welcome to StaffPlan"
+      if params[:type] == "invite"
+        redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
+      else
+        redirect_to staffplan_path(@user), notice: "Hi #{@user.name}, welcome to StaffPlan"
+      end
     else
       redirect_to new_registration_path, notice: "Your token has expired, please register again"
-    end
-  end
-
-  # We might want to merge those two actions in the future, they 
-  # do the same thing, except for the else case
-  # and the path we redirect to
-  def invites
-    if (@user = User.with_registration_token(params[:token])).present?
-      session[:user_id] = @user.id
-      @user.registration_token = nil
-      @user.registration_token_sent_at = nil
-      @user.save
-      redirect_to edit_user_path(@user), notice: "Almost done! Make sure to change your password."
-    else
-      # FIXME: Better message here or even redirect???
-      render :text => "Your token has expired" 
     end
   end
 

@@ -40,9 +40,8 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save
         current_user.current_company.users << @user
-        @user.send_invitation
-        # FIXME: Remove link from notice
-        format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.name}.#{view_context.link_to("CONFIRM", accept_invite_url(token: @user.registration_token), method: :put).html_safe}" }
+        @user.send_invitation(current_user)
+        format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.name}" }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
