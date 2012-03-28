@@ -46,13 +46,11 @@ class User < ActiveRecord::Base
   end
 
   def send_registration_confirmation
-    self.registration_token_sent_at = Time.now
     set_token(:registration_token)
     RegistrationMailer.registration_confirmation(self).deliver
   end
 
   def send_invitation(inviting_user)
-    self.registration_token_sent_at = Time.now
     set_token(:registration_token)
     RegistrationMailer.invitation(self, inviting_user).deliver
   end

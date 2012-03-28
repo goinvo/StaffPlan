@@ -35,7 +35,6 @@ class RegistrationsController < ApplicationController
   def confirm
     if (@user = User.with_registration_token(params[:token])).present?
       @user.registration_token = nil
-      @user.registration_token_sent_at = nil
       @user.save
       session[:user_id] = @user.id
       if params[:type] == "invite"
