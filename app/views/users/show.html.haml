@@ -6,7 +6,7 @@
     .user-info
       %h2
         = image_tag @user.gravatar
-        = @user.name
+        = link_to @user.name, staffplan_path(@user)
       %span.last-updated
         = "(as of #{time_ago_in_words(@user.updated_at)} ago)"
     = link_to 'Edit', edit_user_path(@user)
