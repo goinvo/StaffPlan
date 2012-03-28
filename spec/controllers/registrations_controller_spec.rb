@@ -102,7 +102,6 @@ describe RegistrationsController do
         it "should set a token and its related timestamp on the user" do
           post :create, @parameters
           assigns(:user).registration_token.should_not be_nil
-          assigns(:user).registration_token_sent_at.should > 10.seconds.ago
         end
 
         it "should add a user to the database" do
@@ -119,11 +118,9 @@ describe RegistrationsController do
         it "should reset the user's registration token and its timestamp to nil and redirect to his/her staffplan page" do
           @user = Factory(:user)
           @user.registration_token = SecureRandom.urlsafe_base64
-          @user.registration_token_sent_at = 30.minutes.ago
           User.stubs(:with_registration_token).with(anything).returns(@user)
           put :confirm, token: "whatevs" # We'll get @user from the stub anyway
           @user.registration_token.should be_nil
-          @user.registration_token_sent_at.should be_nil
           response.should redirect_to(staffplan_path(@user))
           flash[:notice].should_not be_nil
         end
@@ -132,7 +129,6 @@ describe RegistrationsController do
       it "should set the user as the current user by stuffing his id in session" do
         @user = Factory(:user)
         @user.registration_token = SecureRandom.urlsafe_base64
-        @user.registration_token_sent_at = 30.minutes.ago
         User.stubs(:with_registration_token).with(anything).returns(@user)
         put :confirm, token: "donkey"
         session[:user_id].should eq(@user.id)
