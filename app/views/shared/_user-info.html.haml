@@ -5,6 +5,7 @@
 .user-info{ class: small ? "small" : "" }
   = link_to url do
     = image_tag user.gravatar, class: 'gravatar'
-    %span.name=  user.name
+    %span.name
+      = link_to user.name, staffplan_path(user)
     - if email
       %span.email= "<#{user.email}>"
