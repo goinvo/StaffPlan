@@ -3,10 +3,9 @@ class Project extends Backbone.Model
     
     @work_weeks = new WorkWeekList @get('work_weeks'),
       parent: @
-      
-    @bind 'destroy', (event) ->
-      @collection.remove @
-  
+    
+    @bind 'destroy', (event) -> @collection.remove @
+    
   validate: (attributes) ->
     if @get('name') == ''
       return "Project name is required"

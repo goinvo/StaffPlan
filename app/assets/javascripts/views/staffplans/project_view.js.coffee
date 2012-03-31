@@ -11,9 +11,16 @@ class views.staffplans.ProjectView extends Support.CompositeView
     
     @model.work_weeks.view = @work_weeks
     
-    @model.bind 'save', (event) => @render()
-    @model.bind 'destroy', (event) => @remove()
-    @model.bind 'change:id', (event) =>
+    @model.bind 'save', (project) => @render()
+    @model.bind 'destroy', (project) =>
+      otherClientProject = window._User.projects.detect (p) =>
+          p.get('client_id') == project.get('client_id')
+      if otherClientProject
+        @remove()
+      else
+        $( @el ).closest('section').remove()
+      
+    @model.bind 'change:id', (project) =>
       @render()
       
       setTimeout =>
