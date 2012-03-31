@@ -24,11 +24,11 @@ class RegistrationsController < ApplicationController
       render template: "registrations/email_sent", layout: "registration"
     else
       # I have to call valid? here or I don't get the error messages for the user 
-      flash.now[:errors] = {}
+      flash[:errors] = {}
       [@user, @company].each do |obj| 
-        flash.now[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid?
+        flash[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid?
       end
-      render action: :new, layout: "registration"
+      redirect_to new_registration_path
     end
   end
 
