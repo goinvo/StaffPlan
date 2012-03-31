@@ -49,16 +49,15 @@
       mask-image:                 linear-gradient(left, #000, #000 80%, hsla(0, 0%, 0%, 0))
 
     &.client-name
-      display: none
-      width: 180px
+      width: 125px
       
       select
         width: 150px
     
     &.project-name
-      width: 150px
+      width: 100px
       
-    &.new-project, &.plan-actual, &.total, &.diff-remove-project
+    &.new-project, &.plan-actual, &.total
       width: 35px
       
     &.months-and-weeks
@@ -80,6 +79,11 @@
             input
               width: 32px
               text-align: center
+              
+          .diff-remove-project
+            width: 45px
+            text-align: left
+    
         
 //\\//\\//\\//\\//\\
 //      Main      \\
@@ -159,7 +163,7 @@ body#staffplans.show
         .date-pagination
           position: absolute
           left: 414px
-          left: 230px
+          left: 308px
           bottom: 10px
           display: block
           width: 650px
