@@ -2,15 +2,16 @@
   = stylesheet_link_tag('staffplans', 'jquery-ui-1.8.17')
   
 - content_for(:javascript_includes) do
-  :javascript
+  :coffeescript
     window._meta =
-      { clients: new ClientList(#{@clients})
-      , days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      , months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      , abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
-      , abbr_months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    }
+      clients: new ClientList(#{@clients})
+      days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      abbr_months: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     
-    $(function() {
-      window._User = new User( #{@target_user_json} )
-    })
+    $( ->
+      window._User = new User #{@target_user_json}
+      window._UserView = new views.staffplans.UserView
+        model: window._User
+    )

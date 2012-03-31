@@ -8,15 +8,6 @@ class WorkWeekList extends Backbone.Collection
   initialize: (models, attrs) ->
     _.extend @, models
     _.extend @, attrs
-    
-    @view = new views.staffplans.WorkWeekListView
-      model: @
-    
-    @bind 'change:actual_hours', ->
-      @view.updateTotals()
-
-    @bind 'change:estimated_hours', ->
-      @view.updateTotals()
   
   dateRangeMeta: ->
     @parent.dateRangeMeta()
