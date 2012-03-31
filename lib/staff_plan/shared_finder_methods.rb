@@ -22,10 +22,11 @@ module StaffPlan::SharedFinderMethods
     @client = current_user.current_company.clients.find_by_id(params[:client_id] || params[:id])
     
     unless @client.present?
-      @client = current_user.current_company.clients.where(["lower(name) = ?", (params[:client_name] || '').downcase]).first
+      client_name = params[:client_name].blank? ? Client::DEFAULT_CLIENT_NAME : params[:client_name]
+      @client = current_user.current_company.clients.where(["lower(name) = ?", client_name.downcase]).first
       
       unless @client.present?
-        @client = current_user.current_company.clients.create(name: params[:client_name])
+        @client = current_user.current_company.clients.create(name: client_name)
         @client.company_id = current_user.current_company_id
         
         unless @client.save
