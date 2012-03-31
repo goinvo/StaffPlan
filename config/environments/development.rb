@@ -26,7 +26,8 @@ StaffPlan::Application.configure do
   config.assets.compress = false
 
   # Expands the lines which load the assets
-  config.assets.debug = false
+  config.assets.debug = true
+  
   config.after_initialize do |app|
     app.assets.logger = Logger.new('/dev/null')
   end
