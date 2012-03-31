@@ -3,29 +3,18 @@ class Project extends Backbone.Model
     
     @work_weeks = new WorkWeekList @get('work_weeks'),
       parent: @
-      
-    @view = new views.staffplans.ProjectView
-      model: @
-      id: "project_#{@id}"
-      
-    @bind 'destroy', (event) ->
-      @collection.remove @
-      @view.remove()
     
-    @bind 'change:id', (event) ->
-      @view.render()
-      
-      setTimeout =>
-        @work_weeks.view.delegateEvents()
+    @bind 'destroy', (event) -> @collection.remove @
     
-    @bind 'save', (event) -> @view.render()
-  
   validate: (attributes) ->
     if @get('name') == ''
       return "Project name is required"
   
   dateRangeMeta: ->
     @collection.dateRangeMeta()
+  
+  getClientId: ->
+    @get("client_id") || "new_client"
     
   urlRoot: "/projects"
   

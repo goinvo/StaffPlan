@@ -1,4 +1,4 @@
-class views.staffplans.WorkWeekListView extends Backbone.View
+class views.staffplans.WorkWeekListView extends Support.CompositeView
   
   tagName: "section"
   className: "work-weeks"

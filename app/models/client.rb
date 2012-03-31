@@ -1,7 +1,8 @@
 class Client < ActiveRecord::Base
   include StaffPlan::AuditMethods
   has_paper_trail
-
+  
+  DEFAULT_CLIENT_NAME = "N/A"
   attr_accessible :name, :description, :active
   has_many :projects, dependent: :destroy
   belongs_to :company
