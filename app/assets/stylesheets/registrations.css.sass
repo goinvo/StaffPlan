@@ -1,0 +1,59 @@
+@import compass
+@import compass/reset
+@import compass/css3/text-shadow
+@import compass/css3/box
+
+body
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif
+  +text-shadow
+  
+  .flash_errors
+    width: 100%
+    +display-box
+    +box-align('center')
+    +box-orient('vertical')
+    padding: 10px
+    background-color: #a20
+    color: white
+    font-size: 14px
+    font-weight: bold
+    
+    .error-block
+      margin-top: 8px
+      
+    ul
+      padding-left: 10px
+      list-style: circle
+      
+  section.main
+    section
+      width: 256px
+      margin: 15px auto 0
+      padding: 15px
+      
+      h1
+        font-size: 22px
+        padding: 20px 0
+      
+      form
+        .user
+          margin-bottom: 16px
+          
+        .field
+          label
+            display: block
+            font-size: 14px
+        
+          input
+            font-size: 16px
+            width: 100%
+            margin: 2px 0 2px 0
+            +border-radius
+          .disclaimer
+            font-size: 7pt
+            
+        .submit
+          input[type="submit"]
+            border: 1px #444 solid 
+            
+@import _flash

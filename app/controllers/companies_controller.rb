@@ -1,4 +1,6 @@
 class CompaniesController < ApplicationController
+
+
   def new
     @company = Company.new 
     @user = @company.users.build
@@ -7,7 +9,7 @@ class CompaniesController < ApplicationController
   def create
     @user = User.where(email: params[:user][:email]).first || User.new(params[:user])
     @company = Company.new(params[:company])
-    
+
     Company.transaction do
       if @company.save && @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
@@ -15,7 +17,7 @@ class CompaniesController < ApplicationController
         raise ActiveRecord::Rollback
       end
     end
-    
+
     if @company.persisted?
       redirect_to root_url, notice: "Company was successfully created"
     else
@@ -23,5 +25,4 @@ class CompaniesController < ApplicationController
       render action: :new
     end
   end
-
 end

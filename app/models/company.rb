@@ -7,9 +7,9 @@ class Company < ActiveRecord::Base
   has_many :clients, dependent: :destroy
   
   validates_presence_of :name
+  validates_uniqueness_of :name
 
   after_update :update_originator_timestamp 
-
 
   def clients_as_json
     Jbuilder.encode do |json|

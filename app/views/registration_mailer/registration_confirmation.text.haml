@@ -1,0 +1,12 @@
+Hi #{@user.first_name}
+\
+Thank you for registering an account on StaffPlan.
+\
+Please click the link below to activate your account:
+\
+#{confirm_registration_url(token: @user.registration_token)}
+\
+Plan away,
+\
+The StaffPlan Team,
+http://www.staffplan.com

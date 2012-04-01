@@ -2,6 +2,7 @@ class UsersController < ApplicationController
   before_filter only: [:show, :edit, :update, :destroy] do |c|
     c.find_target
   end
+  
   # GET /users
   # GET /users.json
   def index
@@ -35,9 +36,10 @@ class UsersController < ApplicationController
     @user = User.new(params[:user])
     @user.current_company_id = current_user.current_company_id
     respond_to do |format|
-      if @user.save
+      if @user.save_unconfirmed_user
         current_user.current_company.users << @user
-        format.html { redirect_to @user, notice: 'User was successfully created.' }
+        @user.send_invitation(current_user)
+        format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.name}" }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }
@@ -78,5 +80,4 @@ class UsersController < ApplicationController
       format.json { head :ok }
     end
   end
-
 end
