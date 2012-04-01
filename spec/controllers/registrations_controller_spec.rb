@@ -33,22 +33,14 @@ describe RegistrationsController do
 
     describe "POST#create" do
       context "user/company creation somehow fails" do 
-        it "should display errors to the user if the user they're trying to create already exists" do
-          @user = Factory(:user)
-          @parameters[:user].merge!({first_name: @user.first_name, last_name: @user.last_name})
-          lambda {
-            post :create, @parameters
-          }.should_not change(User, :count)
-          response.should render_template(:new)
-        end
-
         it "should display errors to the user if the company they're trying to create already exists" do
           @company = Company.create(name: Faker::Company.name)
           @parameters[:company].merge!({name: @company.name})
           lambda {
             post :create, @parameters
           }.should_not change(Company, :count)
-          response.should render_template(:new)
+          response.should redirect_to(new_registration_path)
+          flash[:errors].should_not be_empty
         end
 
         it "should not add the newly created user to a pre-existing company if the company name provided already exists" do
@@ -57,6 +49,7 @@ describe RegistrationsController do
           lambda {
             post :create, @parameters
           }.should_not change(@company.users, :size)
+          response.should redirect_to(new_registration_path)
         end
 
         it "should display errors to the user if the email they're using is invalid" do
@@ -64,7 +57,7 @@ describe RegistrationsController do
           company_count = Company.count
           user_count = User.count
           post :create, @parameters
-          response.should render_template(:new)
+          response.should redirect_to(new_registration_path)
           Company.count.should eq(company_count)
           User.count.should eq(user_count)
         end
@@ -112,14 +105,33 @@ describe RegistrationsController do
         end
       end
     end
-
-    describe "PUT#confirm" do
+    
+    describe "GET#confirm" do
+      context "when the user is found" do
+        it "should render the confirm template" do
+          @user = Factory.build(:user, password: nil, password_confirmation: nil, registration_token: token = 'anything')
+          @user.save_unconfirmed_user
+          get :confirm, token: token
+          response.should render_template('confirm')
+        end
+      end
+      
+      context "when the user isn't found" do
+        it "should redirect to the new_registration_path" do
+          User.expects(:with_registration_token).with(anything).returns(nil)
+          get :confirm, token: 'lol'
+          response.should redirect_to(new_registration_path)
+        end
+      end
+    end
+    
+    describe "POST#complete" do
       context "User is found with his token" do
         it "should reset the user's registration token and its timestamp to nil and redirect to his/her staffplan page" do
-          @user = Factory(:user)
+          @user = Factory(:user, registration_token: token = "whatevs")
           @user.registration_token = SecureRandom.urlsafe_base64
           User.stubs(:with_registration_token).with(anything).returns(@user)
-          put :confirm, token: "whatevs" # We'll get @user from the stub anyway
+          post :complete, token: token, user: {first_name: @user.first_name, last_name: @user.last_name, email: @user.email, password: "foobar", password_confirmation: nil}
           @user.registration_token.should be_nil
           response.should redirect_to(staffplan_path(@user))
           flash[:notice].should_not be_nil
@@ -130,15 +142,14 @@ describe RegistrationsController do
         @user = Factory(:user)
         @user.registration_token = SecureRandom.urlsafe_base64
         User.stubs(:with_registration_token).with(anything).returns(@user)
-        put :confirm, token: "donkey"
+        post :complete, token: "donkey"
         session[:user_id].should eq(@user.id)
       end
 
       context "User is NOT found with his token" do
         it "should redirect to the registration page if the user cannot be found" do
-          # Kind of redundant since we're feeding a bullshit token anyway but...
           User.stubs(:with_registration_token).with(anything).returns(nil)
-          put :confirm, token: "-sad9ad99das9ddsss_"
+          post :complete, token: "-sad9ad99das9ddsss_"
           flash[:notice].should_not be_empty
           response.should redirect_to(new_registration_path)
         end
@@ -181,7 +192,7 @@ describe RegistrationsController do
 
       it "should render the template for the new action again" do
         post :create, @parameters
-        response.should render_template(:new)
+        response.should redirect_to(new_registration_path)
       end
 
       it "should not add a company and a user to the database if the company or the user are invalid" do
@@ -190,7 +201,7 @@ describe RegistrationsController do
         lambda {
           post :create, @parameters
         }.should_not change(Company, :count)
-        response.should render_template(:new)
+        response.should redirect_to(new_registration_path)
       end
 
     end

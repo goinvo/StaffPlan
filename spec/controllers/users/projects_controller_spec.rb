@@ -44,10 +44,11 @@ describe Users::ProjectsController do
         @user.current_company.clients.find_by_name(@client_name).should_not be_nil
       end
       
-      it "should redirect if the new Client fails to save" do
+      it "should save the new Client with a name of 'N/A' if no name is passed" do
         lambda {
           post :create, :user_id => @user.id, :client_name => nil
-        }.should_not change(Client, :count)
+        }.should change(Client, :count).by(1)
+        @user.current_company.clients.find_by_name("N/A").should_not be_nil
       end
     end
     

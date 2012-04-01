@@ -33,12 +33,10 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    # Since we're creating a new user, we need to set the 
-    # password to a default value until he clicks on the invite and changes it
-    @user = User.new(params[:user].merge({password: SecureRandom.hex(4)}))
+    @user = User.new(params[:user])
     @user.current_company_id = current_user.current_company_id
     respond_to do |format|
-      if @user.save
+      if @user.save_unconfirmed_user
         current_user.current_company.users << @user
         @user.send_invitation(current_user)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.name}" }

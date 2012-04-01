@@ -23,7 +23,7 @@ describe User do
 
   end
 
-  describe 'User#plan_for' do
+  describe '#plan_for' do
     before(:each) do
       @user = User.new(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "23kj23k2j")
       @company = Factory(:company)
@@ -97,4 +97,20 @@ describe User do
       end
     end
   end  
+  
+  describe '#save_unconfirmed_user' do
+    it "should save the user if all required fields (except password) are present" do
+      lambda {
+        user = Factory.build(:user, password: nil, password_confirmation: nil)
+        user.save_unconfirmed_user.should be_true
+      }.should change(User, :count).by(1)
+    end
+    
+    it "should not save if first/last name or email are missing" do
+      lambda {
+        user = Factory.build(:user, password: nil, password_confirmation: nil, email: nil)
+        user.save_unconfirmed_user.should be_false
+      }.should_not change(User, :count)
+    end
+  end
 end

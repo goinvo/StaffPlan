@@ -1,12 +1,17 @@
-Hi #{@user.first_name.strip}, 
+Hi #{@user.first_name.strip},
+\
 #{@admin.name} just set up an account for you.
-
-All you need to do is follow the link below, make sure your credentials are A-OK and pick a password. 
+\
+All you need to do is follow the link below, make sure your credentials are A-OK and pick a password.
+\
 It takes less than 20 seconds.
-
+\
 Click this link to get started:
-
-#{link_to confirm_registration_url(token: @user.registration_token, type: "invite"), confirm_registration_url(token: @user.registration_token, type: "invite"), method: :put}
-
+\
+#{confirm_registration_url(token: @user.registration_token)}
+\
 Have questions? Contact #{@admin.name} at #{@admin.email}"
-
+\
+Sincerely,
+The StaffPlan Team
+http://www.staffplan.com

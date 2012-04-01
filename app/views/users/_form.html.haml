@@ -9,6 +9,7 @@
   = f.text_field :first_name, :placeholder => "First Name"
   = f.text_field :last_name, :placeholder => "Last Name"
   = f.text_field :email, :placeholder => "user@host.tld"
+  
   - unless @user.new_record? 
     = f.password_field :password
     = f.password_field :password_confirmation

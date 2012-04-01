@@ -1,12 +1,12 @@
 Hi #{@user.first_name}
-
+\
 Thank you for registering an account on StaffPlan.
-
+\
 Please click the link below to activate your account:
-
-#{link_to confirm_registration_url(token: @user.registration_token, type: "confirm"), confirm_registration_url(token: @user.registration_token, type: "confirm"), method: :put}
-
+\
+#{confirm_registration_url(token: @user.registration_token)}
+\
 Plan away,
-
+\
 The StaffPlan Team,
 http://www.staffplan.com

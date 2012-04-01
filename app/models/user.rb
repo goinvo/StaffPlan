@@ -36,10 +36,7 @@ class User < ActiveRecord::Base
   end
 
   validates_presence_of :email, :first_name, :last_name
-  validates_uniqueness_of :first_name, :scope => :last_name , :case_sensitive => false
-  validates_presence_of :password,  :on => :create
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
-
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
@@ -54,6 +51,18 @@ class User < ActiveRecord::Base
     set_token(:registration_token)
     RegistrationMailer.invitation(self, inviting_user).deliver
   end
+  
+  # https://github.com/rails/rails/pull/3887
+  def save_unconfirmed_user
+    self.valid?
+    
+    if (self.errors.keys - [:password_digest]).empty?
+      save(validate: false)
+      true
+    else
+      false
+    end
+  end
 
   def self.with_registration_token(token)
     self.where("registration_token = ?", token).first
@@ -64,7 +73,7 @@ class User < ActiveRecord::Base
   # Either we add an index on the tokens in the DB or some validation, I don't know...
   def set_token(column)
     self[column] = SecureRandom.urlsafe_base64
-    self.save
+    self.save_unconfirmed_user
   end
 
   def current_company
