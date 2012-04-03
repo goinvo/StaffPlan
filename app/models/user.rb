@@ -1,8 +1,10 @@
 class User < ActiveRecord::Base
-  # TODO: remove password and password_confirmation from attr_accessible
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
-  has_paper_trail
+ 
+  include StaffPlan::RegistrationMethods
 
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
+  
+  has_paper_trail
   has_secure_password
 
   has_and_belongs_to_many :projects, uniq: true do
@@ -40,40 +42,6 @@ class User < ActiveRecord::Base
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
-  end
-
-  def send_registration_confirmation
-    set_token(:registration_token)
-    RegistrationMailer.registration_confirmation(self).deliver
-  end
-
-  def send_invitation(inviting_user)
-    set_token(:registration_token)
-    RegistrationMailer.invitation(self, inviting_user).deliver
-  end
-  
-  # https://github.com/rails/rails/pull/3887
-  def save_unconfirmed_user
-    self.valid?
-    
-    if (self.errors.keys - [:password_digest]).empty?
-      save(validate: false)
-      true
-    else
-      false
-    end
-  end
-
-  def self.with_registration_token(token)
-    self.where("registration_token = ?", token).first
-  end
-
-  # FIXME: This does NOT ensure that the token will be unique. The odds of it not being unique are virtually non-existent though
-  # Two ways to handle this better:
-  # Either we add an index on the tokens in the DB or some validation, I don't know...
-  def set_token(column)
-    self[column] = SecureRandom.urlsafe_base64
-    self.save_unconfirmed_user
   end
 
   def current_company

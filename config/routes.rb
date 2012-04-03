@@ -2,7 +2,8 @@ StaffPlan::Application.routes.draw do
   
   get "sign_out" => "sessions#destroy", :as => "sign_out"
   get "sign_in" => "sessions#new", :as => "sign_in"
-  
+
+  resources :password_resets, except: [:destroy, :show, :index]
   resources :users do
     resources :projects, :only => [:update, :create, :destroy],
                          :controller => "users/projects" do

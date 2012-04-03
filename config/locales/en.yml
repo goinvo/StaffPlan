@@ -26,12 +26,19 @@ en:
   hello: "Hello!"
   goodbye: "Goodbye!"
   invalid_password_or_email: "Invalid email or password"
-  
+
+  password_resets:
+    new:
+      title: "Recover Your Password"  
+      instructions: "Enter your email address in the field below and we'll send you instructions about resetting your password"
+    edit:
+      instructions: "Please enter a new password"
   sessions:
     new:
       sign_in: Sign in
       email: Email
       password: Password
+      password_reset: Forgot your password?
   
   staffplans:
     mustache:
