@@ -1,0 +1,10 @@
+- unless flash[:errors].blank?  
+  .flash_errors
+    = "Trying to save your input resulted in the following errors:"
+    - flash[:errors].each do |object, errors|
+      %div{:class => "#{object}-errors error-block"}
+        %ul
+          - errors.messages.except(:password_digest).each do |attribute, error|
+            - unless error.empty?
+              %li
+                = "#{object}'s #{attribute.to_s.humanize.downcase} #{error.first}"

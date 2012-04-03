@@ -1,0 +1,29 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('registrations')
+
+%section
+  %h1 Create your StaffPlan
+  
+  = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
+    .user.first-name.field
+      = f.label :first_name, "Your first name:"
+      = f.text_field :first_name
+    .user.last-name.field
+      = f.label :last_name, "Your last name:"
+      = f.text_field :last_name
+    .user.email.field
+      = f.label :email, "Enter your email address:"
+      = f.text_field :email
+      .disclaimer
+        = "We will never disclose your email address to third parties."
+    .user.password.field
+      = f.label :password, "Choose a password"
+      = f.password_field :password
+      .disclaimer
+        = "Must be at least 6 characters long."
+    .user.company-information.field
+      = fields_for @company do |c|
+        = c.label :name, "What company do you work for?"
+        = c.text_field :name
+    .submit
+      = f.submit "Create account"

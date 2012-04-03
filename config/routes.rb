@@ -11,12 +11,18 @@ StaffPlan::Application.routes.draw do
     end
   end
   
+  resources :registrations, only: [:new, :create] do
+    post :complete, on: :collection
+    get :confirm, on: :collection
+  end
+  match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
+  
   resources :sessions, :only => [:new, :create, :destroy]
   resources :clients
   resources :projects
   resources :staffplans, :only => [:show, :index]
-  # Let's have only creation for now, we can think about the rest later
-  resources :companies, only: [:new, :create]  
+  resources :companies, only: [:new, :create]
+  
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
   root :to => 'staffplans#my_staffplan'
