@@ -1,11 +1,5 @@
 require 'spec_helper'
 
-# User clicks on the link
-# If the user clicked less than 2 hours after the token was set, we find the user based on that token, delete the token and redirect the user to the edit user page (if we can’t find the user or token too old => error message)
-# User provides a new password
-# The user’s information is updated with the new password and we redirect the user to the user’s staffplan page.
-
-
 describe PasswordResetsController do
 
   before(:each) do
@@ -22,7 +16,7 @@ describe PasswordResetsController do
   describe "PasswordResetsController#update (PUT)" do
     before(:each) do
       @parameters = {}
-      @params.store(:user, {
+      @parameters.store(:user, {
         password: "mysecretpassword", 
         password_confirmation: "mysecretpassword"
       })
