@@ -40,6 +40,7 @@ class PasswordResetsController < ApplicationController
         flash[:notice] = "Your password has been updated. Welcome back to StaffPlan"
         redirect_to staffplan_path(@user)
       else
+        flash[:errors] = {user: @user.errors}
         render action: :edit
       end
     else
