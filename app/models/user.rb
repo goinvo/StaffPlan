@@ -60,7 +60,7 @@ class User < ActiveRecord::Base
     RegistrationMailer.password_reset(self).deliver
   end
 
-  # XXX: https://github.com/rails/rails/pull/3887
+  # NOTE: https://github.com/rails/rails/pull/3887
   def save_unconfirmed_user
     self.valid?
     

@@ -2,20 +2,11 @@ class PasswordResetsController < ApplicationController
   
   layout "registration"
   skip_before_filter :require_current_user
-  
-  def new
-    # Display the form where the user provides an email address
-  end
 
   def create
     @user = User.where(email: params[:email]).first
-    if @user.present?
-      @user.send_password_reset_instructions
-      flash[:notice] = "Instructions have been sent to your email address. Please check your inbox."
-    else
-      # FIXME: Such a message is a cue about whether or not a given email address is in our DB 
-      flash[:notice] = "We couldn't find your email address in the database, please try again"
-    end
+    @user.send_password_reset_instructions if @user.present?
+    flash[:notice] = "Instructions have been sent to your email address. Please check your inbox."
     redirect_to new_session_path
   end
 

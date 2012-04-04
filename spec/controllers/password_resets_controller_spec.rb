@@ -78,7 +78,7 @@ describe PasswordResetsController do
         ActionMailer::Base.deliveries.last.to.first.should eq(@user.email)
       end
       
-      # XXX: Test the actual content? 
+      # TODO: Test the actual content? 
       it "should display a message to the user with instructions" do
         post :create, email: @user.email
         flash[:notice].should_not be_empty
@@ -94,9 +94,10 @@ describe PasswordResetsController do
         assigns[:user].registration_token.should_not be_nil
       end
     end
-
+    # FIXME: We should be testing the content of the flash here to ensure that it doesn't 
+    # provide any cue to a potential malicious user
     context "The user can't be found in the DB based on the email address he/she provided" do
-      it "should display an error message explaining the issue" do
+      it "should display the same generic information than for a 'real' user" do
         post :create, email: @user.email
         flash[:notice].should_not be_empty
       end 
@@ -106,7 +107,25 @@ describe PasswordResetsController do
         response.should redirect_to(new_session_path)
       end 
     end
+  
+  end
 
+  describe "PasswordResetsController#edit (GET)" do
+    context "A user is found with the token" do
+      it "should simply render the edit template" do
+        User.stubs(:with_registration_token).with(anything).returns(@user)
+        get :edit, id: 12
+        response.should render_template :edit
+      end
+    end
+
+    context "No user is found with the token" do
+      it "should redirect the user to the login page" do
+        User.stubs(:with_registration_token).with(anything).returns(nil)
+        get :edit, id: 12
+        response.should redirect_to(new_session_path)
+      end
+    end
   end
 
 end
