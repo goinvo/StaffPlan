@@ -9,6 +9,6 @@
 
   .info
     .admin
-      = "Administrator for this company's StaffPlan account is currently #{@company.administrator.name}"
+      = "Administrator for this company's StaffPlan account is currently #{@company.administrator.full_name}"
     .members
       = "#{@company.name} currently has #{pluralize(@company.users.size, "user")}"

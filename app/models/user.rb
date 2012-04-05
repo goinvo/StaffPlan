@@ -31,8 +31,8 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  def name
-    self.respond_to?(:first_name) ? [first_name, last_name].join(" ") : super 
+  def full_name
+    [first_name, last_name].join(" ")
   end
 
   validates_presence_of :email, :first_name, :last_name
