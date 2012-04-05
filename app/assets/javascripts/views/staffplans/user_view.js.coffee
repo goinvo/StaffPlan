@@ -35,7 +35,7 @@ class views.staffplans.UserView extends Support.CompositeView
     @renderAllProjects()
 
   templateData: ->
-    name: @model.get("name")
+    name: @model.get("full_name")
     fromDate: @model.fromDate
     gravatar: @model.get("gravatar")
     id: @model.get("id")
