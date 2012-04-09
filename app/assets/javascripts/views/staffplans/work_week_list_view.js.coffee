@@ -4,7 +4,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
   className: "work-weeks"
 
   dateRangeMeta: ->
-    @model.dateRangeMeta()
+    @model.parent.collection.parent.dateRangeMeta()
   
   workWeekByCweekAndYear: (cweek, year) ->
     @model.find (model) ->

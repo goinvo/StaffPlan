@@ -3,6 +3,7 @@ Time.firstDayOfWeek = 2
 window.views =
   staffplans: {}
   projects: {}
+  shared: {}
 window.models = {}
 
 window.isThisWeek = (date) ->

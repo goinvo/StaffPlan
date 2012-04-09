@@ -1,49 +1,18 @@
 class User extends Backbone.Model
-  weekInterval: 15
-
   initialize: (userdata) ->
-
-    @fromDate = new Time().advanceWeeks(-1).beginningOfWeek()
-    @toDate   = @fromDate.clone().advanceWeeks @weekInterval
-
     @projects = new ProjectList @get( "projects" ),
+      parent: @
+    
+    @work_weeks = new WorkWeekList @get( "work_weeks" ),
       parent: @
     
     $( document.body ).bind 'work_week:value:updated', =>
       @view.renderWeekHourCounter()
 
     urlRoot: "/users"
-
-  dateChanged: (event) ->
-    event.preventDefault()
-    interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.advanceWeeks interval
-    @toDate.advanceWeeks   interval
-    @view.renderAllProjects()
-
+    
   dateRangeMeta: ->
-    fromDate: @fromDate
-    toDate: @toDate
-    dates: @getYearsAndWeeks()
-
-  getYearsAndWeeks: ->
-    # XXX Needs cacheing or memoization badly
-    yearsAndWeeks = []
-    from = @fromDate.clone()
-    to = @toDate.clone()
-
-    while from.isBefore to
-      yearsAndWeeks.push
-        year:  from.year()
-        cweek: from.week()
-        month: from.month()
-        mweek: from.week()
-        mday:  from.day()
-        weekHasPassed: from.isBefore new Date
-
-      from = from.advanceWeeks(1)
-
-    yearsAndWeeks
+    @view.dateRangeMeta()
 
   projectsByClient: ->
     _.reduce @projects.models, (projectsByClient, project) ->
@@ -56,4 +25,15 @@ class User extends Backbone.Model
   url: ->
     "/users/#{@id}"
 
+class UserList extends Backbone.Collection
+  model: User
+  
+  initialize: (models, attrs) ->
+    _.extend @, models
+    _.extend @, attrs
+    
+  url: ->
+    @parent.url() + "/users"
+
 window.User = User
+window.UserList = UserList

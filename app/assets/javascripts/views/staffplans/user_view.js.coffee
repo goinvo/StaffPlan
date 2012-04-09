@@ -1,4 +1,4 @@
-class views.staffplans.UserView extends Support.CompositeView
+class views.staffplans.UserView extends views.shared.DateDrivenView
 
   tagName: "div"
   className: "staffplan"
@@ -7,15 +7,14 @@ class views.staffplans.UserView extends Support.CompositeView
     "click a[data-change-page]" : "changePage"
 
   changePage: (event) ->
-    @model.dateChanged event
-
+    @dateChanged event
+    @renderAllProjects()
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
-  fromDate: ->
-    new Date
-
   initialize: ->
+    views.shared.DateDrivenView.prototype.initialize.call(this)
+    
     @model.view = @
     
     @model.projects.bind 'add', (project) =>
@@ -36,12 +35,12 @@ class views.staffplans.UserView extends Support.CompositeView
 
   templateData: ->
     name: @model.get("full_name")
-    fromDate: @model.fromDate
+    fromDate: @fromDate
     gravatar: @model.get("gravatar")
     id: @model.get("id")
 
   headerTemplateData: ->
-    meta = @model.dateRangeMeta()
+    meta = @dateRangeMeta()
 
     monthNames: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
@@ -62,7 +61,7 @@ class views.staffplans.UserView extends Support.CompositeView
 
     $( @el )
       .find( '.week-hour-counter' )
-      .append( Array(@model.weekInterval + 1).join('<li></li>') )
+      .append( Array(@weekInterval + 1).join('<li></li>') )
 
     $( @el )
       .appendTo '.content'
@@ -152,7 +151,7 @@ class views.staffplans.UserView extends Support.CompositeView
 
   renderWeekHourCounter: ->
     # Gompute
-    dateRange = @model.dateRangeMeta().dates
+    dateRange = @dateRangeMeta().dates
     ww = _.map @model.projects.models, (p) ->
       _.map dateRange, (date) ->
         p.work_weeks.find (m) ->
