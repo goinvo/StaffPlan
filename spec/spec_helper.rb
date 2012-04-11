@@ -46,6 +46,14 @@ def user_with_clients_and_projects(target_user=Factory(:user))
   target_user
 end
 
+def company_with_users_and_projects
+  Factory(:company).tap do |company|
+    2.times do 
+      company.users << user_with_clients_and_projects
+    end
+  end
+end
+
 def with_versioning
   was_enabled = PaperTrail.enabled?
   PaperTrail.enabled = true
