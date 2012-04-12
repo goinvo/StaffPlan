@@ -3,7 +3,7 @@ class Api::CompaniesController < ApplicationController
   respond_to :json
   
   def index
-    if params[:secret].eql? StaffPlan::Application.config.secret_api_token 
+    if params[:secret].eql?(ENV['API_SECRET'] || StaffPlan::Application.config.api_secret)
       respond_with Company.all_with_users_and_projects 
     else 
       render json: {}, status: :forbidden and return 

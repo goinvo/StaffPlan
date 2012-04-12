@@ -6,19 +6,19 @@ describe Api::CompaniesController do
     context "The shared secret is valid" do
       context "should render a JSON array" do
         it "should render a JSON object" do
-          get :index, format: "json", secret: StaffPlan::Application.config.secret_api_token
+          get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           response.headers['Content-Type'].should eq('application/json; charset=utf-8') 
         end
 
         it "should render an empty JSON array if no companies are found" do
           Company.destroy_all
-          get :index, format: "json", secret: StaffPlan::Application.config.secret_api_token
+          get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           ActiveSupport::JSON.decode(response.body).should eq({'companies' => []})
         end
 
         it "should render a JSON array whose top-level key is 'companies'" do
           @company = company_with_users_and_projects 
-          get :index, format: "json", secret: StaffPlan::Application.config.secret_api_token
+          get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           hash = ActiveSupport::JSON.decode(response.body)
           hash.keys.size.should eq(1)
           hash.keys.first.should eq('companies')
@@ -26,7 +26,7 @@ describe Api::CompaniesController do
 
         it "should return company name and the associated users and projects for each company" do
           @company = company_with_users_and_projects
-          get :index, format: "json", secret: StaffPlan::Application.config.secret_api_token
+          get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           hash = ActiveSupport::JSON.decode(response.body)
           hash['companies'].all? do |company|
             { 'name' => String, 'users' => Array, 'projects' => Array }.all? do |key, type| 
