@@ -12,6 +12,7 @@
 //= require backbone-support
 //= require mustache
 //= require time
+//= require d3.v2
 //= require backbone-bootstrap
 //= require_tree .
 

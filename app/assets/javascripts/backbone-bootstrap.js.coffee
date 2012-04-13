@@ -1,10 +1,14 @@
 Time.firstDayOfWeek = 2
 
-window.views =
-  staffplans: {}
-  projects: {}
-window.models = {}
+@models = {}
 
-window.isThisWeek = (date) ->
+@views =
+  projects:   {}
+  shared:     {}
+  staffplans: {}
+
+# XXX This should be in `Time`
+@isThisWeek = (date) ->
   now = new Time
   date.year == now.year() and date.mweek == now.week()
+

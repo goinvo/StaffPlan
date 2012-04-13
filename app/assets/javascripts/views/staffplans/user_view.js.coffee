@@ -43,10 +43,6 @@ class views.staffplans.UserView extends Backbone.View
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
     $( @el )
-      .find( '.week-hour-counter' )
-      .append( Array(@model.weekInterval + 1).join('<li></li>') )
-
-    $( @el )
       .appendTo '.content'
 
     @addNewProjectRow()
@@ -110,8 +106,6 @@ class views.staffplans.UserView extends Backbone.View
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
 
-    @renderWeekHourCounter()
-
   renderProjectsForClient: (clientId, projects) ->
     section = $( "<section data-client-id='#{clientId}'>" ).append(
       projects.map (project) -> project.view.render().el
@@ -125,55 +119,6 @@ class views.staffplans.UserView extends Backbone.View
         .replaceWith( section )
     else
       @$('.project-list').append section
-
-  renderWeekHourCounter: ->
-    # Gompute
-    dateRange = @model.dateRangeMeta().dates
-    ww = _.map @model.projects.models, (p) ->
-      _.map dateRange, (date) ->
-        p.work_weeks.find (m) ->
-          m.get('cweek') == date.mweek and m.get('year') == date.year
-
-    # Format data
-    ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
-      "#{w.get('year')}-#{w.get('cweek')}"
-
-    # Total hours for each week
-    _.each ww, (hours, key) ->
-      ww[key] = _.reduce hours, (m, o) ->
-        m.actual += (parseInt(o.get('actual_hours'), 10) or 0)
-        m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-        m
-      , {actual: 0, estimated: 0}
-
-    # Scale
-    whc = @$ '.user-select'
-    max = Math.max.apply( null, _.pluck( ww, 'actual' ).concat( _.pluck( ww, 'estimated' ) ) ) || 1
-    ratio = ( whc.height() - 20 ) / max
-
-    # Draw
-    weekHourCounters = whc.find '.week-hour-counter li'
-    _.each dateRange, (date, idx) ->
-      # Map week to <li>
-      noActualsForWeek = false
-      li = weekHourCounters.eq(idx)
-      workWeek = ww["#{date.year}-#{date.mweek}"]
-      total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
-      if total == 0 && date.weekHasPassed
-        noActualsForWeek = true
-        total = (if workWeek? then workWeek['estimated'] else 0)  || 0
-        
-      li
-        .height(total * ratio)
-        .html("<span>" + total + "</span>")
-        .removeClass "present"
-
-      if isThisWeek(date)
-        if noActualsForWeek then li.addClass "present" else li.addClass "passed"
-      else if date.weekHasPassed
-        li.addClass "passed"
-      else
-        li.removeClass "passed"
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="undefined"]')
