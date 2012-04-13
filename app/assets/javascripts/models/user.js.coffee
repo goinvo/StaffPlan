@@ -26,7 +26,7 @@ class User extends Backbone.Model
       @view.addNewProjectRow()
     
     # Week Hour Counter
-    @weekHourCounter = new views.staffplans.ChartTotalsView @, document.body, @view.$ ".week-hour-counter"
+    @weekHourCounter = new views.staffplans.ChartTotalsView @, @view.$ ".week-hour-counter"
 
     $( document.body ).bind 'work_week:value:updated', =>
       @weekHourCounter.render @dateRangeMeta().dates, @projects.models

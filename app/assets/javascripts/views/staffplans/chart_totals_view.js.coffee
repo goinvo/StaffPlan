@@ -3,12 +3,11 @@ class ChartTotalsView extends Backbone.View
     * Chart total controller.
     * @constructor
     * @param {!Backbone.Model} @user Model to track date data from.
-    * @param {!HTMLElement}    @root Root element to listen for input changes.
     * @param {!HTMLElement}    @el   Container to add charts to.
   *###
-  initialize: (@user, @root, @el) ->
+  initialize: (@user, @el) ->
     @maxHeight = @el.parents(".user-select").height() - 20
-    @render @user.dateRangeMeta().dates, @user.projects.models if @user and @root and @el
+    @render @user.dateRangeMeta().dates, @user.projects.models if @user and @el
 
 
   ###*
