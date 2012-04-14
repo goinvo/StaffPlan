@@ -20,4 +20,21 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def self.all_with_users_and_projects
+    Jbuilder.encode do |json|
+      json.companies self.all do |json, company|
+        json.(company, :name)
+        json.users company.users do |json, user|
+          json.(user, :id, :first_name, :last_name)
+          json.project_ids user.projects.map(&:id)
+        end
+        json.projects company.projects do |json, project|
+          json.(project, :id, :name)
+          json.client_name project.client.name.strip
+          json.user_ids project.users.map(&:id)
+        end
+      end
+    end
+  end
+
 end
