@@ -31,7 +31,7 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  def name
+  def full_name
     [first_name, last_name].join(" ")
   end
 
@@ -100,7 +100,7 @@ class User < ActiveRecord::Base
 
   def staff_plan_json(company_id)
     Jbuilder.encode do |json|
-      json.(self, :id, :name, :email, :gravatar)
+      json.(self, :id, :full_name, :email, :gravatar)
       
       json.projects self.projects.for_company(company_id) do |json, project|
         json.(project, :id, :name, :client_id)

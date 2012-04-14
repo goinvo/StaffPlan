@@ -41,7 +41,7 @@ class RegistrationsController < ApplicationController
       
       if @user.save
         session[:user_id] = @user.id
-        redirect_to staffplan_path(@user), notice: "Hi #{@user.name}, welcome to StaffPlan!"
+        redirect_to staffplan_path(@user), notice: "Hi #{@user.full_name}, welcome to StaffPlan!"
       else
         if @user.errors.keys.include?(:password_digest)
           @user.errors.delete(:password_digest)

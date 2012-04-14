@@ -39,7 +39,7 @@ class UsersController < ApplicationController
       if @user.save_unconfirmed_user
         current_user.current_company.users << @user
         @user.send_invitation(current_user)
-        format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.name}" }
+        format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
         format.json { render json: @user, status: :created, location: @user }
       else
         format.html { render action: "new" }

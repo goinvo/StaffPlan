@@ -6,5 +6,5 @@
     %h2= @company.name
 = form_for @company, :builder => StaffPlanFormBuilder do |f|
   = f.text_field :name
-  = f.select :administrator_id, @company.users.sort{ |a,b| a.name <=> b.name }.map { |user| [user.name, user.id] }
+  = f.select :administrator_id, @company.users.sort{ |a,b| a.full_name <=> b.full_name }.map { |user| [user.full_name, user.id] }
   = f.submit "Save Changes"
