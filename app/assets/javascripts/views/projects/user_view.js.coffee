@@ -12,35 +12,22 @@ class views.projects.UserView extends Support.CompositeView
     
     $( @el )
       .html( @userTemplate( user: @model.attributes ) )
+      .find( '.months-and-weeks' )
+      .html( @model.work_week_view.render().el )
+    
     @
+  
+  dateRangeMeta: ->
+    @options.parent.dateRangeMeta()
     
   templates:
     user: '''
-    <img src="{{user.gravatar}}" alt="{{user.first_name}} {{user.last_name}}" />
-    <span class='name'>{{user.first_name}} {{user.last_name}}</span>
+    <div class='user-info'>
+      <img src="{{user.gravatar}}" alt="{{user.first_name}} {{user.last_name}}" />
+      <span class='name'>{{user.first_name}} {{user.last_name}}</span>
+    </div>
     <div class='months-and-weeks'></div>
     '''
-    
-    work_week_header: """
-    <section>
-      <div class='plan-actual'>
-        <div class='row-label'>&nbsp;</div>
-        {{#each monthNames}}
-        <div>{{ name }}</div>
-        {{/each}}
-        <div class='total'></div>
-        <div class='diff-remove-project'></div>
-      </div>
-      <div class='plan-actual'>
-        <div class='row-label'>&nbsp;</div>
-        {{#each weeks}}
-        <div>{{ name }}</div>
-        {{/each}}
-        <div class='total'>Total</div>
-        <div class='diff-remove-project'></div>
-      </div>
-    </section>
-    """
 
   # renderWeekHourCounter: ->
   #   # Gompute

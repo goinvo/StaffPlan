@@ -1,3 +1,32 @@
+@import "init"
 @import "_mixins"
 
-body#projects
+body#projects.show
+  section.main
+    .content
+      .project-users
+        position: relative
+        
+        ul.users
+          .user
+            .user-info
+              min-width: 250px
+              
+            .months-and-weeks
+              display: inline-block
+              +plan-actual-shared
+              
+              .plan-actual
+                .diff-remove-project
+                  width: 55px
+        
+        .date-pagination
+          display: inline-block
+          margin-left: 283px
+            
+          +plan-actual-shared
+          +next-and-previous
+            
+          .week-hour-counter
+            +week-hour-counter
+  

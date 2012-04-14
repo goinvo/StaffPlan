@@ -7,65 +7,33 @@ class views.projects.WorkWeekListView extends Support.CompositeView
     @model.dateRangeMeta()
   
   workWeekByCweekAndYear: (cweek, year) ->
-    @model.find (model) ->
+    @model.work_weeks.find (model) ->
       model.get('cweek') == cweek && model.get('year') == year
 
   workWeekByCid: (cid) ->
-    @model.getByCid cid
+    @model.work_weeks.getByCid cid
   
   actualTotal: ->
-    @model.reduce (total, workWeek, idx, workWeeks) ->
+    @model.work_weeks.reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       total
     , 0
   
   estimatedTotal: ->
-    @model.reduce (total, workWeek, idx, workWeeks) ->
+    @model.work_weeks.reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       total
     , 0
   
   delta: ->
-    @model.reduce (totalDelta, workWeek, idx, workWeeks) ->
+    @model.work_weeks.reduce (totalDelta, workWeek, idx, workWeeks) ->
       estimated = if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       actual = if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       
       totalDelta += actual - estimated if actual != 0
       totalDelta
     , 0
-    
-  templateData: ->
-    meta = @dateRangeMeta()
-    
-    isRemoveable: =>
-      @model.parent.isNew() || (@actualTotal() == 0 && @estimatedTotal() == 0)
-      
-    actualTotal: =>
-      @actualTotal()
-      
-    estimatedTotal: =>
-      @estimatedTotal()
-    
-    hasDelta: =>
-      @delta() != 0
-      
-    delta: =>
-      @delta()
-      
-    yearsAndCweeks: =>
-      dates = meta.dates
-      _.map dates, (dateObject) =>
-        workWeek = @workWeekByCweekAndYear dateObject.mweek, dateObject.year
-        
-        if workWeek?
-          dateObject.actual_hours =    (workWeek.get('actual_hours') or '')
-          dateObject.estimated_hours = (workWeek.get('estimated_hours') or '')
-          dateObject.cid = workWeek.cid
-          
-        dateObject
-    
-    projectExists: =>
-      !@model.parent.isNew()
+  
   
   templates:
     work_week_list: """
@@ -74,43 +42,59 @@ class views.projects.WorkWeekListView extends Support.CompositeView
     </div>
     <div class='plan-actual'>
       <div class='row-label'>Plan</div>
-      {{#yearsAndCweeks}}
-      <div>
-        <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="estimated_hours" value="{{ estimated_hours }}" data-work-week-input />
-      </div>
-      {{/yearsAndCweeks}}
+      {{#each yearsAndCweeks}}
+        <div>
+          <input type="text" size="2" data-cweek="{{ this.mweek }}" data-year="{{ this.year }}" data-cid="{{ this.cid }}" data-attribute="estimated_hours" value="{{ this.estimated_hours }}" data-work-week-input />
+        </div>
+      {{/each}}
       <div class='total estimated'>{{estimatedTotal}}</div>
       <div class='diff-remove-project'></div>
     </div>
-    {{#projectExists}}
     <div class='plan-actual'>
       <div class='row-label'>Actual</div>
-      {{#yearsAndCweeks}}
+      {{#each yearsAndCweeks}}
       <div>
-        {{#weekHasPassed}}
-        <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="actual_hours" value="{{ actual_hours }}" data-work-week-input />
-        {{/weekHasPassed}}
+        {{#if weekHasPassed}}
+        <input type="text" size="2" data-cweek="{{ this.mweek }}" data-year="{{ this.year }}" data-cid="{{ this.cid }}" data-attribute="actual_hours" value="{{ this.actual_hours }}" data-work-week-input />
+        {{/if}}
       </div>
-      {{/yearsAndCweeks}}
+      {{/each}}
       <div class='total actual'>{{actualTotal}}</div>
       <div class='diff-remove-project'>
-        {{#isRemoveable}}
         <a href='#' class='remove-project button-minimal'>&times;</a>
-        {{/isRemoveable}}
         <span class='delta'>
-          {{#hasDelta}}
+          {{#if hasDelta}}
           &#916; {{ delta }}
-          {{/hasDelta}}
+          {{/if}}
         </span>
       </div>
     </div>
-    {{/projectExists}}
     """
+  
+  initialize: ->
+    @workWeekList = Handlebars.compile(@templates.work_week_list)
     
   # render/DOM updaters
   render: ->
+    
     $( @el )
-      .html( Mustache.to_html( @templates.work_week_list, @templateData() ) )
+      .html @workWeekList
+        actualTotal: @actualTotal()
+        estimatedTotal: @estimatedTotal()
+        hasDelta: @delta() != 0
+        delta: @delta()
+        yearsAndCweeks: (=>
+          dates = @dateRangeMeta().dates
+          _.map dates, (dateObject) =>
+            workWeek = @workWeekByCweekAndYear dateObject.mweek, dateObject.year
+        
+            if workWeek?
+              dateObject.actual_hours =    (workWeek.get('actual_hours') or '')
+              dateObject.estimated_hours = (workWeek.get('estimated_hours') or '')
+              dateObject.cid = workWeek.cid
+          
+            dateObject
+        )()
 
     @rowFiller = @$('.row-filler').hide()
     

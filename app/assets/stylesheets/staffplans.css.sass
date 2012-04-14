@@ -3,37 +3,6 @@
 
 @import init
 @import mixins
-    
-//\\//\\//\\//\\//\\//\\
-//  Week Hour Counter \\
-//\\//\\//\\//\\//\\//\\
-=week-hour-counter
-  margin: 0
-  padding: 15px 0 0
-  list-style-type: none
-  font-size: $font-size
-  
-  li
-    position: relative
-    display: inline-block
-    margin: 0 3px
-    padding: 0
-    width: 32px
-    height: 10px
-    background: #5E9B69
-    +box-sizing(border-box)
-    vertical-align: bottom
-    +transition(all .2s ease-out)
-    
-    span
-      position: absolute
-      display: block
-      top: -15px
-      width: 32px
-      text-align: center
-      
-    &.passed
-      background: #D6D6D6
       
 =staffplan-columns
   > *
@@ -64,25 +33,7 @@
       width: 675px
       
       section
-        .plan-actual
-          display: block
-          
-          .row-label
-            visibility: hidden
-            color: #9F9F9F
-          
-          > *
-            display: inline-block
-            width: 35px
-          
-          div
-            input
-              width: 32px
-              text-align: center
-              
-          .diff-remove-project
-            width: 45px
-            text-align: left
+        +plan-actual-shared
     
         
 //\\//\\//\\//\\//\\
@@ -208,6 +159,7 @@ body#staffplans.show
                 & + .plan-actual
                   margin-top: 6px
                   color: $color-light
+                  
                 .row-label
                   width: 40px
             

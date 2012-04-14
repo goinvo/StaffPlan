@@ -1,15 +1,14 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
-%section
-  %header
-    %h2= @project.name
-    = link_to 'Edit', edit_project_path(@project)
-    = link_to 'Destroy', @project, :confirm => 'Are you sure?', :method => :delete
+%header
+  %h2= @project.name
+  = link_to 'Edit', edit_project_path(@project)
+  = link_to 'Destroy', @project, :confirm => 'Are you sure?', :method => :delete
 
-  .info
-    .client= @project.client.name
-    .active{ 'data-active' => @project.active }= @project.active ? t('.active') : t('.inactive')
+.info
+  .client= @project.client.name
+  .active{ 'data-active' => @project.active }= @project.active ? t('.active') : t('.inactive')
 
 - content_for(:javascript_includes) do
   :coffeescript
