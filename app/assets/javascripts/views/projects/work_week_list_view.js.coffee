@@ -7,26 +7,26 @@ class views.projects.WorkWeekListView extends Support.CompositeView
     @model.dateRangeMeta()
   
   workWeekByCweekAndYear: (cweek, year) ->
-    @model.work_weeks.find (model) ->
+    @model.find (model) ->
       model.get('cweek') == cweek && model.get('year') == year
 
   workWeekByCid: (cid) ->
-    @model.work_weeks.getByCid cid
+    @model.getByCid cid
   
   actualTotal: ->
-    @model.work_weeks.reduce (total, workWeek, idx, workWeeks) ->
+    @model.reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       total
     , 0
   
   estimatedTotal: ->
-    @model.work_weeks.reduce (total, workWeek, idx, workWeeks) ->
+    @model.reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       total
     , 0
   
   delta: ->
-    @model.work_weeks.reduce (totalDelta, workWeek, idx, workWeeks) ->
+    @model.reduce (totalDelta, workWeek, idx, workWeeks) ->
       estimated = if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       actual = if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       
@@ -61,7 +61,7 @@ class views.projects.WorkWeekListView extends Support.CompositeView
       {{/each}}
       <div class='total actual'>{{actualTotal}}</div>
       <div class='diff-remove-project'>
-        <a href='#' class='remove-project button-minimal'>&times;</a>
+        <a href='#' class='remove-user button-minimal'>&times;</a>
         <span class='delta'>
           {{#if hasDelta}}
           &#916; {{ delta }}

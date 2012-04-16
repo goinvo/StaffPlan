@@ -22,9 +22,6 @@ class User extends Backbone.Model
         projectsByClient
       , {}
 
-  url: ->
-    "/users/#{@id}"
-
 class UserList extends Backbone.Collection
   model: User
   

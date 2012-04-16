@@ -15,7 +15,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
         parent: @
       
       user.work_week_view = new views.projects.WorkWeekListView
-        model: user
+        model: user.work_weeks
         parent: @
     
   render: ->
@@ -73,8 +73,5 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       <div class='diff-remove-project'></div>
     </div>
     """
-    
-  
-  # events:
   
 window.views.projects.ProjectView = views.projects.ProjectView

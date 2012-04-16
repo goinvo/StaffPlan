@@ -16,6 +16,8 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
     @model.view = @
+    @model.url = ->
+      "/users/#{@id}"
     
     @model.projects.bind 'add', (project) =>
       projects = @model.projectsByClient()
