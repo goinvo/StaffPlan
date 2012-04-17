@@ -11,7 +11,8 @@ class views.staffplans.UserView extends Support.CompositeView
 
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
-
+    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @model.fromDate.year() 
+    
   fromDate: ->
     new Date
 
@@ -42,7 +43,8 @@ class views.staffplans.UserView extends Support.CompositeView
 
   headerTemplateData: ->
     meta = @model.dateRangeMeta()
-
+    currentYear: ->
+      new Date().getFullYear() 
     monthNames: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
         name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
@@ -105,7 +107,7 @@ class views.staffplans.UserView extends Support.CompositeView
     work_week_header: """
     <section>
       <div class='plan-actual'>
-        <div class='row-label'>&nbsp;</div>
+        <div class='row-label'>{{ currentYear }}</div>
         {{#monthNames}}
         <div>{{ name }}</div>
         {{/monthNames}}
@@ -123,7 +125,6 @@ class views.staffplans.UserView extends Support.CompositeView
     </section>
     """
     
-
   renderAllProjects: ->
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
@@ -149,6 +150,7 @@ class views.staffplans.UserView extends Support.CompositeView
         .replaceWith( section )
     else
       @$('.project-list').append section
+  
 
   renderWeekHourCounter: ->
     # Gompute
