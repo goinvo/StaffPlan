@@ -3,7 +3,7 @@
 
 @import init
 @import mixins
-    
+
 //\\//\\//\\//\\//\\//\\
 //  Week Hour Counter \\
 //\\//\\//\\//\\//\\//\\
@@ -12,7 +12,7 @@
   padding: 15px 0 0
   list-style-type: none
   font-size: $font-size
-  
+
   li
     position: relative
     display: inline-block
@@ -24,22 +24,22 @@
     +box-sizing(border-box)
     vertical-align: bottom
     +transition(all .2s ease-out)
-    
+
     span
       position: absolute
       display: block
       top: -15px
       width: 32px
       text-align: center
-      
+
     &.passed
       background: #D6D6D6
-      
+
 =staffplan-columns
   > *
     display: inline-block
     +ellipsis
-    
+
     &.client-name, &.project-name
       padding-top: 15px
       vertical-align: top
@@ -53,28 +53,28 @@
       
       select
         width: 150px
-    
+
     &.project-name
       width: 100px
       
     &.new-project, &.plan-actual, &.total
       width: 35px
-      
+
     &.months-and-weeks
       width: 675px
-      
+
       section
         .plan-actual
           display: block
-          
+
           .row-label
             visibility: hidden
             color: #9F9F9F
-          
+
           > *
             display: inline-block
             width: 35px
-          
+
           div
             input
               width: 32px
@@ -98,17 +98,17 @@ body#staffplans.index
         min-height: 30px
         border: 1px solid #E0E0E0
         background-color: #F7F7F7
-        
+
         +next-and-previous
-        
+
         & > *
           display: inline-block
-        
+
         .weeks
           position: absolute
           left: 373px
           width: 600px
-          
+
           .month
             display: block
             width: 41px
@@ -121,12 +121,12 @@ body#staffplans.index
         header
           line-height: 30px
           padding-left: 15px
-          
+
       ul.users
         > li
           & > *
             display: inline-block
-            
+
           .user-info
             width: 360px
 
@@ -143,7 +143,7 @@ body#staffplans.show
       .user-select
         position: relative
         height: 75px
-        
+
         .user-info
           position: absolute
           bottom: 0
@@ -151,15 +151,15 @@ body#staffplans.show
           line-height: 35px
           padding-left: 15px
           display: inline-block
-          
+
           > *
             display: inline
-            
+
           .email
             padding-left: 5px
             font-size: 18px
             line-height: 35px
-        
+
         .date-pagination
           position: absolute
           left: 414px
@@ -167,19 +167,19 @@ body#staffplans.show
           bottom: 10px
           display: block
           width: 650px
-          
+
           > *
             display: inline
-            
+
           +next-and-previous
-            
+
           .week-hour-counter
             +week-hour-counter
-            
+
       .project-list
         .headers
           +staffplan-columns
-          
+
           padding: 6px 15px
           border: 1px solid #E0E0E0
           border-right: none
@@ -192,17 +192,17 @@ body#staffplans.show
             height: 24px
             line-height: 24px
             // background: transparent image-url("icons/factory-flat.png") left center no-repeat
-          
+
           .project-name span
             display: inline-block
             padding-left: 16px + 6px
             height: 24px
             line-height: 24px
             // background: transparent image-url("icons/cube-flat.png") left center no-repeat
-          
+
           .months-and-weeks
             width: 660px
-            
+
             section
               .plan-actual
                 & + .plan-actual
@@ -210,7 +210,7 @@ body#staffplans.show
                   color: $color-light
                 .row-label
                   width: 40px
-            
+
         section
           padding-top: 6px
           padding-bottom: 6px
@@ -221,29 +221,29 @@ body#staffplans.show
                 .plan-actual
                   .row-label
                     visibility: visible
-                
+
           .project
             +staffplan-columns
             padding: 2px 15px
             height: 75px
-            
+
             .client-name
               visibility: hidden
-              
+
             &:first-child
               .client-name
                 visibility: visible
-                
+
             .new-project
               visibility: hidden
-              
+
             &:last-child
               .new-project
                 visibility: visible
-              
+
             .plan-actual
               height: 35px
-                      
+
           &[data-client-id]:nth-child(2n+1)
             border: 1px solid #E0E0E0
             border-right: none

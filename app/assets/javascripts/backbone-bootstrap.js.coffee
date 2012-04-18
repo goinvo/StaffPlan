@@ -9,12 +9,7 @@ Time.firstDayOfWeek = 2
   shared:     {}
   staffplans: {}
 
-@controllers =
-  projects:   {}
-  shared:     {}
-  staffplans: {}
-
-# XXX Should be in `Time`
+# XXX This should be in `Time`
 @isThisWeek = (date) ->
   now = new Time
   date.year == now.year() and date.mweek == now.week()

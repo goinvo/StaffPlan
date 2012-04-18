@@ -9,10 +9,13 @@ class User extends Backbone.Model
     @projects = new ProjectList @get( "projects" ),
       parent: @
     
-    $( document.body ).bind 'work_week:value:updated', =>
-      @view.renderWeekHourCounter()
+    # Week Hour Counter
+    @weekHourCounter = new views.staffplans.ChartTotalsView @, @view.$ ".week-hour-counter"
 
-    urlRoot: "/users"
+    $( document.body ).bind 'work_week:value:updated', =>
+      @weekHourCounter.render @dateRangeMeta().dates, @projects.models
+
+  urlRoot: "/users"
 
   dateChanged: (event) ->
     event.preventDefault()
@@ -20,6 +23,7 @@ class User extends Backbone.Model
     @fromDate.advanceWeeks interval
     @toDate.advanceWeeks   interval
     @view.renderAllProjects()
+    @weekHourCounter.render @dateRangeMeta().dates, @projects.models
 
   dateRangeMeta: ->
     fromDate: @fromDate
@@ -27,7 +31,7 @@ class User extends Backbone.Model
     dates: @getYearsAndWeeks()
 
   getYearsAndWeeks: ->
-    # XXX Needs cacheing or memoization badly
+    # XXX Needs caching or memoization badly
     yearsAndWeeks = []
     from = @fromDate.clone()
     to = @toDate.clone()
@@ -56,4 +60,4 @@ class User extends Backbone.Model
   url: ->
     "/users/#{@id}"
 
-window.User = User
+@User = User
