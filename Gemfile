@@ -25,6 +25,10 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
+group :development do
+  gem 'taps'
+end
+
 group :test do
   gem 'awesome_print',            require: 'ap'
   gem 'cucumber-rails',   '1.2.1'
