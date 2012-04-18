@@ -63,6 +63,8 @@ class views.staffplans.UserView extends Support.CompositeView
     $( @el )
       .appendTo '.content'
 
+    @model.weekHourCounter = new views.staffplans.ChartTotalsView @model, @$ ".week-hour-counter"
+
     setTimeout => @addNewProjectRow()
 
     @
