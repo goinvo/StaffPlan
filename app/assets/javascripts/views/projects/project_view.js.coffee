@@ -8,15 +8,25 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     
     @projectTemplate = Handlebars.compile(@templates.project)
     @headerTemplate = Handlebars.compile(@templates.work_week_header)
+    @addSomeoneTemplate = Handlebars.compile(@templates.add_someone)
+    Handlebars.registerHelper "addSomeoneLink", -> new Handlebars.SafeString "<a href='#' class='add-someone'>Add Someone</a>"
     
-    @model.users.each (user) =>
-      user.view = new views.projects.UserView 
-        model: user
-        parent: @
+    @model.users.bind 'add', (newUser) =>
+      @initUser newUser
+      @render()
       
-      user.work_week_view = new views.projects.WorkWeekListView
-        model: user.work_weeks
-        parent: @
+    @model.users.each (user) =>
+      @initUser user
+    
+  
+  initUser: (user) ->
+    user.view = new views.projects.UserView 
+      model: user
+      parent: @
+      
+    user.work_week_view = new views.projects.WorkWeekListView
+      model: user.work_weeks
+      parent: @
     
   render: ->
     meta = @dateRangeMeta()
@@ -53,6 +63,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
         <li><em>None!</em></li>
       {{/unless}}
     </ul>
+    {{addSomeoneLink}}
     """
     
     work_week_header: """
@@ -73,5 +84,39 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       <div class='diff-remove-project'></div>
     </div>
     """
+    
+    add_someone: """
+    <form class='add-new-someone'>
+      <select id="newSomeone" name="someone">
+        {{#each unassignedUsers}}
+          <option value='{{this.id}}'>{{this.full_name}}</option>
+        {{/each}}
+      </select>
+      <input type="submit" value="Add" />
+    </form>
+    """
+  
+  events:
+    "click .add-someone" : "addSomeone"
+    "submit form.add-new-someone" : "addNewSomeoneSubmit"
+    
+  addSomeone: ->
+    @$( '.add-new-someone' ).remove()
+    assignedUserIds = @model.users.pluck('id')
+    unassignedUsers = window._meta.users.reject (user) =>
+        _.include assignedUserIds, user.id
+    @$el.append @addSomeoneTemplate
+      unassignedUsers: unassignedUsers.map (user) ->
+        id: user.get('id')
+        full_name: user.get('full_name')
+      
+    
+  addNewSomeoneSubmit: (event) ->
+    newUserId = parseInt $('#newSomeone').val(), 10
+    companyUser = window._meta.users.detect (user) -> user.get('id') == newUserId
+    new User companyUser.attributes
+    @model.users.add 
+    
+    false
   
 window.views.projects.ProjectView = views.projects.ProjectView
