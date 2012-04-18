@@ -25,7 +25,7 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
-group :test do
+group :development, :test do
   gem 'awesome_print',            require: 'ap'
   gem 'cucumber-rails',   '1.2.1'
   gem 'database_cleaner'

@@ -14,6 +14,10 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     @model.users.bind 'add', (newUser) =>
       @initUser newUser
       @render()
+    
+    @model.users.bind 'reset', (newUsers) =>
+      newUsers.each (newUser) => @initUser newUser
+      @render()
       
     @model.users.each (user) =>
       @initUser user
@@ -93,30 +97,48 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
         {{/each}}
       </select>
       <input type="submit" value="Add" />
+      <a href="#" class="cancel-add-someone">nevermind</a>
     </form>
     """
   
   events:
     "click .add-someone" : "addSomeone"
+    "click .cancel-add-someone" : "cancelAddSomeone"
     "submit form.add-new-someone" : "addNewSomeoneSubmit"
     
   addSomeone: ->
     @$( '.add-new-someone' ).remove()
     assignedUserIds = @model.users.pluck('id')
+    
     unassignedUsers = window._meta.users.reject (user) =>
         _.include assignedUserIds, user.id
+        
     @$el.append @addSomeoneTemplate
       unassignedUsers: unassignedUsers.map (user) ->
         id: user.get('id')
         full_name: user.get('full_name')
+    
+    setTimeout => @delegateEvents()
       
+  
+  cancelAddSomeone: (event) ->
+    $( event.currentTarget ).closest( '.add-new-someone' ).remove();
     
   addNewSomeoneSubmit: (event) ->
     newUserId = parseInt $('#newSomeone').val(), 10
     companyUser = window._meta.users.detect (user) -> user.get('id') == newUserId
-    new User companyUser.attributes
-    @model.users.add 
     
+    @model.users.create companyUser.attributes,
+      wait: true
+      success: (project, response) =>
+        @model.users.reset response.users.map (userString) -> JSON.parse(userString)
+        @render()
+        
+      error: (project, response) =>
+        alert("Couldn't save that user to the project, sorry.")
+        @model.users.remove companyUser
+        @render()
+        
     false
   
 window.views.projects.ProjectView = views.projects.ProjectView
