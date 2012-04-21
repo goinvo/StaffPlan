@@ -19,6 +19,9 @@ class ProjectsController < ApplicationController
   # GET /projects/1
   # GET /projects/1.json
   def show
+    @company_users_json = current_user.current_company.users.as_json(only: [:name, :email, :id]).to_s
+    @clients = current_user.current_company.clients_as_json
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @project }

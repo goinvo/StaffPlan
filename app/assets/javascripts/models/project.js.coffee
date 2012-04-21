@@ -3,6 +3,9 @@ class Project extends Backbone.Model
     
     @work_weeks = new WorkWeekList @get('work_weeks'),
       parent: @
+      
+    @users = new UserList @get('users'),
+      parent: @
     
     @bind 'destroy', (event) -> @collection.remove @
     
@@ -11,7 +14,7 @@ class Project extends Backbone.Model
       return "Project name is required"
   
   dateRangeMeta: ->
-    @collection.dateRangeMeta()
+    @view.dateRangeMeta()
   
   getClientId: ->
     @get("client_id") || "new_client"
@@ -24,9 +27,6 @@ class ProjectList extends Backbone.Collection
   initialize: (models, attrs) ->
     _.extend @, models
     _.extend @, attrs
-  
-  dateRangeMeta: ->
-    @parent.dateRangeMeta()
     
   url: ->
     @parent.url() + "/projects"

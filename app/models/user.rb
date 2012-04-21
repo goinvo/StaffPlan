@@ -110,5 +110,14 @@ class User < ActiveRecord::Base
       end
     end
   end
+  
+  def project_json(project)
+    Jbuilder.encode do |json|
+      json.(self, :id, :email, :first_name, :last_name, :gravatar)
+      json.work_weeks self.work_weeks.for_project(project) do |json, work_week|
+        json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
+      end
+    end
+  end
 
 end
