@@ -4,31 +4,66 @@
 body#projects.show
   section.main
     .content
-      .project-users
+      .project-header
         position: relative
+        height: 100px
         
-        ul.users
-          .user
-            .user-info
-              min-width: 250px
-              
-            .months-and-weeks
-              display: inline-block
-              +plan-actual-shared
-              
-              .plan-actual
-                .diff-remove-project
-                  width: 55px
+        header > *
+          display: inline-block
+          font-size: 16px
+      
+        .actions
+          text-align: right
         
         .date-pagination
-          display: inline-block
-          margin-left: 283px
-            
-          +plan-actual-shared
+          position: absolute
+          left: 308px
+          top: 35px
+          display: block
+          width: 650px
+          height: 85px
+
+          > *
+            display: inline
+
           +next-and-previous
-            
+
           .week-hour-counter
             +week-hour-counter
+        
+      section.users
+        .user
+          border-bottom: 1px solid #ddd
+          padding: 10px 0
+          
+          &:last-child
+            margin-bottom: 20px
+          
+          .user-info
+            min-width: 250px
+              
+          .months-and-weeks
+            display: inline-block
+            +plan-actual-shared
+              
+            .plan-actual
+              .diff-remove-project
+                width: 55px
+        
+      .date-pagination-header
+        display: inline-block
+        margin-left: 283px
+            
+        +plan-actual-shared
+        +next-and-previous
+        
 
 .row-filler
   +row-filler
+
+// Responsiveness
+@media screen and (min-width: 768px)
+@media screen and (min-width: 1024px)
+@media screen and (min-width: 1200px)
+  .date-pagination
+    left: 300px !important

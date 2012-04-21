@@ -4,37 +4,6 @@
 @import init
 @import mixins
 
-//\\//\\//\\//\\//\\//\\
-//  Week Hour Counter \\
-//\\//\\//\\//\\//\\//\\
-=week-hour-counter
-  margin: 0
-  padding: 15px 0 0
-  list-style-type: none
-  font-size: $font-size
-
-  li
-    position: relative
-    display: inline-block
-    margin: 0 3px
-    padding: 0
-    width: 32px
-    height: 10px
-    background: #5E9B69
-    +box-sizing(border-box)
-    vertical-align: bottom
-    +transition(all .2s ease-out)
-
-    span
-      position: absolute
-      display: block
-      top: -15px
-      width: 32px
-      text-align: center
-
-    &.passed
-      background: #D6D6D6
-
 =staffplan-columns
   > *
     display: inline-block
@@ -254,6 +223,13 @@ body#staffplans.show
 // Row Filler
 .row-filler
   +row-filler
+
+// Responsiveness
+@media screen and (min-width: 768px)
+@media screen and (min-width: 1024px)
+@media screen and (min-width: 1200px)
+  .date-pagination
+    left: 414px !important
 
 @import mediaqueries
 

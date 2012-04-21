@@ -21,6 +21,10 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       
     @model.users.each (user) =>
       @initUser user
+      
+    # Week Hour Counter (initialised and set in UserView)
+    $( document.body ).bind 'work_week:value:updated', =>
+      @weekHourCounter.render @dateRangeMeta().dates, @model.users.models if @weekHourCounter?
     
   
   initUser: (user) ->
@@ -38,9 +42,11 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     $( @el )
       .appendTo( 'section.main .content' )
       .html( @projectTemplate
+        clientName: window._meta.clients.detect((client) => client.get('id') == @model.get('client_id'))?.get('name')
+        project: @model.attributes
         users: @model.get('users')
       )
-      .find( '.date-pagination' )
+      .find( '.date-pagination-header' )
       .html( @headerTemplate
         monthNames: (=>
           _.map meta.dates, (dateMeta, idx, dateMetas) ->
@@ -53,20 +59,35 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       )
       
     $( @el )
-      .find( 'ul.users' )
+      .find( 'section.users' )
       .append @model.users.map (user) -> user.view.render().el
+    
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.users.models, ".date-pagination", @$ ".week-hour-counter"
     
     @
   
   templates:
     project: """
-    <h3>Team Members:</h3>
-    <div class='date-pagination'></div>
-    <ul class='users'>
+    <div class='project-header'>
+      <header>
+        <h2>{{clientName}} : {{project.name}}</h2>
+      </header>
+      <div class='actions'>
+        <a href='/projects/{{project.id}}/edit'>Edit Project Details</a> |
+        <a href='/projects/{{project.id}}' data-confirm='Are you sure?' data-method='delete'>Destroy Project</a>
+      </div>
+      <div class='date-pagination'>
+        <a href='#' data-change-page='previous' class='previous'>&larr;</a>
+        <ul class='week-hour-counter'></ul>
+        <a href='#' data-change-page='next' class='next'>&rarr;</a>
+      </div>
+    </div>
+    <div class='date-pagination-header'></div>
+    <section class='users'>
       {{#unless users}}}
-        <li><em>None!</em></li>
+        <section class='none'><em>None!</em></section>
       {{/unless}}
-    </ul>
+    </section>
     {{addSomeoneLink}}
     """
     
@@ -105,6 +126,14 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     "click .add-someone" : "addSomeone"
     "click .cancel-add-someone" : "cancelAddSomeone"
     "submit form.add-new-someone" : "addNewSomeoneSubmit"
+    "click a[data-change-page]" : "changePage"
+
+  changePage: (event) ->
+    @dateChanged event
+    @render()
+    # @$( '.headers .months-and-weeks' )
+    #       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
+  
     
   addSomeone: ->
     @$( '.add-new-someone' ).remove()

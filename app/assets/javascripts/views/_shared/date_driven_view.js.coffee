@@ -9,6 +9,8 @@ class views.shared.DateDrivenView extends Support.CompositeView
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
     @fromDate.advanceWeeks interval
     @toDate.advanceWeeks   interval
+    
+    @trigger('date:changed')
 
   dateRangeMeta: ->
     fromDate: @fromDate

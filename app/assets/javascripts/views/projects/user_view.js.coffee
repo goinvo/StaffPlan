@@ -14,8 +14,6 @@ class views.projects.UserView extends Support.CompositeView
       @remove()
     
   render: ->
-    meta = @model.collection.parent.view.dateRangeMeta()
-    
     $( @el )
       .html( @userTemplate( user: @model.attributes ) )
       .find( '.months-and-weeks' )
@@ -30,7 +28,7 @@ class views.projects.UserView extends Support.CompositeView
     user: '''
     <div class='user-info'>
       <img src="{{user.gravatar}}" alt="{{user.first_name}} {{user.last_name}}" />
-      <span class='name'>{{user.first_name}} {{user.last_name}}</span>
+      <a class='name' href='/users/{{user.id}}'>{{user.first_name}} {{user.last_name}}</a>
     </div>
     <div class='months-and-weeks'></div>
     '''

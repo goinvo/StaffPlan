@@ -61,7 +61,9 @@ class views.projects.WorkWeekListView extends Support.CompositeView
       {{/each}}
       <div class='total actual'>{{actualTotal}}</div>
       <div class='diff-remove-project'>
+        {{#if hasNoWorkWeeks}}
         <a href='#' class='remove-user button-minimal'>&times;</a>
+        {{/if}}
         <span class='delta'>
           {{#if hasDelta}}
           &#916; {{ delta }}
@@ -83,6 +85,7 @@ class views.projects.WorkWeekListView extends Support.CompositeView
         estimatedTotal: @estimatedTotal()
         hasDelta: @delta() != 0
         delta: @delta()
+        hasNoWorkWeeks: @actualTotal() == 0
         yearsAndCweeks: (=>
           dates = @dateRangeMeta().dates
           _.map dates, (dateObject) =>

@@ -1,18 +1,12 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
-%header
-  %h2= @project.name
-  = link_to 'Edit', edit_project_path(@project)
-  = link_to 'Destroy', @project, :confirm => 'Are you sure?', :method => :delete
 
-.info
-  .client= @project.client.name
-  .active{ 'data-active' => @project.active }= @project.active ? t('.active') : t('.inactive')
 
 - content_for(:javascript_includes) do
   :coffeescript
     window._meta =
+      clients: new ClientList(#{@clients})
       users: new UserList(#{current_user.current_company.users_json})
       days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']

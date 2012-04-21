@@ -8,7 +8,7 @@ class User extends Backbone.Model
     
     # Week Hour Counter (initialised and set in UserView)
     $( document.body ).bind 'work_week:value:updated', =>
-      @weekHourCounter.render @dateRangeMeta().dates, @projects.models
+      @weekHourCounter.render @dateRangeMeta().dates, @projects.models if @weekHourCounter?
 
   urlRoot: "/users"
 
@@ -61,3 +61,4 @@ class UserList extends Backbone.Collection
     @parent.url() + "/users"
 
 @User = User
+@UserList = UserList

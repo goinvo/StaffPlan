@@ -17,7 +17,11 @@ class Projects::UsersController < ApplicationController
   end
   
   def destroy
-    @target_user.projects.delete(@project)
+    User.transaction do
+      @target_user.projects.delete(@project)
+      @target_user.work_weeks.for_project(@project).map(&:destroy)
+    end
+    
     render(:json => {
       status: 'ok'
     }) and return

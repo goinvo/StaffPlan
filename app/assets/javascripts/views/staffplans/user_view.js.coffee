@@ -32,6 +32,9 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
       
       setTimeout => @addNewProjectRow()
     
+    @bind 'date:changed', =>
+      @weekHourCounter.render @dateRangeMeta().dates, @model.projects.models
+    
     @render()
     @renderAllProjects()
 
@@ -64,7 +67,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     $( @el )
       .appendTo '.content'
 
-    @model.weekHourCounter = new views.staffplans.ChartTotalsView @model, @$ ".week-hour-counter"
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.projects.models, ".user-select", @$ ".week-hour-counter"
 
     setTimeout => @addNewProjectRow()
 
