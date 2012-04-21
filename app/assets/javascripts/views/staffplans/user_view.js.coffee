@@ -1,4 +1,4 @@
-class views.staffplans.UserView extends Support.CompositeView
+class views.staffplans.UserView extends views.shared.DateDrivenView
 
   tagName: "div"
   className: "staffplan"
@@ -7,17 +7,19 @@ class views.staffplans.UserView extends Support.CompositeView
     "click a[data-change-page]" : "changePage"
 
   changePage: (event) ->
-    @model.dateChanged event
-
+    @dateChanged event
+    @renderAllProjects()
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
-    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @model.fromDate.year() 
     
-  fromDate: ->
-    new Date
-
+    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @fromDate.year()
+    
   initialize: ->
+    views.shared.DateDrivenView.prototype.initialize.call(this)
+    
     @model.view = @
+    @model.url = ->
+      "/users/#{@id}"
     
     @model.projects.bind 'add', (project) =>
       projects = @model.projectsByClient()
@@ -32,19 +34,22 @@ class views.staffplans.UserView extends Support.CompositeView
       
       setTimeout => @addNewProjectRow()
     
+    @bind 'date:changed', =>
+      @weekHourCounter.render @dateRangeMeta().dates, @model.projects.models
+    
     @render()
     @renderAllProjects()
 
   templateData: ->
     name: @model.get("full_name")
-    fromDate: @model.fromDate
+    fromDate: @fromDate
     gravatar: @model.get("gravatar")
     id: @model.get("id")
 
   headerTemplateData: ->
-    meta = @model.dateRangeMeta()
+    meta = @dateRangeMeta()
     currentYear: ->
-      new Date().getFullYear() 
+      new Date().getFullYear()
     monthNames: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
         name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
@@ -65,7 +70,7 @@ class views.staffplans.UserView extends Support.CompositeView
     $( @el )
       .appendTo '.content'
 
-    @model.weekHourCounter = new views.staffplans.ChartTotalsView @model, @$ ".week-hour-counter"
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.projects.models, ".user-select", @$ ".week-hour-counter"
 
     setTimeout => @addNewProjectRow()
 

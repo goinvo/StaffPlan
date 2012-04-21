@@ -1,3 +1,74 @@
+@import "init"
 @import "_mixins"
 
-body#projects
+body#projects.show
+  section.main
+    .content
+      .project-header
+        position: relative
+        height: 90px
+        margin-bottom: 10px
+        
+        header
+          h2
+            font-size: 16px
+        
+        > *
+          display: inline-block
+        
+        .date-pagination
+          position: absolute
+          left: 308px
+          bottom: 0px
+          width: 650px
+          display: block
+          
+          > *
+            display: inline-block
+
+          +next-and-previous
+
+          .week-hour-counter
+            +week-hour-counter
+            display: inline
+        
+      section.users
+        margin-top: 5px
+        
+        .user
+          border-bottom: 1px solid #ddd
+          padding: 10px 0
+          
+          &:last-child
+            margin-bottom: 20px
+          
+          .user-info
+            min-width: 250px
+              
+          .months-and-weeks
+            display: inline-block
+            +plan-actual-shared
+              
+            .plan-actual
+              .diff-remove-project
+                width: 55px
+        
+      .date-pagination-header
+        display: inline-block
+        margin-left: 283px
+            
+        +plan-actual-shared
+        +next-and-previous
+        
+        .plan-actual div:first-child
+          visibility: visible
+
+.row-filler
+  +row-filler
+
+// Responsiveness
+@media screen and (min-width: 768px)
+@media screen and (min-width: 1024px)
+@media screen and (min-width: 1200px)
+  .date-pagination
+    left: 300px !important

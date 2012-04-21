@@ -1,17 +1,14 @@
 class User extends Backbone.Model
-  weekInterval: 15
-
   initialize: (userdata) ->
-
-    @fromDate = new Time().advanceWeeks(-1).beginningOfWeek()
-    @toDate   = @fromDate.clone().advanceWeeks @weekInterval
-
     @projects = new ProjectList @get( "projects" ),
+      parent: @
+    
+    @work_weeks = new WorkWeekList @get( "work_weeks" ),
       parent: @
     
     # Week Hour Counter (initialised and set in UserView)
     $( document.body ).bind 'work_week:value:updated', =>
-      @weekHourCounter.render @dateRangeMeta().dates, @projects.models
+      @weekHourCounter.render @dateRangeMeta().dates, @projects.models if @weekHourCounter?
 
   urlRoot: "/users"
 
@@ -24,9 +21,7 @@ class User extends Backbone.Model
     @weekHourCounter.render @dateRangeMeta().dates, @projects.models
 
   dateRangeMeta: ->
-    fromDate: @fromDate
-    toDate: @toDate
-    dates: @getYearsAndWeeks()
+    @view.dateRangeMeta()
 
   getYearsAndWeeks: ->
     # XXX Needs caching or memoization badly
@@ -55,7 +50,15 @@ class User extends Backbone.Model
         projectsByClient
       , {}
 
+class UserList extends Backbone.Collection
+  model: User
+  
+  initialize: (models, attrs) ->
+    _.extend @, models
+    _.extend @, attrs
+    
   url: ->
-    "/users/#{@id}"
+    @parent.url() + "/users"
 
 @User = User
+@UserList = UserList
