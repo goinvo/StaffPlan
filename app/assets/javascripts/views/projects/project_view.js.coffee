@@ -48,6 +48,8 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       )
       .find( '.date-pagination-header' )
       .html( @headerTemplate
+        currentYear: ->
+          new Date().getFullYear()
         monthNames: (=>
           _.map meta.dates, (dateMeta, idx, dateMetas) ->
             name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
@@ -57,12 +59,14 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
             name: "W#{Math.ceil dateMeta.mday / 7}"
           )()
       )
+    
+    @$('div.date-pagination-header div.plan-actual:first .row-label').html @fromDate.year()
       
     $( @el )
       .find( 'section.users' )
       .append @model.users.map (user) -> user.view.render().el
     
-    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.users.models, ".date-pagination", @$ ".week-hour-counter"
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.users.models, ".project-header", @$ ".week-hour-counter"
     
     @
   
@@ -71,11 +75,11 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     <div class='project-header'>
       <header>
         <h2>{{clientName}} : {{project.name}}</h2>
+        <div class='actions'>
+          <a href='/projects/{{project.id}}/edit'>Edit Project Details</a> |
+          <a href='/projects/{{project.id}}' data-confirm='Are you sure?' data-method='delete'>Destroy Project</a>
+        </div>
       </header>
-      <div class='actions'>
-        <a href='/projects/{{project.id}}/edit'>Edit Project Details</a> |
-        <a href='/projects/{{project.id}}' data-confirm='Are you sure?' data-method='delete'>Destroy Project</a>
-      </div>
       <div class='date-pagination'>
         <a href='#' data-change-page='previous' class='previous'>&larr;</a>
         <ul class='week-hour-counter'></ul>
@@ -93,7 +97,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     
     work_week_header: """
     <div class='plan-actual'>
-      <div class='row-label'>&nbsp;</div>
+      <div class='row-label'>{{ currentYear }}</div>
       {{#monthNames}}
       <div>{{ name }}</div>
       {{/monthNames}}

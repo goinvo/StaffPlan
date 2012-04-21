@@ -6,32 +6,35 @@ body#projects.show
     .content
       .project-header
         position: relative
-        height: 100px
+        height: 90px
+        margin-bottom: 10px
         
-        header > *
+        header
+          h2
+            font-size: 16px
+        
+        > *
           display: inline-block
-          font-size: 16px
-      
-        .actions
-          text-align: right
         
         .date-pagination
           position: absolute
           left: 308px
-          top: 35px
-          display: block
+          bottom: 0px
           width: 650px
-          height: 85px
-
+          display: block
+          
           > *
-            display: inline
+            display: inline-block
 
           +next-and-previous
 
           .week-hour-counter
             +week-hour-counter
+            display: inline
         
       section.users
+        margin-top: 5px
+        
         .user
           border-bottom: 1px solid #ddd
           padding: 10px 0
@@ -57,6 +60,8 @@ body#projects.show
         +plan-actual-shared
         +next-and-previous
         
+        .plan-actual div:first-child
+          visibility: visible
 
 .row-filler
   +row-filler

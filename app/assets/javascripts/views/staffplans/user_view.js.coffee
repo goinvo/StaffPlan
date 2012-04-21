@@ -12,7 +12,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
     
-    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @model.fromDate.year()
+    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @fromDate.year()
     
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
