@@ -28,7 +28,7 @@ class views.projects.UserView extends Support.CompositeView
     user: '''
     <div class='user-info'>
       <img src="{{user.gravatar}}" alt="{{user.first_name}} {{user.last_name}}" />
-      <a class='name' href='/users/{{user.id}}'>{{user.first_name}} {{user.last_name}}</a>
+      <a class='name' href='/staffplans/{{user.id}}'>{{user.first_name}} {{user.last_name}}</a>
     </div>
     <div class='months-and-weeks'></div>
     '''
