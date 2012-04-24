@@ -4,7 +4,7 @@ describe Users::Projects::WorkWeeksController do
 
   before(:each) do
     @user, @company = login_user
-    @project = Factory(:project, :users => [@user], company: @company)
+    @project = FactoryGirl.create(:project, :users => [@user], company: @company)
   end
 
   def base_params
@@ -31,7 +31,7 @@ describe Users::Projects::WorkWeeksController do
           cweek: Date.today.cweek, 
           year: Date.today.year 
         }) 
-        ww = Factory(:work_week, parameters) 
+        ww = FactoryGirl.create(:work_week, parameters) 
         lambda {post :create, parameters.merge(format: "js")}.should_not change(WorkWeek, :count) 
 
         @body = JSON.parse(response.body)
@@ -57,7 +57,7 @@ describe Users::Projects::WorkWeeksController do
   describe '#update' do
 
     before(:each) do
-      @work_week = Factory(:work_week, user: @user, project: @project)
+      @work_week = FactoryGirl.create(:work_week, user: @user, project: @project)
     end
 
     context "format: 'js'" do
