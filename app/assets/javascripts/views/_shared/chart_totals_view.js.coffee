@@ -109,7 +109,7 @@ get_value = (d) ->
 *###
 get_class = (d) ->
   if isThisWeek d.date
-    if d.actual == 0 then "passed" else "present"
+    if d.actual == 0 then "present" else "passed"
   else if d.date.weekHasPassed
     "passed"
   else
