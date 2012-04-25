@@ -1,7 +1,7 @@
 class views.shared.DateDrivenView extends Support.CompositeView
   initialize: ->
     @weekInterval = 15
-    @fromDate = new Time().advanceWeeks(-1).beginningOfWeek()
+    @fromDate = new Time(window._meta.fromDate)
     @toDate   = @fromDate.clone().advanceWeeks @weekInterval
   
   dateChanged: (event) ->
@@ -32,7 +32,7 @@ class views.shared.DateDrivenView extends Support.CompositeView
         mday:  from.day()
         weekHasPassed: from.isBefore new Date
 
-      from = from.advanceWeeks(1)
+      from = from.epoch(from.epoch() + 7 * 24 * 3600 * 1000)
 
     yearsAndWeeks
 

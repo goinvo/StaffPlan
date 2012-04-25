@@ -27,7 +27,7 @@
         - @date_range.each do |date|
           
           %td
-            .month= "W#{(date.mday / 7) + 1}"
+            .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"
         
         
   %ul.users
