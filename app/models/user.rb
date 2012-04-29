@@ -17,6 +17,9 @@ class User < ActiveRecord::Base
     def for_project(project)
       self.select { |ww| ww.project_id == project.id }
     end
+    def for_projects(project_ids)
+      self.select { |ww| project_ids.include? ww.project_id }
+    end
   end
 
   after_update do |user|
