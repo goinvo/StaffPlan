@@ -3,7 +3,7 @@ class views.shared.DateDrivenView extends Support.CompositeView
     d = (_.map window._meta.fromDate.split("-"), (elem) -> parseInt(elem, 10)).concat([12, 0, 0, 0]);
     @weekInterval = 15
     # Horrendous, but I don't know how to splat in coffeescript 
-    @fromDate = new Time(d[0], d[1], d[2], d[3], d[4], d[5], d[6])
+    @fromDate = new (Function.bind.apply(Time, [null].concat(d)))
     @toDate   = @fromDate.clone().advanceWeeks @weekInterval
   
   dateChanged: (event) ->
