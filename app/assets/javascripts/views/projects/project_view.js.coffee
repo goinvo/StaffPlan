@@ -76,8 +76,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       <header>
         <h2>{{clientName}} : {{project.name}}</h2>
         <div class='actions'>
-          <a href='/projects/{{project.id}}/edit'>Edit Project Details</a> |
-          <a href='/projects/{{project.id}}' data-confirm='Are you sure?' data-method='delete'>Destroy Project</a>
+          <a href='/projects/{{project.id}}/edit'>Edit Project Details</a>
         </div>
       </header>
       <div class='date-pagination'>

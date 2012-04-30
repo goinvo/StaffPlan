@@ -9,7 +9,7 @@ describe ClientsController do
   
   describe "GET index" do
     it "assigns all clients as @clients" do
-      client = Factory(:client)
+      client = FactoryGirl.create(:client)
       @company.clients << client
       get :index
       assigns(:clients).should eq([client])
@@ -18,7 +18,7 @@ describe ClientsController do
 
   describe "GET show" do
     it "assigns the requested client as @client" do
-      client = Factory(:client)
+      client = FactoryGirl.create(:client)
       @company.clients << client
       get :show, :id => client.id
       assigns(:client).should eq(client)
@@ -34,7 +34,7 @@ describe ClientsController do
 
   describe "GET edit" do
     it "assigns the requested client as @client" do
-      client = Factory(:client)
+      client = FactoryGirl.create(:client)
       @company.clients << client
       get :edit, :id => client.id
       assigns(:client).should eq(client)
@@ -45,24 +45,24 @@ describe ClientsController do
     context "with valid params" do
       it "creates a new Client" do
         expect {
-          post :create, :client => Factory.attributes_for(:client)
+          post :create, :client => FactoryGirl.attributes_for(:client)
         }.to change(Client, :count).by(1)
       end
 
       it "assigns a newly created client as @client" do
-        post :create, :client => Factory.attributes_for(:client)
+        post :create, :client => FactoryGirl.attributes_for(:client)
         assigns(:client).should be_a(Client)
         assigns(:client).should be_persisted
       end
       
       it "should add the new client to the current_user.current_company" do
-        client = Factory.build(:client)
+        client = FactoryGirl.build(:client)
         post :create, :client => client.attributes
         @current_user.current_company.clients.find_by_name(client.name).should_not be_nil
       end
 
       it "redirects to the created client" do
-        post :create, :client => Factory.attributes_for(:client)
+        post :create, :client => FactoryGirl.attributes_for(:client)
         # Due to the default_scope being ORDER BY name DESC we need to bypass the scope here
         response.should redirect_to(Client.send(:with_exclusive_scope){Client.last})
       end
@@ -88,7 +88,7 @@ describe ClientsController do
   describe "PUT update" do
     context "with valid params" do
       it "updates the requested client" do
-        client = Factory(:client)
+        client = FactoryGirl.create(:client)
         @company.clients << client
         # Assuming there are no other clients in the database, this
         # specifies that the Client created on the previous line
@@ -100,23 +100,23 @@ describe ClientsController do
       end
 
       it "assigns the requested client as @client" do
-        client = Factory(:client)
+        client = FactoryGirl.create(:client)
         @company.clients << client
-        put :update, :id => client.id, :client => Factory.attributes_for(:client)
+        put :update, :id => client.id, :client => FactoryGirl.attributes_for(:client)
         assigns(:client).should eq(client)
       end
 
       it "redirects to the client" do
-        client = Factory(:client)
+        client = FactoryGirl.create(:client)
         @company.clients << client
-        put :update, :id => client.id, :client => Factory.attributes_for(:client)
+        put :update, :id => client.id, :client => FactoryGirl.attributes_for(:client)
         response.should redirect_to(client)
       end
     end
 
     context "with invalid params" do
       it "assigns the client as @client" do
-        client = Factory(:client)
+        client = FactoryGirl.create(:client)
         @company.clients << client
         # Trigger the behavior that occurs when invalid params are submitted
         Client.any_instance.expects(:save).returns(false)
@@ -125,7 +125,7 @@ describe ClientsController do
       end
 
       it "re-renders the 'edit' template" do
-        client = Factory(:client)
+        client = FactoryGirl.create(:client)
         @company.clients << client
         # Trigger the behavior that occurs when invalid params are submitted
         Client.any_instance.expects(:save).returns(false)
@@ -137,7 +137,7 @@ describe ClientsController do
 
   describe "DELETE destroy" do
     it "destroys the requested client" do
-      client = Factory(:client)
+      client = FactoryGirl.create(:client)
       @company.clients << client
       expect {
         delete :destroy, :id => client.id
@@ -145,7 +145,7 @@ describe ClientsController do
     end
 
     it "redirects to the clients list" do
-      client = Factory(:client)
+      client = FactoryGirl.create(:client)
       delete :destroy, :id => client.id
       response.should redirect_to(clients_url)
     end

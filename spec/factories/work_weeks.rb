@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :work_week do
-    user      { Factory(:user) }
-    project   { Factory(:project) }
+    user      { FactoryGirl.create(:user) }
+    project   { FactoryGirl.create(:project) }
   end
 end
