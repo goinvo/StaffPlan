@@ -6,15 +6,15 @@ describe ProjectsController do
     @current_user, @company = login_user
   end
 
-  def valid_attributes(client = Factory(:client))
-    attributes = Factory.attributes_for(:project)
+  def valid_attributes(client = FactoryGirl.create(:client))
+    attributes = FactoryGirl.attributes_for(:project)
     attributes.delete(:client)
     attributes.merge!(client_id: client.id)
   end
 
   describe "GET index" do
     it "assigns all projects as @projects but only returns projects associated to the current user's account" do
-      project = Factory(:project)
+      project = FactoryGirl.create(:project)
 
       @company.projects << project
 
@@ -30,7 +30,7 @@ describe ProjectsController do
 
   describe "GET show" do
     it "assigns the requested project as @project" do
-      project = Factory(:project)
+      project = FactoryGirl.create(:project)
       @company.projects << project
       get :show, :id => project.id
       assigns(:project).should eq(project)
@@ -46,7 +46,7 @@ describe ProjectsController do
 
   describe "GET edit" do
     it "assigns the requested project as @project" do
-      project = Factory(:project)
+      project = FactoryGirl.create(:project)
       @company.projects << project
       get :edit, :id => project.id
       assigns(:project).should eq(project)
@@ -91,14 +91,14 @@ describe ProjectsController do
       it "assigns a newly created but unsaved project as @project" do
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
-        post :create, :project => {client_id: Factory(:client).id}
+        post :create, :project => {client_id: FactoryGirl.create(:client).id}
         assigns(:project).should be_a_new(Project)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
-        post :create, :project => {client_id: Factory(:client).id}
+        post :create, :project => {client_id: FactoryGirl.create(:client).id}
         response.should render_template("new")
       end
     end
@@ -107,7 +107,7 @@ describe ProjectsController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested project" do
-        project = Factory(:project)
+        project = FactoryGirl.create(:project)
         @company.projects << project
         # Assuming there are no other projects in the database, this
         # specifies that the Project created on the previous line
@@ -118,14 +118,14 @@ describe ProjectsController do
       end
 
       it "assigns the requested project as @project" do
-        project = Factory(:project)
+        project = FactoryGirl.create(:project)
         @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         assigns(:project).should eq(project)
       end
 
       it "redirects to the project" do
-        project = Factory(:project)
+        project = FactoryGirl.create(:project)
         @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         response.should redirect_to(project)
@@ -134,7 +134,7 @@ describe ProjectsController do
 
     describe "with invalid params" do
       it "assigns the project as @project" do
-        project = Factory(:project)
+        project = FactoryGirl.create(:project)
         @company.projects << project
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
@@ -143,7 +143,7 @@ describe ProjectsController do
       end
 
       it "re-renders the 'edit' template" do
-        project = Factory(:project)
+        project = FactoryGirl.create(:project)
         @company.projects << project
         # Trigger the behavior that occurs when invalid params are submitted
         Project.any_instance.expects(:save).returns(false)
@@ -155,7 +155,7 @@ describe ProjectsController do
 
   describe "DELETE destroy" do
     it "destroys the requested project" do
-      project = Factory(:project)
+      project = FactoryGirl.create(:project)
       @company.projects << project
       expect {
         delete :destroy, :id => project.id
@@ -163,7 +163,7 @@ describe ProjectsController do
     end
 
     it "redirects to the projects list" do
-      project = Factory(:project)
+      project = FactoryGirl.create(:project)
       @company.projects << project
       delete :destroy, :id => project.id
       response.should redirect_to(projects_url)

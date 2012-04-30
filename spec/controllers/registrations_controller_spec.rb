@@ -109,7 +109,7 @@ describe RegistrationsController do
     describe "GET#confirm" do
       context "when the user is found" do
         it "should render the confirm template" do
-          @user = Factory.build(:user, password: nil, password_confirmation: nil, registration_token: token = 'anything')
+          @user = FactoryGirl.build(:user, password: nil, password_confirmation: nil, registration_token: token = 'anything')
           @user.save_unconfirmed_user
           get :confirm, token: token
           response.should render_template('confirm')
@@ -128,7 +128,7 @@ describe RegistrationsController do
     describe "POST#complete" do
       context "User is found with his token" do
         it "should reset the user's registration token and its timestamp to nil and redirect to his/her staffplan page" do
-          @user = Factory(:user, registration_token: token = "whatevs")
+          @user = FactoryGirl.create(:user, registration_token: token = "whatevs")
           @user.registration_token = SecureRandom.urlsafe_base64
           User.stubs(:with_registration_token).with(anything).returns(@user)
           post :complete, token: token, user: {first_name: @user.first_name, last_name: @user.last_name, email: @user.email, password: "foobar", password_confirmation: nil}
@@ -139,7 +139,7 @@ describe RegistrationsController do
       end
 
       it "should set the user as the current user by stuffing his id in session" do
-        @user = Factory(:user)
+        @user = FactoryGirl.create(:user)
         @user.registration_token = SecureRandom.urlsafe_base64
         User.stubs(:with_registration_token).with(anything).returns(@user)
         post :complete, token: "donkey"

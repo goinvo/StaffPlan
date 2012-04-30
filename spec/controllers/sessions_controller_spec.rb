@@ -12,14 +12,14 @@ describe SessionsController do
 
   describe "POST#create" do
     it "should log the user in if the credentials are valid" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       post :create, email: user.email, password: user.password
       response.should be_redirect
       response.should redirect_to(root_url)
     end
     
     it "should log the user in if the credentials are valid and redirect him/her to the resource he/she wanted to access initially" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       request.cookies[:original_request] = Marshal.dump({controller: "staffplans", action: "index"}) 
       post :create, email: user.email, password: user.password
       response.should be_redirect
@@ -42,7 +42,7 @@ describe SessionsController do
 
   describe "GET#destroy" do
     it "should set session[:user_id] to nil" do
-      @current_user = Factory(:user)
+      @current_user = FactoryGirl.create(:user)
       login_user(user: @current_user)
       
       get :destroy

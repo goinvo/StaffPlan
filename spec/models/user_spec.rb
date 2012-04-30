@@ -26,7 +26,7 @@ describe User do
   describe '#plan_for' do
     before(:each) do
       @user = User.new(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "23kj23k2j")
-      @company = Factory(:company)
+      @company = FactoryGirl.create(:company)
       @company.users << @user
       @user.current_company_id = @company.id
       @user.save
@@ -76,9 +76,9 @@ describe User do
   describe "after_update callback" do
     it "should update the updated_at timestamp for a user that modifies another user" do
       with_versioning do
-        @source = Factory(:user)
+        @source = FactoryGirl.create(:user)
         time = @source.updated_at
-        @target = Factory(:user)
+        @target = FactoryGirl.create(:user)
         PaperTrail.whodunnit = @source.id.to_s
         @target.update_attributes(first_name: Faker::Name.first_name)
         @source.reload.updated_at.should > time
@@ -86,10 +86,10 @@ describe User do
     end
     it "should NOT update the updated_at timestamp for user A if user B modifies something about user C" do
       with_versioning do
-        @source = Factory(:user)
+        @source = FactoryGirl.create(:user)
         source_time = @source.updated_at
-        @target = Factory(:user)
-        @bystander = Factory(:user)
+        @target = FactoryGirl.create(:user)
+        @bystander = FactoryGirl.create(:user)
         bystander_time = @bystander.updated_at
         PaperTrail.whodunnit = @source.id.to_s
         @target.update_attributes(first_name: Faker::Name.first_name)
@@ -101,14 +101,14 @@ describe User do
   describe '#save_unconfirmed_user' do
     it "should save the user if all required fields (except password) are present" do
       lambda {
-        user = Factory.build(:user, password: nil, password_confirmation: nil)
+        user = FactoryGirl.build(:user, password: nil, password_confirmation: nil)
         user.save_unconfirmed_user.should be_true
       }.should change(User, :count).by(1)
     end
     
     it "should not save if first/last name or email are missing" do
       lambda {
-        user = Factory.build(:user, password: nil, password_confirmation: nil, email: nil)
+        user = FactoryGirl.build(:user, password: nil, password_confirmation: nil, email: nil)
         user.save_unconfirmed_user.should be_false
       }.should_not change(User, :count)
     end

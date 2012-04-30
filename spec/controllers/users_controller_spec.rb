@@ -15,7 +15,7 @@ describe UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       @company.users << user
       get :show, :id => user.id
       assigns(:user).should eq(user)
@@ -31,7 +31,7 @@ describe UsersController do
 
   describe "GET edit" do
     it "assigns the requested user as @user" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       @company.users << user
       get :edit, :id => user.id
       assigns(:user).should eq(user)
@@ -92,7 +92,7 @@ describe UsersController do
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @company.users << user
         # Assuming there are no other users in the database, this
         # specifies that the User created on the previous line
@@ -103,22 +103,22 @@ describe UsersController do
       end
 
       it "assigns the requested user as @user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @company.users << user
-        put :update, :id => user.id, :user => Factory.attributes_for(:user)
+        put :update, :id => user.id, :user => FactoryGirl.attributes_for(:user)
         assigns(:user).should eq(user)
       end
 
       it "redirects to the user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @company.users << user
-        put :update, :id => user.id, :user => Factory.attributes_for(:user)
+        put :update, :id => user.id, :user => FactoryGirl.attributes_for(:user)
         response.should redirect_to(user)
       end
 
       it "should let people change their current_company" do
         request.env["HTTP_REFERER"] = staffplan_url(@current_user)
-        other_company = Factory(:company)
+        other_company = FactoryGirl.create(:company)
         other_company.users << @current_user
         put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
         assigns[:user].current_company.should eq(other_company)
@@ -127,7 +127,7 @@ describe UsersController do
 
       it "should just redirect to back and do nothing if the specified company_id is not one the user belongs to" do
         request.env["HTTP_REFERER"] = staffplan_url(@current_user)
-        other_company = Factory(:company)
+        other_company = FactoryGirl.create(:company)
         lambda {
           put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
         }.should_not change(@current_user, :current_company_id)
@@ -137,7 +137,7 @@ describe UsersController do
 
     describe "with invalid params" do
       it "assigns the user as @user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.expects(:save).returns(false)
@@ -146,7 +146,7 @@ describe UsersController do
       end
 
       it "re-renders the 'edit' template" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
         User.any_instance.expects(:save).returns(false)
@@ -158,7 +158,7 @@ describe UsersController do
 
   describe "DELETE destroy" do
     it "destroys the requested user" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       @company.users << user
       expect {
         delete :destroy, :id => user.id
@@ -166,7 +166,7 @@ describe UsersController do
     end
 
     it "redirects to the users list" do
-      user = Factory(:user)
+      user = FactoryGirl.create(:user)
       @company.users << user
       delete :destroy, :id => user.id
       response.should redirect_to(users_url)

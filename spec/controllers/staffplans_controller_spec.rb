@@ -5,9 +5,9 @@ describe StaffplansController do
     @current_user, @company = login_user
 
     3.times do |i|
-      c = Factory(:client)
+      c = FactoryGirl.create(:client)
       2.times do |j|
-        c.projects << Factory(:project)
+        c.projects << FactoryGirl.create(:project)
       end
       instance_variable_set("@client_#{i+1}", c)
     end
@@ -54,7 +54,7 @@ describe StaffplansController do
 
     it "should only show clients and projects for the current user's current company when I go to my staff plan page" do
 
-      @other_company = Factory(:company)
+      @other_company = FactoryGirl.create(:company)
       @other_company.clients << @client_2
       @other_company.clients << @client_3
 
@@ -138,7 +138,7 @@ describe StaffplansController do
       it "should only show workload estimates for users belonging to the current user's current company" do
         @company.users << user_with_clients_and_projects
         other_user = user_with_clients_and_projects
-        other_company = Factory(:company)
+        other_company = FactoryGirl.create(:company)
         other_company.users << other_user
         get :index
         assigns[:users].size.should eq(@company.users.size)

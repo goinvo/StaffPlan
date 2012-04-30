@@ -7,7 +7,7 @@ module StaffPlan::WorkWeeksControllers
     before_filter :find_work_week, :only => :update
   end
   
-  module InstanceMethods
+  #module InstanceMethods
     def create
       @work_week = WorkWeek.new(whitelist_attributes)
       @work_week.project_id = @project.id
@@ -74,5 +74,5 @@ module StaffPlan::WorkWeeksControllers
       base
     end
     
-  end
+  #end
 end

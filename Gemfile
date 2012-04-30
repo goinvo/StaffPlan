@@ -34,7 +34,6 @@ group :development, :test do
   gem 'mocha'
   gem 'rspec-rails',      '2.8.1'
   gem 'webrat'
-  gem 'simplecov', :require => false
 end
 
 group :production do
