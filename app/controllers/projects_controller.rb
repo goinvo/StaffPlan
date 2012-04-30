@@ -21,6 +21,8 @@ class ProjectsController < ApplicationController
   def show
     @company_users_json = current_user.current_company.users.as_json(only: [:name, :email, :id]).to_s
     @clients = current_user.current_company.clients_as_json
+    @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
+    @from = 1.week.ago(@from)
     
     respond_to do |format|
       format.html # show.html.erb
