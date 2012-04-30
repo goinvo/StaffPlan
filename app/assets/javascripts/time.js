@@ -33,15 +33,17 @@
             if (value) {
                 throw new Error("Setting week number not implemented yet.");
             } else {
+                var tmp = this.clone();
+                var onejan = new Date(tmp.date.getFullYear(),0,1);
+                return Math.ceil((((tmp.date - onejan) / 86400000) + onejan.getDay()+1)/7);
                 // With thanks to http://github.com/jquery/jquery-ui/blob/37e8dd605da5d99600c0/ui/jquery.ui.datepicker.js#L919
-                var checker = this.clone();
-                checker.day(checker.day() + 4 - checker.weekday());
-                var epoch = checker.epoch();
-                checker.beginningOfYear();
-                return Math.floor(Math.round((epoch - checker.epoch()) / MILLISECONDS_IN_DAY) / 7) + 1;
+                // var checker = this.clone();
+                // checker.day(checker.day() + 4 - checker.weekday());
+                // var epoch = checker.epoch();
+                // checker.beginningOfYear();
+                // return Math.floor(Math.round((epoch - checker.epoch()) / MILLISECONDS_IN_DAY) / 7) + 1;
             }
         },
-        
         // There is no setDay(), implementing that here.
         weekday: function(value) {
             if (value) {
