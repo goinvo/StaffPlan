@@ -27,7 +27,7 @@
         - @date_range.each do |date|
           
           %td
-            .month= "W#{(date.mday / 7) + 1}"
+            .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"
         
         
   %ul.users
@@ -38,7 +38,7 @@
           - @date_range.each do |date|
             - css_class = ((date <= Date.today) ?  'passed' : '')
             - work_weeks_for_date = user.work_weeks.for_projects(user.current_company.projects.map(&:id)).select { |ww| ww.cweek == date.cweek && ww.year == date.year }
-            - actual_or_estimated_hours = (date.past? || date.today?) ? :actual_hours : :estimated_hours
+            - actual_or_estimated_hours = date.past? ? :actual_hours : :estimated_hours
             - total = work_weeks_for_date.map { |ww| ww.send(actual_or_estimated_hours) || 0 }.inject(:+) || 0
             - if total == 0 && actual_or_estimated_hours == :actual_hours
               - css_class = ''

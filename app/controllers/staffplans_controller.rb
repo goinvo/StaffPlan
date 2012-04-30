@@ -1,6 +1,8 @@
 class StaffplansController < ApplicationController
   
   def show
+    @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
+    @from = 1.week.ago(@from)
     @target_user = current_user.current_company.users.find_by_id(params[:id])
     redirect_to root_url, error: I18n.t('controllers.staffplans.couldnt_find_user') and return unless @target_user.present?
     
