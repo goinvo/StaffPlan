@@ -45,4 +45,12 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def total_recap_for_date_range(lower, upper)
+    {}.tap do |recap|
+      projects.each do |project|
+        recap.store(project.id, project.work_week_totals_for_date_range(lower, upper))
+      end
+    end
+  end
+
 end

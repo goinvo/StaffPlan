@@ -15,4 +15,17 @@ class WorkWeek < ActiveRecord::Base
     joins(:project).where(query, company_id, user_id, date.year, date.cweek, date.year)
   }
 
+  # NOTE: This assumes that we won't be showing more than 52 weeks at a time 
+  # If the project evolves in a way that we're showing a whole year at a time
+  # this scope should NOT be used
+  scope :for_project_and_date_range, lambda { |project, lower, upper|
+    if lower.cweek < upper.cweek 
+      where(project_id: project.id, year: lower.year, cweek: Range.new(lower.cweek,upper.cweek)) 
+    else # The date range spans over two years 
+      query = "project_id = ? AND ((cweek > ? AND year = ?) OR (cweek < ? AND year = ?))"
+      where(query, project.id, lower.cweek, lower.year, upper.cweek, upper.year)
+    end
+  }
+
+
 end

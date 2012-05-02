@@ -38,4 +38,14 @@ class Project < ActiveRecord::Base
       end
     end
   end
+
+
+  def work_week_totals_for_date_range(lower, upper)
+    {}.tap do |totals|
+      WorkWeek.for_project_and_date_range(self, lower, upper).group_by(&:cweek).each do |iso_week, estimated|
+        totals.store(iso_week, estimated.inject(0) { |memo, element| memo = memo + (element.estimated_hours || 0); memo })
+      end
+    end
+  end
+
 end
