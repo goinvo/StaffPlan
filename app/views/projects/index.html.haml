@@ -8,7 +8,7 @@
       %table.weeks
         %tr
           %td{rowspan: 2}
-            .month= link_to("&nbsp;".html_safe, projects_path(from: 3.months.ago(@date_range.first)), class: 'previous')
+            .month= link_to("&nbsp;".html_safe, projects_path(from: 3.months.ago(@from)), class: 'previous')
           
           - last_month = @date_range.first.month
           
@@ -21,7 +21,7 @@
             - last_month = date.month
             
           %td{rowspan: 2}
-            .month= link_to("&nbsp;".html_safe, projects_path(from: 3.months.from_now(@date_range.first)), class: 'next')
+            .month= link_to("&nbsp;".html_safe, projects_path(from: 1.week.from_now(@to)), class: 'next')
           
         %tr
           - @date_range.each do |date|

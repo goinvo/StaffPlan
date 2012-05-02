@@ -22,7 +22,7 @@ class WorkWeek < ActiveRecord::Base
     if lower.cweek < upper.cweek 
       where(project_id: project.id, year: lower.year, cweek: Range.new(lower.cweek,upper.cweek)) 
     else # The date range spans over two years 
-      query = "project_id = ? AND ((cweek > ? AND year = ?) OR (cweek < ? AND year = ?))"
+      query = "project_id = ? AND ((cweek >= ? AND year = ?) OR (cweek <= ? AND year = ?))"
       where(query, project.id, lower.cweek, lower.year, upper.cweek, upper.year)
     end
   }
