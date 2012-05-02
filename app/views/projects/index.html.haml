@@ -37,7 +37,7 @@
           %span.project-name= project.name
         .controls
           = link_to t('.edit'), edit_project_path(project)
-      %li
+      %li.chart
         %ul.week-hour-counter
           -# Used to compute the relative size of each histogram
           - max_size = @totals_per_week.map{|k,v| v.max_by{|k,v| v}.try(:last)}.compact.max
