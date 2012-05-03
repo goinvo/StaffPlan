@@ -40,5 +40,5 @@
       %li.chart
         %ul.week-hour-counter
           -# Used to compute the relative size of each histogram
-          - max_size = @totals_per_week.map{|k,v| v.max_by{|k,v| v}.try(:last)}.compact.max
+          - max_size = 120#@totals_per_week.map{|k,v| v.max_by{|k,v| v}.try(:last)}.compact.max
           = chart_for_project(project, @date_range, @totals_per_week[project.id], max_size) 

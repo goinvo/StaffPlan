@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :client do
-    name          { Faker::Company.name }
-    description   { Faker::Company.catch_phrase }
+    name          { Faker::Company.name + Faker::Company.name } 
+    description   { Faker::Company.catch_phrase + Faker::Company.name } 
   end
 end
