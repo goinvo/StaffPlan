@@ -3,7 +3,7 @@ class CompaniesController < ApplicationController
 
   def new
     @company = Company.new 
-    @user = @company.users.build
+    @user = current_user || @company.users.build
   end
 
   def create

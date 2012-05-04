@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   
-  skip_before_filter :require_current_user, :except => [:destroy]
+  skip_before_filter :require_current_user, :require_current_company, :except => [:destroy]
   
   def new
   end

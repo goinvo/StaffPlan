@@ -1,5 +1,5 @@
 class Api::CompaniesController < ApplicationController
-  skip_before_filter :require_current_user
+  skip_before_filter :require_current_user, :require_current_company
   respond_to :json
   
   def index
