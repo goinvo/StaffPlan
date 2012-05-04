@@ -18,7 +18,10 @@ class ChartTotalsView extends Backbone.View
   *###
   render: (date_range, models) ->
     # Grab data
-    data = get_data date_range, models
+    data = (get_data date_range, models).sort (a,b) ->
+      [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
+      ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
+
 
     # Scale
     ratio = get_ratio @maxHeight, data
