@@ -1,5 +1,7 @@
 class CompaniesController < ApplicationController
 
+  # A user whose sole company was destroyed needs to be able to create one
+  skip_before_filter :require_current_company
 
   def new
     @company = Company.new 
