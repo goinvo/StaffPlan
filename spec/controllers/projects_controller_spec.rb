@@ -6,7 +6,7 @@ describe ProjectsController do
     @current_user, @company = login_user
   end
 
-  def valid_attributes(client = FactoryGirl.create(:client))
+  def valid_attributes(client= FactoryGirl.create(:client))
     attributes = FactoryGirl.attributes_for(:project)
     attributes.delete(:client)
     attributes.merge!(client_id: client.id)
