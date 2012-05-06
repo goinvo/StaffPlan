@@ -11,6 +11,17 @@ class Company < ActiveRecord::Base
 
   after_update :update_originator_timestamp 
   
+  # Goes as follows:
+  # We're deleting a company. Before that happens, we'll take all that company's users
+  # and set their current_company_id to any other company they're a member of, or to 
+  # nil if they don't have any left beyond the one we're deleting
+  before_destroy do |record|
+    record.users.where(current_company_id: record.id).all.each do |user|
+      user.current_company_id = user.company_ids.reject { |c| c == record.id }.first
+      user.save
+    end
+  end
+  
   def users_json
     Jbuilder.encode do |json|
       json.array! self.users do |json, user|

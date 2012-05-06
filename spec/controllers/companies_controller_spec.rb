@@ -9,8 +9,8 @@ describe CompaniesController do
     it "should assign a new company to @company" do 
       get :new
       assigns[:company].should be_a_new(Company)
-      assigns[:company].users.size.should eq(1)
-      assigns[:user].should be_a_new(User)
+      assigns[:company].users.size.should eq(0)
+      assigns[:user].should eq(@current_user)
     end
   end
 
