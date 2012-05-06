@@ -1,6 +1,43 @@
 @import "init"
 @import "_mixins"
 
+body#projects.index
+  section.main
+    .content
+      li.chart
+        padding-top: 20px
+        padding-left: 300px
+        border-top: none
+        ul.week-hour-counter
+          +week-hour-counter
+          max-height: 120px
+          display: inline
+      .user-header
+        position: relative
+        margin-bottom: 15px
+        padding: 10px 0
+        min-height: 30px
+        border: 1px solid #E0E0E0
+        background-color: #F7F7F7
+
+        +next-and-previous
+
+        & > *
+          display: inline-block
+        .weeks
+          position: absolute
+          left: 260px
+          width: 600px
+
+          .month
+            display: block
+            width: 41px
+            +box-sizing(border-box)
+
+          tr:nth-child(2)
+            .month
+              margin-top: 6px
+              color: $color-light
 body#projects.show
   section.main
     .content

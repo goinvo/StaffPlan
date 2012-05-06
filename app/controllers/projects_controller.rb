@@ -8,8 +8,20 @@ class ProjectsController < ApplicationController
     # A project belongs_to a company/account
     # Let's retrieve all the projects associated with the account
     # the current_user is currently browsing the app through
-    @projects = current_user.current_company.projects 
+    @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
+    @from = 1.week.ago(@from)
+    @to = 3.months.from_now(@from)
+    
+    @date_range = []
+    start = @from.clone
+    
+    while start < @to
+      @date_range << start
+      start = start + 7.days
+    end
 
+    @projects = current_user.current_company.projects 
+    @totals_per_week = current_user.current_company.total_recap_for_date_range(@date_range.first, @date_range.last)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
