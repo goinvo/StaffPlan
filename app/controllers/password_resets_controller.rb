@@ -1,7 +1,7 @@
 class PasswordResetsController < ApplicationController
   
   layout "registration"
-  skip_before_filter :require_current_user
+  skip_before_filter :require_current_user, :require_current_company
 
   def create
     @user = User.where(email: params[:email]).first

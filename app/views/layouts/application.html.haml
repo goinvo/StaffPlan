@@ -27,9 +27,9 @@
           %li#current-company
             - if current_user.companies.length > 1
               = form_for current_user do |f|
-                = select(:user, :current_company_id, options_from_collection_for_select(current_user.companies, :id, :name, selected: current_user.current_company_id))
+                = select(:user, :current_company_id, options_from_collection_for_select(current_user.companies, :id, :name, selected: current_user.current_company_id ))
             - else
-              = current_user.current_company.name
+              = current_user.current_company.try(:name) || "N/A"
         
         .header-content
           = yield(:header_content)

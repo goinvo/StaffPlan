@@ -1,6 +1,6 @@
 class RegistrationsController < ApplicationController
   layout "registration"
-  skip_before_filter :require_current_user, :only => [:new, :create, :confirm, :complete]
+  skip_before_filter :require_current_user, :require_current_company, :only => [:new, :create, :confirm, :complete]
 
   def new
     @user = User.new
