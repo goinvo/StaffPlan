@@ -98,7 +98,6 @@ get_ratio = (u_bound, ww) ->
 *###
 get_value = (d) ->
   total = d[if d.date.weekHasPassed then "actual" else "estimated"] or 0
-
   if total == 0 and d.date.weekHasPassed
     d.estimated or 0
   else
@@ -111,7 +110,7 @@ get_value = (d) ->
   * @returns {!String} Class for week.
 *###
 get_class = (d) ->
-  if isThisWeek d.date
+  if d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
     if d.actual == 0 then "present" else "passed"
   else if d.date.weekHasPassed
     "passed"
@@ -128,14 +127,8 @@ get_class = (d) ->
 get_height = (ratio, d) ->
   "#{get_value(d) * ratio}px"
 
-
-# Current data as `Time` instance
-now = new Time
-
 # Make dummy week
 dummy = (date) ->
   get: (x) -> if x == "date" then date else 0
 
-
 @views.shared.ChartTotalsView = ChartTotalsView
-

@@ -18,7 +18,6 @@ class views.shared.DateDrivenView extends Support.CompositeView
     dates: @getYearsAndWeeks()
 
   getYearsAndWeeks: ->
-    # XXX Needs cacheing or memoization badly
     yearsAndWeeks = []
     from = @fromDate.clone()
     to = @toDate.clone()
@@ -26,14 +25,13 @@ class views.shared.DateDrivenView extends Support.CompositeView
     while from < to
       yearsAndWeeks.push
         year:  from.year()
-        cweek: +from.format('w')
+        cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
         month: from.month() + 1
-        mweek: +from.format('w')
+        mweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
         mday:  from.date()
         weekHasPassed: from < moment()
 
       from.add('weeks', 1)
-    console.log yearsAndWeeks
     yearsAndWeeks
     
 window.views.shared.DateDrivenView = views.shared.DateDrivenView
