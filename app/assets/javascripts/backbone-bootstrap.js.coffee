@@ -1,4 +1,4 @@
-Time.firstDayOfWeek = 2
+# Time.firstDayOfWeek = 2
 
 @staff_plan = {}
 

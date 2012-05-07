@@ -11,7 +11,7 @@
 //= require backbone.min
 //= require backbone-support
 //= require mustache
-//= require time
+//= require moment.min 
 //= require d3.v2
 //= require backbone-bootstrap
 //= require_tree .
