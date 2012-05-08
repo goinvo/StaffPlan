@@ -1,8 +1,8 @@
 class views.shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    d = (_.map window._meta.fromDate.split("-"), (elem) -> parseInt(elem, 10)).concat([12, 0, 0, 0]);
+    d = (_.map window._meta.fromDate.split("-"), (elem) -> parseInt(elem, 10)).concat([12, 0, 0, 0])
     @weekInterval = 15
-    @fromDate = new (Function.bind.apply(Time, [null].concat(d)))
+    @fromDate = new Time(d[0], d[1], d[2], d[3], d[4], d[5], d[6])
     @toDate   = @fromDate.clone().advanceWeeks @weekInterval
   
   dateChanged: (event) ->
