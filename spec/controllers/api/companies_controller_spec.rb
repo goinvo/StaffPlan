@@ -17,6 +17,8 @@ describe Api::CompaniesController do
         end
 
         it "should render a JSON array whose top-level key is 'companies'" do
+          Company.destroy_all
+          User.destroy_all
           @company = company_with_users_and_projects 
           get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           hash = ActiveSupport::JSON.decode(response.body)
@@ -25,6 +27,8 @@ describe Api::CompaniesController do
         end
 
         it "should return company name and the associated users and projects for each company" do
+          Company.destroy_all
+          User.destroy_all
           @company = company_with_users_and_projects
           get :index, format: "json", secret: StaffPlan::Application.config.api_secret
           hash = ActiveSupport::JSON.decode(response.body)

@@ -21,6 +21,12 @@ describe User do
       User.create(email: "thisisnotanemailaddress").errors[:email].should_not be_empty
     end
 
+    it "should not allow the creation of a user whose email address already exists" do
+      address = Faker::Internet.email
+      User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: address, password: 'password')
+      User.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: address, password: 'other_password').errors[:email].should eq(["has already been taken"])
+    end
+
   end
 
   describe '#plan_for' do
@@ -75,6 +81,7 @@ describe User do
 
   describe "after_update callback" do
     it "should update the updated_at timestamp for a user that modifies another user" do
+      User.destroy_all
       with_versioning do
         @source = FactoryGirl.create(:user)
         time = @source.updated_at
@@ -85,6 +92,7 @@ describe User do
       end
     end
     it "should NOT update the updated_at timestamp for user A if user B modifies something about user C" do
+      User.destroy_all
       with_versioning do
         @source = FactoryGirl.create(:user)
         source_time = @source.updated_at
