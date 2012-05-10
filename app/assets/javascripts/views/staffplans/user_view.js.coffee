@@ -49,10 +49,11 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
   headerTemplateData: ->
     meta = @dateRangeMeta()
     currentYear: ->
-      new Date().getFullYear()
+      moment().year()
     monthNames: ->
+      # meta.dates is an array of date objects, as created in getYearsAndWeeks
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
-        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
+        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then moment.monthsShort[ dateMeta.month - 1 ] else ""
 
     weeks: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
