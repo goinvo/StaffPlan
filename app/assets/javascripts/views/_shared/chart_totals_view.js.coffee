@@ -23,6 +23,7 @@ class ChartTotalsView extends Backbone.View
       ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
 
 
+    console.log data
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -38,10 +39,10 @@ class ChartTotalsView extends Backbone.View
       .attr("class", get_class)
       .select("span")
         .text(get_value)
-
     list.enter().append("li")
       .attr("class", get_class)
       .style("height", height)
+      .style("background-image", "-webkit-linear-gradient(top, blue "+ 60 + "%, red 0%)")
         .append("span")
         .text(get_value)
 
