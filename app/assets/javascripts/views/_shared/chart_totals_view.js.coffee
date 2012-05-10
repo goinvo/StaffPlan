@@ -112,7 +112,7 @@ get_proposed_value = (d) ->
     total
 
 get_gradient = (d) ->
-  percentage = 100 - Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100
+  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #9C0 0%)"
   
 ###*
