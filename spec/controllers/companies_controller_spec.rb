@@ -2,6 +2,10 @@ require 'spec_helper'
 describe CompaniesController do
 
   before(:each) do
+    # Slows down the specs considerably but we have to 
+    [User, Company].each do |m|
+      m.destroy_all
+    end
     @current_user, @company = login_user
   end
 
@@ -16,8 +20,9 @@ describe CompaniesController do
 
   describe "POST create" do
     it "creates a new Company with valid params" do
+      user_attrs = FactoryGirl.attributes_for(:user)
       expect {
-        post :create, company: {name: Faker::Company.name}, user: FactoryGirl.attributes_for(:user) 
+        post :create, company: {name: Faker::Company.name}, user: user_attrs 
       }.to change(Company, :count).by(1)
     end
       
@@ -28,7 +33,8 @@ describe CompaniesController do
       
     it "should create a new user and set the company's id as his/her current_company_id on a successful POST" do
       expect {
-        post :create, company: {name: Faker::Company.name}, user: FactoryGirl.attributes_for(:user) 
+        user_attrs = FactoryGirl.attributes_for(:user)
+        post :create, company: {name: Faker::Company.name}, user: user_attrs 
       }.to change(User, :count).by(1)
       
       assigns[:user].current_company_id.should eq(assigns[:company].id)

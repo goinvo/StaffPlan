@@ -40,6 +40,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :email, :first_name, :last_name
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+  validates_uniqueness_of :email
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
