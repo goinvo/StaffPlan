@@ -1,5 +1,3 @@
-Time.firstDayOfWeek = 2
-
 @staff_plan = {}
 
 @models = {}
@@ -8,9 +6,3 @@ Time.firstDayOfWeek = 2
   projects:   {}
   shared:     {}
   staffplans: {}
-
-# XXX This should be in `Time`
-@isThisWeek = (date) ->
-  now = new Time
-  date.year == now.year() and date.mweek == now.week()
-

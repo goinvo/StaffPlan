@@ -28,7 +28,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     
   
   initUser: (user) ->
-    user.view = new views.projects.UserView 
+    user.view = new views.projects.UserView
       model: user
       parent: @
       
@@ -52,7 +52,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
           new Date().getFullYear()
         monthNames: (=>
           _.map meta.dates, (dateMeta, idx, dateMetas) ->
-            name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
+            name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then moment.monthsShort[ dateMeta.month - 1 ] else ""
           )()
         weeks: (=>
           _.map meta.dates, (dateMeta, idx, dateMetas) ->

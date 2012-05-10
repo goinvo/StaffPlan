@@ -152,7 +152,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       .offset(offset)
 
   hideRowFiller: (event) ->
-    @zeroToBlank event # XXX Can't bind multiple methods to the same event via Backbone :(
+    @zeroToBlank event # NOTE: Can't bind multiple methods to the same event via Backbone 
     event.currentTarget.type = "text"
     @_lastFocused = event.currentTarget
     @_rowFillerTimer = setTimeout =>
