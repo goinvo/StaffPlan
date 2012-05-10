@@ -47,7 +47,6 @@ class views.staffplans.ProjectView extends Support.CompositeView
       if match? then match.get 'name' else 'N/A'
     
   render: ->
-    console.log @templateData()
     $( @el )
       .attr(
         id: "project_#{@model.id}"

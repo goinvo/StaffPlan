@@ -22,8 +22,6 @@ class ChartTotalsView extends Backbone.View
       [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
       ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
 
-
-    console.log data
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -42,7 +40,7 @@ class ChartTotalsView extends Backbone.View
     list.enter().append("li")
       .attr("class", get_class)
       .style("height", height)
-      .style("background-image", "-webkit-linear-gradient(top, blue "+ 60 + "%, red 0%)")
+      .style("background-image", get_gradient)
         .append("span")
         .text(get_value)
 
@@ -64,7 +62,6 @@ get_data = (date_range, models) ->
         if m.get('cweek') == date.mweek and m.get('year') == date.year
           m.set "date", date
           true
-
   # Format data
   ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
     "#{w.get('year')}-#{w.get('cweek')}"
@@ -77,9 +74,10 @@ get_data = (date_range, models) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
+      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection.parent.collection.get(o.get("project_id")).get("proposed")
+      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection.parent.collection.get(o.get("project_id")).get("proposed")
       m
-    , {id: key, actual: 0, estimated: 0}
-
+    , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
 ###*
   * Determine the ratio to be applied to each bar's height.
@@ -105,7 +103,18 @@ get_value = (d) ->
   else
     total
 
+get_proposed_value = (d) ->
+  total = d["proposed"][if d.date.weekHasPassed then "actual" else "estimated"] or 0
 
+  if total == 0 and d.date.weekHasPassed
+    d.proposed.estimated or 0
+  else
+    total
+
+get_gradient = (d) ->
+  percentage = 100 - Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100
+  "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #9C0 0%)"
+  
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
