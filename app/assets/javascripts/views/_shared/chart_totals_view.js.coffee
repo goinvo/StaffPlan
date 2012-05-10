@@ -40,7 +40,8 @@ class ChartTotalsView extends Backbone.View
     list.enter().append("li")
       .attr("class", get_class)
       .style("height", height)
-      .style("background-image", get_gradient)
+      .style("background-image", get_gradient_moz)
+      .style("background-image", get_gradient_webkit)
         .append("span")
         .text(get_value)
 
@@ -110,10 +111,13 @@ get_proposed_value = (d) ->
   else
     total
 
-get_gradient = (d) ->
+get_gradient_moz = (d) ->
+  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
+  "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #9C0 0%)"
+  
+get_gradient_webkit = (d) ->
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #9C0 0%)"
-  
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
