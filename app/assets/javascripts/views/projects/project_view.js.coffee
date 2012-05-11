@@ -24,7 +24,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       
     # Week Hour Counter (initialised and set in UserView)
     $( document.body ).bind 'work_week:value:updated', =>
-      @weekHourCounter.render @dateRangeMeta().dates, @model.users.models if @weekHourCounter?
+      @view.weekHourCounter.render @dateRangeMeta().dates, @model.users.models if @view.weekHourCounter?
     
   
   initUser: (user) ->
