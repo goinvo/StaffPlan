@@ -34,9 +34,12 @@ class ChartTotalsView extends Backbone.View
 
     list
       .style("height", height)
+      .style("background-image", get_gradient_moz)
+      .style("background-image", get_gradient_webkit)
       .attr("class", get_class)
       .select("span")
         .text(get_value)
+
     list.enter().append("li")
       .attr("class", get_class)
       .style("height", height)
