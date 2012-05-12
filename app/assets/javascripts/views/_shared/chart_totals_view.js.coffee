@@ -78,8 +78,8 @@ get_data = (date_range, models) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection.parent.collection.get(o.get("project_id"))?.get("proposed") || false
-      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection.parent.collection.get(o.get("project_id"))?.get("proposed") || false
+      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
