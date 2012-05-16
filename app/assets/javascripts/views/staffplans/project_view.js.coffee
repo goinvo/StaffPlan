@@ -96,7 +96,8 @@ class views.staffplans.ProjectView extends Support.CompositeView
       "client_id": $( @el ).closest( 'section' ).data().clientId
   
   removeProject: (event) ->
-    @model.destroy()
+    if confirm "Are you sure?  There is no undo (yet!)."
+      @model.destroy()
     
   onKeydown: (event) ->
     if event.keyCode == 13

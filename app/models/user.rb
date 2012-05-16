@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
-  # TODO: remove password and password_confirmation from attr_accessible
-  attr_accessible :name, :email, :password, :password_confirmation
+ 
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
+  
   has_paper_trail
-
   has_secure_password
 
   has_and_belongs_to_many :projects, uniq: true do
@@ -16,6 +16,9 @@ class User < ActiveRecord::Base
   has_many :work_weeks, dependent: :destroy do
     def for_project(project)
       self.select { |ww| ww.project_id == project.id }
+    end
+    def for_projects(project_ids)
+      self.select { |ww| project_ids.include? ww.project_id }
     end
   end
 
@@ -31,14 +34,52 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  validates_presence_of :email, :name
-  validates_uniqueness_of :name, case_sensitive: false
-  validates_presence_of :password,  :on => :create
-  validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+  def full_name
+    [first_name, last_name].join(" ")
+  end
 
+  validates_presence_of :email, :first_name, :last_name
+  validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+  validates_uniqueness_of :email
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+  end
+    def self.with_registration_token(token)
+      self.where("registration_token = ?", token).first
+    end
+  def send_registration_confirmation
+    set_token(:registration_token)
+    RegistrationMailer.registration_confirmation(self).deliver
+  end
+
+  def send_invitation(inviting_user)
+    set_token(:registration_token)
+    RegistrationMailer.invitation(self, inviting_user).deliver
+  end
+  
+  def send_password_reset_instructions
+    self.registration_token = SecureRandom.urlsafe_base64
+    self.save 
+    RegistrationMailer.password_reset(self).deliver
+  end
+
+  # NOTE: https://github.com/rails/rails/pull/3887
+  def save_unconfirmed_user
+    self.valid?
+    
+    if (self.errors.keys - [:password_digest]).empty?
+      save(validate: false)
+      true
+    else
+      false
+    end
+  end
+
+  # FIXME: Naive implementation of unique token
+  def set_token(column)
+    self[column] = SecureRandom.urlsafe_base64
+    self.save_unconfirmed_user
   end
 
   def current_company
@@ -63,13 +104,22 @@ class User < ActiveRecord::Base
 
   def staff_plan_json(company_id)
     Jbuilder.encode do |json|
-      json.(self, :id, :name, :email, :gravatar)
+      json.(self, :id, :full_name, :email, :gravatar)
       
       json.projects self.projects.for_company(company_id) do |json, project|
         json.(project, :id, :name, :client_id)
         json.work_weeks project.work_weeks.for_user(self) do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end
+      end
+    end
+  end
+  
+  def project_json(project)
+    Jbuilder.encode do |json|
+      json.(self, :id, :email, :first_name, :last_name, :gravatar)
+      json.work_weeks self.work_weeks.for_project(project) do |json, work_week|
+        json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
       end
     end
   end

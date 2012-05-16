@@ -1,17 +1,20 @@
 User.create(
-  name: "Rob Sterner",
+  first_name: "Rob",
+  last_name: "Sterner",
   email: "rob@rescuedcode.com",
   password: "secret"
 )
 
 User.create(
-  name: "Juhan Sonin",
+  first_name: "Juhan", 
+  last_name: "Sonin",
   email: "juhan@goinvo.com",
   password: "secret"
 )
 
 User.create(
-  name: "Christian Hogan",
+  first_name: "Christian", 
+  last_name: "Hogan",
   email: "christian@goinvo.com",
   password: "secret"
 )

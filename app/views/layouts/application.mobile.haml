@@ -22,7 +22,7 @@
       .inner
         %ul
           %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
-          %li.name= (@target_user || current_user).name
+          %li.name= (@target_user || current_user).full_name
         
         .right
           = link_to(t('.sign_out'), sign_out_path)

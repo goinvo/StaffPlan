@@ -8,7 +8,17 @@
     
     .field
       = label_tag :password, t('.password')
-      = password_field_tag :password
-  
+      = password_field_tag :password, params[:password]
+    
     .actions
-      = submit_tag(t('.sign_in'))
+      = submit_tag t('.sign_in'), :id => "commit_btn"
+      
+      .password-reset.boxy
+        = link_to t('.password_reset'), new_password_reset_path 
+      
+      .clear
+      
+      .boxy.larger
+        = link_to "Register", new_registration_path, :id => "register_btn"
+      
+

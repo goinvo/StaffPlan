@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   has_mobile_fu
-  before_filter :require_current_user, :set_mobile_view
+  before_filter :require_current_user, :require_current_company, :set_mobile_view
 
   protected 
 
@@ -20,6 +20,12 @@ class ApplicationController < ActionController::Base
   end
 
   private
+
+  def require_current_company
+    unless current_user.try(:current_company_id)
+      redirect_to new_company_path
+    end
+  end
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]

@@ -4,14 +4,43 @@
 
 body
   font-family: 'Open Sans', Helvetica, Arial, sans-serif
+  background-color: rgba(230, 230, 230, 1.0) 
   +text-shadow
+  
+  #commit_btn
+    width: 100px
+    min-height: 30px
+    padding: 0px
+   
+    outline: none
+    border: 1px solid rgba(0,0,0,0.1)
+   
+    cursor: pointer
+    
+    float: left
+   
+    font-size: 12px 
+    line-height: 30px
+    color: rgba(0,0,0,0.5)
+    text-shadow: 1px 1px rgba(255,255,255,0.3)
+    
+    background: -moz-linear-gradient(top,  rgba(245,245,245, 1.0) 0%, rgba(235,235,235,1.0) 100%)
+    background: -webkit-linear-gradient(top, whiteSmoke 0%, #EBEBEB 100%)
+    background: -o-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+    background: -ms-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+    background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+    
+    border-radius: 5px 5px
+    box-shadow: 0px 1px 2px rgba(0,0,0,0.2)
+ 
+      
   
   section.main
     width: 1000px
     margin: auto
     
     section
-      width: 200px
+      width: 400px
       margin: 150px auto 0
       padding: 15px
       
@@ -19,15 +48,102 @@ body
         font-size: 22px
         padding: 20px 0
       
+      .clear
+        clear: both
+        margin-bottom: 10px
+      
       form
         .field
+          margin-bottom: 10px
+          height: 40px
+          
           label
-            display: block
+            float: left
+            line-height: 40px
+            margin-right: 5px
+            text-align: right
+            width: 90px
+            
+            -webkit-border-top-left-radius: 5px
+            -webkit-border-bottom-left-radius: 5px
+            -moz-border-radius-topleft: 5px
+            -moz-border-radius-bottomleft: 5px
+            border-top-left-radius: 5px
+            border-bottom-left-radius: 5px
+            
+            background-color: rgba(0,0,0,0.1)
+            background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+            background: -webkit-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+            box-shadow: inset 0px 0px 3px rgba(0,0,0,0.6)
+            
+            padding-right: 8px
+            color: rgba(0,0,0,0.4)
         
           input
             font-size: 16px
-            width: 100%
-            margin: 10px 0
+            width: 280px
+            height: 34px
+            line-height: 30px
+            color: rgba(0,0,0,0.3)
+            border: 1px solid rgba(0,0,0,0.1)
+            padding: 2px 0px 2px 8px
+            background-color: rgba(0,0,0,0.1)
+            
+            text-shadow: 1px 1px rgba(255,255,255,0.2)
+            
+            outline: none
+            float: right
+            clear: right
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2)
             +border-radius
-
+          
+          input:focus
+            color: rgba(0,0,0,0.6) 
+          
+        
+       
+        
+        .actions
+          
+          width: 290px
+          float: right
+          
+          .boxy
+            float: right
+            width: 180px
+            font-size: 20px  
+            line-height: 30px
+            color: rgba(0,0,0,0.5)
+            text-shadow: 1px 1px rgba(255,255,255,0.3)
+            
+            border: 1px solid rgba(0,0,0,0.1)
+            text-align: center
+            
+            background: -moz-linear-gradient(top,  rgba(245,245,245, 1.0) 0%, rgba(235,235,235,1.0) 100%)
+            background: -webkit-linear-gradient(top, whiteSmoke 0%, #EBEBEB 100%)
+            background: -o-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+            background: -ms-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+            background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
+            
+            border-radius: 5px 5px
+            box-shadow: 0px 1px 2px rgba(0,0,0,0.2)
+         
+          .larger
+            width: 290px
+            margin-top: 50px
+         
+            
+          .password-reset
+            a
+              font-size: 12px
+              color: rgba(0,0,0,0.5)
+              text-decoration: none
+  
+    #register_btn
+      font-size: 12px 
+      line-height: 30px
+      color: rgba(0,0,0,0.5)
+      text-decoration: none
+  
 @import _flash
+

@@ -1,22 +1,23 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
 
-%section
-  %header
-    %h2= @project.name
-    = link_to 'Edit', edit_project_path(@project)
-    = link_to 'Destroy', @project, :confirm => 'Are you sure?', :method => :delete
 
-  .info
-    .client= @project.client.name
-    .active{ 'data-active' => @project.active }= @project.active ? t('.active') : t('.inactive')
-    .users
-      %h3 Team Members:
-      %ul
-        - if @project.users.any?
-          - @project.users.each do |project_user|
-            %li= render partial: 'shared/user-info', locals: {user: project_user, small: true}
-        - else
-          %li
-            %em None!
-        
+
+- content_for(:javascript_includes) do
+  :coffeescript
+    window._meta =
+      clients: new ClientList(#{@clients})
+      users: new UserList(#{current_user.current_company.users_json})
+      days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+      abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
+      fromDate: "#{@from}"
+    
+    $( ->
+      window._Project = new Project #{@project.project_json}
+      window._ProjectView = new views.projects.ProjectView
+        model: window._Project
+      window._Project.view = window._ProjectView
+      window._ProjectView.render()
+    )
+

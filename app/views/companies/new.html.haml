@@ -1,7 +1,12 @@
 %section
   %header
     %h2 Add Company 
-
+- if @user.persisted? and @user.companies.empty?
+  .message
+    %p 
+      = "It seems that your company has been deleted in the system"
+    %p 
+      = "Simply give a new company name to create a new one" 
 = form_for @company do |f|
   .company-info
     = f.label :name, "Company Name"
@@ -12,20 +17,25 @@
       = "User Information"
     %br
     = fields_for @user do |u|
-      = u.label :name
+      = u.label :first_name
       %br
-      = u.text_field :name
+      = u.text_field :first_name
+      %br
+      = u.label :last_name
+      %br
+      = u.text_field :last_name
       %br
       = u.label :email
       %br
       = u.text_field :email
       %br
-      = u.label :password
-      %br
-      = u.password_field :password
-      %br
-      = u.label :password_confirmation
-      %br
-      = u.password_field :password_confirmation
+      - unless @user.persisted? and @user.companies.empty?
+        = u.label :password
+        %br
+        = u.password_field :password
+        %br
+        = u.label :password_confirmation
+        %br
+        = u.password_field :password_confirmation
   .submit
     = f.submit "Create" 

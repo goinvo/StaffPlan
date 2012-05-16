@@ -1,0 +1,17 @@
+Hi #{@user.first_name.strip},
+\
+#{@admin.full_name} just set up an account for you.
+\
+All you need to do is follow the link below, make sure your credentials are A-OK and pick a password.
+\
+It takes less than 20 seconds.
+\
+Click this link to get started:
+\
+#{confirm_registration_url(token: @user.registration_token)}
+\
+Have questions? Contact #{@admin.full_name} at #{@admin.email}
+\
+Sincerely,
+The StaffPlan Team
+http://www.staffplan.com

@@ -1,48 +1,44 @@
 class User extends Backbone.Model
-  weekInterval: 15
-
   initialize: (userdata) ->
-
-    @fromDate = new Time().advanceWeeks(-1).beginningOfWeek()
-    @toDate   = @fromDate.clone().advanceWeeks @weekInterval
-
     @projects = new ProjectList @get( "projects" ),
       parent: @
     
+    @work_weeks = new WorkWeekList @get( "work_weeks" ),
+      parent: @
+    
+    # Week Hour Counter (initialised and set in UserView)
     $( document.body ).bind 'work_week:value:updated', =>
-      @view.renderWeekHourCounter()
+      @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models if @view.weekHourCounter?
 
-    urlRoot: "/users"
+  urlRoot: "/users"
 
   dateChanged: (event) ->
     event.preventDefault()
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.advanceWeeks interval
-    @toDate.advanceWeeks   interval
+    @fromDate.add('weeks', interval)
+    @toDate.add('weeks', interval)
     @view.renderAllProjects()
+    @weekHourCounter.render @dateRangeMeta().dates, @projects.models
 
   dateRangeMeta: ->
-    fromDate: @fromDate
-    toDate: @toDate
-    dates: @getYearsAndWeeks()
+    @view.dateRangeMeta()
 
   getYearsAndWeeks: ->
-    # XXX Needs cacheing or memoization badly
+    # FIXME: This is a rehash from the code in app/assets/javascript/views/_shared/date_driven_view.js.coffee 
     yearsAndWeeks = []
     from = @fromDate.clone()
     to = @toDate.clone()
 
-    while from.isBefore to
+    while from < to
       yearsAndWeeks.push
         year:  from.year()
-        cweek: from.week()
-        month: from.month()
-        mweek: from.week()
-        mday:  from.day()
-        weekHasPassed: from.isBefore new Date
+        cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        month: from.month() + 1
+        mweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        mday:  from.date()
+        weekHasPassed: from < moment()
 
-      from = from.advanceWeeks(1)
-
+      from.add('weeks', 1)
     yearsAndWeeks
 
   projectsByClient: ->
@@ -53,7 +49,15 @@ class User extends Backbone.Model
         projectsByClient
       , {}
 
+class UserList extends Backbone.Collection
+  model: User
+  
+  initialize: (models, attrs) ->
+    _.extend @, models
+    _.extend @, attrs
+    
   url: ->
-    "/users/#{@id}"
+    @parent.url() + "/users"
 
-window.User = User
+@User = User
+@UserList = UserList

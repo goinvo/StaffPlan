@@ -1,6 +1,3 @@
-require 'simplecov'
-SimpleCov.start
-
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
@@ -13,14 +10,14 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
 def login_user(*options)
   options = options.extract_options!
-  company = options[:company] || Factory(:company)
+  company = options[:company] || FactoryGirl.create(:company)
   
   user = unless options[:user].nil?
     company.users << options[:user]
     options[:user].current_company = company
     options[:user]
   else
-    user = Factory(:user)
+    user = FactoryGirl.create(:user)
     company.users << user
     user.current_company = company
     user
@@ -35,15 +32,23 @@ def logout_user
   session[:user_id] = nil
 end
 
-def user_with_clients_and_projects(target_user=Factory(:user))
+def user_with_clients_and_projects(target_user=FactoryGirl.create(:user))
   2.times do
-    client = Factory(:client)
-    2.times { Factory(:project, :client => client) }
+    client = FactoryGirl.create(:client)
+    2.times { FactoryGirl.create(:project, :client => client) }
   end
   
   Project.all.each { |p| p.users << target_user }
   
   target_user
+end
+
+def company_with_users_and_projects
+  FactoryGirl.create(:company).tap do |company|
+    2.times do 
+      company.users << user_with_clients_and_projects
+    end
+  end
 end
 
 def with_versioning

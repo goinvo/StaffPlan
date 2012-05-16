@@ -1,0 +1,13 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('password_resets')
+%section
+  %h1
+    = t('.title')
+  .instructions
+    = t('.instructions')
+  .password
+  = form_tag password_resets_path do
+    = text_field_tag :email
+    .actions
+      = submit_tag "Send Instructions"
+

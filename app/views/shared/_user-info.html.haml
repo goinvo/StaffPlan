@@ -6,6 +6,6 @@
   = link_to url do
     = image_tag user.gravatar, class: 'gravatar'
     %span.name
-      = link_to user.name, staffplan_path(user)
+      = link_to user.full_name, staffplan_path(user)
     - if email
       %span.email= "<#{user.email}>"

@@ -1,4 +1,4 @@
-class views.staffplans.UserView extends Support.CompositeView
+class views.staffplans.UserView extends views.shared.DateDrivenView
 
   tagName: "div"
   className: "staffplan"
@@ -7,16 +7,19 @@ class views.staffplans.UserView extends Support.CompositeView
     "click a[data-change-page]" : "changePage"
 
   changePage: (event) ->
-    @model.dateChanged event
-
+    @dateChanged event
+    @renderAllProjects()
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
-
-  fromDate: ->
-    new Date
-
+    
+    @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @fromDate.year()
+    
   initialize: ->
+    views.shared.DateDrivenView.prototype.initialize.call(this)
+    
     @model.view = @
+    @model.url = ->
+      "/users/#{@id}"
     
     @model.projects.bind 'add', (project) =>
       projects = @model.projectsByClient()
@@ -31,21 +34,26 @@ class views.staffplans.UserView extends Support.CompositeView
       
       setTimeout => @addNewProjectRow()
     
+    @bind 'date:changed', =>
+      @weekHourCounter.render @dateRangeMeta().dates, @model.projects.models
+    
     @render()
     @renderAllProjects()
 
   templateData: ->
-    name: @model.get("name")
-    fromDate: @model.fromDate
+    name: @model.get("full_name")
+    fromDate: @fromDate
     gravatar: @model.get("gravatar")
     id: @model.get("id")
 
   headerTemplateData: ->
-    meta = @model.dateRangeMeta()
-
+    meta = @dateRangeMeta()
+    currentYear: ->
+      moment().year()
     monthNames: ->
+      # meta.dates is an array of date objects, as created in getYearsAndWeeks
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
-        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then _meta.abbr_months[ dateMeta.month - 1 ] else ""
+        name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then moment.monthsShort[ dateMeta.month - 1 ] else ""
 
     weeks: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
@@ -61,11 +69,9 @@ class views.staffplans.UserView extends Support.CompositeView
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
 
     $( @el )
-      .find( '.week-hour-counter' )
-      .append( Array(@model.weekInterval + 1).join('<li></li>') )
-
-    $( @el )
       .appendTo '.content'
+
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.projects.models, ".user-select", @$ ".week-hour-counter"
 
     setTimeout => @addNewProjectRow()
 
@@ -105,7 +111,7 @@ class views.staffplans.UserView extends Support.CompositeView
     work_week_header: """
     <section>
       <div class='plan-actual'>
-        <div class='row-label'>&nbsp;</div>
+        <div class='row-label'>{{ currentYear }}</div>
         {{#monthNames}}
         <div>{{ name }}</div>
         {{/monthNames}}
@@ -123,12 +129,9 @@ class views.staffplans.UserView extends Support.CompositeView
     </section>
     """
     
-
   renderAllProjects: ->
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
-
-    @renderWeekHourCounter()
 
   renderProjectsForClient: (clientId, projects) ->
     section = $( "<section data-client-id='#{clientId}'>" ).append(
@@ -149,55 +152,7 @@ class views.staffplans.UserView extends Support.CompositeView
         .replaceWith( section )
     else
       @$('.project-list').append section
-
-  renderWeekHourCounter: ->
-    # Gompute
-    dateRange = @model.dateRangeMeta().dates
-    ww = _.map @model.projects.models, (p) ->
-      _.map dateRange, (date) ->
-        p.work_weeks.find (m) ->
-          m.get('cweek') == date.mweek and m.get('year') == date.year
-
-    # Format data
-    ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
-      "#{w.get('year')}-#{w.get('cweek')}"
-
-    # Total hours for each week
-    _.each ww, (hours, key) ->
-      ww[key] = _.reduce hours, (m, o) ->
-        m.actual += (parseInt(o.get('actual_hours'), 10) or 0)
-        m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-        m
-      , {actual: 0, estimated: 0}
-
-    # Scale
-    whc = @$ '.user-select'
-    max = Math.max.apply( null, _.pluck( ww, 'actual' ).concat( _.pluck( ww, 'estimated' ) ) ) || 1
-    ratio = ( whc.height() - 20 ) / max
-
-    # Draw
-    weekHourCounters = whc.find '.week-hour-counter li'
-    _.each dateRange, (date, idx) ->
-      # Map week to <li>
-      noActualsForWeek = false
-      li = weekHourCounters.eq(idx)
-      workWeek = ww["#{date.year}-#{date.mweek}"]
-      total = if workWeek? then workWeek[if date.weekHasPassed then 'actual' else 'estimated'] else 0
-      if total == 0 && date.weekHasPassed
-        noActualsForWeek = true
-        total = (if workWeek? then workWeek['estimated'] else 0)  || 0
-        
-      li
-        .height(total * ratio)
-        .html("<span>" + total + "</span>")
-        .removeClass "present"
-
-      if isThisWeek(date)
-        if noActualsForWeek then li.addClass "present" else li.addClass "passed"
-      else if date.weekHasPassed
-        li.addClass "passed"
-      else
-        li.removeClass "passed"
+  
 
   addNewProjectRow: ->
     undefinedClientId = @$('section[data-client-id="new_client"]')

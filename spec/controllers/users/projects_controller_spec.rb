@@ -44,16 +44,17 @@ describe Users::ProjectsController do
         @user.current_company.clients.find_by_name(@client_name).should_not be_nil
       end
       
-      it "should redirect if the new Client fails to save" do
+      it "should save the new Client with a name of 'N/A' if no name is passed" do
         lambda {
           post :create, :user_id => @user.id, :client_name => nil
-        }.should_not change(Client, :count)
+        }.should change(Client, :count).by(1)
+        @user.current_company.clients.find_by_name("N/A").should_not be_nil
       end
     end
     
     context "with new OR existing clients" do
       it "should find the client by name without regard to case of the name" do
-        client = Factory(:client, company: @company)
+        client = FactoryGirl.create(:client, company: @company)
         
         lambda {
           post :create, :user_id => @user.id, :client_name => client.name.upcase, :name => @project_name
@@ -87,7 +88,7 @@ describe Users::ProjectsController do
       end
       
       it "should find existing projects for the client without regard to case of the name" do
-        client = Factory(:client, company: @company)
+        client = FactoryGirl.create(:client, company: @company)
         
         lambda {
           post :create, :user_id => @user.id, :client_name => client.name, :name => @project_name
@@ -111,7 +112,7 @@ describe Users::ProjectsController do
     end
     
     it "should render OK JSON if the project updates" do
-      put :update, :user_id => @user.id, :id => Factory(:project, company: @company, :users => [@user]).id
+      put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
       response.should be_success
       response.body.match("\"status\":\"ok\"").should_not be_nil
       response.body.match("\"clients\":").should_not be_nil
@@ -120,7 +121,7 @@ describe Users::ProjectsController do
     
     it "should render FAIL JSON if the project doesn't update" do
       Project.any_instance.expects(:update_attributes).with(anything).returns(false)
-      put :update, :user_id => @user.id, :id => Factory(:project, company: @company, :users => [@user]).id
+      put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
       response.should be_success
       response.body.match("\"status\":\"fail\"").should_not be_nil
       response.body.match("\"errors\":").should_not be_nil
@@ -137,7 +138,7 @@ describe Users::ProjectsController do
     end
     
     it "should remove the project from the target user's projects" do
-      project = Factory(:project, company: @company, :users => [@user])
+      project = FactoryGirl.create(:project, company: @company, :users => [@user])
       @user.reload.projects.map(&:name).should include(project.name)
       delete :destroy, :user_id => @user.id, :id => project.id
       @user.reload.projects.map(&:name).should_not include(project.name)

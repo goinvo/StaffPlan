@@ -3,7 +3,9 @@
   
 %section
   %header
-    %h2= @project.name
+    %h2
+      = @project.name
 
   = render 'form'
-
+  %span.actions
+    = link_to "Delete Project", @project, :confirm => t('crud_shared.delete_confirmation'), :method => :delete

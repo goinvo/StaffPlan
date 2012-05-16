@@ -1,0 +1,14 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('clients')
+
+%section
+  %header
+    %h2= @company.name
+    = link_to 'Edit', edit_company_path(@company)
+    = link_to 'Destroy', @company, :confirm => 'Are you sure?', :method => :delete
+
+  .info
+    .admin
+      = "Administrator for this company's StaffPlan account is currently #{@company.administrator.full_name}"
+    .members
+      = "#{@company.name} currently has #{pluralize(@company.users.size, "user")}"
