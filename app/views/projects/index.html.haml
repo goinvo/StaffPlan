@@ -1,6 +1,5 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('projects')
-
 %section
   %header
     %h2= t('.listing_projects')
@@ -32,10 +31,11 @@
 
   %ul
     - @projects.each do |project|
-      %li
+      %li{:class => project.proposed? ? "proposed" : ""}
         = link_to project do
           %span.client-name= project.client.try(:name) || "N/A"
           %span.project-name= project.name
+          %span.proposed= "(Proposed)" if project.proposed?
         .controls
           = link_to t('.edit'), edit_project_path(project)
       %li.chart

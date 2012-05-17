@@ -27,10 +27,13 @@ end
 
 group :development, :test do
   gem 'awesome_print',            require: 'ap'
-  gem 'cucumber-rails',   '1.2.1'
   gem 'database_cleaner'
-  gem 'factory_girl_rails'
   gem 'pry',                      require: 'pry'
+end
+
+group :test do 
+  gem 'cucumber-rails',   '1.2.1'
+  gem 'factory_girl_rails'
   gem 'mocha'
   gem 'rspec-rails',      '2.8.1'
   gem 'webrat'

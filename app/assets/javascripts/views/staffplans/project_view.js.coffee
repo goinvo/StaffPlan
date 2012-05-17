@@ -32,7 +32,7 @@ class views.staffplans.ProjectView extends Support.CompositeView
     
     clientNameInput: =>
       !@model.get("client_id")? && @model.isNew()
-      
+    isProposed: @model.get "proposed"
     id: @model.get "id"
     
     isNew: =>
@@ -79,6 +79,13 @@ class views.staffplans.ProjectView extends Support.CompositeView
       {{^isNew}}
       <a href='/projects/{{ projectId }}'>{{ name }}</a>
       <input type='hidden' name='project[name]' />
+      <p class="project-state">
+        {{#isProposed}}
+          <span class="project-proposal">
+            (Proposed)
+          </span>
+        {{/isProposed}}
+      </p>
       {{/isNew}}
     </div>
     <div class='months-and-weeks'></div>
