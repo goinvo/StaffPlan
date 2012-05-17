@@ -38,11 +38,14 @@
           - @date_range.each do |date|
             - css_class = ((date <= Date.today) ?  'passed' : '')
             - work_weeks_for_date = user.work_weeks.for_projects(user.current_company.projects.map(&:id)).select { |ww| ww.cweek == date.cweek && ww.year == date.year }
+            - proposed_work_weeks_for_date = work_weeks_for_date.select { |ww| ww.proposed? }
             - actual_or_estimated_hours = date.past? ? :actual_hours : :estimated_hours
             - total = work_weeks_for_date.map { |ww| ww.send(actual_or_estimated_hours) || 0 }.inject(:+) || 0
+            - proposed_total = proposed_work_weeks_for_date.map { |ww| ww.send(actual_or_estimated_hours) || 0 }.inject(:+) || 0
+            - percentage = (total == 0) ? 100 : 100 - ((proposed_total.to_f / total.to_f) * 100).floor
             - if total == 0 && actual_or_estimated_hours == :actual_hours
               - css_class = ''
               - total = work_weeks_for_date.map { |ww| ww.send(:estimated_hours) || 0 }.inject(:+) || 0
             
-            %li{class: css_class, style: "height: #{total}px"}
-              %span= total
+            %li{class: css_class, style: "height: #{total}px; background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage}%,  #7EBA8D 0%); background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage}%,  #7EBA8D 0%)"}
+              %span=total

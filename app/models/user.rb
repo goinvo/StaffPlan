@@ -107,7 +107,7 @@ class User < ActiveRecord::Base
       json.(self, :id, :full_name, :email, :gravatar)
       
       json.projects self.projects.for_company(company_id) do |json, project|
-        json.(project, :id, :name, :client_id)
+        json.(project, :id, :name, :client_id, :proposed)
         json.work_weeks project.work_weeks.for_user(self) do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end

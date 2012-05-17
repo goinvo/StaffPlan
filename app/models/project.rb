@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   include StaffPlan::AuditMethods
   has_paper_trail
 
-  attr_accessible :name, :active
+  attr_accessible :name, :active, :proposed
 
   belongs_to  :client
   belongs_to  :company
@@ -39,6 +39,9 @@ class Project < ActiveRecord::Base
     end
   end
 
+  def real?
+    !proposed
+  end
 
   def work_week_totals_for_date_range(lower, upper)
     {}.tap do |grouped|

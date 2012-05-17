@@ -33,4 +33,8 @@ class WorkWeek < ActiveRecord::Base
     WorkWeek.with_hours.for_range(lower, upper).where(project_id: project.id)
   }
 
+  def proposed?
+    project.proposed?
+  end
+
 end
