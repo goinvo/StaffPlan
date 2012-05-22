@@ -115,10 +115,12 @@ get_proposed_value = (d) ->
     total
 
 get_gradient_moz = (d) ->
+  return "" if d.date.weekHasPassed
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
   
 get_gradient_webkit = (d) ->
+  return "" if d.date.weekHasPassed
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
 ###*
