@@ -22,11 +22,21 @@ describe ProjectsController do
       assigns(:projects).should eq([project])
 
       @company.projects.destroy_all
-      
+
       get :index
       assigns(:projects).should eq([])
     end
+
+    it "should return projects ordered by name" do
+      3.times do
+        @company.projects << FactoryGirl.create(:project)
+      end
+      get :index
+      names = assigns(:projects).map(&:name)
+      (names[0] <= names[1] and names[1] <= names[2]).should be_true
+    end
   end
+
 
   describe "GET show" do
     it "assigns the requested project as @project" do
