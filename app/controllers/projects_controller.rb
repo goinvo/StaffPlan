@@ -20,7 +20,9 @@ class ProjectsController < ApplicationController
       start = start + 7.days
     end
 
-    @projects = current_user.current_company.projects 
+    @projects = current_user.current_company.projects.sort do |a,b|
+      a.name.downcase <=> b.name.downcase
+    end
     @totals_per_week = current_user.current_company.total_recap_for_date_range(@date_range.first, @date_range.last)
     respond_to do |format|
       format.html # index.html.erb
