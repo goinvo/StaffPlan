@@ -5,40 +5,11 @@
     %h2= t('.listing_projects')
     = link_to t('.new_project'), new_project_path
     .user-header
-      %table.weeks
-        %tr
-          %td{rowspan: 2}
-            .month= link_to("&nbsp;".html_safe, projects_path(from: 3.months.ago(@from)), class: 'previous')
-          
-          - last_month = @date_range.first.month
-          
-          - @date_range.each_with_index do |date, idx|
-            %td
-              .month
-                - if idx == 0 || last_month != date.month
-                  = Date::ABBR_MONTHNAMES[ date.month ]
-                
-            - last_month = date.month
-            
-          %td{rowspan: 2}
-            .month= link_to("&nbsp;".html_safe, projects_path(from: 1.week.from_now(@to)), class: 'next')
-          
-        %tr
-          - @date_range.each do |date|
-            
-            %td
-              .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"
+      = render :partial => 'shared/date_switcher', :locals => {:date_range => @date_range, :target => "projects"}
 
   %ul
     - @projects.each do |project|
-      %li{:class => project.proposed? ? "proposed" : ""}
-        = link_to project do
-          %span.client-name= project.client.try(:name) || "N/A"
-          %span.project-name= project.name
-          %span.proposed= "(Proposed)" if project.proposed?
-        .controls
-          = link_to t('.edit'), edit_project_path(project)
+      = project.info_and_controls
       %li.chart
         %ul.week-hour-counter
-          - max_size = @totals_per_week.values.map(&:values).map{|e| e.map{|el| el.map{|hash| hash.to_a.last}}}.flatten.max || 120
-          = chart_for_project(project, @date_range, @totals_per_week[project.id], max_size) 
+          = project.chart_for_date_range(@date_range, @totals_per_week[project.id], @max_size)

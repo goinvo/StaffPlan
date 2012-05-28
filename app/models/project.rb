@@ -26,22 +26,6 @@ class Project < ActiveRecord::Base
 
   default_scope(order: "client_id ASC, name ASC")
 
-  def project_json
-    Jbuilder.encode do |json|
-      json.(self, :id, :client_id, :name, :active)
-
-      json.users self.users do |json, user|
-        json.(user, :id, :email, :first_name, :last_name, :gravatar)
-        json.work_weeks user.work_weeks.for_project(self) do |json, work_week|
-          json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
-        end
-      end
-    end
-  end
-
-  def real?
-    !proposed
-  end
 
   def work_week_totals_for_date_range(lower, upper)
     {}.tap do |grouped|

@@ -33,6 +33,36 @@ class WorkWeek < ActiveRecord::Base
     WorkWeek.with_hours.for_range(lower, upper).where(project_id: project.id)
   }
 
+  def self.staffplans_for_company_and_date_range(company, range)
+    
+    project_ids, user_ids = *[:projects, :users].map do |assoc|
+      company.send(assoc).collect(&:id)
+    end
+    
+    grouped_by_user_id = self.
+        for_range(range.first, range.last).
+        joins(:user).
+        select("users.id as user_id, work_weeks.cweek as cweek, work_weeks.year as year, sum(work_weeks.actual_hours) as actuals, sum(work_weeks.estimated_hours) as estimates").
+        where(project_id: project_ids).
+        where(users: {id: user_ids}).
+        group("users.id").
+        group(:year).
+        group(:cweek).
+        group_by(&:user_id)
+
+    {}.tap do |grouped|
+      grouped_by_user_id.each do |user_id, weeks|
+        grouped[user_id] = {}.tap do |sorted|
+          weeks.group_by(&:year).each do |year, weeks|
+            sorted[year] = weeks.sort{|a,b| a[:cweek].to_i <=> b[:cweek].to_i}.inject([]) do |memo, element|
+              memo << {cweek: element.cweek.to_i, total: (Date.today.cweek > element.cweek.to_i) ? element.actuals.to_i : element.estimates.to_i}
+            end
+          end
+        end
+      end
+    end 
+  end
+
   def proposed?
     project.proposed?
   end

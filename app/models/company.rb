@@ -31,10 +31,13 @@ class Company < ActiveRecord::Base
   end
   
   def clients_as_json
+    # Cheap and grouped by client id
+    company_projects = projects.group_by(&:client_id)
     Jbuilder.encode do |json|
-      json.array! self.clients do |json, client|
+      json.array! clients do |json, client|
       json.(client, :id, :name, :active)
-        json.projects client.projects
+        # We've got it in the hash, fetch it
+        json.projects company_projects[client.id]
       end
     end
   end
@@ -57,11 +60,26 @@ class Company < ActiveRecord::Base
   end
 
   def total_recap_for_date_range(lower, upper)
-    {}.tap do |recap|
+    h = {}.tap do |recap|
       projects.each do |project|
         recap.store(project.id, project.work_week_totals_for_date_range(lower, upper))
       end
     end
+    [h, biggest(h)]
   end
-
+  
+  private 
+  
+  def biggest(h)
+    h.inject(0) do |memo, element|
+      k, v = *element
+      if v.is_a?(Hash)
+        if v.values.all? { |value| value.is_a?(Fixnum) }
+          memo = [memo, v.values.max].compact.max
+        else
+          memo = [memo, biggest(v)].compact.max
+        end
+      end 
+    end
+  end
 end

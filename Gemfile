@@ -18,6 +18,7 @@ gem 'rails-behaviors'
 gem 'thin'
 gem "will_paginate"
 gem 'sass-rails',     '~> 3.2.3'
+gem 'draper'
 
 group :assets do
   gem 'compass-rails'
@@ -25,13 +26,13 @@ group :assets do
   gem 'uglifier',     '>= 1.0.3'
 end
 
-group :development, :test do
+group :development do
   gem 'awesome_print',            require: 'ap'
-  gem 'database_cleaner'
   gem 'pry',                      require: 'pry'
 end
 
 group :test do 
+  gem 'database_cleaner'
   gem 'cucumber-rails',   '1.2.1'
   gem 'factory_girl_rails'
   gem 'mocha'

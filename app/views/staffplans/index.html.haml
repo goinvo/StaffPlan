@@ -5,37 +5,15 @@
   .user-header
     %header
       = link_to("Add Staff", new_user_path)
-    %table.weeks
-      %tr
-        %td{rowspan: 2}
-          .month= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.ago(@from)), class: 'previous')
-        
-        - last_month = @date_range.first.month
-        
-        - @date_range.each_with_index do |date, idx|
-          %td
-            .month
-              - if idx == 0 || last_month != date.month
-                = Date::ABBR_MONTHNAMES[ date.month ]
-              
-          - last_month = date.month
-          
-        %td{rowspan: 2}
-          .month= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.from_now(@from)), class: 'next')
-        
-      %tr
-        - @date_range.each do |date|
-          
-          %td
-            .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"
-        
+    = render :partial => "shared/date_switcher", :locals => { :date_range => @date_range, :target => "staffplans"}      
         
   %ul.users
     - @users.each do |user|
       %li
         = render partial: 'shared/user-info', locals: {user: user, url: staffplan_url(user)}
         %ul.week-hour-counter
-          - @date_range.each do |date|
+          = user.chart_for_date_range(@workload[user.id], @date_range)
+          -# @date_range.each do |date|
             - css_class = ((date <= Date.today) ?  'passed' : '')
             - work_weeks_for_date = user.work_weeks.for_projects(user.current_company.projects.map(&:id)).select { |ww| ww.cweek == date.cweek && ww.year == date.year }
             - proposed_work_weeks_for_date = work_weeks_for_date.select { |ww| ww.proposed? }

@@ -69,7 +69,7 @@ describe Company do
       end
       lower = Date.new(2012, 12, 20).at_beginning_of_week
       upper = 3.months.from_now(lower)
-      result = @company.total_recap_for_date_range(lower, upper)
+      result, max_size = *@company.total_recap_for_date_range(lower, upper)
       
       # Structural check 
       result.keys.sort.should eq(@company.projects.map(&:id).sort)

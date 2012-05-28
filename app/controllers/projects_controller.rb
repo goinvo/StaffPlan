@@ -20,10 +20,10 @@ class ProjectsController < ApplicationController
       start = start + 7.days
     end
 
-    @projects = current_user.current_company.projects.sort do |a,b|
+    @totals_per_week, @max_size = *current_user.current_company.total_recap_for_date_range(@date_range.first, @date_range.last)
+    @projects = ProjectDecorator.decorate(current_user.current_company.projects.sort do |a,b|
       a.name.downcase <=> b.name.downcase
-    end
-    @totals_per_week = current_user.current_company.total_recap_for_date_range(@date_range.first, @date_range.last)
+    end)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
