@@ -40,7 +40,8 @@ class UserDecorator < Draper::Base
       json.(user, :id, :full_name, :email)
       json.gravatar gravatar
       json.projects user_projects do |json, project|
-        json.(project, :id, :name, :client_id, :proposed)
+        json.(project, :id, :name, :client_id)
+        json.proposed Assignment.where(user_id: user.id, project_id: project.id).first.try(:proposed) || false
         json.work_weeks ww[project.id] do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end
