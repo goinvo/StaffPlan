@@ -34,8 +34,8 @@ class Project < ActiveRecord::Base
       WorkWeek.for_project_and_date_range(self, lower, upper).group_by(&:year).each do |year, weeks|
         totals = {}.tap do |totals| 
           weeks.group_by(&:cweek).each do |iso_week, weeks| 
-            totals.store(iso_week, weeks.inject(0) do |total, week|
-              total = total + (week.send((Date.today.cweek >= iso_week) ? :actual_hours : :estimated_hours) || 0)
+            totals.store(iso_week, weeks.inject({:proposed => 0, :actuals => 0}) do |total, week|
+              total[week.proposed? ? :proposed : :actuals] += (week.send((Date.today.cweek >= iso_week) ? :actual_hours : :estimated_hours) || 0)
               total
             end)
           end
