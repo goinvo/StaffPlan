@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   include StaffPlan::AuditMethods
   has_paper_trail
 
-  attr_accessible :name, :active, :proposed
+  attr_accessible :name, :active
 
   belongs_to  :client
   belongs_to  :company
@@ -17,7 +17,9 @@ class Project < ActiveRecord::Base
     end
   end
 
-  has_and_belongs_to_many :users, uniq: true
+  has_many :assignments, :dependent => :destroy
+  has_many :users, :through => :assignments
+
 
   after_update :update_originator_timestamp
 

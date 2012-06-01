@@ -11,7 +11,15 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509204727) do
+ActiveRecord::Schema.define(:version => 20120601230119) do
+
+  create_table "assignments", :force => true do |t|
+    t.integer "user_id"
+    t.integer "project_id"
+    t.boolean "proposed",   :default => false, :null => false
+  end
+
+  add_index "assignments", ["project_id", "user_id"], :name => "index_assignments_on_project_id_and_user_id", :unique => true
 
   create_table "clients", :force => true do |t|
     t.string   "name"

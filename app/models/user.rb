@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
   
   has_paper_trail
   has_secure_password
-
-  has_and_belongs_to_many :projects, uniq: true do
+  
+  has_many :assignments, :dependent => :destroy
+  has_many :projects, :through => :assignments do
     def for_company(company_id)
       self.select { |p| p.company_id == company_id }
     end
