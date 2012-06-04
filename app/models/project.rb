@@ -28,8 +28,12 @@ class Project < ActiveRecord::Base
 
   default_scope(order: "client_id ASC, name ASC")
 
+  def proposed_for_user?(user)
+    assignments.where(user_id: user.id).first.try(:proposed?) || false
+  end
 
   def work_week_totals_for_date_range(lower, upper)
+    # FIXME: The initial hash we're tapping should be pre-filled so that we never get any hash lookup failure
     {}.tap do |grouped|
       WorkWeek.for_project_and_date_range(self, lower, upper).group_by(&:year).each do |year, weeks|
         totals = {}.tap do |totals| 

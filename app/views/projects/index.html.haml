@@ -5,7 +5,7 @@
     %h2= t('.listing_projects')
     = link_to t('.new_project'), new_project_path
     .user-header
-      = render :partial => 'shared/date_switcher', :locals => {:date_range => @date_range, :target => "projects"}
+      = render :partial => 'date_switcher', :locals => {:date_range => @date_range, :target => "projects"}
 
   %ul
     - @projects.each do |project|

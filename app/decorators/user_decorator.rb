@@ -11,13 +11,27 @@ class UserDecorator < Draper::Base
   
   def chart_for_date_range(workload, range)
     init_haml_helpers
+    project_ids = current_user.current_company.projects.map(&:id)
     capture_haml do 
       if workload.present?
         range.each do |date|
+          css_class = Date.today > date ? "passed" : ""
           week = workload[date.year].detect {|ww| ww[:cweek] == date.cweek}
-          haml_tag :li, {:class => "#{Date.today.cweek >= date.cweek ? "passed" : ""}", :style => "height: #{week.try(:[], :total) || 0}px"} do
+          total = week.try(:[], :total) || 0
+          proposed = WorkWeek.where(user_id: user.id, cweek: date.cweek, year: date.year, project_id: project_ids).select(&:proposed?).inject(0){ |memo, element| 
+            memo += (Date.today > date) ? element.actual_hours : element.estimated_hours
+          } || 0
+
+          percentage_proposed = 100 - ((total == 0) ? 0 : (100 * proposed.to_f / total.to_f).floor)
+          moz_gradient = "background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
+          webkit_gradient = "background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
+
+          gradient = (date <= Date.today) ? "" : [moz_gradient, webkit_gradient].join(";") 
+
+          haml_tag(:li, {:class => css_class, :style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
+
             haml_tag :span do
-              haml_concat (week.try(:[], :total) || 0).to_s
+              haml_concat total.to_s
             end
           end
         end
