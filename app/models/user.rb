@@ -102,6 +102,30 @@ class User < ActiveRecord::Base
     end
   end
 
+  def staffplan_for_date_range(range)
+    project_ids = current_company.projects.map(&:id)
+    # Makes sure that there is data for all the dates in the range
+    base = range.inject({}) do |memo, date|
+      memo[date.year] ||= {}
+      memo[date.year][date.cweek] = {:proposed => 0, :actuals => 0}
+      memo
+    end 
+    base
+    weeks = work_weeks.for_range(range.first, range.last).where(project_id: project_ids).group_by(&:year)
+    
+    base.tap do |result|
+      weeks.each do |year, ww|
+        result[year] = ww.group_by(&:cweek).inject({}) do |memo, element|
+          key, value = *element
+          memo[key] = value.inject({:proposed => 0, :actuals => 0}) do |total, week|
+            total[week.proposed? ? :proposed: :actuals] = week.estimated_hours || 0
+            total
+          end    
+          memo
+        end
+      end
+    end
+  end
   
 
 end
