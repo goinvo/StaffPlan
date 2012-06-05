@@ -16,8 +16,8 @@ class UserDecorator < Draper::Base
 
     project_ids = user.current_company.projects.map(&:id)
     workload = user.work_weeks.for_range(range.first, range.last).for_projects(project_ids)
-    # Save about 1 second when loading the page
-    assignments = Assignment.where(project_id: project_ids, user_id: user.id).all
+    
+    assignments = user.assignments.where(project_id: project_ids).all
     
     capture_haml do 
       range.each do |date|
@@ -80,7 +80,8 @@ class UserDecorator < Draper::Base
   
   def project_json(project)
     Jbuilder.encode do |json|
-      json.(user, :id, :email, :first_name, :last_name, :gravatar)
+      json.(user, :id, :email, :first_name, :last_name)
+      json.gravatar gravatar
       json.work_weeks user.work_weeks.for_project(project) do |json, work_week|
         json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
       end

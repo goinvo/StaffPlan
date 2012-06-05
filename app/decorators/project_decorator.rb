@@ -42,39 +42,48 @@ class ProjectDecorator < Draper::Base
     end
   end  
   
-  def chart_for_date_range(range, totals, max_size)
+  def chart_for_date_range(range)
     # Needed to be able to use HAML helpers
     init_haml_helpers
-    # The height of all the bar graphs need to be relative to the biggest one
-    ratio = (max_size == 0) ? 1 : (100.to_f / max_size.to_f)
+    
+    workload = project.work_weeks.for_range(range.first, range.last)
+    assignments = project.assignments
 
     capture_haml do  
       range.each do |date|
-        css_class = ((date <= Date.today) ?  'passed' : '')
-        # FIXME: We need to fill that hash with all the possible combinations so that we never have to .try
-        totals_for_week = totals.try(:[], date.year).try(:[], date.cweek)
-        if totals_for_week.present?
-          total = totals_for_week.values.sum
-          percentage_proposed =  100 - ((total == 0) ? 0 : (100 * totals_for_week[:proposed].to_f / total.to_f).floor)
+        is_current_week = date.year == Date.today.year and date.cweek == Date.today.cweek
+        load_for_week = workload.select { |ww| ww.cweek == date.cweek and ww.year == date.year }
+        proposed_for_week = load_for_week.select { |ww| assignments.detect{ |a| a.user_id == ww.user_id }.try(:proposed?) || false }
+        msg = ((date < Date.today.at_beginning_of_week) or is_current_week) ? :actual_hours : :estimated_hours
+        total = load_for_week.inject(0) { |memo, week| memo += week.send(msg) || 0 }
+
+        if total > 0 and msg == :actual_hours
+          haml_tag :li, {:class => "actuals", :style => "height: #{total}px"} do
+            haml_tag :span do
+              haml_concat total.to_s
+            end
+          end
         else
-          total = 0
-          percentage_proposed = 0
-        end 
-        height = (total.to_f * ratio.to_f).floor
-        
-        moz_gradient = "background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
-        webkit_gradient = "background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
- 
-        gradient = (date <= Date.today) ? "" : [moz_gradient, webkit_gradient].join(";") 
-        
-        haml_tag(:li, {:class => css_class, :style => "height: #{height}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
-          haml_tag(:span) do
-            haml_concat total.to_s
+          total = load_for_week.inject(0) do |memo, week|
+            memo += week.estimated_hours || 0
+          end
+          proposed_total = proposed_for_week.inject(0) do |memo, week|
+            memo += week.estimated_hours || 0
+          end
+          percentage_proposed = total == 0 ? 0 : (100 * proposed_total.to_f / total.to_f).floor
+          moz_gradient = "background-image: -moz-linear-gradient(to top, #7EBA8D #{percentage_proposed}%, #5E9B69 0%)"
+          webkit_gradient = "background-image: -webkit-linear-gradient(bottom, #7EBA8D #{percentage_proposed}%, #5E9B69 0%)"
+
+          gradient = [moz_gradient, webkit_gradient].join(";") 
+
+          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
+            haml_tag :span do
+              haml_concat total.to_s
+            end
           end
         end
       end
     end
-
   end
 
 end
