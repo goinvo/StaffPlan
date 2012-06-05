@@ -9,7 +9,8 @@
         - sorting_criterion = :workload
       - elsif @sort == "workload" || @sort.nil?
         - sorting_criterion = :name
-      = link_to("Sort by #{sorting_criterion.to_s}", staffplans_path(:from => @start, :sort => sorting_criterion))
+      %span.sort
+        = link_to("Sort by #{sorting_criterion.to_s}", staffplans_path(:from => @start, :sort => sorting_criterion))
     = render :partial => "date_switcher", :locals => { :date_range => @date_range, :sort => @sort.nil? ? "workload" : @sort.to_s}
         
   %ul.users
