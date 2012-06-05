@@ -44,9 +44,6 @@ class StaffplansController < ApplicationController
       end 
     end
     @users = UserDecorator.decorate(u)
-
-    
-    @workload = WorkWeek.staffplans_for_company_and_date_range(current_user.current_company, @date_range)
   end
   
   def my_staffplan

@@ -9,37 +9,52 @@ class UserDecorator < Draper::Base
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
   
-  def chart_for_date_range(workload, range)
+  def chart_for_date_range(range)
+    # FIXME: I'd like to be able to move that somewhere else
     init_haml_helpers
-    project_ids = current_user.current_company.projects.map(&:id)
+   
+
+    project_ids = user.current_company.projects.map(&:id)
+    workload = user.work_weeks.for_range(range.first, range.last).for_projects(project_ids)
+    # Save about 1 second when loading the page
+    assignments = Assignment.where(project_id: project_ids, user_id: user.id).all
+    
     capture_haml do 
-      if workload.present?
-        range.each do |date|
-          css_class = Date.today > date ? "passed" : ""
-          week = workload[date.year].detect {|ww| ww[:cweek] == date.cweek}
-          total = week.try(:[], :total) || 0
-          proposed = WorkWeek.where(user_id: user.id, cweek: date.cweek, year: date.year, project_id: project_ids).select(&:proposed?).inject(0){ |memo, element| 
-            memo += (Date.today > date) ? element.actual_hours : element.estimated_hours
-          } || 0
+      range.each do |date|
+        is_current_week = Date.today.cweek == date.cweek and Date.today.year == date.year
+        load_for_week = workload.select { |ww| date.cweek == ww.cweek and date.year == ww.year }
+        proposed_for_week = load_for_week.select {|ww| assignments.detect{|a| a.project_id == ww.project_id}.try(:proposed?) || false }
+        
+        msg = (date < Date.today.at_beginning_of_week or is_current_week) ? :actual_hours : :estimated_hours
+        
+        total, proposed_total = *[load_for_week, proposed_for_week].map do |w|
+          w.inject(0) do |memo, week|
+            memo += week.send(msg) || 0
+          end
+        end
 
-          percentage_proposed = 100 - ((total == 0) ? 0 : (100 * proposed.to_f / total.to_f).floor)
-          moz_gradient = "background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
-          webkit_gradient = "background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
-
-          gradient = (date <= Date.today) ? "" : [moz_gradient, webkit_gradient].join(";") 
-
-          haml_tag(:li, {:class => css_class, :style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
-
+        if total > 0 and msg == :actual_hours
+          haml_tag :li, {:class => "actuals", :style => "height: #{total}px"} do
             haml_tag :span do
               haml_concat total.to_s
             end
           end
-        end
-      else
-        range.size.times do
-          haml_tag :li, {:style => "height: 0px"} do
+        else
+          total = load_for_week.inject(0) do |memo, week|
+            memo += week.estimated_hours || 0
+          end
+          proposed_total = proposed_for_week.inject(0) do |memo, week|
+            memo += week.estimated_hours || 0
+          end
+          percentage_proposed = 100 - ((total == 0) ? 0 : (100 * proposed_total.to_f / total.to_f).floor)
+          moz_gradient = "background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
+          webkit_gradient = "background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage_proposed}%,  #7EBA8D 0%)"
+
+          gradient = [moz_gradient, webkit_gradient].join(";") 
+
+          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
             haml_tag :span do
-              haml_concat "0"
+              haml_concat total.to_s
             end
           end
         end

@@ -14,7 +14,7 @@
         = c.label :name, "Client Name"
         = c.text_field :name, disabled: "disabled" 
   = f.check_box :active
-  = f.fields_for Assignment.where(project_id: @project.id, user_id: current_user.id).first do |g|
+  = f.fields_for @assignment do |g| 
     = g.check_box :proposed
   
     

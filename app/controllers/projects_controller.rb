@@ -48,7 +48,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
-
+    @assignment = @project.assignments.build(user_id: current_user.id) 
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }
@@ -68,6 +68,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        Assignment.create({project_id: @project.id, user_id: current_user.id}.merge(params[:project][:assignment]))
         current_user.current_company.projects << @project
         current_user.current_company.clients << @project.client
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
@@ -79,12 +80,16 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def edit
+    @assignment = @project.assignments.where(user_id: current_user.id).first 
+  end
+
   # PUT /projects/1
   # PUT /projects/1.json
   def update
     respond_to do |format|
       # The user just updated the project, we need to update the proposed state for this assignment if needed
-      Assignment.where(project_id: params[:id], user_id: current_user.id).first.update_attributes(params[:project][:assignment])
+      @project.assignments.where(user_id: current_user.id).first.update_attributes(params[:project][:assignment])
       if @project.update_attributes(params[:project])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :ok }
