@@ -23,7 +23,7 @@ class ProjectDecorator < Draper::Base
     # Needed to be able to use HAML helpers
     init_haml_helpers
     capture_haml do
-      haml_tag :li, {:class => project.proposed_for_user?(current_user) ? "proposed" : ""} do
+      haml_tag :li do
         haml_tag :a, {:href => url_for(model)} do
           haml_tag(:span, :class => "client-name") do
             haml_concat model.client.try(:name) || "N/A"
