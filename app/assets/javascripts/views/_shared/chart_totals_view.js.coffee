@@ -132,7 +132,7 @@ get_class = (d) ->
   if d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
     if d.actual == 0 then "present" else "passed"
   else if d.date.weekHasPassed
-    "passed"
+    if d.actual == 0 then "" else "passed"
   else
     "future"
 
