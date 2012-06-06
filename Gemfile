@@ -32,6 +32,7 @@ group :development do
 end
 
 group :test do 
+  gem 'pry',                      require: 'pry'
   gem 'database_cleaner'
   gem 'cucumber-rails',   '1.2.1'
   gem 'factory_girl_rails'

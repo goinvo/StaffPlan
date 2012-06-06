@@ -46,7 +46,7 @@ describe Users::ProjectsController do
       
       it "should save the new Client with a name of 'N/A' if no name is passed" do
         lambda {
-          post :create, :user_id => @user.id, :client_name => nil
+          post :create, :user_id => @user.id, :name => "Test Project", :client_name => nil
         }.should change(Client, :count).by(1)
         @user.current_company.clients.find_by_name("N/A").should_not be_nil
       end
@@ -99,7 +99,7 @@ describe Users::ProjectsController do
         
         lambda {
           post :create, :user_id => @user.id, :client_name => client.name, :name => @project_name.downcase
-        }.should_not change(Project, :count)
+        }.should raise_error ActiveRecord::RecordNotUnique 
       end
     end
   end
