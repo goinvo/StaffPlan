@@ -32,20 +32,4 @@ class Project < ActiveRecord::Base
     assignments.where(user_id: user.id).first.try(:proposed?) || false
   end
 
-  def work_week_totals_for_date_range(lower, upper)
-    # FIXME: The initial hash we're tapping should be pre-filled so that we never get any hash lookup failure
-    {}.tap do |grouped|
-      WorkWeek.for_project_and_date_range(self, lower, upper).group_by(&:year).each do |year, weeks|
-        totals = {}.tap do |totals| 
-          weeks.group_by(&:cweek).each do |iso_week, weeks| 
-            totals.store(iso_week, weeks.inject({:proposed => 0, :actuals => 0}) do |total, week|
-              total[week.proposed? ? :proposed : :actuals] += (week.send((Date.today.cweek >= iso_week) ? :actual_hours : :estimated_hours) || 0)
-              total
-            end)
-          end
-        end
-        grouped.store(year, totals)
-      end
-    end
-  end
 end
