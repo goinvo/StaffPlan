@@ -15,7 +15,8 @@ class CreateAssignmentsJoinTableForUsersAndProjects < ActiveRecord::Migration
 
     Assignment.transaction do
       pu.each do |assoc|
-        Assignment.find_or_create_by_user_id_and_project_id assoc 
+        proposed = Project.where(id: assoc["project_id"]).first.proposed? || false
+        Assignment.find_or_create_by_user_id_and_project_id assoc.merge({proposed: proposed}) 
       end
     end
   end
