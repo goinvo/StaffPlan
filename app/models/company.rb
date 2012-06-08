@@ -67,4 +67,8 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def active_users
+    User.where(id: memberships.where(disabled: false, archived: false).select('memberships.user_id').pluck(:user_id))
+  end
+
 end
