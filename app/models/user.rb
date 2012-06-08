@@ -11,8 +11,8 @@ class User < ActiveRecord::Base
     end
   end
   
-  has_and_belongs_to_many :companies, uniq: true
-  
+  has_many :companies, :through => :memberships, :uniq => true
+
   has_many :work_weeks, dependent: :destroy do
     def for_project(project)
       self.select { |ww| ww.project_id == project.id }
