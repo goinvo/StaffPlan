@@ -11,6 +11,7 @@ class User < ActiveRecord::Base
     end
   end
   
+  has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true
 
   has_many :work_weeks, dependent: :destroy do
