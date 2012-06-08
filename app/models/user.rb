@@ -126,7 +126,7 @@ class User < ActiveRecord::Base
   end
 
   def selectable_companies
-    Company.where(id: memberships.where(disabled: false, archived: false).select("memberships.company_id").pluck(:id))
+    Company.where(id: memberships.where(disabled: false).select("memberships.company_id").pluck(:id))
   end
 
 end
