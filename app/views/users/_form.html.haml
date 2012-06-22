@@ -9,7 +9,12 @@
   = f.text_field :first_name, :placeholder => "First Name"
   = f.text_field :last_name, :placeholder => "Last Name"
   = f.text_field :email, :placeholder => "user@host.tld"
-  
+  = f.fields_for @user.memberships.where(company_id: current_user.current_company_id).first do |g|
+    .user-activation
+      = g.label :disabled, "Disable user for company #{current_user.current_company.name}?", {:class => "info"} 
+      = g.check_box :disabled
+      = g.label :archived, "Archive user for company #{current_user.current_company.name}?", {:class => "info"}  
+      = g.check_box :archived
   - unless @user.new_record? 
     = f.password_field :password
     = f.password_field :password_confirmation
