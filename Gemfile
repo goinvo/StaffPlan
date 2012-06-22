@@ -31,7 +31,7 @@ group :development, :test do
   gem 'pry',                      require: 'pry'
 end
 
-group :test do 
+group :test do
   gem 'cucumber-rails',   '1.2.1'
   gem 'factory_girl_rails'
   gem 'mocha'
