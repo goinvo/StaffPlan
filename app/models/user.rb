@@ -11,8 +11,9 @@ class User < ActiveRecord::Base
     end
   end
   
-  has_and_belongs_to_many :companies, uniq: true
-  
+  has_many :memberships, :dependent => :destroy
+  has_many :companies, :through => :memberships, :uniq => true
+
   has_many :work_weeks, dependent: :destroy do
     def for_project(project)
       self.select { |ww| ww.project_id == project.id }
@@ -122,6 +123,10 @@ class User < ActiveRecord::Base
         json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
       end
     end
+  end
+
+  def selectable_companies
+    Company.where(id: memberships.where(disabled: false).select("memberships.company_id").pluck(:id))
   end
 
 end
