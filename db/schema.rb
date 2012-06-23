@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120509204727) do
+ActiveRecord::Schema.define(:version => 20120608184058) do
 
   create_table "clients", :force => true do |t|
     t.string   "name"
@@ -34,6 +34,15 @@ ActiveRecord::Schema.define(:version => 20120509204727) do
   end
 
   add_index "companies_users", ["company_id", "user_id"], :name => "index_companies_users_on_company_id_and_user_id"
+
+  create_table "memberships", :force => true do |t|
+    t.integer "user_id"
+    t.integer "company_id"
+    t.boolean "disabled",   :default => false, :null => false
+    t.boolean "archived",   :default => false, :null => false
+  end
+
+  add_index "memberships", ["company_id", "user_id"], :name => "index_memberships_on_company_id_and_user_id", :unique => true
 
   create_table "projects", :force => true do |t|
     t.integer  "client_id"
