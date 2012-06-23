@@ -61,8 +61,7 @@ describe CompaniesController do
     end
     
     it "should not create a new company or user if the user association with the company fails" do
-      user_attributes = FactoryGirl.attributes_for(:user); user_attributes.delete(:password)
-      post :create, company: {name: Faker::Company.name}, user: user_attributes
+      post :create, company: {name: Faker::Company.name}, user: FactoryGirl.attributes_for(:user).except(:password)
       
       assigns[:company].should be_new_record
       assigns[:user].should be_new_record

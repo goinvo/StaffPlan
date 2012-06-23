@@ -4,7 +4,7 @@ describe ClientsController do
   
   before(:each) do
     @current_user, @company = login_user
-    @company.users << @current_user
+    # @company.users << @current_user
   end
   
   describe "GET index" do
