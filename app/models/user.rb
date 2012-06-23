@@ -1,7 +1,7 @@
 class User < ActiveRecord::Base
- 
+
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
-  
+
   has_paper_trail
   has_secure_password
 
@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
       self.select { |p| p.company_id == company_id }
     end
   end
-  
+
   has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true
 
@@ -40,15 +40,17 @@ class User < ActiveRecord::Base
   end
 
   validates_presence_of :email, :first_name, :last_name
-  validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
   validates_uniqueness_of :email
+  validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+    
 
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
-    def self.with_registration_token(token)
-      self.where("registration_token = ?", token).first
-    end
+
+  def self.with_registration_token(token)
+    self.where("registration_token = ?", token).first
+  end
   def send_registration_confirmation
     set_token(:registration_token)
     RegistrationMailer.registration_confirmation(self).deliver
@@ -58,7 +60,7 @@ class User < ActiveRecord::Base
     set_token(:registration_token)
     RegistrationMailer.invitation(self, inviting_user).deliver
   end
-  
+
   def send_password_reset_instructions
     self.registration_token = SecureRandom.urlsafe_base64
     self.save 
@@ -68,7 +70,7 @@ class User < ActiveRecord::Base
   # NOTE: https://github.com/rails/rails/pull/3887
   def save_unconfirmed_user
     self.valid?
-    
+
     if (self.errors.keys - [:password_digest]).empty?
       save(validate: false)
       true
@@ -86,7 +88,7 @@ class User < ActiveRecord::Base
   def current_company
     companies.where(id: current_company_id).first
   end
-  
+
   def current_company=(company)
     return false unless self.companies.include?(company)
     self.current_company_id = company.id
@@ -98,7 +100,7 @@ class User < ActiveRecord::Base
       if project_ids.include?(ww.project_id) && (ww.year > from_date.year || (ww.year == from_date.year && ww.cweek >= from_date.cweek))
         sum += ww.estimated_hours || 0
       end
-      
+
       sum
     end
   end
@@ -106,7 +108,7 @@ class User < ActiveRecord::Base
   def staff_plan_json(company_id)
     Jbuilder.encode do |json|
       json.(self, :id, :full_name, :email, :gravatar)
-      
+
       json.projects self.projects.for_company(company_id) do |json, project|
         json.(project, :id, :name, :client_id, :proposed)
         json.work_weeks project.work_weeks.for_user(self) do |json, work_week|
@@ -115,7 +117,7 @@ class User < ActiveRecord::Base
       end
     end
   end
-  
+
   def project_json(project)
     Jbuilder.encode do |json|
       json.(self, :id, :email, :first_name, :last_name, :gravatar)
