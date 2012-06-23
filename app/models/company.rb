@@ -2,7 +2,10 @@ class Company < ActiveRecord::Base
   include StaffPlan::AuditMethods
   has_paper_trail
   attr_accessible :name
-  has_and_belongs_to_many :users, uniq: true
+  
+  has_many :memberships, :dependent => :destroy
+  has_many :users, :through => :memberships, :uniq => true
+  
   has_many :projects, dependent: :destroy
   has_many :clients, dependent: :destroy
   
@@ -62,6 +65,10 @@ class Company < ActiveRecord::Base
         recap.store(project.id, project.work_week_totals_for_date_range(lower, upper))
       end
     end
+  end
+
+  def active_users
+    User.where(id: memberships.where(archived: false).select('memberships.user_id').pluck(:user_id))
   end
 
 end
