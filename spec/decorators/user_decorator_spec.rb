@@ -21,8 +21,6 @@ describe UserDecorator do
       @user.current_company_id = @company.id
       @user.save!
     end
-
-    it "should return a collection of HTML li elements, one per work week in the range" do
       @decorator = UserDecorator.new(@user)
       snippet = Nokogiri::HTML(@decorator.chart_for_date_range(@date_range))
       snippet.css('li').count.should eq(@date_range.count)
@@ -59,5 +57,13 @@ describe UserDecorator do
         hours.all.inject(0) {|memo, element| memo += element.send(msg) || 0}.should eq(height) 
       end 
     end
+  end
+
+  describe "#staff_plan_json" do
+
+  end
+
+  describe "#project_json" do
+
   end
 end
