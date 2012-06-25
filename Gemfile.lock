@@ -247,6 +247,7 @@ DEPENDENCIES
   memcache-client
   mobile-fu
   mocha
+  nokogiri
   paper_trail (~> 2.5)
   pg
   pry

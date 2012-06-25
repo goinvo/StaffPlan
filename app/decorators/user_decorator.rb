@@ -52,7 +52,7 @@ class UserDecorator < Draper::Base
 
           gradient = [moz_gradient, webkit_gradient].join(";") 
 
-          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}"}) do
+          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}", "data-week" => date.cweek, "data-year" => date.year}) do
             haml_tag :span do
               haml_concat total.to_s
             end
