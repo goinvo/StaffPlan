@@ -21,6 +21,7 @@ describe UserDecorator do
       @user.current_company_id = @company.id
       @user.save!
     end
+    it "should return a collection of li elements, one per week" do
       @decorator = UserDecorator.new(@user)
       snippet = Nokogiri::HTML(@decorator.chart_for_date_range(@date_range))
       snippet.css('li').count.should eq(@date_range.count)
@@ -48,12 +49,12 @@ describe UserDecorator do
         week = li.attributes['data-week'].value.to_i
         year = li.attributes['data-year'].value.to_i
         height = /height: (\d)+px/.match(li.attributes["style"].value).captures.first.to_i
-        
+
         hours = WorkWeek.where(year: year, cweek: week, user_id: @user.id)
-        
+
         is_current_week = Date.today.cweek == week and Date.today.year == year
         msg = ((week < Date.today.at_beginning_of_week.cweek and year <= Date.today.at_beginning_of_week.year) or is_current_week) ? :actual_hours : :estimated_hours
-        
+
         hours.all.inject(0) {|memo, element| memo += element.send(msg) || 0}.should eq(height) 
       end 
     end
