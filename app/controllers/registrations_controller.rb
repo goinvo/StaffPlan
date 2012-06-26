@@ -35,7 +35,8 @@ class RegistrationsController < ApplicationController
   end
   
   def complete
-    if @user = User.with_registration_token(params[:token])
+    if u = User.with_registration_token(params[:token]) 
+      @user = UserDecorator.new(u)
       @user.password = params[:user] ? params[:user][:password] : nil
       @user.password_confirmation = nil
       @user.registration_token = nil

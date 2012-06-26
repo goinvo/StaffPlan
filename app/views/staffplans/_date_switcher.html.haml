@@ -1,0 +1,17 @@
+%table.weeks
+  %tr
+    %td{rowspan: 2}
+      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 3.months.ago(date_range.first), :sort => sort), :class => 'previous')
+    - last_month = date_range.first.month
+    - date_range.each_with_index do |date, idx|
+      %td
+        .month
+          - if idx == 0 || last_month != date.month
+            = Date::ABBR_MONTHNAMES[ date.month ]
+      - last_month = date.month
+    %td{rowspan: 2}
+      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 1.week.from_now(date_range.last), :sort => sort), :class => 'next') 
+  %tr
+    - date_range.each do |date|
+      %td
+        .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"

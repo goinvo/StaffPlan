@@ -34,7 +34,7 @@ class WorkWeek < ActiveRecord::Base
   }
 
   def proposed?
-    project.proposed?
+    project.assignments.where(user_id: user.id).first.try(:proposed?) || false
   end
 
 end
