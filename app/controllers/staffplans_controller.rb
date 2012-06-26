@@ -36,7 +36,7 @@ class StaffplansController < ApplicationController
       start = start + 7.days
     end
     project_ids = current_user.current_company.projects.map(&:id)
-    u = current_user.current_company.users.sort do |a, b|
+    u = current_user.current_company.active_users.sort do |a, b|
       if @sort.nil? || @sort == "workload"
         a.plan_for(project_ids, @date_range.first) <=> b.plan_for(project_ids, @date_range.first)
       else
