@@ -13,7 +13,8 @@ class RegistrationsController < ApplicationController
     
     # Heavily inspired from CompaniesController, DRTW
     Company.transaction do
-      if @company.save and @company.users << @user
+      if @company.save and @user.save
+        @company.users << @user 
         @user.current_company = @company if @user.current_company.nil?
       else
         raise ActiveRecord::Rollback

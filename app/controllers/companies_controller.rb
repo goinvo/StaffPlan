@@ -13,7 +13,8 @@ class CompaniesController < ApplicationController
     @company = Company.new(params[:company])
 
     Company.transaction do
-      if @company.save && @company.users << @user
+      if @company.save and @user.save 
+        @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
       else
         raise ActiveRecord::Rollback
