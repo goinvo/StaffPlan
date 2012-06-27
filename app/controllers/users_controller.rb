@@ -19,11 +19,15 @@ class UsersController < ApplicationController
   def show
   end
 
+  def edit 
+    @membership = @user.memberships.where(company_id: @user.current_company_id).first
+  end
+
   # GET /users/new
   # GET /users/new.json
   def new
     @user = User.new
-
+    @membership = @user.memberships.build(company_id: @user.current_company_id)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
