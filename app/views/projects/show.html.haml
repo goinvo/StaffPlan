@@ -14,7 +14,7 @@
       fromDate: "#{@from}"
     
     $( ->
-      window._Project = new Project #{@project.project_json}
+      window._Project = new Project #{ProjectDecorator.new(@project).project_json}
       window._ProjectView = new views.projects.ProjectView
         model: window._Project
       window._Project.view = window._ProjectView

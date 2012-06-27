@@ -1,0 +1,10 @@
+%li{:class => project.proposed? ? "proposed" : ""}
+  = link_to project do
+    %span.client-name
+      = project.client.try(:name) || "N/A"
+    %span.project-name
+      = project.name
+    %span
+      = project.proposed? ? "Proposed" : ""
+  .controls
+    = link_to "Edit", edit_project_path(project)

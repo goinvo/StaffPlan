@@ -7,7 +7,7 @@ class Projects::UsersController < ApplicationController
   def update
     if @project.users << @target_user
       render(json: {
-        users: @project.users.map { |u| u.project_json(@project) }
+        users: @project.users.map { |u| UserDecorator.decorate(u).project_json(@project) }
       }) and return
     else
       render(json: {

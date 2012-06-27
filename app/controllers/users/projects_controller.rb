@@ -13,7 +13,7 @@ class Users::ProjectsController < ApplicationController
       @project.company_id = current_user.current_company_id
     end
     
-    if @target_user.projects << @project
+    if @project.users << @target_user and @project.save # @target_user.projects << @project
       render_json_ok
     else
       render_json_fail

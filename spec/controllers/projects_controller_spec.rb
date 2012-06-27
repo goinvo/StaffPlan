@@ -10,6 +10,7 @@ describe ProjectsController do
     attributes = FactoryGirl.attributes_for(:project)
     attributes.delete(:client)
     attributes.merge!(client_id: client.id)
+    attributes.merge!({assignment: {:proposed => "1"}})
   end
 
   describe "GET index" do
@@ -84,13 +85,13 @@ describe ProjectsController do
 
       it "should create a new client if the user selects New Client in the client list" do 
         expect {
-          post :create, project: {name: Faker::Company.name, client_id: "new", active: "1"}, client: {name: Faker::Company.name}
+          post :create, project: {name: Faker::Company.name, client_id: "new", active: "1", assignment: {proposed: "1"}}, client: {name: Faker::Company.name}
         }.to change(Client, :count).by(1)
       end
 
       it "should assign the new client to the new project if the user selects New Client in the clients list" do
         client_name = Faker::Company.name
-        post :create, project: {name: Faker::Company.name, client_id: "new", active: "1"}, client: {name: client_name}
+        post :create, project: {name: Faker::Company.name, client_id: "new", active: "1", assignment: {proposed: "0"}}, client: {name: client_name}
         assigns[:project].client.should_not be_nil
         assigns[:project].client.name.should eq(client_name)
         assigns[:project].client.company_id.should eq(@company.id)
@@ -129,6 +130,7 @@ describe ProjectsController do
 
       it "assigns the requested project as @project" do
         project = FactoryGirl.create(:project)
+        Assignment.create(user_id: @current_user.id, project_id: project.id, proposed: true)
         @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         assigns(:project).should eq(project)
@@ -136,6 +138,7 @@ describe ProjectsController do
 
       it "redirects to the project" do
         project = FactoryGirl.create(:project)
+        Assignment.create(user_id: @current_user.id, project_id: project.id, proposed: true)
         @company.projects << project
         put :update, :id => project.id, :project => valid_attributes
         response.should redirect_to(project)

@@ -20,10 +20,9 @@ class ProjectsController < ApplicationController
       start = start + 7.days
     end
 
-    @projects = current_user.current_company.projects.sort do |a,b|
+    @projects = ProjectDecorator.decorate(current_user.current_company.projects.sort do |a,b|
       a.name.downcase <=> b.name.downcase
-    end
-    @totals_per_week = current_user.current_company.total_recap_for_date_range(@date_range.first, @date_range.last)
+    end)
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
@@ -48,7 +47,7 @@ class ProjectsController < ApplicationController
   # GET /projects/new.json
   def new
     @project = Project.new
-
+    @assignment = @project.assignments.build(user_id: current_user.id) 
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @project }
@@ -68,6 +67,7 @@ class ProjectsController < ApplicationController
 
     respond_to do |format|
       if @project.save
+        Assignment.create({project_id: @project.id, user_id: current_user.id}.merge(params[:project][:assignment]))
         current_user.current_company.projects << @project
         current_user.current_company.clients << @project.client
         format.html { redirect_to @project, notice: 'Project was successfully created.' }
@@ -79,11 +79,17 @@ class ProjectsController < ApplicationController
     end
   end
 
+  def edit
+    @assignment = @project.assignments.where(user_id: current_user.id).first 
+  end
+
   # PUT /projects/1
   # PUT /projects/1.json
   def update
     respond_to do |format|
       if @project.update_attributes(params[:project])
+        # The user just updated the project, we need to update the proposed state for this assignment if needed
+        @project.assignments.where(user_id: current_user.id).first.update_attributes(params[:project][:assignment])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
         format.json { head :ok }
       else
