@@ -126,7 +126,7 @@ describe StaffplansController do
         @company.users << Array.new(3) { user_with_clients_and_projects }
         get :index
         assigns[:users].should_not be_empty
-        users = assigns[:users].map{|u| u.plan_for(@company.id, assigns[:from])}
+        users = assigns[:users].map{|u| u.model.plan_for(@company.id, assigns[:from])}
         users.sort.should == users
       end
 

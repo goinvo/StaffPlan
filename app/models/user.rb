@@ -4,8 +4,9 @@ class User < ActiveRecord::Base
 
   has_paper_trail
   has_secure_password
-
-  has_and_belongs_to_many :projects, uniq: true do
+  
+  has_many :assignments, :dependent => :destroy
+  has_many :projects, :through => :assignments do
     def for_company(company_id)
       self.select { |p| p.company_id == company_id }
     end
@@ -35,22 +36,20 @@ class User < ActiveRecord::Base
     self.save
   end
 
-  def full_name
-    [first_name, last_name].join(" ")
-  end
 
   validates_presence_of :email, :first_name, :last_name
   validates_uniqueness_of :email
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
-    
-
-  def gravatar
-    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+  
+  def full_name
+    [first_name, last_name].join(" ")
   end
+
 
   def self.with_registration_token(token)
     self.where("registration_token = ?", token).first
   end
+  
   def send_registration_confirmation
     set_token(:registration_token)
     RegistrationMailer.registration_confirmation(self).deliver
@@ -105,30 +104,7 @@ class User < ActiveRecord::Base
     end
   end
 
-  def staff_plan_json(company_id)
-    Jbuilder.encode do |json|
-      json.(self, :id, :full_name, :email, :gravatar)
-
-      json.projects self.projects.for_company(company_id) do |json, project|
-        json.(project, :id, :name, :client_id, :proposed)
-        json.work_weeks project.work_weeks.for_user(self) do |json, work_week|
-          json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
-        end
-      end
-    end
-  end
-
-  def project_json(project)
-    Jbuilder.encode do |json|
-      json.(self, :id, :email, :first_name, :last_name, :gravatar)
-      json.work_weeks self.work_weeks.for_project(project) do |json, work_week|
-        json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
-      end
-    end
-  end
-
   def selectable_companies
     Company.where(id: memberships.where(disabled: false).select("memberships.company_id").pluck(:id))
   end
-
 end

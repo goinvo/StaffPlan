@@ -5,54 +5,17 @@
   .user-header
     %header
       = link_to("Add Staff", new_user_path)
-    %table.weeks
-      %tr
-        %td{rowspan: 2}
-          .month= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.ago(@from)), class: 'previous')
-        
-        - last_month = @date_range.first.month
-        
-        - @date_range.each_with_index do |date, idx|
-          %td
-            .month
-              - if idx == 0 || last_month != date.month
-                = Date::ABBR_MONTHNAMES[ date.month ]
-              
-          - last_month = date.month
-          
-        %td{rowspan: 2}
-          .month= link_to("&nbsp;".html_safe, staffplans_path(from: 3.months.from_now(@from)), class: 'next')
-        
-      %tr
-        - @date_range.each do |date|
-          
-          %td
-            .month= "W#{(date.mday.to_f / 7.0).ceil.to_i}"
-        
+      - if @sort == "name"
+        - sorting_criterion = :workload
+      - elsif @sort == "workload" || @sort.nil?
+        - sorting_criterion = :name
+      %span.sort
+        = link_to("Sort by #{sorting_criterion.to_s}", staffplans_path(:from => @start, :sort => sorting_criterion))
+    = render :partial => "date_switcher", :locals => { :date_range => @date_range, :sort => @sort.nil? ? "workload" : @sort.to_s}
         
   %ul.users
     - @users.each do |user|
       %li
         = render partial: 'shared/user-info', locals: {user: user, url: staffplan_url(user)}
         %ul.week-hour-counter
-          - @date_range.each do |date|
-            - work_weeks_for_date = user.work_weeks.for_projects(user.current_company.projects.map(&:id)).select { |ww| ww.cweek == date.cweek && ww.year == date.year }
-            -# For anything in the current_week or before, we try to gather actuals
-            - is_current_week = Date.today.cweek == date.cweek && Date.today.year == date.year 
-            - actual_or_estimated_hours = (date < Date.today.at_beginning_of_week || is_current_week) ? :actual_hours : :estimated_hours
-            - total = work_weeks_for_date.map { |ww| ww.send(actual_or_estimated_hours) || 0 }.inject(:+) || 0
-            
-            - if total > 0 && actual_or_estimated_hours == :actual_hours
-              %li{:class => "actuals", :style => "height: #{total}px"} 
-                %span=total
-            - else
-              - css_class = ""
-              - total = work_weeks_for_date.map { |ww| ww.send(:estimated_hours) || 0 }.inject(:+) || 0
-              - proposed_work_weeks_for_date = work_weeks_for_date.select { |ww| ww.proposed? }
-              - proposed_total = proposed_work_weeks_for_date.map { |ww| ww.estimated_hours || 0 }.inject(:+) || 0
-              - percentage = (total == 0) ? 100 : 100 - ((proposed_total.to_f / total.to_f) * 100).floor
-              - mozilla_gradient = "background-image: -moz-linear-gradient(to bottom, #5E9B69 #{percentage}%,  #7EBA8D 0%)"
-              - webkit_gradient = "background-image: -webkit-linear-gradient(top, #5E9B69 #{percentage}%,  #7EBA8D 0%)"
-              - inline_style = ";#{mozilla_gradient};#{webkit_gradient}"
-              %li{:class => css_class, :style => "height: #{total}px#{inline_style}"}
-                %span=total
+          = user.chart_for_date_range(@date_range)
