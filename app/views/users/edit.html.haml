@@ -4,7 +4,7 @@
 %section
   %header
     %h2
-      = image_tag @user.gravatar
+      = image_tag UserDecorator.new(@user).gravatar
       = @user.full_name
 
   = render 'form'

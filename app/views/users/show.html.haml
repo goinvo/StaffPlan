@@ -5,7 +5,7 @@
   %header
     .user-info
       %h2
-        = image_tag @user.gravatar
+        = image_tag UserDecorator.new(@user).gravatar
         = link_to @user.full_name, staffplan_path(@user)
       %span.last-updated
         = "(as of #{time_ago_in_words(@user.updated_at)} ago)"
