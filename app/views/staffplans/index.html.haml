@@ -5,6 +5,8 @@
   .user-header
     %header
       = link_to("Add Staff", new_user_path)
+      %span.inactive-users
+        = link_to "Show inactive users", inactive_staffplans_path
       - if @sort == "name"
         - sorting_criterion = :workload
       - elsif @sort == "workload" || @sort.nil?

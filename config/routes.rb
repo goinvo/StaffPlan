@@ -31,7 +31,9 @@ StaffPlan::Application.routes.draw do
     end
   end
   
-  resources :staffplans, :only => [:show, :index]
+  resources :staffplans, :only => [:show, :index] do
+    get 'inactive', :on => :collection
+  end
   resources :companies, only: [:new, :create]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
