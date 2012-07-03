@@ -13,6 +13,42 @@ describe StaffplansController do
     end
   end
 
+  describe 'GET#inactive' do
+    before(:each) do 
+      @company.users << user_with_clients_and_projects
+    end
+    it "should return an empty user collection if no user is either disabled or archived for that company" do
+      @company.memberships.each do |m|
+        m.disabled = false
+        m.archived = false
+        m.save
+      end
+
+      get :inactive
+      response.should be_success
+      assigns[:users].should be_empty
+    end
+
+    it "should return the disabled users" do
+      Membership.any_instance.expects(:disabled?).at_least_once.returns(true)
+      
+      get :inactive
+      response.should be_success
+      assigns[:users].should_not be_empty
+      assigns[:users].count.should eq(@company.memberships.count)
+    end
+
+    it "should return the archived users" do
+      Membership.any_instance.expects(:archived?).at_least_once.returns(true)
+      
+      get :inactive
+      response.should be_success
+      assigns[:users].should_not be_empty
+      assigns[:users].count.should eq(@company.memberships.count)
+
+    end
+  end 
+
   describe 'GET#show' do
     it "should redirect to root_url if a user can't be found" do
       get :show, :id => "bogus"
