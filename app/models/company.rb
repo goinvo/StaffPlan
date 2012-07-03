@@ -74,4 +74,8 @@ class Company < ActiveRecord::Base
     User.where(id: memberships.where(archived: false).select('memberships.user_id').pluck(:user_id))
   end
 
+  def inactive_users
+    User.where(id: memberships.select { |m| m.archived? or m.disabled? }.map(&:user_id))
+  end
+
 end

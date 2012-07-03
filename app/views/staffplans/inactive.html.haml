@@ -1,0 +1,13 @@
+- content_for(:stylesheet_includes) do
+  = stylesheet_link_tag('clients')
+
+%section
+  %ul
+    - @users.each do |user|
+      %li
+        .user-info
+          = image_tag user.gravatar, {:class => "gravatar"}
+        = link_to user.full_name, staffplan_path(user)
+        .controls
+          = link_to "Edit user", edit_user_path(user)
+          = link_to "Go to staff plan", staffplan_path(user)

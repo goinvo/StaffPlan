@@ -20,7 +20,11 @@ class StaffplansController < ApplicationController
       end
     end
   end
-  
+ 
+  def inactive
+    @users = UserDecorator.decorate(current_user.current_company.inactive_users.sort { |a,b| a.last_name <=> b.last_name })
+  end
+
   def index
     @start = params[:from] # We need to save that for the view
     @sort ||= params[:sort]
@@ -36,6 +40,7 @@ class StaffplansController < ApplicationController
       start = start + 7.days
     end
     project_ids = current_user.current_company.projects.map(&:id)
+    
     u = current_user.current_company.active_users.sort do |a, b|
       if @sort.nil? || @sort == "workload"
         a.plan_for(project_ids, @date_range.first) <=> b.plan_for(project_ids, @date_range.first)
