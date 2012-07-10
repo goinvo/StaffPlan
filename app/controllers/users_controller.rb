@@ -64,7 +64,7 @@ class UsersController < ApplicationController
         redirect_to :back and return
       end
       
-      if @user.update_attributes(params[:user])
+      if @user.update_attributes(params[:user].except(:membership))
         @user.memberships.where(company_id: current_user.current_company_id).first.update_attributes(params[:user][:membership])
         format.html { redirect_to @user, notice: "User was successfully updated" }
         format.json { head :ok }
