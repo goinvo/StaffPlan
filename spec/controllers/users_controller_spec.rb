@@ -98,7 +98,7 @@ describe UsersController do
         # specifies that the User created on the previous line
         # receives the :update_attributes message with whatever params are
         # submitted in the request.
-        User.any_instance.expects(:update_attributes).with('these' => 'params')
+        User.any_instance.expects(:save_unconfirmed_user)
         put :update, :id => user.id, :user => {'these' => 'params'}
       end
 
@@ -149,7 +149,7 @@ describe UsersController do
         user = FactoryGirl.create(:user)
         @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.expects(:save).returns(false)
+        User.any_instance.expects(:save_unconfirmed_user).returns(false)
         put :update, :id => user.id, :user => {}
         response.should render_template("edit")
       end
