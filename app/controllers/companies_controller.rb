@@ -16,6 +16,7 @@ class CompaniesController < ApplicationController
       if @company.save and @user.save 
         @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
+        @user.administrates!(@company)
       else
         raise ActiveRecord::Rollback
       end
