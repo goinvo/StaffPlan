@@ -16,13 +16,13 @@ class CompaniesController < ApplicationController
       if @company.save and @user.save 
         @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
-        @user.administrates!(@company)
       else
         raise ActiveRecord::Rollback
       end
     end
 
     if @company.persisted?
+      @user.administrates!(@company)
       redirect_to root_url, notice: "Company was successfully created"
     else
       flash[:errors] = @company.errors.full_messages

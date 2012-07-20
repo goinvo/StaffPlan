@@ -29,6 +29,46 @@ describe User do
 
   end
 
+  describe "user roles" do
+    before(:each) do
+      @user = FactoryGirl.create(:user)
+      @company = FactoryGirl.create(:company)
+      @company.users << @user
+      @user.current_company_id = @company.id
+      @user.save
+    end
+
+    it "should not assign roles to a newly created user" do
+      [:admin, :employee, :contractor].each do |role|
+        @user.memberships.where(company_id: @company.id).first.roles.should_not include(role)
+      end
+    end 
+
+    it "should provide a convenience methods to assign roles" do 
+      [[:administrates!, :admin], [:employee_of!, :employee], [:contractor_for!, :contractor]].each do |msg, role|
+        @user.send(msg, @company)
+        m = @user.memberships.where(company_id: @company.id).first
+        m.roles.should include(role)
+        m.roles.delete role
+        m.save
+      end
+    end
+
+    it "should provide conveniences to test the roles of users" do
+      m = @user.memberships.where(company_id: @company.id).first
+      m.roles << :employee
+      m.roles << :admin
+      m.save
+      @user.administrates?(@company).should be_true
+      @user.contractor_for?(@company).should be_false
+      m.roles.delete :admin
+      m.roles.delete :employee
+      m.save
+      @user.contractor_for!(@company)
+      @user.contractor_for?(@company).should be_true
+    end
+  end
+
   describe '#plan_for' do
     before(:each) do
       @user = User.new(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "23kj23k2j")
