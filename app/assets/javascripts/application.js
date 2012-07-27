@@ -5,10 +5,10 @@
 // the compiled file.
 //
 //= require modernizr.custom
-//= require jquery.min
+//= require jquery
 //= require rails
-//= require underscore.min
-//= require backbone.min
+//= require underscore
+//= require backbone
 //= require backbone-support
 //= require mustache
 //= require moment
