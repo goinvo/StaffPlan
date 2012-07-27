@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  include StaffPlan::UserRoles
+
   attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
 
   has_paper_trail

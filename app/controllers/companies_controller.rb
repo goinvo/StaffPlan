@@ -22,6 +22,7 @@ class CompaniesController < ApplicationController
     end
 
     if @company.persisted?
+      @user.administrates!(@company)
       redirect_to root_url, notice: "Company was successfully created"
     else
       flash[:errors] = @company.errors.full_messages

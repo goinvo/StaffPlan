@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120601230119) do
+ActiveRecord::Schema.define(:version => 20120720211228) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -48,6 +48,7 @@ ActiveRecord::Schema.define(:version => 20120601230119) do
     t.integer "company_id"
     t.boolean "disabled",   :default => false, :null => false
     t.boolean "archived",   :default => false, :null => false
+    t.integer "roles",      :default => 0,     :null => false
   end
 
   add_index "memberships", ["company_id", "user_id"], :name => "index_memberships_on_company_id_and_user_id", :unique => true

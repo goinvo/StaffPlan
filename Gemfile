@@ -19,6 +19,8 @@ gem 'thin'
 gem "will_paginate"
 gem 'sass-rails',     '~> 3.2.3'
 gem 'draper'
+gem 'cancan'
+gem 'bitmask_attributes'
 
 group :assets do
   gem 'compass-rails'
