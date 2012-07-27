@@ -27,7 +27,7 @@ class UsersController < ApplicationController
   # GET /users/new.json
   def new
     @user = User.new
-    @membership = @user.memberships.build(company_id: @user.current_company_id)
+    @membership = @user.memberships.build(company_id: current_user.current_company_id)
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @user }
@@ -43,6 +43,7 @@ class UsersController < ApplicationController
       if @user.save_unconfirmed_user
         current_user.current_company.users << @user
         @user.send_invitation(current_user)
+        @user.update_roles(params[:roles], current_user.current_company)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
         format.json { render json: @user, status: :created, location: @user }
       else
@@ -68,6 +69,7 @@ class UsersController < ApplicationController
       end
       if @user.attributes = params[:user].except(:membership) and @user.save_unconfirmed_user
         @user.memberships.where(company_id: current_user.current_company_id).first.update_attributes(params[:user][:membership])
+        @user.update_roles(params[:roles], current_user.current_company)
         format.html { redirect_to @user, notice: "User was successfully updated" }
         format.json { head :ok }
       else

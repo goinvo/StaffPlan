@@ -2,7 +2,7 @@ class Membership < ActiveRecord::Base
   belongs_to :user
   belongs_to :company
 
-  bitmask :roles, :as => [:admin, :employee, :contractor], :null => false
+  bitmask :roles, :as => [:admin, :employee, :contractor, :financials], :null => false
 
   before_save do |record|
     if record.disabled?

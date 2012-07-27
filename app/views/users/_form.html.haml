@@ -10,8 +10,12 @@
   = f.text_field :last_name, :placeholder => "Last Name"
   = f.text_field :email, :placeholder => "user@host.tld"
   = f.fields_for @membership do |g| 
+    .roles
     - if current_user.administrates? @membership.company
-      = g.select :roles, ["admin", "employee", "contractor"].map { |role| [role, role] }
+      - Membership.values_for_roles.each do |role|
+        .role
+          = check_box_tag "roles[]", role.to_s, @membership.roles?(role)
+          = role.to_s
     .user-activation
       = g.label :disabled, "Disable user for company #{current_user.current_company.name}?", {:class => "info"} 
       = g.check_box :disabled
