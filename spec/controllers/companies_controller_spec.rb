@@ -25,6 +25,11 @@ describe CompaniesController do
         post :create, company: {name: Faker::Company.name}, user: user_attrs 
       }.to change(Company, :count).by(1)
     end
+    
+    it "makes the user the admin of the newly created company" do
+      post :create, company: {name: Faker::Company.name}, user: FactoryGirl.attributes_for(:user)
+      assigns[:user].administrates?(assigns[:company]).should be_true 
+    end
       
     it "should redirect to the user's staff plan page on successful company/user creation" do
       post :create, company: {name: Faker::Company.name}, user: FactoryGirl.attributes_for(:user) 
