@@ -6,6 +6,7 @@
 //
 //= require modernizr.custom
 //= require jquery
+//= require jquery-ui-1.8.17.custom.min
 //= require rails
 //= require underscore
 //= require backbone
