@@ -1,5 +1,6 @@
 @import "compass/css3"
 @import "compass/typography/text/ellipsis"
+@import "compass/css3/box"
 
 @import init
 @import mixins
@@ -30,7 +31,8 @@
       width: 35px
 
     &.months-and-weeks
-      width: 673px
+      +box-flex(1)
+      display: block
 
       section
         .plan-actual
@@ -122,7 +124,12 @@ body#staffplans.index
 //\\//\\//\\//\\//\\
 body#staffplans.show
   section.main
+    width: initial
+    min-width: initial
+    
     .content
+      padding: 10px 20px
+      
       .user-select
         position: relative
         height: 75px
@@ -162,7 +169,8 @@ body#staffplans.show
       .project-list
         .headers
           +staffplan-columns
-
+          +display-box
+          +box-orient("horizontal")
           padding: 6px 15px
           border: 1px solid #E0E0E0
           border-right: none
@@ -184,7 +192,8 @@ body#staffplans.show
             // background: transparent image-url("icons/cube-flat.png") left center no-repeat
 
           .months-and-weeks
-            width: 660px
+            +box-flex(1)
+            display: block
 
             section
               .plan-actual
@@ -208,8 +217,11 @@ body#staffplans.show
 
           .project
             +staffplan-columns
+            +display-box
+            +box-orient("horizontal")
             padding: 2px 15px
             height: 75px
+            
 
             .client-name
               visibility: hidden
