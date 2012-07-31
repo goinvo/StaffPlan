@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120720211228) do
+ActiveRecord::Schema.define(:version => 20120730215319) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(:version => 20120720211228) do
     t.string   "name"
     t.text     "description"
     t.boolean  "active",      :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "company_id"
   end
 
@@ -46,9 +46,14 @@ ActiveRecord::Schema.define(:version => 20120720211228) do
   create_table "memberships", :force => true do |t|
     t.integer "user_id"
     t.integer "company_id"
-    t.boolean "disabled",   :default => false, :null => false
-    t.boolean "archived",   :default => false, :null => false
-    t.integer "roles",      :default => 0,     :null => false
+    t.boolean "disabled",                                            :default => false, :null => false
+    t.boolean "archived",                                            :default => false, :null => false
+    t.integer "roles",                                               :default => 0,     :null => false
+    t.decimal "salary",               :precision => 12, :scale => 2
+    t.decimal "rate",                 :precision => 10, :scale => 2
+    t.decimal "full_time_equivalent", :precision => 12, :scale => 2
+    t.string  "payment_frequency"
+    t.integer "weekly_allocation"
   end
 
   add_index "memberships", ["company_id", "user_id"], :name => "index_memberships_on_company_id_and_user_id", :unique => true
@@ -56,11 +61,13 @@ ActiveRecord::Schema.define(:version => 20120720211228) do
   create_table "projects", :force => true do |t|
     t.integer  "client_id"
     t.string   "name"
-    t.boolean  "active",     :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.boolean  "active",       :default => true
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.integer  "company_id"
-    t.boolean  "proposed",   :default => false, :null => false
+    t.boolean  "proposed",     :default => false, :null => false
+    t.integer  "total_cost",   :default => 0,     :null => false
+    t.integer  "monthly_cost", :default => 0,     :null => false
   end
 
   create_table "projects_users", :id => false, :force => true do |t|
@@ -74,8 +81,8 @@ ActiveRecord::Schema.define(:version => 20120720211228) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "current_company_id"
     t.string   "registration_token"
     t.string   "first_name"
@@ -98,10 +105,10 @@ ActiveRecord::Schema.define(:version => 20120720211228) do
     t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek"
-    t.integer  "year"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "cweek",           :limit => 2
+    t.integer  "year",            :limit => 2
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   add_index "work_weeks", ["user_id", "project_id", "cweek", "year"], :name => "index_work_weeks_on_user_id_and_project_id_and_cweek_and_year", :unique => true

@@ -16,11 +16,20 @@
         .role
           = check_box_tag "roles[]", role.to_s, @membership.roles?(role)
           = role.to_s
-    .user-activation
-      = g.label :disabled, "Disable user for company #{current_user.current_company.name}?", {:class => "info"} 
-      = g.check_box :disabled
-      = g.label :archived, "Archive user for company #{current_user.current_company.name}?", {:class => "info"}  
-      = g.check_box :archived
+
+    - if current_user.handles_financials_of?(current_user.current_company)
+      .salary_information
+        = g.text_field :salary
+        = g.text_field :full_time_equivalent
+        = g.text_field :weekly_allocation
+        = g.text_field :rate
+        = g.select :payment_frequency, ["hourly", "weekly", "monthly", "yearly"].map {|type| [type, type]}
+    - unless @membership.new_record?
+      .user-activation
+        = g.label :disabled, "Disable user for company #{current_user.current_company.name}?", {:class => "info"} 
+        = g.check_box :disabled
+        = g.label :archived, "Archive user for company #{current_user.current_company.name}?", {:class => "info"}  
+        = g.check_box :archived
   - unless @user.new_record? 
     = f.password_field :password
     = f.password_field :password_confirmation

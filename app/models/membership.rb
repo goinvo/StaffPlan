@@ -1,8 +1,14 @@
 class Membership < ActiveRecord::Base
+
+  attr_accessible :company_id, :salary, :rate, :full_time_equivalent, :payment_frequency, :weekly_allocation
+  
   belongs_to :user
   belongs_to :company
 
-  bitmask :roles, :as => [:admin, :employee, :contractor, :financials], :null => false
+  validates :weekly_allocation, :payment_frequency, :rate, :presence => true, :if => Proc.new { |m| m.roles?(:contractor) }
+  validates :salary, :full_time_equivalent, :presence => true, :if => Proc.new { |m| m.roles?(:employee) }
+
+  bitmask :roles, :as => [:admin, :employee, :contractor, :financials, :intern], :null => false
 
   before_save do |record|
     if record.disabled?

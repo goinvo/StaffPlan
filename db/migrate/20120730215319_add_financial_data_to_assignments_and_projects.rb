@@ -6,7 +6,7 @@ class AddFinancialDataToAssignmentsAndProjects < ActiveRecord::Migration
 
     add_column :memberships, :salary, :decimal, :precision => 12, :scale => 2
     add_column :memberships, :rate, :decimal, :precision => 10, :scale => 2
-    add_column :memberships, :full_time_equivalent, :precision => 12, :scale => 2
+    add_column :memberships, :full_time_equivalent, :decimal, :precision => 12, :scale => 2
     add_column :memberships, :payment_frequency, :string
     add_column :memberships, :weekly_allocation, :integer
   end

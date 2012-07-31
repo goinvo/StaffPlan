@@ -6,7 +6,7 @@ module StaffPlan::UserRoles
   included do
     # Code to be executed upon inclusion
   end
-  
+
   ASSOC = {
     :admin => :administrates!,
     :employee => :employee_of!,
@@ -42,8 +42,12 @@ module StaffPlan::UserRoles
     memberships.where(:company_id => company.id).first.roles? :contractor
   end
 
+  # Admins should be able to see financial information too
   def handles_financials_of?(company)
-    memberships.where(:company_id => company.id).first.roles? :financials
+    m = memberships.where(:company_id => company.id).first
+    [:financials, :admin].any? do |r|
+      m.roles?(r)
+    end
   end
 
   def administrates!(company)
