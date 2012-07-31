@@ -17,15 +17,16 @@ module StaffPlan::UserRoles
   def update_roles(roles, company)
     # NOTE: Since checkbox don't play well with unchecked values we assign what we have
     # and remove what's not present
+    unless roles.nil?
+      roles.each do |role|
+        send(ASSOC[role.to_sym], company)
+      end
 
-    roles.each do |role|
-      send(ASSOC[role.to_sym], company)
-    end
-
-    m = memberships.where(:company_id => company.id).first
-    (Membership.values_for_roles - roles.map(&:to_sym)).each do |role|
-      m.roles.delete role
-      m.save
+      m = memberships.where(:company_id => company.id).first
+      (Membership.values_for_roles - roles.map(&:to_sym)).each do |role|
+        m.roles.delete role
+        m.save
+      end
     end
   end
 
