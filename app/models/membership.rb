@@ -8,7 +8,7 @@ class Membership < ActiveRecord::Base
   validates :weekly_allocation, :payment_frequency, :rate, :presence => true, :if => Proc.new { |m| m.roles?(:contractor) }
   validates :salary, :full_time_equivalent, :presence => true, :if => Proc.new { |m| m.roles?(:employee) }
 
-  bitmask :roles, :as => [:admin, :employee, :contractor, :financials, :intern], :null => false
+  bitmask :permissions, :as => [:admin, :financials], :null => false
 
   before_save do |record|
     if record.disabled?
