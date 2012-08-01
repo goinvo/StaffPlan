@@ -64,7 +64,7 @@ class views.shared.DateDrivenView extends Support.CompositeView
     
     @windowResizedTimeout = window.setTimeout =>
       @delayedOnWindowResized()
-    , 500
+    , 200
   
   delayedOnWindowResized: =>
     @setWeekIntervalAndToDate()
