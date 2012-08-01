@@ -9,21 +9,23 @@
   = f.text_field :first_name, :placeholder => "First Name"
   = f.text_field :last_name, :placeholder => "Last Name"
   = f.text_field :email, :placeholder => "user@host.tld"
+  
   = f.fields_for @membership do |g| 
-    .roles
-    - if current_user.administrates? @membership.company
-      - Membership.values_for_roles.each do |role|
-        .role
-          = check_box_tag "roles[]", role.to_s, @membership.roles?(role)
-          = role.to_s
-
-    - if current_user.handles_financials_of?(current_user.current_company)
-      .salary_information
-        = g.text_field :salary
-        = g.text_field :full_time_equivalent
-        = g.text_field :weekly_allocation
-        = g.text_field :rate
-        = g.select :payment_frequency, ["hourly", "weekly", "monthly", "yearly"].map {|type| [type, type]}
+    #employment_status
+      = g.select :employment_status, [["Full-Time Employee", "fte"], ["Contractor", "contractor"], ["Intern", "intern"]]
+    #permissions
+      - [:admin, :financials].each do |perm|
+        .perm
+          = check_box_tag "permissions[]", perm.to_s, @membership.permissions?(perm)
+          = label_tag :permissions, perm.to_s.capitalize
+    #salary_information
+      .salary.fte
+        = g.text_field :salary, {:type => "number"}
+        = g.text_field :full_time_equivalent, {:type => "number"}
+      .salary.contractor
+        = g.text_field :weekly_allocation, {:type => "number"}
+        = g.select :payment_frequency, %w(hourly daily weekly monthly yearly).map { |t| [t,t] }
+        = g.text_field :rate, {:type => "number"}
     - unless @membership.new_record?
       .user-activation
         = g.label :disabled, "Disable user for company #{current_user.current_company.name}?", {:class => "info"} 

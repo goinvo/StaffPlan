@@ -8,25 +8,25 @@ class UserDecorator < Draper::Base
   def gravatar
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
-  
+
   def chart_for_date_range(range)
     # FIXME: I'd like to be able to move that somewhere else
     init_haml_helpers
-   
+
 
     project_ids = user.current_company.projects.map(&:id)
     workload = user.work_weeks.for_range(range.first, range.last).for_projects(project_ids)
-    
+
     assignments = user.assignments.where(project_id: project_ids).all
-    
+
     capture_haml do 
       range.each do |date|
         is_current_week = Date.today.cweek == date.cweek and Date.today.year == date.year
         load_for_week = workload.select { |ww| date.cweek == ww.cweek and date.year == ww.year }
         proposed_for_week = load_for_week.select {|ww| assignments.detect{|a| a.project_id == ww.project_id}.try(:proposed?) || false }
-        
+
         msg = (date < Date.today.at_beginning_of_week or is_current_week) ? :actual_hours : :estimated_hours
-        
+
         total, proposed_total = *[load_for_week, proposed_for_week].map do |w|
           w.inject(0) do |memo, week|
             memo += week.send(msg) || 0
@@ -77,7 +77,7 @@ class UserDecorator < Draper::Base
       end
     end
   end
-  
+
   def project_json(project)
     Jbuilder.encode do |json|
       json.(user, :id, :email, :first_name, :last_name)

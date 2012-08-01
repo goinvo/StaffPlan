@@ -1,12 +1,13 @@
 class Membership < ActiveRecord::Base
 
-  attr_accessible :company_id, :salary, :rate, :full_time_equivalent, :payment_frequency, :weekly_allocation
+  attr_accessible :company_id, :salary, :rate, :full_time_equivalent, :payment_frequency
+  attr_accessible :weekly_allocation, :employment_status, :disabled, :archived
   
   belongs_to :user
   belongs_to :company
 
-  validates :weekly_allocation, :payment_frequency, :rate, :presence => true, :if => Proc.new { |m| m.roles?(:contractor) }
-  validates :salary, :full_time_equivalent, :presence => true, :if => Proc.new { |m| m.roles?(:employee) }
+  # validates :weekly_allocation, :payment_frequency, :rate, :presence => true, :if => Proc.new { |m| m.?(:contractor) }
+  # validates :salary, :full_time_equivalent, :presence => true, :if => Proc.new { |m| m.roles?(:employee) }
 
   bitmask :permissions, :as => [:admin, :financials], :null => false
 
