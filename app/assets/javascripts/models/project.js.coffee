@@ -17,8 +17,6 @@ class Project extends Backbone.Model
   
   getClientId: ->
     @get("client_id") || "new_client"
-    
-  urlRoot: "/projects"
   
 class ProjectList extends Backbone.Collection
   model: Project

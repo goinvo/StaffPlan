@@ -195,8 +195,6 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
     else
       @workWeekByCweekAndYear cweek, year
     
-    debugger
-    
     if workWeek?
       if $element.val() != ""
         value = parseInt($element.val(), 10)
@@ -222,8 +220,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       
       $element.data cid: newWorkWeek.cid
       
-      @model.add newWorkWeek
-      newWorkWeek.save {},
+      @model.create newWorkWeek,
         wait: true
         success: (workWeek, response, jqxhr) ->
           if response.status == "ok"
