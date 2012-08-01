@@ -37,11 +37,13 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
+    membership = params[:user].delete :membership
     @user = User.new(params[:user])
     @user.current_company_id = current_user.current_company_id
     respond_to do |format|
       if @user.save_unconfirmed_user
         current_user.current_company.users << @user
+        @user.memberships.first.update_attributes membership
         @user.send_invitation(current_user)
         @user.update_permissions(params[:permissions], current_user.current_company)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
