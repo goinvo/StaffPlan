@@ -155,7 +155,10 @@ body#staffplans.show
           left: 414px
           left: 308px
           bottom: 10px
-          display: block
+          +display-box
+          +box-orient("horizontal")
+          overflow: hidden
+          white-space: nowrap
 
           > *
             display: inline
