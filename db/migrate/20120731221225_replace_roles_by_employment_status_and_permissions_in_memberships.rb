@@ -7,10 +7,10 @@ class ReplaceRolesByEmploymentStatusAndPermissionsInMemberships < ActiveRecord::
 
     Membership.all.each do |membership|
       [:employee, :contractor].each do |role|
-        (membership.employment_status = role.to_s) if membership.roles.include?(role)
+        (membership.employment_status = role.to_s) if membership.roles?(role)
       end
       [:admin, :financials].each do |role|
-        (membership.permissions << role) if membership.roles.include?(role)
+        (membership.permissions << role) if membership.roles?(role)
       end
       membership.save
     end

@@ -13,6 +13,7 @@ module StaffPlan::UserRoles
   } 
 
   def update_permissions(perms, company)
+    m = memberships.where(:company_id => company.id).first
     # NOTE: Since checkbox don't play well with unchecked values we assign what we have
     # and remove what's not present
     unless perms.nil?
@@ -20,11 +21,15 @@ module StaffPlan::UserRoles
         send(ASSOC[perm.to_sym], company)
       end
 
-      m = memberships.where(:company_id => company.id).first
       (Membership.values_for_permissions - perms.map(&:to_sym)).each do |perm|
         m.permissions.delete perm
         m.save
       end
+    else
+      Membership.values_for_permissions.each do |perm|
+        m.permissions.delete perm
+      end
+      m.save
     end
   end
 

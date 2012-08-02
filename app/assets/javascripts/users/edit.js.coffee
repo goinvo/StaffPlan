@@ -1,8 +1,8 @@
 $(document)
   .ready ->
     selected = $("select#user_membership_employment_status").val()
-    $("div#salary_information div.salary").hide()
-    $("div#salary_information div." + selected + "").show()
+    $("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
+    $("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
 
 $('select#user_membership_employment_status')
   .live "change", ->

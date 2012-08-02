@@ -9,6 +9,58 @@ class UserDecorator < Draper::Base
     "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
 
+  def permissions_information_for_company(company)
+    init_haml_helpers
+    m = user.memberships.where(company_id: company.id).first
+    capture_haml do
+      haml_tag :div, {:class => "permissions_info"} do
+        haml_tag :h2 do
+          haml_concat "Permissions"
+        end
+        if m.permissions.present?
+          haml_concat "#{user.full_name} has the following permissions for company #{company.name}:"
+          haml_tag :ul do
+            m.permissions.each do |perm|
+              haml_tag :li do
+                haml_concat perm.to_s
+              end
+            end
+          end
+        else
+          haml_concat "#{user.full_name} currently doesn't have any permissions for company #{company.name}"
+        end
+      end
+    end
+  end
+
+  def employment_information_for_company(company)
+    init_haml_helpers
+
+    m = user.memberships.where(company_id: company.id).first
+    capture_haml do
+      haml_tag :div, {:class => "employment_information"} do
+        haml_tag :h2 do
+          haml_concat "Employment"
+        end
+        case m.employment_status
+        when "fte"
+          haml_tag :p do
+            haml_concat "#{user.full_name} is currently a full-time employee for #{company.name}"
+          end
+          haml_tag :p, {:class => "employee_salary"} do
+            haml_concat "Yearly salary: #{m.salary}"
+          end
+          haml_tag :p, {:class => "full_time_equivalent"} do
+            haml_concat "Full-Time Equivalent: #{m.full_time_equivalent}"
+          end
+        when "contractor"
+        when "intern"
+          haml_concat "#{user.full_name} is currently an intern at #{company.name}"
+        end
+      end
+    end
+  end
+
   def chart_for_date_range(range)
     # FIXME: I'd like to be able to move that somewhere else
     init_haml_helpers
