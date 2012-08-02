@@ -18,7 +18,16 @@
     = f.fields_for @assignment do |g| 
       = g.check_box :proposed
   - if current_user.handles_financials_of? current_user.current_company 
-    = f.text_field :total_cost    
+    #cost
+      .frequency
+        %div
+          = f.radio_button :payment_frequency, :total
+          = f.label :payment_frequency, "Total Cost"
+        %div
+          = f.radio_button :payment_frequency, :monthly
+          = f.label :payment_frequency, "Monthly Cost"
+      .amount
+        = f.text_field :cost, {:type => :number}
   .actions
     = f.submit t('.save')
 
