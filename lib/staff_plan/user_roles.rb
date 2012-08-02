@@ -34,7 +34,7 @@ module StaffPlan::UserRoles
   end
 
   def handles_financials_of?(company)
-    memberships.where(:company_id => company.id).first.permissions? :admin
+    memberships.where(:company_id => company.id).first.permissions? :financials
   end
 
 

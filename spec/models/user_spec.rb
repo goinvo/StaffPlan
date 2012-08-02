@@ -38,34 +38,40 @@ describe User do
       @user.save
     end
 
-    it "should not assign roles to a newly created user" do
-      [:admin, :employee, :contractor].each do |role|
-        @user.memberships.where(company_id: @company.id).first.roles.should_not include(role)
-      end
+    it "should assign the employment status of full-time employee to a default user" do
+      m = @user.memberships.where(company_id: @company.id).first
+      m.employment_status.should eq("fte")
     end 
 
-    it "should provide a convenience methods to assign roles" do 
-      [[:administrates!, :admin], [:employee_of!, :employee], [:contractor_for!, :contractor]].each do |msg, role|
+    it "should provide a convenience methods to assign employment status" do 
+      [[:interning_at!, "intern"], [:employee_of!, "fte"], [:contractor_for!, "contractor"]].each do |msg, role|
         @user.send(msg, @company)
         m = @user.memberships.where(company_id: @company.id).first
-        m.roles.should include(role)
-        m.roles.delete role
-        m.save
+        m.employment_status.should eq(role)
       end
     end
 
-    it "should provide conveniences to test the roles of users" do
+    it "should provide convenience methods to assign permissions" do
+      {:administrates! => :admin, :handles_financials_of! => :financials}.each do |msg, perm|
+        @user.send(msg, @company)
+        m = @user.memberships.where(company_id: @company.id).first
+        m.permissions?(perm).should be_true
+      end
+    end
+
+    it "should provide conveniences to test the permissions of users" do
       m = @user.memberships.where(company_id: @company.id).first
-      m.roles << :employee
-      m.roles << :admin
+      @user.update_permissions(nil, @company) # The user has NO permissions for that company
+      m.permissions << :admin
       m.save
       @user.administrates?(@company).should be_true
-      @user.contractor_for?(@company).should be_false
-      m.roles.delete :admin
-      m.roles.delete :employee
+      @user.handles_financials_of?(@company).should be_false
+      m.permissions.delete :admin
       m.save
-      @user.contractor_for!(@company)
-      @user.contractor_for?(@company).should be_true
+      @user.administrates?(@company).should be_false
+      m.permissions << :financials
+      m.save
+      @user.handles_financials_of?(@company).should be_true
     end
   end
 
@@ -85,7 +91,7 @@ describe User do
       @project.company_id = @company.id
       @project.client_id = @client.id
       @project.save
-      
+
       @project_ids = @company.projects.map(&:id)
     end 
 
@@ -113,7 +119,7 @@ describe User do
       @user.plan_for(@project_ids, Date.today).should eq(100)
     end
   end
-  
+
   describe '#current_company' do
     it "should return false if the company isn't associated with the user"
     it "should set current_company_id to the company's id"
@@ -145,7 +151,7 @@ describe User do
       end
     end
   end  
-  
+
   describe '#save_unconfirmed_user' do
     it "should save the user if all required fields (except password) are present" do
       lambda {
@@ -153,7 +159,7 @@ describe User do
         user.save_unconfirmed_user.should be_true
       }.should change(User, :count).by(1)
     end
-    
+
     it "should not save if first/last name or email are missing" do
       lambda {
         user = FactoryGirl.build(:user, password: nil, password_confirmation: nil, email: nil)
