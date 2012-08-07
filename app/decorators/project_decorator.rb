@@ -8,7 +8,8 @@ class ProjectDecorator < Draper::Base
   def project_json
     Jbuilder.encode do |json|
       json.(self, :id, :client_id, :name, :active)
-
+      json.cost self.cost.to_i
+      json.payment_frequency self.payment_frequency == "total" ? "total" : "per month"
       json.users self.users do |json, user|
         json.(user, :id, :email, :first_name, :last_name)
         json.gravatar UserDecorator.new(user).gravatar

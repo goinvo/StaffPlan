@@ -48,10 +48,10 @@ class UserDecorator < Draper::Base
             haml_concat "#{user.full_name} is currently a full-time employee for #{company.name}"
           end
           haml_tag :p, {:class => "employee_salary"} do
-            haml_concat "Yearly salary: #{m.salary}"
+            haml_concat "Yearly salary: #{number_to_currency(m.salary.to_i, :precision => 2)}"
           end
           haml_tag :p, {:class => "full_time_equivalent"} do
-            haml_concat "Full-Time Equivalent: #{m.full_time_equivalent}"
+            haml_concat "Full-Time Equivalent: #{number_to_currency(m.full_time_equivalent, :precision => 2)}"
           end
         when "contractor"
         when "intern"
