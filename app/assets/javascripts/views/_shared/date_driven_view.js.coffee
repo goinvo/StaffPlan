@@ -12,8 +12,14 @@ class views.shared.DateDrivenView extends Support.CompositeView
     
   setWeekIntervalAndToDate: ->
     # find first project's work week list, measure the width of its months-and-weeks container
-    $container = $( '.project-list > section[data-client-id]:first .months-and-weeks' )
+    
+    $container = $( @container_selector )
     $inputContainer = $container.find( '.plan-actual:first' )
+    
+    if $inputContainer.length == 0
+      @onWindowResized()
+      return
+    
     containerWidth = $container.width()
     inputWidth = $container.find( '.plan-actual div:not(.row-label):first' ).first().width()
     
@@ -70,6 +76,6 @@ class views.shared.DateDrivenView extends Support.CompositeView
     @setWeekIntervalAndToDate()
     @renderHeaderTemplate( true )
     @renderWeekHourCounter()
-    @renderAllProjects()
+    @renderContent( true ) if @renderContent?
     
 window.views.shared.DateDrivenView = views.shared.DateDrivenView

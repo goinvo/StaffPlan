@@ -12,6 +12,7 @@
 //= require backbone
 //= require backbone-support
 //= require mustache
+//= require handlebars
 //= require moment
 //= require d3.v2
 //= require backbone-bootstrap

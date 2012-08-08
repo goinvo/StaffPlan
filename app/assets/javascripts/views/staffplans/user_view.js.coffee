@@ -8,7 +8,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
 
   changePage: (event) ->
     @dateChanged event
-    @renderAllProjects()
+    @renderContent()
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
     
@@ -16,6 +16,8 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
+    
+    @container_selector = '.project-list > section[data-client-id]:first .months-and-weeks'
     
     @model.view = @
     @model.url = ->
@@ -38,7 +40,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
       @weekHourCounter.render @dateRangeMeta().dates, @model.projects.models
     
     @render()
-    @renderAllProjects()
+    @renderContent()
 
   templateData: ->
     name: @model.get("full_name")
@@ -139,7 +141,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     </section>
     """
     
-  renderAllProjects: ->
+  renderContent: =>
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
 

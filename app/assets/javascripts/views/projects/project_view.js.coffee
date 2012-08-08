@@ -6,6 +6,8 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
+    @container_selector = '#project-users > section.users .user:first .months-and-weeks'
+    
     @projectTemplate = Handlebars.compile(@templates.project)
     @headerTemplate = Handlebars.compile(@templates.work_week_header)
     @addSomeoneTemplate = Handlebars.compile(@templates.add_someone)
@@ -35,10 +37,35 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     user.work_week_view = new views.projects.WorkWeekListView
       model: user.work_weeks
       parent: @
+  
+  renderWeekHourCounter: ->
+    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.users.models, ".project-header", @$ ".week-hour-counter"
+    
+  renderHeaderTemplate: (append=false) ->
+    meta = @dateRangeMeta()
+    html = @headerTemplate
+      currentYear: ->
+        new Date().getFullYear()
+      monthNames: (=>
+        _.map meta.dates, (dateMeta, idx, dateMetas) ->
+          name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then moment.monthsShort[ dateMeta.month - 1 ] else ""
+        )()
+      weeks: (=>
+        _.map meta.dates, (dateMeta, idx, dateMetas) ->
+          name: "W#{Math.ceil dateMeta.mday / 7}"
+        )()
+    
+    if append
+      @$el.find( '.date-pagination-header' ).html( html )
+    else
+      html
+  
+  renderContent: ->
+    $( @el )
+      .find( 'section.users' )
+      .append @model.users.map (user) -> user.view.render().el
     
   render: ->
-    meta = @dateRangeMeta()
-    
     $( @el )
       .appendTo( 'section.main .content' )
       .html( @projectTemplate
@@ -47,26 +74,11 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
         users: @model.get('users')
       )
       .find( '.date-pagination-header' )
-      .html( @headerTemplate
-        currentYear: ->
-          new Date().getFullYear()
-        monthNames: (=>
-          _.map meta.dates, (dateMeta, idx, dateMetas) ->
-            name: if dateMetas[idx - 1] == undefined or dateMeta.month != dateMetas[idx - 1].month then moment.monthsShort[ dateMeta.month - 1 ] else ""
-          )()
-        weeks: (=>
-          _.map meta.dates, (dateMeta, idx, dateMetas) ->
-            name: "W#{Math.ceil dateMeta.mday / 7}"
-          )()
-      )
+      .html( @renderHeaderTemplate() )
     
     @$('div.date-pagination-header div.plan-actual:first .row-label').html @fromDate.year()
       
-    $( @el )
-      .find( 'section.users' )
-      .append @model.users.map (user) -> user.view.render().el
-    
-    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.users.models, ".project-header", @$ ".week-hour-counter"
+    @renderWeekHourCounter()
     
     @
   
@@ -134,9 +146,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
   changePage: (event) ->
     @dateChanged event
     @render()
-    # @$( '.headers .months-and-weeks' )
-    #       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
-  
+    @renderContent()
     
   addSomeone: ->
     @$( '.add-new-someone' ).remove()
