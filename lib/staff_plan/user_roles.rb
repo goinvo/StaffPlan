@@ -3,10 +3,6 @@ require 'active_support/concern'
 module StaffPlan::UserRoles
   extend ActiveSupport::Concern
 
-  included do
-    # Code to be executed upon inclusion
-  end
-  
   def administrates?(company)
     memberships.where(:company_id => company.id).first.roles? :admin
   end
