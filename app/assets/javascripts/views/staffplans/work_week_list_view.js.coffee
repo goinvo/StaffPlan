@@ -220,8 +220,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       
       $element.data cid: newWorkWeek.cid
       
-      @model.add newWorkWeek
-      newWorkWeek.save {},
+      @model.create newWorkWeek,
         wait: true
         success: (workWeek, response, jqxhr) ->
           if response.status == "ok"

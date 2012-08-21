@@ -1,7 +1,5 @@
 class WorkWeek extends Backbone.Model
   
-  urlRoot: "/work_weeks"
-  
 class WorkWeekList extends Backbone.Collection
   model: WorkWeek
   

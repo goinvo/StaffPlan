@@ -17,7 +17,7 @@ class User extends Backbone.Model
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
     @fromDate.add('weeks', interval)
     @toDate.add('weeks', interval)
-    @view.renderAllProjects()
+    @view.renderContent()
     @weekHourCounter.render @dateRangeMeta().dates, @projects.models
 
   dateRangeMeta: ->
