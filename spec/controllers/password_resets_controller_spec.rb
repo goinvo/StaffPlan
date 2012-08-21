@@ -15,11 +15,7 @@ describe PasswordResetsController do
 
   describe "PasswordResetsController#update (PUT)" do
     before(:each) do
-      @parameters = {}
-      @parameters.store(:user, {
-        password: "mysecretpassword", 
-        password_confirmation: "mysecretpassword"
-      })
+      @parameters = {:id => 12, :user => {:password => "mysecretpassword", :password_confirmation => "mysecretpassword"}}
     end 
     context "A user is found in the DB with the given token" do
       before(:each) do
@@ -60,24 +56,24 @@ describe PasswordResetsController do
         User.stubs(:with_registration_token).with(anything).returns(nil)
       end
       it "should display an error message to the user" do
-        put :update, user: {password: "mysecretpassword", password_confirmation: "mysecretpassword"} 
+        put :update, id: 12, user: {password: "mysecretpassword", password_confirmation: "mysecretpassword"} 
         flash[:notice].should_not be_empty 
       end
       it "should redirect to the login page" do 
-        put :update, user: {password: "mysecretpassword", password_confirmation: "mysecretpassword"} 
+        put :update, id: 12, user: {password: "mysecretpassword", password_confirmation: "mysecretpassword"} 
         response.should redirect_to(new_session_path) 
       end
     end
   end
-  
+
   describe "PasswordResetsController#create (POST)" do
-    
+
     context "The user is found based on his/her email address" do
       it "should send an email with instructions to the user" do 
         post :create, email: @user.email
         ActionMailer::Base.deliveries.last.to.first.should eq(@user.email)
       end
-      
+
       # TODO: Test the actual content? 
       it "should display a message to the user with instructions" do
         post :create, email: @user.email
@@ -101,13 +97,13 @@ describe PasswordResetsController do
         post :create, email: @user.email
         flash[:notice].should_not be_empty
       end 
-      
+
       it "should redirect the user to the login page" do 
         post :create, email: @user.email
         response.should redirect_to(new_session_path)
       end 
     end
-  
+
   end
 
   describe "PasswordResetsController#edit (GET)" do
