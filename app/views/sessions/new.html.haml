@@ -1,5 +1,6 @@
-%section
-  %h1= t('.sign_in')
+%section{:class => "cf"}
+  %h1= 'Know thy plan!'
+  %h3= 'Please log in to Staffplan'
 
   = form_tag sessions_path do
     .field
@@ -10,15 +11,19 @@
       = label_tag :password, t('.password')
       = password_field_tag :password, params[:password]
     
-    .actions
-      = submit_tag t('.sign_in'), :id => "commit_btn"
-      
-      .password-reset.boxy
-        = link_to t('.password_reset'), new_password_reset_path 
-      
-      .clear
-      
-      .boxy.larger
-        = link_to "Register", new_registration_path, :id => "register_btn"
-      
-
+    .field.cf
+      = check_box_tag :remember, 'remember', 'remember', :class => 'fleft'
+      = label_tag :remember, t('.Remember me'), :class => 'fleft pushed'
+    
+    .actions.cf
+      = submit_tag t('.sign_in'), :id => "commit_btn", :class => "rounded"
+      = button_tag t('.cancel'), :id => "cancel_btn", :class => "rounded", :type => 'reset'
+   
+    .password-reset.boxy
+      = link_to t('.password_reset'), new_password_reset_path 
+    
+    .registration
+      %p 
+        Want to create your own Staffplan? No worries, 
+        = link_to t('.registration_link'), new_registration_path, :id => "register_btn"
+     

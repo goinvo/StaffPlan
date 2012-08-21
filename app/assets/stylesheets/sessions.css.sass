@@ -1,149 +1,139 @@
 @import compass
 @import compass/reset
 @import compass/css3/text-shadow
+@import compass/css3/images
 
 body
   font-family: 'Open Sans', Helvetica, Arial, sans-serif
-  background-color: rgba(230, 230, 230, 1.0) 
+  background-color: #FFFFFF
   +text-shadow
   
-  #commit_btn
-    width: 100px
-    min-height: 30px
-    padding: 0px
-   
-    outline: none
-    border: 1px solid rgba(0,0,0,0.1)
-   
-    cursor: pointer
+  .cf:before,
+  .cf:after
+    content: " "
+    display: table
     
+  .cf:after
+    clear: both
+   
+  .fleft
     float: left
-   
-    font-size: 12px 
-    line-height: 30px
-    color: rgba(0,0,0,0.5)
-    text-shadow: 1px 1px rgba(255,255,255,0.3)
-    
-    background: -moz-linear-gradient(top,  rgba(245,245,245, 1.0) 0%, rgba(235,235,235,1.0) 100%)
-    background: -webkit-linear-gradient(top, whiteSmoke 0%, #EBEBEB 100%)
-    background: -o-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-    background: -ms-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-    background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-    
-    border-radius: 5px 5px
-    box-shadow: 0px 1px 2px rgba(0,0,0,0.2)
- 
-      
-  
+        
   section.main
     width: 1000px
     margin: auto
     
     section
       width: 400px
+      border-radius: 2px
       margin: 150px auto 0
-      padding: 15px
+      padding: 30px
+      border: 6px solid #999292
       
       h1
-        font-size: 22px
-        padding: 20px 0
-      
-      .clear
-        clear: both
-        margin-bottom: 10px
-      
+        font-size: 30px
+        font-family: serif
+        color: #5e5e5e
+        margin-bottom: 5px
+     
+      h3
+        font-size: 12px
+        font-weight: 100
+        padding-bottom: 10px 
+        margin-bottom: 20px
+        display: block
+        color: #979797
+        border-bottom: 1px dotted #eee   
+   
       form
+        background-image: url(/assets/logos/login_logo.png)
+        background-position: right bottom
+        background-repeat: no-repeat 
+       
+       
         .field
-          margin-bottom: 10px
-          height: 40px
+          margin-bottom: 20px
           
           label
-            float: left
-            line-height: 40px
-            margin-right: 5px
-            text-align: right
-            width: 90px
+            display: block
+            font-size: 12px 
+            color: #5a5a5a
+            margin-bottom: 5px
             
-            -webkit-border-top-left-radius: 5px
-            -webkit-border-bottom-left-radius: 5px
-            -moz-border-radius-topleft: 5px
-            -moz-border-radius-bottomleft: 5px
-            border-top-left-radius: 5px
-            border-bottom-left-radius: 5px
-            
-            background-color: rgba(0,0,0,0.1)
-            background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-            background: -webkit-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-            box-shadow: inset 0px 0px 3px rgba(0,0,0,0.6)
-            
-            padding-right: 8px
-            color: rgba(0,0,0,0.4)
-        
-          input
+          input[type=email],
+          input[type=password],
             font-size: 16px
-            width: 280px
-            height: 34px
+            display: block
+            width: 392px
+            height: 30px
             line-height: 30px
             color: rgba(0,0,0,0.3)
             border: 1px solid rgba(0,0,0,0.1)
             padding: 2px 0px 2px 8px
-            background-color: rgba(0,0,0,0.1)
-            
+            background-color: white
             text-shadow: 1px 1px rgba(255,255,255,0.2)
-            
             outline: none
-            float: right
-            clear: right
-            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2)
+           
             +border-radius
           
           input:focus
             color: rgba(0,0,0,0.6) 
           
-        
-       
-        
+          .pushed
+            margin-left: 10px
+            line-height: 14px
+            margin-top: 2px
+            margin-bottom: 0px
+            display:block
+            
+            span
+              display:block
+              height: 14px 
+              line-height: 14px
+             
         .actions
-          
-          width: 290px
-          float: right
-          
-          .boxy
+          width: 400px
+          margin-bottom: 30px
+               
+          input,
+          button
             float: right
-            width: 180px
-            font-size: 20px  
-            line-height: 30px
-            color: rgba(0,0,0,0.5)
-            text-shadow: 1px 1px rgba(255,255,255,0.3)
+            box-shadow: 0px 2px 1px rgba(0,0,0,0.2)
+            color: #787878
+            border: none
+            outline: none
+            padding: 5px
+            height: 30px
+            width: 90px
+            font-size: 12px
+            margin-right: 10px
+            cursor:pointer
+            +border-radius
+            +text-shadow
+          
+          input
+            @include background-image(linear-gradient(#f8f8fa, #d4deed))
+            margin-right: 0px
             
-            border: 1px solid rgba(0,0,0,0.1)
-            text-align: center
-            
-            background: -moz-linear-gradient(top,  rgba(245,245,245, 1.0) 0%, rgba(235,235,235,1.0) 100%)
-            background: -webkit-linear-gradient(top, whiteSmoke 0%, #EBEBEB 100%)
-            background: -o-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-            background: -ms-linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-            background: linear-gradient(top,  rgba(245,245,245, 1.0) 0%,rgba(235,235,235,1.0) 100%)
-            
-            border-radius: 5px 5px
-            box-shadow: 0px 1px 2px rgba(0,0,0,0.2)
-         
-          .larger
-            width: 290px
-            margin-top: 50px
-         
-            
-          .password-reset
-            a
-              font-size: 12px
-              color: rgba(0,0,0,0.5)
-              text-decoration: none
-  
-    #register_btn
-      font-size: 12px 
-      line-height: 30px
-      color: rgba(0,0,0,0.5)
-      text-decoration: none
-  
+          button
+            @include background-image(linear-gradient(#fafafa, #f4f4f4))
+        
+        .password-reset
+          margin-bottom: 20px
+          a
+            color: #129eff
+            text-decoration: none
+            font-size: 11px 
+        
+        .registration 
+          width: 200px  
+          font-size: 11px
+          line-height: 1.5em
+          a
+            color: #129eff
+            text-decoration: none
+            font-size: 10px
+           
+ 
 @import _flash
 
