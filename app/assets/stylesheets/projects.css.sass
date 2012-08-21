@@ -64,7 +64,10 @@ body#projects.show
           position: absolute
           left: 308px
           bottom: 0px
-          display: block
+          +display-box
+          +box-orient("horizontal")
+          overflow: hidden
+          white-space: nowrap
           
           > *
             display: inline-block
@@ -95,6 +98,8 @@ body#projects.show
             display: block
             +plan-actual-shared
             +box-flex(1)
+            overflow: hidden
+            white-space: nowrap
               
             .plan-actual
               .diff-remove-project
@@ -103,9 +108,10 @@ body#projects.show
       .date-pagination-header
         display: inline-block
         margin-left: 283px
-            
         +plan-actual-shared
         +next-and-previous
+        overflow: hidden
+        white-space: nowrap
         
         .plan-actual div:first-child
           visibility: visible
