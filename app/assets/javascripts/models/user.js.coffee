@@ -5,6 +5,11 @@ class User extends Backbone.Model
     
     @work_weeks = new WorkWeekList @get( "work_weeks" ),
       parent: @
+    
+    # Week Hour Counter (initialised and set in UserView)
+    $( document.body ).bind 'work_week:value:updated', =>
+      if @view?.weekHourCounter?
+        @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
   
   url: ->
     "#{@collection.url()}/#{@id}"
