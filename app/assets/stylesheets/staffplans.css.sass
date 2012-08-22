@@ -124,8 +124,8 @@ body#staffplans.index
 //\\//\\//\\//\\//\\
 body#staffplans.show
   section.main
-    width: initial
-    min-width: initial
+    width: 100%
+    min-width: 100%
     
     .content
       padding: 10px 20px
@@ -159,15 +159,17 @@ body#staffplans.show
           +box-orient("horizontal")
           overflow: hidden
           white-space: nowrap
+          height: 100%
 
           > *
-            display: inline
+            display: inline-block
 
           +next-and-previous
 
           .week-hour-counter
             +week-hour-counter
-
+            padding-top: 26px
+            
       .project-list
         .headers
           +staffplan-columns
@@ -223,7 +225,7 @@ body#staffplans.show
             +box-orient("horizontal")
             padding: 2px 15px
             height: 75px
-            
+            width: 100%
 
             .client-name
               visibility: hidden
