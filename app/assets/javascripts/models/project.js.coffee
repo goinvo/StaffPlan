@@ -8,6 +8,10 @@ class Project extends Backbone.Model
       parent: @
     
     @bind 'destroy', (event) -> @collection.remove @
+  
+  url: ->
+    if @collection? then @collection.url() else "/projects/#{@id}"
+    
   validate: (attributes) ->
     if @get('name') == ''
       return "Project name is required"
