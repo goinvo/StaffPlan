@@ -10,7 +10,7 @@ class Project extends Backbone.Model
     @bind 'destroy', (event) -> @collection.remove @
   
   url: ->
-    if @collection? then @collection.url() else "/projects/#{@id}"
+    if @collection? then "#{@collection.url()}/#{@id}" else "/projects/#{@id}"
     
   validate: (attributes) ->
     if @get('name') == ''
