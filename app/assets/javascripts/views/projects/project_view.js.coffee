@@ -19,7 +19,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     
     @model.users.bind 'reset', (newUsers) =>
       newUsers.each (newUser) => @initUser newUser
-      @render()
+      @delayedOnWindowResized()
       
     @model.users.each (user) =>
       @initUser user
