@@ -46,7 +46,12 @@ body#projects.index
               color: $color-light
 body#projects.show
   section.main
+    width: initial
+    min-width: initial
+    
     .content
+      padding: 10px 20px
+      
       .project-header
         position: relative
         height: 90px
@@ -63,8 +68,11 @@ body#projects.show
           position: absolute
           left: 308px
           bottom: 0px
-          width: 650px
-          display: block
+          +display-box
+          +box-orient("horizontal")
+          overflow: hidden
+          white-space: nowrap
+          height: 100%
           
           > *
             display: inline-block
@@ -73,7 +81,7 @@ body#projects.show
 
           .week-hour-counter
             +week-hour-counter
-            display: inline
+            display: inline-block
         
       section.users
         margin-top: 5px
@@ -81,6 +89,10 @@ body#projects.show
         .user
           border-bottom: 1px solid #ddd
           padding: 10px 0
+          +display-box
+          +box-orient("horizontal")
+          overflow: hidden
+          width: 100%
           
           &:last-child
             margin-bottom: 20px
@@ -89,8 +101,11 @@ body#projects.show
             min-width: 250px
               
           .months-and-weeks
-            display: inline-block
+            display: block
             +plan-actual-shared
+            +box-flex(1)
+            overflow: hidden
+            white-space: nowrap
               
             .plan-actual
               .diff-remove-project
@@ -99,9 +114,10 @@ body#projects.show
       .date-pagination-header
         display: inline-block
         margin-left: 283px
-            
         +plan-actual-shared
         +next-and-previous
+        overflow: hidden
+        white-space: nowrap
         
         .plan-actual div:first-child
           visibility: visible

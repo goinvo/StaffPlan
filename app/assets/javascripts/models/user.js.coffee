@@ -8,16 +8,18 @@ class User extends Backbone.Model
     
     # Week Hour Counter (initialised and set in UserView)
     $( document.body ).bind 'work_week:value:updated', =>
-      @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models if @view.weekHourCounter?
-
-  urlRoot: "/users"
+      if @view?.weekHourCounter?
+        @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
+  
+  url: ->
+    "#{@collection.url()}/#{@id}"
 
   dateChanged: (event) ->
     event.preventDefault()
     interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
     @fromDate.add('weeks', interval)
     @toDate.add('weeks', interval)
-    @view.renderAllProjects()
+    @view.renderContent()
     @weekHourCounter.render @dateRangeMeta().dates, @projects.models
 
   dateRangeMeta: ->

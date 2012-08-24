@@ -8,7 +8,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
 
   changePage: (event) ->
     @dateChanged event
-    @renderAllProjects()
+    @renderContent()
     @$( '.headers .months-and-weeks' )
       .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
     
@@ -16,6 +16,8 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
+    
+    @container_selector = '.project-list > section[data-client-id]:first .months-and-weeks'
     
     @model.view = @
     @model.url = ->
@@ -38,7 +40,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
       @weekHourCounter.render @dateRangeMeta().dates, @model.projects.models
     
     @render()
-    @renderAllProjects()
+    @renderContent()
 
   templateData: ->
     name: @model.get("full_name")
@@ -58,7 +60,17 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     weeks: ->
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
         name: "W#{Math.ceil dateMeta.mday / 7}"
-
+  
+  renderWeekHourCounter: ->
+    @weekHourCounter = new views.shared.ChartTotalsView @dateRangeMeta().dates, @model.projects.models, ".user-select", @$ ".week-hour-counter"
+    
+  renderHeaderTemplate: (append=false) ->
+    html = Mustache.to_html( @templates.work_week_header, @headerTemplateData() )
+    if append
+      @$el.find( '.months-and-weeks' ).html( html )
+    else
+      html
+  
   render: ->
     $( @el )
       .attr(
@@ -66,12 +78,12 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
       )
       .html( Mustache.to_html( @templates.user, @templateData(), @partials ) )
       .find( '.months-and-weeks' )
-      .html( Mustache.to_html( @templates.work_week_header, @headerTemplateData() ) )
+      .html( @renderHeaderTemplate() )
 
     $( @el )
       .appendTo '.content'
 
-    @weekHourCounter = new views.shared.ChartTotalsView @model.dateRangeMeta().dates, @model.projects.models, ".user-select", @$ ".week-hour-counter"
+    @renderWeekHourCounter()
 
     setTimeout => @addNewProjectRow()
 
@@ -129,7 +141,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     </section>
     """
     
-  renderAllProjects: ->
+  renderContent: =>
     for clientId, projects of @model.projectsByClient()
       @renderProjectsForClient clientId, projects
 

@@ -88,6 +88,7 @@ class views.projects.WorkWeekListView extends Support.CompositeView
         hasNoWorkWeeks: @actualTotal() == 0
         yearsAndCweeks: (=>
           dates = @dateRangeMeta().dates
+          
           _.map dates, (dateObject) =>
             workWeek = @workWeekByCweekAndYear dateObject.mweek, dateObject.year
         

@@ -6,7 +6,7 @@ class UserDecorator < Draper::Base
   include Haml::Helpers
 
   def gravatar
-    "http://www.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+    "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
 
   def permissions_information_for_company(company)

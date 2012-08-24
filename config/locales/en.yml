@@ -37,10 +37,13 @@ en:
       change_password: "Password Reset"
   sessions:
     new:
-      sign_in: Sign in
-      email: Email
+      sign_in: LOGIN
+      cancel: CANCEL
+      email: Email Address
       password: Password
-      password_reset: Forgot your password?
+      registration_text: Want to create your own Staffplan? No worries, 
+      registration_link: create one now!
+      password_reset: Lost your password?
   
   staffplans:
     mustache:

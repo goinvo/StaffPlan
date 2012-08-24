@@ -6,7 +6,7 @@ gem 'heroku'
 gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.1'
 gem 'coffee-filter'
-gem 'compass',        '~> 0.12.rc1'
+gem 'compass',        '~> 0.12.2'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'

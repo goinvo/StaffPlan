@@ -5,12 +5,14 @@
 // the compiled file.
 //
 //= require modernizr.custom
-//= require jquery.min
+//= require jquery
+//= require jquery-ui-1.8.17.custom.min
 //= require rails
-//= require underscore.min
-//= require backbone.min
+//= require underscore
+//= require backbone
 //= require backbone-support
 //= require mustache
+//= require handlebars
 //= require moment
 //= require d3.v2
 //= require backbone-bootstrap
