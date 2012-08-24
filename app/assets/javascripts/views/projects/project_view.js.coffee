@@ -85,6 +85,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     <div class='project-header'>
       <header>
         <h2>{{clientName}} : {{project.name}}</h2>
+        (Cost: ${{project.cost}} {{project.payment_frequency}})
         <div class='actions'>
           <a href='/projects/{{project.id}}/edit'>Edit Project Details</a>
         </div>

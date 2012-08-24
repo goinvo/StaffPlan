@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727003213) do
+ActiveRecord::Schema.define(:version => 20120802191255) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -46,9 +46,15 @@ ActiveRecord::Schema.define(:version => 20120727003213) do
   create_table "memberships", :force => true do |t|
     t.integer "user_id"
     t.integer "company_id"
-    t.boolean "disabled",   :default => false, :null => false
-    t.boolean "archived",   :default => false, :null => false
-    t.integer "roles",      :default => 0,     :null => false
+    t.boolean "disabled",                                            :default => false, :null => false
+    t.boolean "archived",                                            :default => false, :null => false
+    t.decimal "salary",               :precision => 12, :scale => 2
+    t.decimal "rate",                 :precision => 10, :scale => 2
+    t.decimal "full_time_equivalent", :precision => 12, :scale => 2
+    t.string  "payment_frequency"
+    t.integer "weekly_allocation"
+    t.string  "employment_status",                                   :default => "fte", :null => false
+    t.integer "permissions",                                         :default => 0,     :null => false
   end
 
   add_index "memberships", ["company_id", "user_id"], :name => "index_memberships_on_company_id_and_user_id", :unique => true
@@ -56,11 +62,13 @@ ActiveRecord::Schema.define(:version => 20120727003213) do
   create_table "projects", :force => true do |t|
     t.integer  "client_id"
     t.string   "name"
-    t.boolean  "active",     :default => true
+    t.boolean  "active",                                           :default => true
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "company_id"
-    t.boolean  "proposed",   :default => false, :null => false
+    t.boolean  "proposed",                                         :default => false,   :null => false
+    t.decimal  "cost",              :precision => 12, :scale => 2, :default => 0.0,     :null => false
+    t.string   "payment_frequency",                                :default => "total", :null => false
   end
 
   create_table "projects_users", :id => false, :force => true do |t|

@@ -14,3 +14,6 @@
 
   %ul
     %li= @user.email
+  - if current_user.handles_financials_of?(current_user.current_company)
+    = UserDecorator.new(@user).permissions_information_for_company(current_user.current_company)  
+    = UserDecorator.new(@user).employment_information_for_company(current_user.current_company)  
