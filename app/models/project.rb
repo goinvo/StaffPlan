@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   include StaffPlan::AuditMethods
   has_paper_trail
 
-  attr_accessible :name, :active
+  attr_accessible :name, :active, :payment_frequency, :cost
 
   belongs_to  :client
   belongs_to  :company
