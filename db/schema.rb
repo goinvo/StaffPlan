@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802191255) do
+ActiveRecord::Schema.define(:version => 20120825191620) do
 
   create_table "assignments", :force => true do |t|
     t.integer "user_id"
@@ -35,13 +35,6 @@ ActiveRecord::Schema.define(:version => 20120802191255) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
-
-  create_table "companies_users", :id => false, :force => true do |t|
-    t.integer "company_id"
-    t.integer "user_id"
-  end
-
-  add_index "companies_users", ["company_id", "user_id"], :name => "index_companies_users_on_company_id_and_user_id"
 
   create_table "memberships", :force => true do |t|
     t.integer "user_id"
@@ -70,14 +63,6 @@ ActiveRecord::Schema.define(:version => 20120802191255) do
     t.decimal  "cost",              :precision => 12, :scale => 2, :default => 0.0,     :null => false
     t.string   "payment_frequency",                                :default => "total", :null => false
   end
-
-  create_table "projects_users", :id => false, :force => true do |t|
-    t.integer "user_id"
-    t.integer "project_id"
-  end
-
-  add_index "projects_users", ["project_id"], :name => "index_projects_users_on_project_id"
-  add_index "projects_users", ["user_id"], :name => "index_projects_users_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email"
