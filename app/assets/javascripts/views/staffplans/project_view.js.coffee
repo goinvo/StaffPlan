@@ -52,8 +52,12 @@ class views.staffplans.ProjectView extends Support.CompositeView
         id: "project_#{@model.id}"
       )
       .html( Mustache.to_html( @templates.project, @templateData() ) )
-      .find( '.months-and-weeks' )
-      .html @work_weeks.render().el
+    
+    unless @model.isNew()
+      $( @el )
+        .find( '.months-and-weeks' )
+        .html @work_weeks.render().el
+        
     @
   
   templates:
