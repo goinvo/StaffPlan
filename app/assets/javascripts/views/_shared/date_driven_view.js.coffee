@@ -1,14 +1,14 @@
-class views.shared.DateDrivenView extends Support.CompositeView
+class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    @fromDate = moment(window._meta.fromDate)
-    
-    # default to show 3 months, we'll defer re-rendering the proper
-    # amount until we have something to measure in the DOM
-    @weekInterval = 15
-    @toDate = @fromDate.clone().add('weeks', @weekInterval)
-    setTimeout @delayedOnWindowResized, 100
-    
-    $( window ).bind 'resize', @onWindowResized
+    # @fromDate = moment(window._meta.fromDate)
+    # 
+    # # default to show 3 months, we'll defer re-rendering the proper
+    # # amount until we have something to measure in the DOM
+    # @weekInterval = 15
+    # @toDate = @fromDate.clone().add('weeks', @weekInterval)
+    # setTimeout @delayedOnWindowResized, 100
+    # 
+    # $( window ).bind 'resize', @onWindowResized
     
   setWeekIntervalAndToDate: ->
     # find first project's work week list, measure the width of its months-and-weeks container
@@ -77,5 +77,3 @@ class views.shared.DateDrivenView extends Support.CompositeView
     @renderHeaderTemplate( true )
     @renderWeekHourCounter()
     @renderContent( true ) if @renderContent?
-    
-window.views.shared.DateDrivenView = views.shared.DateDrivenView

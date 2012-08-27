@@ -1,0 +1,145 @@
+@import "init";
+@import "_mixins";
+
+body#projects.edit, body#projects.new {
+  section.main {
+    form.edit_project, form.new_project {
+      .frequency {
+        margin-left: 16px;
+      }
+    }
+  }
+}
+
+body#projects.index {
+  section.main {
+    .content {
+      li.proposed {
+        background-color: #ccffcc;
+      }
+      li.chart {
+        padding-top: 20px;
+        padding-left: 300px;
+        border-top: none;
+        ul.week-hour-counter {
+          @include week-hour-counter;
+          max-height: 120px;
+          display: inline;
+        }
+      }
+      .user-header {
+        position: relative;
+        margin-bottom: 15px;
+        padding: 10px 0;
+        min-height: 30px;
+        border: 1px solid #e0e0e0;
+        background-color: #f7f7f7;
+        @include next-and-previous;
+        & > * {
+          display: inline-block;
+        }
+        .weeks {
+          position: absolute;
+          left: 260px;
+          width: 600px;
+          .month {
+            display: block;
+            width: 41px;
+            @include box-sizing(border-box);
+          }
+          tr:nth-child(2) {
+            .month {
+              margin-top: 6px;
+              color: $color-light;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+body#projects.show {
+  section.main {
+    width: initial;
+    min-width: initial;
+    .content {
+      padding: 10px 20px;
+      .project-header {
+        position: relative;
+        height: 90px;
+        margin-bottom: 10px;
+        header {
+          h2 {
+            font-size: 16px;
+          }
+        }
+        > * {
+          display: inline-block;
+        }
+        .date-pagination {
+          position: absolute;
+          left: 308px;
+          bottom: 0px;
+          @include display-box;
+          @include box-orient("horizontal");
+          overflow: hidden;
+          white-space: nowrap;
+          height: 100%;
+          > * {
+            display: inline-block;
+          }
+          @include next-and-previous;
+          .week-hour-counter {
+            @include week-hour-counter;
+            display: inline-block;
+          }
+        }
+      }
+      section.users {
+        margin-top: 5px;
+        .user {
+          border-bottom: 1px solid #dddddd;
+          padding: 10px 0;
+          @include display-box;
+          @include box-orient("horizontal");
+          overflow: hidden;
+          width: 100%;
+          &:last-child {
+            margin-bottom: 20px;
+          }
+          .user-info {
+            min-width: 250px;
+          }
+          .months-and-weeks {
+            display: block;
+            @include plan-actual-shared;
+            @include box-flex(1);
+            overflow: hidden;
+            white-space: nowrap;
+            .plan-actual {
+              .diff-remove-project {
+                width: 55px;
+              }
+            }
+          }
+        }
+      }
+      .date-pagination-header {
+        display: inline-block;
+        margin-left: 283px;
+        @include plan-actual-shared;
+        @include next-and-previous;
+        overflow: hidden;
+        white-space: nowrap;
+        .plan-actual div:first-child {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+
+.row-filler {
+  @include row-filler;
+}

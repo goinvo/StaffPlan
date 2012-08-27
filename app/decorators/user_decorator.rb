@@ -1,5 +1,8 @@
 class UserDecorator < Draper::Base
   decorates :user
+  decorates_association :project
+  decorates_association :companies
+  decorates_association :current_company
   denies :plan_for
 
   include Draper::LazyHelpers
@@ -117,6 +120,7 @@ class UserDecorator < Draper::Base
   def staff_plan_json(company_id)
     user_projects = user.projects.for_company(company_id)
     ww = user.work_weeks.group_by(&:project_id)
+    
     Jbuilder.encode do |json|
       json.(user, :id, :full_name, :email)
       json.gravatar gravatar
@@ -137,6 +141,20 @@ class UserDecorator < Draper::Base
       json.work_weeks user.work_weeks.for_project(project) do |json, work_week|
         json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
       end
+    end
+  end
+  
+  def current_company_selector
+    init_haml_helpers
+    
+    if current_user.selectable_companies.length > 1
+      capture_haml do
+        form_for current_user do |f|
+          h.select(:user, :current_company_id, options_from_collection_for_select(current_user.selectable_companies, :id, :name, selected: current_user.current_company_id ))
+        end
+      end
+    else
+      current_user.current_company.try(:name) || "N/A"
     end
   end
 end

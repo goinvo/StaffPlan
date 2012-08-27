@@ -1,0 +1,145 @@
+@import "compass/css3";
+@import "compass/typography/text/ellipsis";
+@import "compass/utilities/tables";
+
+@mixin inline-bullets {
+  > li, span, div, a {
+    & + {
+      & li, span, div, a {
+        &:before {
+          content: "\2022";
+          margin-right: 3px;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}
+
+@mixin shared-crud-css {
+  h1 {
+    font-size: 20px;
+    padding: 5px;
+  }
+  h2 {
+    font-size: 16px;
+    padding: 5px;
+  }
+  .info {
+    padding: 5px;
+  }
+  table {
+    margin-top: 10px;
+    @include table-scaffolding;
+    tbody {
+      tr {
+        td {
+          padding: 5px;
+        }
+      }
+    }
+  }
+  form {
+    .field {
+      padding: 5px 0;
+      label {
+        display: block;
+        &.inline {
+          display: inline;
+        }
+      }
+    }
+  }
+}
+
+//\\//\\//\\//\\//\\
+//   Arrow Icons  \\
+//\\//\\//\\//\\//\\
+$arrows-spacing: 20px;
+
+@import "arrows/*.png";
+
+@mixin next-and-previous {
+  .next, .previous {
+    display: inline-block;
+    width: 10px;
+    height: 17px;
+    text-indent: -9999px;
+  }
+  .next {
+    @include arrows-sprite(forward);
+  }
+  .previous {
+    @include arrows-sprite(back);
+  }
+}
+
+//\\//\\//\\//\\//\\//\\
+//  Week Hour Counter \\
+//\\//\\//\\//\\//\\//\\
+@mixin week-hour-counter {
+  margin: 0;
+  padding: 15px 0 0;
+  list-style-type: none;
+  font-size: $font-size;
+  li {
+    position: relative;
+    display: inline-block;
+    margin: 0 3px;
+    padding: 0;
+    width: 32px;
+    height: 10px;
+    background: #5e9b69;
+    @include box-sizing(border-box);
+    vertical-align: bottom;
+    @include transition(all 0.2s ease-out);
+    span {
+      position: absolute;
+      display: block;
+      top: -15px;
+      width: 32px;
+      text-align: center;
+    }
+    &.passed {
+      background: #d6d6d6;
+    }
+    &.actuals {
+      background: #d6d6d6;
+    }
+  }
+}
+
+@mixin plan-actual-shared {
+  .plan-actual {
+    display: block;
+    .row-label {
+      visibility: hidden;
+      color: #9f9f9f;
+    }
+    > * {
+      display: inline-block;
+      width: 35px;
+    }
+    div {
+      input {
+        width: 32px;
+        text-align: center;
+      }
+    }
+    .diff-remove-project {
+      width: 45px;
+      text-align: left;
+    }
+  }
+}
+
+@mixin row-filler {
+  position: absolute;
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  border: 1px solid darken(#e0e0e0, 20%);
+  border-top: none;
+  background: white;
+  text-align: center;
+}

@@ -1,15 +1,15 @@
-class User extends Backbone.Model
+class window.StaffPlan.Models.User extends Backbone.Model
   initialize: (userdata) ->
-    @projects = new ProjectList @get( "projects" ),
-      parent: @
-    
-    @work_weeks = new WorkWeekList @get( "work_weeks" ),
-      parent: @
-    
-    # Week Hour Counter (initialised and set in UserView)
-    $( document.body ).bind 'work_week:value:updated', =>
-      if @view?.weekHourCounter?
-        @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
+    # @projects = new ProjectList @get( "projects" ),
+    #   parent: @
+    # 
+    # @work_weeks = new WorkWeekList @get( "work_weeks" ),
+    #   parent: @
+    # 
+    # # Week Hour Counter (initialised and set in UserView)
+    # $( document.body ).bind 'work_week:value:updated', =>
+    #   if @view?.weekHourCounter?
+    #     @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
   
   url: ->
     "#{@collection.url()}/#{@id}"
@@ -50,16 +50,3 @@ class User extends Backbone.Model
         projectsByClient[ clientId ].push project
         projectsByClient
       , {}
-
-class UserList extends Backbone.Collection
-  model: User
-  
-  initialize: (models, attrs) ->
-    _.extend @, models
-    _.extend @, attrs
-    
-  url: ->
-    @parent.url() + "/users"
-
-@User = User
-@UserList = UserList

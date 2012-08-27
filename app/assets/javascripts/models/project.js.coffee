@@ -1,13 +1,13 @@
-class Project extends Backbone.Model
+class window.StaffPlan.Models.Project extends Backbone.Model
   initialize: ->
-    
-    @work_weeks = new WorkWeekList @get('work_weeks'),
-      parent: @
-      
-    @users = new UserList @get('users'),
-      parent: @
-    
-    @bind 'destroy', (event) -> @collection.remove @
+    # 
+    # @work_weeks = new WorkWeekList @get('work_weeks'),
+    #   parent: @
+    #   
+    # @users = new UserList @get('users'),
+    #   parent: @
+    # 
+    # @bind 'destroy', (event) -> @collection.remove @
   
   url: ->
     id = if @id? then "/#{@id}" else ""
@@ -22,16 +22,3 @@ class Project extends Backbone.Model
   
   getClientId: ->
     @get("client_id") || "new_client"
-  
-class ProjectList extends Backbone.Collection
-  model: Project
-  
-  initialize: (models, attrs) ->
-    _.extend @, models
-    _.extend @, attrs
-    
-  url: ->
-    @parent.url() + "/projects"
-
-window.Project = Project
-window.ProjectList = ProjectList

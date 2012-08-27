@@ -28,10 +28,10 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
+    @current_user ||= UserDecorator.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
-
+  
   def require_current_user 
     unless current_user.present?
       cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now} if request.get?

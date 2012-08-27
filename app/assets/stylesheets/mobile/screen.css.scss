@@ -1,0 +1,210 @@
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/typography/text/ellipsis";
+@import "compass/utilities/general/float";
+
+@import "init";
+@import "mixins";
+
+//\\//\\//\\//\\//\\
+//     Default    \\
+//\\//\\//\\//\\//\\
+body {
+  margin: 0;
+  padding: 0;
+  background: #eeeeee;
+  color: $color;
+  font-family: MyriadPro-Regular, "Myriad Pro Regular", MyriadPro, "Myriad Pro", Calibri, sans-serif;
+  font-size: $font-size;
+  line-height: $line-height;
+  a {
+    @include transition(color 0.2s ease-out);
+    color: #505050;
+    text-decoration: none;
+    &:link {
+      text-decoration: none;
+    }
+    &:visited {
+      text-decoration: none;
+    }
+    &:hover {
+      color: lighten(#505050, 20%);
+      text-decoration: none;
+    }
+    &:active {
+      text-decoration: none;
+    }
+  }
+}
+
+@import "forms";
+
+ul, ol, dl, p, form {
+  margin-bottom: 15px;
+}
+
+ul {
+  list-style-position: inside;
+  list-style-type: disc;
+}
+
+//\\//\\//\\//\\//\\
+//     Header     \\
+//\\//\\//\\//\\//\\
+body > header {
+  margin: 0;
+  padding: 6px 0;
+  line-height: 24px;
+  border-bottom: 1px solid #cccccc;
+  @include box-shadow(0 1px 0 white);
+  .inner {
+    position: relative;
+    margin: 0 auto;
+    padding: 0 10px;
+    width: 100%;
+    @include box-sizing(border-box);
+  }
+  ul {
+    display: inline;
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    li {
+      display: inline-block;
+      margin-left: 5px;
+      & + li {
+        margin-left: 20px;
+      }
+      &.name {
+        font-weight: bold;
+      }
+      a {
+        display: inline-block;
+        padding-left: 16px + 6px;
+        height: 24px;
+        line-height: 24px;
+      }
+    }
+  }
+  .right {
+    position: absolute;
+    right: 15px;
+    bottom: 0;
+    @include inline-bullets;
+  }
+}
+
+// Nav sprites
+$icons-spacing: 20px;
+
+@import "icons/*.png";
+
+body > header {
+  ul {
+    li#nav-all-staff a {
+      @include icons-sprite(people);
+    }
+  }
+}
+
+//\\//\\//\\//\\//\\
+//      Main      \\
+//\\//\\//\\//\\//\\
+section.main {
+  width: 100%;
+  margin: 0 auto;
+  ul {
+    list-style-type: none;
+    &.clients-and-projects {
+      padding: 0 10px;
+      li {
+        &.client-name {
+          font-weight: bold;
+        }
+        label {
+          max-width: 90px;
+          display: inline-block;
+          @include ellipsis;
+        }
+        span.estimated-hours {
+          color: #aaaaaa;
+        }
+      }
+    }
+  }
+  .content {
+    padding: 10px 0;
+    min-height: 400px;
+  }
+  .user-header {
+    position: relative;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border: 1px solid #e0e0e0;
+    border-left: none;
+    border-right: none;
+    background-color: #f7f7f7;
+    text-align: center;
+    @include next-and-previous;
+    .next {
+      position: absolute;
+      right: 10px;
+    }
+    span.to {
+      color: #aaaaaa;
+    }
+    .previous {
+      position: absolute;
+      left: 10px;
+    }
+    & > * {
+      display: inline-block;
+    }
+  }
+  section {
+    > header {
+      padding-top: 30px;
+      margin-bottom: 10px;
+      h2 {
+        display: inline-block;
+        margin-right: 25px;
+        line-height: 35px;
+        font-size: 18px;
+      }
+      > a {
+        display: inline-block;
+        padding: 6px;
+        border: solid #cccccc 1px;
+        @include border-radius(3px);
+        @include box-shadow(0 1px 0 white);
+        &:hover {
+          border-color: #aaaaaa;
+          text-decoration: none;
+        }
+      }
+    }
+    h3 {
+      padding: 10px 0 5px;
+      font-size: 16px;
+    }
+  }
+}
+
+//\\//\\//\\//\\//\\
+//     Footer     \\
+//\\//\\//\\//\\//\\
+footer {
+  padding: 15px 0;
+  text-align: center;
+  @include inline-bullets;
+}
+
+//\\//\\//\\//\\//\\
+//     Misc.      \\
+//\\//\\//\\//\\//\\
+.clear {
+  clear: both;
+  float: none;
+}
+
+@import "flash";

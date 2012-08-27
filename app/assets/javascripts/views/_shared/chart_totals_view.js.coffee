@@ -1,4 +1,4 @@
-class ChartTotalsView extends Backbone.View
+class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   ###*
     * Chart total controller.
     * @constructor
@@ -149,5 +149,3 @@ get_height = (ratio, d) ->
 # Make dummy week
 dummy = (date) ->
   get: (x) -> if x == "date" then date else 0
-
-@views.shared.ChartTotalsView = ChartTotalsView

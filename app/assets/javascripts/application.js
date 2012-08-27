@@ -4,19 +4,24 @@
 // It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
 // the compiled file.
 //
-//= require modernizr.custom
+
+//= require modernizr
 //= require jquery
-//= require jquery-ui-1.8.17.custom.min
-//= require rails
+//= require jquery-ujs
+//= require moment
+//= require d3.v2
+
 //= require underscore
 //= require backbone
 //= require backbone-support
-//= require mustache
 //= require handlebars
-//= require moment
-//= require d3.v2
-//= require backbone-bootstrap
-//= require_tree .
+
+//= require staffplan-app
+
+//= require_tree ./models
+//= require_tree ./collections
+//= require_tree ./views
+//= require_tree ./routers
 
 $( document ).ready(function() {
   $( 'select#user_current_company_id' ).live( 'change', function() {

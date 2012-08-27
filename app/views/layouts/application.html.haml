@@ -8,8 +8,10 @@
     %title= t('.staffplan')
     
     = stylesheet_link_tag "application", :media => 'screen, projection'
-    = yield(:stylesheet_includes)
+    = yield(:stylesheets)
+    
     = javascript_include_tag "application"
+    = yield(:javascript)
     
     = csrf_meta_tags
     
@@ -20,16 +22,11 @@
     %header
       .inner
         %ul
-          %li#nav-my-staff-plan= link_to(t('.my_staff_plan'), staffplan_path(current_user))
-          %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
-          %li#nav-clients= link_to(t('.clients'), clients_path)
-          %li#nav-projects= link_to(t('.projects'), projects_path)
-          %li#current-company
-            - if current_user.selectable_companies.length > 1
-              = form_for current_user do |f|
-                = select(:user, :current_company_id, options_from_collection_for_select(current_user.selectable_companies, :id, :name, selected: current_user.current_company_id ))
-            - else
-              = current_user.current_company.try(:name) || "N/A"
+          %li#nav-my-staff-plan= link_to(t('.my_staff_plan'))
+          %li#nav-all-staff= link_to(t('.all_staff'))
+          %li#nav-clients= link_to(t('.clients'))
+          %li#nav-projects= link_to(t('.projects'))
+          %li#current-company= current_user.current_company_selector
         
         .header-content
           = yield(:header_content)
@@ -47,5 +44,3 @@
       
       - if is_mobile_device?
         = link_to("Mobile Site", "?mobile_view=true")
-    
-    = yield(:javascript_includes)

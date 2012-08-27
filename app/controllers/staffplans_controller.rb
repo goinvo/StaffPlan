@@ -1,16 +1,13 @@
 class StaffplansController < ApplicationController
   
   def show
-    c = current_user.current_company
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
     @from = 1.week.ago(@from)
-    @target_user = UserDecorator.new(c.users.find_by_id(params[:id]))
+    @target_user = UserDecorator.new(current_user.current_company.users.find_by_id(params[:id]))
     redirect_to root_url, error: I18n.t('controllers.staffplans.couldnt_find_user') and return unless @target_user.model.present?
     
     respond_to do |format|
       format.html do
-        @target_user_json = @target_user.staff_plan_json(c.id)
-        @clients = c.clients_as_json
       end
     
       format.mobile do

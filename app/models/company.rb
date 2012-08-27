@@ -32,18 +32,6 @@ class Company < ActiveRecord::Base
       end
     end
   end
-  
-  def clients_as_json
-    # Cheap and grouped by client id
-    company_projects = projects.group_by(&:client_id)
-    Jbuilder.encode do |json|
-      json.array! clients do |json, client|
-      json.(client, :id, :name, :active)
-        # We've got it in the hash, fetch it
-        json.projects company_projects[client.id]
-      end
-    end
-  end
 
   def self.all_with_users_and_projects
     Jbuilder.encode do |json|
