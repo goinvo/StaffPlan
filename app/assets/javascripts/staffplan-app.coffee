@@ -21,7 +21,7 @@ window.StaffPlan =
     
     $ -> Backbone.history.start(pushState: true)
     
-    $('a').live 'click', (event) =>
+    $('a:not([data-bypass])').live 'click', (event) =>
       event.preventDefault()
       href = $(event.currentTarget).attr('href').slice(1)
       Backbone.history.navigate(href, true)
