@@ -1,6 +1,6 @@
 %script{type: "text/json", id: "bootstrap"}
   :erb
-    { "user": <%= @target_user.staff_plan_json(current_user.current_company.id) %>
+    { "users": <%= current_user.current_company.users_json %>
     , "clients": <%= current_user.current_company.clients_as_json %>
     , "projects": <%= current_user.current_company.projects_as_json %>
     }
@@ -13,5 +13,4 @@
       div.html($('#bootstrap').text());
       var data = JSON.parse(div.text());
       StaffPlan.initialize(data);
-      window.router.staffplanShow();
     });

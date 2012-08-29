@@ -1,23 +1,16 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('staffplans')
-  
-%section
-  .user-header
-    %header
-      = link_to("Add Staff", new_user_path)
-      %span.inactive-users
-        = link_to "Show inactive users", inactive_staffplans_path
-      - if @sort == "name"
-        - sorting_criterion = :workload
-      - elsif @sort == "workload" || @sort.nil?
-        - sorting_criterion = :name
-      %span.sort
-        = link_to("Sort by #{sorting_criterion.to_s}", staffplans_path(:from => @start, :sort => sorting_criterion))
-    = render :partial => "date_switcher", :locals => { :date_range => @date_range, :sort => @sort.nil? ? "workload" : @sort.to_s}
-        
-  %ul.users
-    - @users.each do |user|
-      %li
-        = render partial: 'shared/user-info', locals: {user: user, url: staffplan_url(user)}
-        %ul.week-hour-counter
-          = user.chart_for_date_range(@date_range)
+%script{type: "text/json", id: "bootstrap"}
+  :erb
+    { "users": <%= current_user.current_company.users_json %>
+    , "clients": <%= current_user.current_company.clients_as_json %>
+    , "projects": <%= current_user.current_company.projects_as_json %>
+    }
+</script>
+
+= content_for :javascript do
+  :javascript
+    $(function () {
+      var div = $('<div></div>');
+      div.html($('#bootstrap').text());
+      var data = JSON.parse(div.text());
+      StaffPlan.initialize(data);
+    });

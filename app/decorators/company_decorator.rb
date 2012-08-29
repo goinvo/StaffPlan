@@ -21,4 +21,22 @@ class CompanyDecorator < Draper::Base
       end
     end
   end
+  
+  def users_json
+    Jbuilder.encode do |json|
+      json.array!(model.users) do |json, user|
+        user = user.decorate
+        user_projects = user.assignments.for_company(model.id)
+        ww = user.work_weeks.group_by(&:project_id)
+    
+        json.(user, :id, :full_name, :email, :gravatar)
+        json.projects user_projects do |json, assignment|
+          json.(assignment, :id, :user_id, :project_id, :proposed)
+          json.work_weeks ww[assignment.project_id] do |json, work_week|
+            json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
+          end
+        end
+      end
+    end
+  end
 end

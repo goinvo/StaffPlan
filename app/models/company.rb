@@ -24,14 +24,6 @@ class Company < ActiveRecord::Base
       user.save
     end
   end
-  
-  def users_json
-    Jbuilder.encode do |json|
-      json.array! self.users do |json, user|
-        json.(user, :id, :full_name, :email)
-      end
-    end
-  end
 
   def self.all_with_users_and_projects
     Jbuilder.encode do |json|

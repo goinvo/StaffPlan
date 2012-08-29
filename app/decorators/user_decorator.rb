@@ -118,16 +118,15 @@ class UserDecorator < Draper::Base
   end
 
   def staff_plan_json(company_id)
-    user_projects = user.projects.for_company(company_id)
+    user_projects = user.assignments.for_company(company_id)
     ww = user.work_weeks.group_by(&:project_id)
     
     Jbuilder.encode do |json|
       json.(user, :id, :full_name, :email)
       json.gravatar gravatar
-      json.projects user_projects do |json, project|
-        json.(project, :id, :name, :client_id)
-        json.proposed Assignment.where(user_id: user.id, project_id: project.id).first.try(:proposed) || false
-        json.work_weeks ww[project.id] do |json, work_week|
+      json.projects user_projects do |json, assignment|
+        json.(assignment, :id, :user_id, :project_id, :proposed)
+        json.work_weeks ww[assignment.project_id] do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end
       end

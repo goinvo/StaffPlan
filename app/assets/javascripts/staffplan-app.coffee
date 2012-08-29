@@ -8,16 +8,20 @@ window.StaffPlan =
     Projects: {}
     Clients: {}
   Routers: {}
+  
   initialize: (data) ->
-    @user = new StaffPlan.Models.User data.user
+    @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
     @clients = new StaffPlan.Collections.Clients data.clients
     
     new window.StaffPlan.Routers.StaffPlan
-      user: @user
+      users: @users
       projects: @projects
       clients: @clients
     
-    unless Backbone.history.started
-      Backbone.history.start()
-      Backbone.history.started = true
+    $ -> Backbone.history.start(pushState: true)
+    
+    $('a').live 'click', (event) =>
+      event.preventDefault()
+      href = $(event.currentTarget).attr('href').slice(1)
+      Backbone.history.navigate(href, true)
