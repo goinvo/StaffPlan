@@ -1,19 +1,16 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
+%script{type: "text/json", id: "bootstrap"}
+  :erb
+    { "users": <%= current_user.current_company.users_json %>
+    , "clients": <%= current_user.current_company.clients_as_json %>
+    , "projects": <%= current_user.current_company.projects_as_json %>
+    }
+</script>
 
-%section
-  %header
-    .user-info
-      %h2
-        = image_tag UserDecorator.new(@user).gravatar
-        = link_to @user.full_name, staffplan_path(@user)
-      %span.last-updated
-        = "(as of #{time_ago_in_words(@user.updated_at)} ago)"
-    = link_to 'Edit', edit_user_path(@user)
-    = link_to 'Destroy', @user, :confirm => 'Are you sure?', :method => :delete
-
-  %ul
-    %li= @user.email
-  - if current_user.handles_financials_of?(current_user.current_company)
-    = UserDecorator.new(@user).permissions_information_for_company(current_user.current_company)  
-    = UserDecorator.new(@user).employment_information_for_company(current_user.current_company)  
+= content_for :javascript do
+  :javascript
+    $(function () {
+      var div = $('<div></div>');
+      div.html($('#bootstrap').text());
+      var data = JSON.parse(div.text());
+      StaffPlan.initialize(data);
+    });

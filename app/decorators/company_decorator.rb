@@ -17,7 +17,7 @@ class CompanyDecorator < Draper::Base
   def projects_as_json
     Jbuilder.encode do |json|
       json.array!(model.projects) do |json, project|
-        json.(project, :client_id, :name, :active, :proposed, :cost, :payment_frequency)
+        json.(project, :id, :client_id, :name, :active, :proposed, :cost, :payment_frequency)
       end
     end
   end

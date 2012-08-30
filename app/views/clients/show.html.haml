@@ -1,18 +1,16 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('clients')
+%script{type: "text/json", id: "bootstrap"}
+  :erb
+    { "users": <%= current_user.current_company.users_json %>
+    , "clients": <%= current_user.current_company.clients_as_json %>
+    , "projects": <%= current_user.current_company.projects_as_json %>
+    }
+</script>
 
-%section
-  %header
-    %h2= @client.name
-    = link_to 'Edit', edit_client_path(@client)
-    = link_to 'Destroy', @client, :confirm => 'Are you sure?', :method => :delete
-
-  .info
-    %pre.description= @client.description
-    .active{ 'data-active' => @client.active }= @client.active ? t('.active') : t('.inactive')
-
-  - if @client.projects.any?
-    .info
-      %h3= t('.projects')
-      %ul.projects= render(partial: "project", collection: @client.projects)
-
+= content_for :javascript do
+  :javascript
+    $(function () {
+      var div = $('<div></div>');
+      div.html($('#bootstrap').text());
+      var data = JSON.parse(div.text());
+      StaffPlan.initialize(data);
+    });

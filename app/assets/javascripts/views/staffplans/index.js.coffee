@@ -3,13 +3,13 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     userInfo: '''
     <li>
       <div class='user-info'>
-        <a href="/clients">Link to clients#index</a>
         <a href="/staffplans/{{user.id}}">
           <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
           <span class='name'>
             <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
           </span>
         </a>
+        <a href="/users/{{user.id}}">Show user's profile</a>
       </div>
       <ul class='week-hour-counter'></ul>
     </li>
