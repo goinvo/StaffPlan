@@ -30,10 +30,11 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @$el.append( @frameTemplate( user: @model.attributes ) )
     
     @$el.append @clientViews = @clients.map (client) =>
-      new window.StaffPlan.Views.StaffPlans.Client.Show
+      new window.StaffPlan.Views.StaffPlans.Client
         model: client
         user: @model
-        assignments: @model.assignments.select (assignment) -> assignment.get('client_id') == client.id
+        assignments: @model.assignments.where
+          client_id: client.id
     
     @render()
     

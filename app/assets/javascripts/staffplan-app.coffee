@@ -6,6 +6,7 @@ window.StaffPlan =
     StaffPlans:
       Client: {}
       WorkWeeks: {}
+      Assignments: {}
     Users: {}
     Projects: {}
     Clients: {}

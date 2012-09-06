@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.StaffPlans.Assignments.WorkWeeks extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   className: "work-weeks"
   tagName: "section"
   
@@ -10,7 +10,6 @@ class window.StaffPlan.Views.StaffPlans.Assignments.WorkWeeks extends Backbone.V
   initialize: ->
     @model = @options.model
     @user = @options.user
-    @assignmentTemplate = Handlebars.compile @templates.assignment
     
     @$el.append( @user.assignments.map (assignment) =>
       @assignmentTemplate
