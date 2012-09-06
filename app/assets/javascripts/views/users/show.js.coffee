@@ -26,8 +26,8 @@ class window.StaffPlan.Views.Users.Show extends Support.CompositeView
   
   initialize: ->
     @userInfoTemplate = Handlebars.compile(@templates.userInfo)
-    userProjects = @model.get('projects').map (project) ->
-      window.StaffPlan.projects.get(project.project_id).get('name')
+    userProjects = @model.get('assignments').map (assignment) ->
+      window.StaffPlan.projects.get(assignment.project_id).get('name')
     @$el.html @userInfoTemplate({user: @model.attributes, projects: userProjects})
       
     @render()
