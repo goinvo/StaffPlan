@@ -3,7 +3,9 @@ window.StaffPlan =
   Collections: {}
   Views:
     Shared: {}
-    StaffPlans: {}
+    StaffPlans:
+      Client: {}
+      WorkWeeks: {}
     Users: {}
     Projects: {}
     Clients: {}

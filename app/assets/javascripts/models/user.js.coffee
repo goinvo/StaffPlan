@@ -1,11 +1,8 @@
 class window.StaffPlan.Models.User extends Backbone.Model
-  initialize: (userdata) ->
-    # @projects = new ProjectList @get( "projects" ),
-    #   parent: @
-    # 
-    # @work_weeks = new WorkWeekList @get( "work_weeks" ),
-    #   parent: @
-    # 
+  initialize: ->
+    @assignments = new window.StaffPlan.Collections.Assignments @get( "assignments" ),
+      parent: @
+    
     # # Week Hour Counter (initialised and set in UserView)
     # $( document.body ).bind 'work_week:value:updated', =>
     #   if @view?.weekHourCounter?

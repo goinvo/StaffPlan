@@ -17,7 +17,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   
   initialize: ->
     @users = @options.users
-    @userInfoTemplate = Handlebars.compile(@templates.userInfo)
+    @userInfoTemplate = Handlebars.compile @templates.userInfo
     
     @$el.html @users.map (user) => @userInfoTemplate user: user.attributes
       
