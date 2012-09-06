@@ -2,6 +2,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
   routes:
     "staffplans/:id"    : "staffplanShow"
     "staffplans"        : "staffplanIndex"
+    "clients/new"       : "clientNew"
     "clients/:id"       : "clientShow"
     "clients"           : "clientIndex"
     "users/:id"         : "userShow"
@@ -34,6 +35,11 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     client = @clients.get clientId
     clientShow = new window.StaffPlan.Views.Clients.Show(router: @, model: client)
     @swap clientShow
+
+  clientNew: ->
+    client = new window.StaffPlan.Models.Client
+    clientNew = new window.StaffPlan.Views.Clients.New(router: @, model: client, collection: window.StaffPlan.clients)
+    @swap clientNew
 
   # Users
   userShow: (userId) ->

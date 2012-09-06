@@ -10,6 +10,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
         </a>
       </div>
     </li>
+    <a href="/clients/new">Add Client</a>
     '''
   
   initialize: ->
