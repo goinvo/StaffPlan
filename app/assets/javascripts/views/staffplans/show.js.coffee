@@ -5,43 +5,38 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
   templates:
     frame: '''
     <div id="user-select" class="grid-row user-info">
-      <div class="grid-row-element">
+      <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>
       </div>
-      <div class="grid-row-element"></div>
-      <div id="user-chart" class="grid-row-element"></div>
+      <div id="user-chart" class="grid-row-element flex"></div>
       <div class="grid-row-element"></div>
     </div>
     '''
-    
-    assignment: '''
-    <div class="assignment-row grid-row">
-      <div class="grid-row-element">{{client.name}}</div>
-      <div class="grid-row-element">{{project.name}}</div>
-      <div class="grid-row-element">work weeks</div>
-      <div class="grid-row-element">controls</div>
-    </div>
-    '''
+  
+  gatherClientsByAssignments: ->
+    _.uniq @model.assignments.pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
     
   initialize: ->
-    @user = @options.user
+    window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
+    
+    @model = @options.user
+    @clients = new window.StaffPlan.Collections.Clients @gatherClientsByAssignments()
     @frameTemplate = Handlebars.compile @templates.frame
     @assignmentTemplate = Handlebars.compile @templates.assignment
     
-    window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
+    @$el.append( @frameTemplate( user: @model.attributes ) )
     
-    @$el.append( @frameTemplate( user: @user.attributes ) )
-    @$el.append( @user.assignments.map (assignment) =>
-      @assignmentTemplate
-        assignment: assignment
-        project: StaffPlan.projects.get( assignment.get( 'project_id' ) ).attributes
-        client: StaffPlan.clients.get( assignment.get( 'client_id' ) ).attributes
-    )
+    @$el.append @clientViews = @clients.map (client) =>
+      new window.StaffPlan.Views.StaffPlans.Client.Show
+        model: client
+        user: @model
+        assignments: @model.assignments.select (assignment) -> assignment.get('client_id') == client.id
+    
     @render()
     
   render: ->
     @$el.appendTo('section.main .content')
-    
+    @$el.append @clientViews.map (clientView) -> clientView.el

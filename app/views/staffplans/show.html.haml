@@ -12,7 +12,7 @@
   :javascript
     $(function () {
       var div = $('<div></div>');
-      div.html($('#bootstrap').text());
+      div.html($('#bootstrap').remove().text());
       var data = JSON.parse(div.text());
       StaffPlan.initialize(data);
     });

@@ -134,6 +134,7 @@ section.main {
   margin: 0;
   width: 100%;
   min-width: 100%;
+  padding: 10px 20px;
   
   @include box-sizing(border-box);
   .content {
@@ -317,28 +318,56 @@ footer {
   overflow: hidden;
   width: 100%;
   
+  &.padded {
+    padding: 8px 15px;
+  }
+  
   .grid-row-element {
     overflow: hidden;
     white-space: nowrap;
     
-    &:nth-child(1) {
-      background-color: red;
-      width: 140px;
+    &.padding-top-left {
+      padding: 5px 0 0 5px;
     }
     
-    &:nth-child(2) {
-      background-color: yellow;
-      width: 140px;
+    &.fixed-180 {
+      width: 180px;
     }
     
-    &:nth-child(3) {
-      background-color: green;
+    &.fixed-360 {
+      width: 360px;
+    }
+    
+    &.flex {
       @include box-flex(1);
     }
     
-    &:nth-child(4) {
+    &.fixed-80 {
       background-color: blue;
       width: 80px;
+    }
+    
+    .show-first-row {
+      display: none;
+      
+      &:first-child {
+        display: initial;
+      }
+    }
+  }
+}
+
+.assignment-row {
+  min-height: 75px;
+}
+
+.client {
+  &.zebra {
+    &[data-client-id]:nth-child(2n+1) {
+      border: 1px solid #e0e0e0;
+      border-right: none;
+      border-left: none;
+      background-color: #f7f7f7;
     }
   }
 }
