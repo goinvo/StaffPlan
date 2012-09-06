@@ -7,7 +7,7 @@ class CompanyDecorator < Draper::Base
     
     Jbuilder.encode do |json|
       json.array! model.clients do |json, client|
-      json.(client, :id, :name, :active)
+      json.(client, :id, :name, :description, :active)
         # We've got it in the hash, fetch it
         json.projects company_projects[client.id]
       end

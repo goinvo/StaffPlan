@@ -1,15 +1,21 @@
 class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   templates:
     clientInfo: '''
-    <li>
-      <div class='client-info'>
-        <a href="/clients/{{client.id}}">
-          <span class='client-name'>
-            <a href="/clients/{{client.id}}">{{client.name}}</a>
-          </span>
-        </a>
-      </div>
-    </li>
+    <ul class="clients-list">
+      {{#each clients}}
+        <li> 
+          <div class='client-info'>
+            <a href="/clients/{{this.id}}">
+              <span class='client-name'>
+                <a href="/clients/{{this.id}}">
+                  {{this.name}}
+                </a>
+              </span>
+            </a>
+          </div>
+        </li>
+      {{/each}}
+    </ul>
     <a href="/clients/new">Add Client</a>
     '''
   
@@ -17,7 +23,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     
     @clientInfoTemplate = Handlebars.compile(@templates.clientInfo)
     
-    @$el.html @collection.map (client) => @clientInfoTemplate client: client.attributes
+    @$el.html @clientInfoTemplate clients: @collection.map (client) -> client.attributes
       
     @render()
     
