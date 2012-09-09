@@ -11,6 +11,10 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
                 <a href="/clients/{{this.id}}">
                   {{this.name}}
                 </a>
+                <span class="separator"> // </span>
+                <a href="/clients/{{this.id}}/edit">
+                  Edit client {{this.name}}
+                </a>
               </span>
             </a>
           </div>
