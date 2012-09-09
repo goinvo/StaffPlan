@@ -1,6 +1,7 @@
 class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   templates:
     clientInfo: '''
+    <h2>List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a></h2> 
     <ul class="clients-list">
       {{#each clients}}
         <li> 
@@ -23,7 +24,9 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     
     @clientInfoTemplate = Handlebars.compile(@templates.clientInfo)
     
-    @$el.html @clientInfoTemplate clients: @collection.map (client) -> client.attributes
+    @$el.html @clientInfoTemplate
+      clients: @collection.map (client) -> client.attributes
+      currentCompany: @options.currentCompany
       
     @render()
     

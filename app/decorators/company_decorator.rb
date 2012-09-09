@@ -14,6 +14,12 @@ class CompanyDecorator < Draper::Base
     end
   end
   
+  def self_as_json
+    Jbuilder.encode do |json|
+      json.(self, :id, :name)
+    end
+  end
+
   def projects_as_json
     Jbuilder.encode do |json|
       json.array!(model.projects) do |json, project|

@@ -16,11 +16,13 @@ window.StaffPlan =
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
     @clients = new StaffPlan.Collections.Clients data.clients
-    
+    @currentCompany = data.currentCompany
+
     new window.StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects
       clients: @clients
+      currentCompany: @currentCompany
     
     $ -> Backbone.history.start(pushState: true)
     

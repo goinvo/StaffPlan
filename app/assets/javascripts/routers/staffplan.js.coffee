@@ -12,7 +12,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     @users = data.users
     @projects = data.projects
     @clients = data.clients
-    
+    @currentCompany = data.currentCompany
     window.router = @
   
   # Staff Plans
@@ -28,7 +28,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
 
   # Clients
   clientIndex: ->
-    clientIndex = new window.StaffPlan.Views.Clients.Index(router: @, collection: @clients)
+    clientIndex = new window.StaffPlan.Views.Clients.Index(router: @, collection: @clients, currentCompany: @currentCompany)
     @swap clientIndex
 
   clientShow: (clientId) ->
