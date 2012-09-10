@@ -57,9 +57,12 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
                       memo[$(elem).attr('data-attribute')] = $(elem).val()
                       memo
                     , {}
-    if @model.isNew() then @collection.add(@model)
+    isNew = @model.isNew()
     @model.save attributes,
-      error: =>
+      error: (model, response) =>
+        console.log(response)
         alert "Couldn't save the client to the server :/"
-      success: =>
+      success: (model, response) =>
+        if isNew then @collection.add model
         Backbone.history.navigate(@collection.url(), true)
+        # We should have some special view to display information to the user. That view should be used by other views

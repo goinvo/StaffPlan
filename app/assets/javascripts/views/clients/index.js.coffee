@@ -18,8 +18,8 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
               </span>
             </a>
           </div>
+          <a href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">Delete client</a>
         </li>
-        <span data-action="delete" data-client-id="{{this.id}}">Delete client</span>
       {{/each}}
     </ul>
     <a href="/clients/new">Add Client</a>
@@ -36,9 +36,11 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     @render()
     
   events: ->
-    "click span[data-action=delete]": "deleteClient"
+    "click a[data-action=delete]": "deleteClient"
 
   deleteClient: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
     clientId = $(event.currentTarget).data("client-id")
     client = @collection.get(clientId)
     client.destroy()
