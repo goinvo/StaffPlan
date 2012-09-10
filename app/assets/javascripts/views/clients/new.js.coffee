@@ -60,7 +60,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
                     , {}
     @model.set(attributes)
     @model.save
-    Backbone.history.navigate(@collection.url(), true)
+    Backbone.history.navigate(@model.collection.url(), true)
 
   saveClient: (event) ->
     attributes = _.reduce $('[data-attribute]'), (memo, elem) ->
@@ -68,3 +68,4 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
                       memo
                     , {}
     @collection.create(attributes)
+    Backbone.history.navigate(@collection.url(), true)
