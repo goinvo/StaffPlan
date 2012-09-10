@@ -19,6 +19,14 @@ class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
           inactive
         {{/if}}
       </div>
+      <h2>List of {{client.name}}'s projects</h2>
+      <ul class="client-projects">
+        {{#each projects}}
+          <li class="client-project">
+            <a href="/projects/{{this.id}}">{{this.name}}</a>
+          </li>
+        {{/each}}
+      </div>
     </div>
     <div class="actions">
       <a href="/clients">Back to list of clients</a>
@@ -26,7 +34,9 @@ class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
     '''
   initialize: ->
     @clientInfoTemplate = Handlebars.compile(@templates.clientInfo)
-    @$el.html @clientInfoTemplate({client: @model.attributes})
+    @$el.html @clientInfoTemplate
+      client: @model.attributes
+      projects: @model.get("projects")
     @render()
  
   render: ->
