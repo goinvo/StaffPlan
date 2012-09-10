@@ -1,9 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('clients')
-  
-%section
-  %header
-    %h2= @client.name
-
-  = render 'form'
-
+= render :partial => 'shared/backbone_bootstrap'

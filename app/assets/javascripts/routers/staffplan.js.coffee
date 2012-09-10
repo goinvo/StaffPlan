@@ -2,10 +2,10 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
   routes:
     "staffplans/:id"    : "staffplanShow"
     "staffplans"        : "staffplanIndex"
+    "clients"           : "clientIndex"
     "clients/new"       : "clientNew"
     "clients/:id"       : "clientShow"
     "clients/:id/edit"  : "clientEdit"
-    "clients"           : "clientIndex"
     "users/:id"         : "userShow"
     
     
