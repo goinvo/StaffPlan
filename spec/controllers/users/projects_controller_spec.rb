@@ -73,8 +73,7 @@ describe Users::ProjectsController do
       end
       
       it "should render FAIL JSON if the project doesn't save" do
-        Project.any_instance.expects(:save).returns(false)
-        post :create, :user_id => @user.id, :client_name => @client_name, :name => @project_name
+        post :create, :user_id => @user.id, :client_name => @client_name
         response.should be_success
         response.body.match("\"status\":\"fail\"").should_not be_nil
         response.body.match("\"errors\":").should_not be_nil
@@ -96,10 +95,6 @@ describe Users::ProjectsController do
         
         client.reload.projects.find_by_name(@project_name).should_not be_nil
         @user.reload.projects.find_by_name(@project_name).should_not be_nil
-        
-        lambda {
-          post :create, :user_id => @user.id, :client_name => client.name, :name => @project_name.downcase
-        }.should raise_error ActiveRecord::RecordNotUnique 
       end
     end
   end
