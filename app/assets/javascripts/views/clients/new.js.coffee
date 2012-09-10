@@ -41,7 +41,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
 
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
-    "click div.actions input[type=submit][data-action=save, data-action=update]": "saveClient"
+    "click div.actions > input[type=submit][data-action=save], input[type=submit][data-action=update]": "saveClient"
   
   render: ->
     @$el.appendTo('section.main .content')
@@ -52,14 +52,14 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
     elem = @$el.find("input#client_active")
     elem.val((parseInt($(elem).val(), 10) + 1) % 2)
 
-  saveClient: (event) ->
+  saveClient: (event) =>
     attributes = _.reduce $('[data-attribute]'), (memo, elem) ->
                       memo[$(elem).attr('data-attribute')] = $(elem).val()
                       memo
                     , {}
     if @model.isNew() then @collection.add(@model)
     @model.save attributes,
-      error: ->
+      error: =>
         alert "Couldn't save the client to the server :/"
-      success: ->
+      success: =>
         Backbone.history.navigate(@collection.url(), true)

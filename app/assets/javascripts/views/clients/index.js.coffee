@@ -4,7 +4,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     <h2>List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a></h2> 
     <ul class="clients-list">
       {{#each clients}}
-        <li> 
+        <li data-client-id="{{this.id}}"> 
           <div class='client-info'>
             <a href="/clients/{{this.id}}">
               <span class='client-name'>
@@ -19,6 +19,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
             </a>
           </div>
         </li>
+        <span data-action="delete" data-client-id="{{this.id}}">Delete client</span>
       {{/each}}
     </ul>
     <a href="/clients/new">Add Client</a>
@@ -33,6 +34,16 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
       currentCompany: @options.currentCompany
       
     @render()
+    
+  events: ->
+    "click span[data-action=delete]": "deleteClient"
+
+  deleteClient: (event) ->
+    clientId = $(event.currentTarget).data("client-id")
+    client = @collection.get(clientId)
+    client.destroy()
+    @collection.remove(client)
+    @$el.find('li[data-client-id=' + clientId + ']').remove()
     
   render: ->
     @$el.appendTo('section.main .content')
