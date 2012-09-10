@@ -43,6 +43,16 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :email
   validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
   
+  after_validation :handle_empty_password_digest
+  
+  def handle_empty_password_digest
+    if self.password_digest.blank? &&
+       self.registration_token.present? &&
+       (self.errors.keys - [:password_digest]).empty?
+      self.errors.delete(:password_digest)
+    end
+  end
+  
   def full_name
     [first_name, last_name].join(" ")
   end
