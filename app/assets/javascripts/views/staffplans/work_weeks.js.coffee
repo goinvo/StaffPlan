@@ -3,13 +3,28 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   tagName: "section"
   
   templates:
+    row: '''
+    <div class="grid-row flex">
+      {{#each workWeeks}}
+      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="{{data_attribute}}" value="{{estimated_hours}}" />
+      {{/each}}
+    </div>
+    '''
+    
     input: '''
-    <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="actual_hours" value="{{ actual_hours }}" data-work-week-input />
+    
     '''
     
   initialize: ->
     @model = @options.model
+    @assignment = @options.assignment
+    @client = @options.client
     @user = @options.user
+    
+    @rowTemplate = Handlebars.compile @templates.row
+    @inputTemplate = Handlebars.compile @templates.input
+    
+    @$
     
     @$el.append( @user.assignments.map (assignment) =>
       @assignmentTemplate
