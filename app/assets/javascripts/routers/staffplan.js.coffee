@@ -6,6 +6,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     "clients/new"       : "clientNew"
     "clients/:id"       : "clientShow"
     "clients/:id/edit"  : "clientEdit"
+    "users/new"         : "userNew"
     "users/:id"         : "userShow"
     
     
@@ -55,3 +56,11 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     user = @users.get userId
     userShow = new window.StaffPlan.Views.Users.Show(router: @, model: user)
     @swap userShow
+
+  userNew: ->
+    user = new window.StaffPlan.Models.User
+    userNew = new window.StaffPlan.Views.Users.New
+      router: @
+      model: user
+      collection: window.StaffPlan.users
+    @swap userNew

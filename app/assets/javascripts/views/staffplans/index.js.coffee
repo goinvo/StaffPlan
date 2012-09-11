@@ -1,25 +1,31 @@
 class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   templates:
     userInfo: '''
-    <li>
-      <div class='user-info'>
-        <a href="/staffplans/{{user.id}}">
-          <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
-          <span class='name'>
-            <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
-          </span>
-        </a>
-        <a href="/users/{{user.id}}">Show user's profile</a>
-      </div>
-      <ul class='week-hour-counter'></ul>
-    </li>
+    <ul class="user-list">  
+      {{#each users}} 
+        <li>
+          <div class='user-info'>
+            <a href="/staffplans/{{this.id}}">
+              <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{this.gravatar}}" />
+              <span class='name'>
+                <a href="/staffplans/{{this.id}}">{{this.full_name}}</a>
+              </span>
+            </a>
+            <a href="/users/{{this.id}}">Show user's profile</a>
+          </div>
+          <ul class='week-hour-counter'></ul>
+        </li>
+      {{/each}}
+    </ul>
+    <a href="/users/new">Add Staff</a>
     '''
   
   initialize: ->
     @users = @options.users
     @userInfoTemplate = Handlebars.compile @templates.userInfo
     
-    @$el.html @users.map (user) => @userInfoTemplate user: user.attributes
+    @$el.html @userInfoTemplate
+      users: @users.map (user) -> user.attributes
       
     @render()
     
