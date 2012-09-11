@@ -4,8 +4,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   
   templates:
     children: '''
-      <div class="grid-row-element fixed-180">{{clientName}}</div>
-      <div class="grid-row-element fixed-180">{{projectName}}</div>
+      <div class="grid-row-element fixed-180 sexy">{{clientName}}</div>
+      <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
       <div class="grid-row-element flex work-weeks"></div>
     '''
     
@@ -19,12 +19,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
     @childrenTemplate = Handlebars.compile @templates.children
     
-    @work_weeks = @model.get('work_weeks').map (work_week) =>
-      new window.StaffPlan.Views.StaffPlans.WorkWeeks
-            model: work_week
-            assignment: @model
-            client: @client
-            user: @user
+    @work_weeks = new window.StaffPlan.Views.StaffPlans.WorkWeeks
+      model: @model.get('work_weeks')
+      assignment: @model
+      client: @client
+      user: @user
     
     @$el.append @childrenTemplate
       clientName: if @index == 0 then @client.get('name') else ""
@@ -34,5 +33,6 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
     
   render: ->
+    @work_weeks.render()
     @
     

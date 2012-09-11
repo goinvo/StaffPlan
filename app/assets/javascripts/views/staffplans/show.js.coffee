@@ -14,6 +14,11 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       <div id="user-chart" class="grid-row-element flex"></div>
       <div class="grid-row-element"></div>
     </div>
+    <div class='header grid-row padded'>
+      <div class='grid-row-element fixed-180 title'><span>Client</span></div>
+      <div class='grid-row-element fixed-180 title'><span>Project</span></div>
+      <div class="grid-row-element flex">some stuff about dates or something</div>
+    </div>
     '''
   
   gatherClientsByAssignments: ->
@@ -36,8 +41,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
         assignments: @model.assignments.where
           client_id: client.id
     
-    @render()
+    @$el.append @clientViews.map (clientView) -> clientView.el
     
   render: ->
     @$el.appendTo('section.main .content')
-    @$el.append @clientViews.map (clientView) -> clientView.el
+    @clientViews.map (clientView) -> clientView.render()

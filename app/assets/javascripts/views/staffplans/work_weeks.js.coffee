@@ -5,8 +5,15 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   templates:
     row: '''
     <div class="grid-row flex">
-      {{#each workWeeks}}
-      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="{{data_attribute}}" value="{{estimated_hours}}" />
+      <div class='row-label'>Plan</div>
+      {{#each yearsAndCweeks}}
+      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+      {{/each}}
+    </div>
+    <div class="grid-row flex">
+      <div class='row-label'>Actual</div>
+      {{#each yearsAndCweeks}}
+      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     '''
@@ -14,6 +21,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     input: '''
     
     '''
+  
+  yearsAndCweeks: ->
+    debugger
     
   initialize: ->
     @model = @options.model
@@ -24,15 +34,12 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     @rowTemplate = Handlebars.compile @templates.row
     @inputTemplate = Handlebars.compile @templates.input
     
-    @$
+  render: ->
     
     @$el.append( @user.assignments.map (assignment) =>
-      @assignmentTemplate
-        assignment: assignment
-        project: StaffPlan.projects.get( assignment.get( 'project_id' ) ).attributes
-        client: @model.attributes
+      @rowTemplate
+        yearsAndCweeks: @model
     )
     
-  render: ->
-    @$el.appendTo('section.main .content')
+    @
     
