@@ -15,3 +15,14 @@
       var data = JSON.parse(div.text());
       StaffPlan.initialize(data);
     });
+    function setValueAt(obj, path, value) {
+      lastKeyIndex = path.length-1;
+      for (var i = 0; i < lastKeyIndex; ++ i) {
+        key = path[i];
+        if (!obj.hasOwnProperty(key)){
+          obj[key] = {};
+        }
+        obj = obj[key];
+      }
+      obj[path[lastKeyIndex]] = value;
+    }

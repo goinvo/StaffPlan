@@ -6,4 +6,4 @@ class window.StaffPlan.Collections.Users extends Backbone.Collection
     _.extend @, attrs
     
   url: ->
-    @parent.url() + "/users"
+    "/users"

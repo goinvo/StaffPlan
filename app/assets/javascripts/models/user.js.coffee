@@ -8,8 +8,8 @@ class window.StaffPlan.Models.User extends Backbone.Model
     #   if @view?.weekHourCounter?
     #     @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
   
-  url: ->
-    "#{@collection.url()}/#{@id}"
+  # url: ->
+  #   "#{@collection.url()}/#{@id}"
 
   dateChanged: (event) ->
     event.preventDefault()
