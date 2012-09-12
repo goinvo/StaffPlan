@@ -41,7 +41,8 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
     <div id="salary_information">
       <div class="salary fte">
         <h2>Salary</h2>
-        <input data-attribute=membership.salary size="30" type="number"></div>
+        <input data-attribute=membership.salary size="30" type="number">
+
         <h2>Full-Time Equivalent</h2>
         <input data-attribute=membership.full_time_equivalent size="30" type="number">
       </div>
@@ -73,23 +74,27 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
   initialize: ->
     @userNewTemplate = Handlebars.compile(@templates.userNew)
     @$el.html @userNewTemplate
+
     @render()
   events: ->
     "change select[data-attribute=membership.employment_status]": "refreshSalaryRelatedFields"
     "click div.actions input[type=submit]": "saveUser"
   
   refreshSalaryRelatedFields: (event) ->
-    selection = $(event.currentTarget).val()
-    console.log selection
+    selected = $(event.currentTarget).val()
+
+    @$el.find('div#salary_information div.salary').hide()
+    @$el.find('div#salary_information').find('input, select').prop('disabled', true)
+    @$el.find('div#salary_information div.' + selected).find('input, select').show().prop('disabled', false)
+    @$el.find('div#salary_information div.' + selected).show()
 
   saveUser: =>
     serializedForm = {}
-    _.each @$el.find('[data-attribute]'), (element) ->
+    _.each @$el.find('[data-attribute]:not(:disabled)'), (element) ->
       setValueAt serializedForm, $(element).data('attribute').split("."), $(element).val()
     
-    # Should work for both new and edit :/ 
     @collection.create serializedForm,
-      wait: true # Best to wait for a successful CREATE server-side to add the model to the collection
+      wait: true 
       error: (model, response) =>
         alert "An error prevented the User from being saved."
       success: (model, response) =>
@@ -97,4 +102,7 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
   
   render: ->
     @$el.appendTo("section.main .content")
+    selected = $('select[data-attribute="membership.employment_status"]').val()
+    $("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
+    $("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
 
