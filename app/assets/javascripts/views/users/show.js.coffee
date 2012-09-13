@@ -26,11 +26,12 @@ class window.StaffPlan.Views.Users.Show extends Support.CompositeView
         </ul>
       </div>
     </div>
+    <a href="/users">Back to list of users</a>
     '''
   
   initialize: ->
     @userInfoTemplate = Handlebars.compile(@templates.userInfo)
-    userProjects = @model.get('assignments').map (assignment) ->
+    userProjects = @model.get('assignments')?.map (assignment) ->
       projectId: assignment.project_id
       projectName: window.StaffPlan.projects.get(assignment.project_id).get('name')
     @$el.html @userInfoTemplate

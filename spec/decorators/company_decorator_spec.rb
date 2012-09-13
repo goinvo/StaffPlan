@@ -1,4 +1,4 @@
 require 'spec_helper'
 
-describe CompanyDecoratorDecorator do
+describe CompanyDecorator do
 end

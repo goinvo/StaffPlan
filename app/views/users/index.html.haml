@@ -1,16 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
-  
-%section
-  %header
-    %h2 Staff
-    = link_to 'Add Staff', new_user_path
-
-  %ul
-    - @users.each do |user|
-      %li
-        = render partial: 'shared/user-info', locals: {user: user, small: true}
-        .controls
-          = link_to 'Edit', edit_user_path(user)
-          = link_to 'Destroy', user, :confirm => 'Are you sure?', :method => :delete
-
+= render :partial => "shared/backbone_bootstrap"

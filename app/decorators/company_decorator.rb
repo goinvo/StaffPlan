@@ -35,7 +35,7 @@ class CompanyDecorator < Draper::Base
         user_assignments = user.assignments.for_company(model.id)
         ww = user.work_weeks.group_by(&:project_id)
     
-        json.(user, :id, :full_name, :email, :gravatar)
+        json.(user, :id, :full_name, :email, :gravatar, :current_company_id)
         json.assignments user_assignments do |json, assignment|
           json.(assignment, :id, :user_id, :project_id, :proposed)
           json.client_id assignment.project.client_id

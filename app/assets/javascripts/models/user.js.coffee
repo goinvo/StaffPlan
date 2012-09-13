@@ -3,6 +3,8 @@ class window.StaffPlan.Models.User extends Backbone.Model
     @assignments = new window.StaffPlan.Collections.Assignments @get( "assignments" ),
       parent: @
     
+    @memberships = new window.StaffPlan.Collections.Memberships @get( "memberships" ),
+      parent: @
     # # Week Hour Counter (initialised and set in UserView)
     # $( document.body ).bind 'work_week:value:updated', =>
     #   if @view?.weekHourCounter?
@@ -10,6 +12,13 @@ class window.StaffPlan.Models.User extends Backbone.Model
   
   # url: ->
   #   "#{@collection.url()}/#{@id}"
+
+  toJSON: ->
+    userAttributes = _.clone @attributes
+    userMembership = @memberships.detect (m) -> 
+      m.get("company_id") is window.StaffPlan.currentCompany.id 
+    membershipAttributes = membership: _.clone(userMembership.attributes)
+    user: _.extend userAttributes, membershipAttributes
 
   dateChanged: (event) ->
     event.preventDefault()

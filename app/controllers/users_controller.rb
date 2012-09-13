@@ -43,11 +43,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save_unconfirmed_user
         current_user.current_company.users << @user
-        @user.memberships.first.update_attributes membership
+        @user.memberships.first.update_attributes membership.except(:permissions)
         @user.send_invitation(current_user)
-        @user.update_permissions(params[:permissions], current_user.current_company)
+        @user.update_permissions(membership[:permissions], current_user.current_company)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
-        format.json { render json: @user, status: :created, location: @user }
+        format.json { render json: @user, status: :created}
       else
         format.html { @membership = @user.memberships.build(company_id: @user.current_company_id); render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
