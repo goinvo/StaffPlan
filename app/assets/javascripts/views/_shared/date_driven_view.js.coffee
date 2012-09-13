@@ -63,7 +63,13 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
       from.add('weeks', 1)
     yearsAndWeeks
   
-  onWindowResized: =>
+  onWindowResized: (event) =>
+    if event == undefined
+      @stopOnNextNullEvent = true
+    
+    if @stopOnNextNullEvent
+      return
+      
     if @windowResizedTimeout?
       window.clearTimeout @windowResizedTimeout
       @windowResizedTimeout = undefined

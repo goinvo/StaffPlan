@@ -29,8 +29,11 @@ en:
 
   password_resets:
     new:
-      title: "Password Reset"
-      instructions: "Enter your email address in the field below and we'll send you instructions about resetting your password."
+      title: "Thats Okay, Everyone Forgets."
+      instructions: "Just tell us the email you used to create your account and we'll send you instructions on how to reset your password."
+      label: "Your Email Address"
+      submit: "RESET PASSWORD"
+      cancel: "CANCEL" 
     edit:
       instructions: "Please enter a new password"
       update_and_login: "Update and login"

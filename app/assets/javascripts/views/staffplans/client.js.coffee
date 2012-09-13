@@ -20,5 +20,5 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     
   render: ->
     @$el.appendTo('section.main .content')
-    
+    @assignmentViews.map (assignment) -> assignment.render()
     @

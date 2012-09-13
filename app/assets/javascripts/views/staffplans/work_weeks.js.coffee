@@ -3,21 +3,43 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   tagName: "section"
   
   templates:
-    input: '''
-    <input type="text" size="2" data-cweek="{{ mweek }}" data-year="{{ year }}" data-cid="{{ cid }}" data-attribute="actual_hours" value="{{ actual_hours }}" data-work-week-input />
+    row: '''
+    <div class="grid-row flex">
+      <div class='row-label'>Plan</div>
+      {{#each yearsAndCweeks}}
+      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+      {{/each}}
+    </div>
+    <div class="grid-row flex">
+      <div class='row-label'>Actual</div>
+      {{#each yearsAndCweeks}}
+      <input type="text" size="2" data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+      {{/each}}
+    </div>
     '''
+    
+    input: '''
+    
+    '''
+  
+  yearsAndCweeks: ->
+    debugger
     
   initialize: ->
     @model = @options.model
+    @assignment = @options.assignment
+    @client = @options.client
     @user = @options.user
     
-    @$el.append( @user.assignments.map (assignment) =>
-      @assignmentTemplate
-        assignment: assignment
-        project: StaffPlan.projects.get( assignment.get( 'project_id' ) ).attributes
-        client: @model.attributes
-    )
+    @rowTemplate = Handlebars.compile @templates.row
+    @inputTemplate = Handlebars.compile @templates.input
     
   render: ->
-    @$el.appendTo('section.main .content')
+    
+    @$el.append( @user.assignments.map (assignment) =>
+      @rowTemplate
+        yearsAndCweeks: @model
+    )
+    
+    @
     

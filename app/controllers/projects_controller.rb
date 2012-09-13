@@ -5,9 +5,6 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    # A project belongs_to a company/account
-    # Let's retrieve all the projects associated with the account
-    # the current_user is currently browsing the app through
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
     @from = 1.week.ago(@from)
     @to = 3.months.from_now(@from)
