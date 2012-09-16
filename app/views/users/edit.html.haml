@@ -1,11 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
-  = stylesheet_link_tag('users')
-  
-%section
-  %header
-    %h2
-      = image_tag UserDecorator.new(@user).gravatar
-      = @user.full_name
-
-  = render 'form'
+= render :partial => "shared/backbone_bootstrap"

@@ -13,6 +13,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
               </span>
             </a>
             <a href="/users/{{this.id}}">Show user's profile</a>
+            <a href="/users/{{this.id}}/edit">Edit user's profile</a>
           </div>
           <div class="actions">
             <a href="/users/{{this.id}}" data-action="delete" data-user-id="{{this.id}}">Delete user</a>

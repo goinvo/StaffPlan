@@ -6,9 +6,10 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     "clients/new"       : "clientNew"
     "clients/:id"       : "clientShow"
     "clients/:id/edit"  : "clientEdit"
-    "users"             : "userIndex"
     "users/new"         : "userNew"
     "users/:id"         : "userShow"
+    "users/:id/edit"    : "userEdit"
+    "users"             : "userIndex"
     
     
   initialize: (data) ->
@@ -72,3 +73,11 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
       collection: window.StaffPlan.users
       currentCompany: window.StaffPlan.currentCompany
     @swap userIndex
+ 
+  userEdit: (userId) ->
+    user = window.StaffPlan.users.get userId
+    userEdit = new window.StaffPlan.Views.Users.Edit
+      router: @
+      model: user
+    @swap userEdit
+
