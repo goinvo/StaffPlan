@@ -5,13 +5,6 @@ class window.StaffPlan.Models.User extends Backbone.Model
     
     @membership = new window.StaffPlan.Models.Membership @get( "membership" ),
       parent: @
-    # # Week Hour Counter (initialised and set in UserView)
-    # $( document.body ).bind 'work_week:value:updated', =>
-    #   if @view?.weekHourCounter?
-    #     @view.weekHourCounter.render @dateRangeMeta().dates, @projects.models
-  
-  # url: ->
-  #   "#{@collection.url()}/#{@id}"
 
   toJSON: ->
     userAttributes =
