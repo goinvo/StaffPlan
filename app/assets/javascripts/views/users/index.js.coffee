@@ -2,6 +2,8 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   tagName: 'ul'
   className: 'user-list'
   initialize: ->
+    @collection.on "change", (model) =>
+      @render()
   events:
     "click div.actions a[data-action=delete]": "deleteUser"
 
