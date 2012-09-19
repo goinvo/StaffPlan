@@ -32,7 +32,7 @@ class views.staffplans.ProjectView extends Support.CompositeView
     
     clientNameInput: =>
       !@model.get("client_id")? && @model.isNew()
-    isProposed: @model.get "proposed"
+    isProposed: if @model.get "proposed" then "checked=\"true\"" else ""
     id: @model.get "id"
     
     isNew: =>
@@ -57,7 +57,20 @@ class views.staffplans.ProjectView extends Support.CompositeView
       $( @el )
         .find( '.months-and-weeks' )
         .html @work_weeks.render().el
-        
+    $('input.apple-switch[type=checkbox]').iphoneStyle
+      checkedLabel: "Prop."
+      uncheckedLabel: "Real"
+      onChange: (elem) ->
+        $.ajax
+          type: "PUT"
+          url: "/users/" + window._User.id + "/projects/" + $(elem).data('project-id')
+          data:
+            project:
+              assignment:
+                proposed: $(elem).prop("checked")
+          success: (data, textStatus, jqXHR) =>
+            console.log "Successfully updated proposed status"
+          dataType: "json"
     @
   
   templates:
@@ -83,12 +96,8 @@ class views.staffplans.ProjectView extends Support.CompositeView
       {{^isNew}}
       <a href='/projects/{{ projectId }}'>{{ name }}</a>
       <input type='hidden' name='project[name]' />
-      <p class="project-state">
-        {{#isProposed}}
-          <span class="project-proposal">
-            (Proposed)
-          </span>
-        {{/isProposed}}
+      <p class="switch">
+        <input type="checkbox" class="apple-switch" data-project-id="{{projectId}}" {{isProposed}} />
       </p>
       {{/isNew}}
     </div>
