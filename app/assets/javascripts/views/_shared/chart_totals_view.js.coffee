@@ -6,6 +6,7 @@ class ChartTotalsView extends Backbone.View
     * @param {!HTMLElement}    @el   Container to add charts to.
   *###
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
+    window.parentsSelector = @parentsSelector
     @maxHeight = @el.parents(@parentsSelector).height() - 20
     @render @dates, @models if @dates and @models and @el
 
@@ -21,7 +22,6 @@ class ChartTotalsView extends Backbone.View
     data = (get_data date_range, models).sort (a,b) ->
       [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
       ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
-
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -78,8 +78,16 @@ get_data = (date_range, models) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      if window.parentsSelector is ".user-select"
+        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      else
+        assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
+        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
+      if window.parentsSelector is ".user-select"
+        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      else
+        assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
+        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
