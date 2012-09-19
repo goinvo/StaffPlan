@@ -3,7 +3,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   className: 'user-list'
   initialize: ->
     @collection.on "change", (model) =>
-      @render()
+      #model.view.render()
   events:
     "click div.actions a[data-action=delete]": "deleteUser"
 
@@ -19,6 +19,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
 
   
   render: ->
+    @$el.empty()
     @collection.each (user) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
