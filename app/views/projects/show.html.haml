@@ -6,6 +6,7 @@
 - content_for(:javascript_includes) do
   :coffeescript
     window._meta =
+      assignments: #{@project.decorate.assignments_as_json}
       clients: new ClientList(#{@clients})
       users: new UserList(#{current_user.current_company.users_json})
       days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -14,6 +15,7 @@
       fromDate: "#{@from}"
     
     $( ->
+      
       window._Project = new Project #{ProjectDecorator.new(@project).project_json}
       window._ProjectView = new views.projects.ProjectView
         model: window._Project

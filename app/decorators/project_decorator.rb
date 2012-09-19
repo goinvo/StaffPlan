@@ -43,6 +43,17 @@ class ProjectDecorator < Draper::Base
     end
   end  
   
+  def assignments_as_json
+    Jbuilder.encode do |json|
+      json.array! self.assignments do |json, assignment|
+        json.project_id model.id
+        json.user_id assignment.user_id
+        json.proposed assignment.proposed
+      end
+    end
+  end
+
+
   def chart_for_date_range(range)
     # Needed to be able to use HAML helpers
     init_haml_helpers
