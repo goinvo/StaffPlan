@@ -15,6 +15,7 @@
 //= require handlebars
 //= require moment
 //= require d3.v2
+//= require iphone-style-checkboxes
 //= require backbone-bootstrap
 //= require_tree .
 
