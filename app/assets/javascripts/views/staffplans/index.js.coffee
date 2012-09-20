@@ -32,3 +32,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   render: ->
     @$el.appendTo('section.main .content')
     
+  leave: ->
+    @off()
+    @remove()

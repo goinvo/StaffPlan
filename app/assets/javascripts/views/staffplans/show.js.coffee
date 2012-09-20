@@ -51,4 +51,4 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
   
   leave: ->
     @off()
-    @$el.remove()
+    @remove()

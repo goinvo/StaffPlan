@@ -3,14 +3,14 @@ module StaffPlan::WorkWeeksControllers
   include StaffPlan::SharedFinderMethods
   
   included do
-    before_filter :find_target_user, :find_project
+    before_filter :find_target_user, :find_assignment
     before_filter :find_work_week, :only => :update
   end
   
   #module InstanceMethods
     def create
       @work_week = WorkWeek.new(whitelist_attributes)
-      @work_week.project_id = @project.id
+      @work_week.assignment_id = @assignment.id
       @work_week.user_id = @target_user.id
     
       if @work_week.save
@@ -72,6 +72,12 @@ module StaffPlan::WorkWeeksControllers
       base.merge!(actual_hours: params[:actual_hours]) if params[:actual_hours].present?
     
       base
+    end
+    
+    def find_assignment
+      @assignment = @target_user.assignments.find(params[:assignment_id])
+    rescue
+      raise "lol"
     end
     
   #end

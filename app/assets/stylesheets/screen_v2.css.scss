@@ -406,4 +406,8 @@ footer {
   }
 }
 
+.row-filler {
+  @include row-filler;
+}
+
 @import "_flash";
