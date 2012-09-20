@@ -6,11 +6,12 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
     * @param {!HTMLElement}    @el   Container to add charts to.
   *###
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
-    window.parentsSelector = @parentsSelector
     @maxHeight = @el.parents(@parentsSelector).height() - 20
     @render @dates, @models if @dates and @models and @el
-
-
+    @staffPlanPage = if @models.size == 0 
+      @parentsSelector is ".user-select" # Fallback on weaker test if the models array is empty
+    else
+      _.has(_.first @models, "projects")
   ###*
     * Render week hour counter.
     * @param {!Object} date_range Date range meta from User model.
@@ -59,7 +60,8 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   * @returns {!Object}          Mapping of data to weeks for a given date range.
 *###
 get_data = (date_range, models) ->
-  # Gompute
+  
+  # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
       p.work_weeks.find (m) ->
@@ -73,20 +75,17 @@ get_data = (date_range, models) ->
   ww["#{d.year}-#{d.cweek}"] ?= [dummy(d)] for d in date_range # Fill empty weeks
 
   # Total hours for each week
-  _.map ww, (hours, key) ->
-    _.reduce hours, (m, o) ->
+  _.map ww, (hours, key) =>
+    _.reduce hours, (m, o) =>
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      if window.parentsSelector is ".user-select"
+      if @staffPlanPage
         m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-      else
-        assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
-        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
-      if window.parentsSelector is ".user-select"
         m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
       else
         assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
+        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
         m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
