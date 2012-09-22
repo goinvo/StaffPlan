@@ -1,6 +1,13 @@
 class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    @fromDate = moment.utc().subtract('years', 2)
+    today = new XDate()
+    if today.getDay() == 1
+      today = today.addDays(-5)
+    else if today.getDay() > 2
+      while today.getDay() >= 2
+        today = today.addDays( -1 )
+
+    @fromDate = today
     
     setTimeout =>
       $( window ).bind 'resize', @onWindowResized
@@ -20,7 +27,7 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     # there's ~3px of junk space between input elements that we need to account for and adjust
     mysterySpace = idealWeekInterval * 3
     @weekInterval = idealWeekInterval - Math.ceil( mysterySpace / 35 )
-    @toDate = @fromDate.clone().add('weeks', @weekInterval)
+    @toDate = @fromDate.clone().addWeeks(@weekInterval)
     
   dateChanged: (event) ->
     event.preventDefault()
@@ -44,14 +51,13 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
     while from < to
       @yearsAndWeeks.push
-        year:  from.year()
-        cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
-        month: from.month() + 1 # NOTE: Months in moment.js are 0-indexed
-        mweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
-        mday:  from.date()
-        weekHasPassed: from < moment()
+        year:  from.getUTCFullYear()
+        cweek: from.getWeek()
+        month: from.getMonth() + 1 # NOTE: Months in moment.js are 0-indexed
+        mday:  from.getDate()
+        weekHasPassed: from < XDate()
 
-      from.add('weeks', 1)
+      from.addWeeks(1)
       
     @yearsAndWeeks
   

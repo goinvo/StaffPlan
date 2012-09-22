@@ -65,7 +65,7 @@ get_data = (date_range, models) ->
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
       p.work_weeks.find (m) ->
-        if m.get('cweek') == date.mweek and m.get('year') == date.year
+        if m.get('cweek') == date.cweek and m.getUTCFullYear() == date.year
           m.set "date", date
           true
   # Format data

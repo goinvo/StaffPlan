@@ -10,13 +10,13 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     <div class="grid-row flex">
       <div class='row-label'>Plan</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+      <input type="text" size="2" data-work-week-input data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-cweek="{{mweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+      <input type="text" size="2" data-work-week-input data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     '''
