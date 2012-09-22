@@ -14,7 +14,7 @@ class AssociateWorkWeeksWithAssignments < ActiveRecord::Migration
     
     WorkWeek.transaction do
       WorkWeek.all.each do |work_week|
-        assignment = Assignment.where(user_id: work_week.user, project_id: work_week.project).first
+        assignment = Assignment.where(user_id: work_week.user_id, project_id: work_week.project_id).first
         problems << work_week if assignment.nil?
         work_week.assignment = assignment
         work_week.save!
