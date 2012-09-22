@@ -7,19 +7,9 @@ class Project < ActiveRecord::Base
   belongs_to  :client
   belongs_to  :company
 
-  has_many :work_weeks, dependent: :destroy do
-    def for_user(user)
-      self.select { |ww| ww.user_id == user.id }
-    end
-
-    def for_user_and_cweek_and_year(user, cweek, year)
-      self.for_user(user).detect { |ww| ww.cweek == cweek && ww.year == year }
-    end
-  end
-
   has_many :assignments, :dependent => :destroy
-  has_many :users, :through => :assignments
-
+  has_many :work_weeks, through: :assignments
+  has_many :users, through: :assignments
 
   after_update :update_originator_timestamp
 

@@ -11,12 +11,14 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120825191620) do
+ActiveRecord::Schema.define(:version => 20120922205053) do
 
   create_table "assignments", :force => true do |t|
-    t.integer "user_id"
-    t.integer "project_id"
-    t.boolean "proposed",   :default => false, :null => false
+    t.integer  "user_id"
+    t.integer  "project_id"
+    t.boolean  "proposed",   :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   add_index "assignments", ["project_id", "user_id"], :name => "index_assignments_on_project_id_and_user_id", :unique => true
@@ -87,16 +89,13 @@ ActiveRecord::Schema.define(:version => 20120825191620) do
   add_index "versions", ["item_type", "item_id"], :name => "index_versions_on_item_type_and_item_id"
 
   create_table "work_weeks", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "project_id"
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
     t.integer  "cweek"
     t.integer  "year"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "assignment_id"
   end
-
-  add_index "work_weeks", ["user_id", "project_id", "cweek", "year"], :name => "index_work_weeks_on_user_id_and_project_id_and_cweek_and_year", :unique => true
 
 end

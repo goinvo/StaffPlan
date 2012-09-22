@@ -42,9 +42,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     workWeeks = @collection.filter (workWeek) =>
       yearsAndWeeks[workWeek.get('year')] != undefined && _.include(yearsAndWeeks[workWeek.get('year')], workWeek.get('cweek'))
     
-    
     @$el.append @rowTemplate
-      visibleWorkWeeks: workWeeks
+      visibleWorkWeeks: workWeeks.map (workWeek) -> _.extend workWeek.attributes,
+        cid: workWeek.cid
     
     @rowFiller = @$el.find('.row-filler').hide()
     
@@ -67,6 +67,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
       estimated_hours: $currentTarget.val()
     
   queueActualUpdateOrCreate: (event) ->
+    $currentTarget = $( event.currentTarget )
+    cid = $currentTarget.data 'cid'
+    
     @queueUpdateOrCreate event, cid,
       actual_hours: $currentTarget.val()
       
