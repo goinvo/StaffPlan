@@ -9,6 +9,16 @@ class UserDecorator < Draper::Base
     "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
   end
 
+  def assignments_as_json
+    Jbuilder.encode do |json|
+      json.array! self.assignments do |json, assignment|
+        json.user_id model.id
+        json.project_id assignment.project_id
+        json.proposed assignment.proposed
+      end
+    end
+  end
+
   def permissions_information_for_company(company)
     init_haml_helpers
     m = user.memberships.where(company_id: company.id).first

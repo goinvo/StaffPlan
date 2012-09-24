@@ -11,6 +11,8 @@ class views.staffplans.ProjectView extends Support.CompositeView
     
     @model.work_weeks.view = @work_weeks
     
+    @model.bind 'change:proposed', (project) ->
+      window._UserView.weekHourCounter.render window._UserView.dateRangeMeta().dates, window._UserView.model.projects.models, true
     @model.bind 'save', (project) => @render()
     @model.bind 'destroy', (project) =>
       otherClientProject = window._User.projects.detect (p) =>
@@ -61,6 +63,13 @@ class views.staffplans.ProjectView extends Support.CompositeView
       checkedLabel: "Prop."
       uncheckedLabel: "Real"
       onChange: (elem) ->
+        targetProject = window._User.projects.detect (project) ->
+          project.id == $(elem).data('project-id')
+        assignment = _.detect window._meta.assignments, (ass) ->
+          ass.project_id == $(elem).data('project-id')
+        assignment['proposed'] = $(elem).prop 'checked'
+        targetProject.set
+          proposed: $(elem).prop 'checked'
         $.ajax
           type: "PUT"
           url: "/users/" + window._User.id + "/projects/" + $(elem).data('project-id')

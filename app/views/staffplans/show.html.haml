@@ -4,6 +4,7 @@
 - content_for(:javascript_includes) do
   :coffeescript
     window._meta =
+      assignments: #{@target_user.decorate.assignments_as_json}
       clients: new ClientList(#{@clients})
       days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
