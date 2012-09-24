@@ -7,20 +7,20 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   *###
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
-    @render @dates, @models if @dates and @models and @el
-    @staffPlanPage = if @models.size == 0 
-      @parentsSelector is ".user-select" # Fallback on weaker test if the models array is empty
+    if @models.size > 0 
+      staffPlanPage = _.has(_.first @models, "users")
     else
-      _.has(_.first @models, "projects")
+      staffPlanPage = @parentsSelector is ".user-select"
+    @render @dates, @models, staffPlanPage if @dates and @models and @el
   ###*
     * Render week hour counter.
     * @param {!Object} date_range Date range meta from User model.
     * @param {!Array}  models     Models to gather data from.
     * @returns {*}
   *###
-  render: (date_range, models) ->
+  render: (date_range, models, staffPlanPage) ->
     # Grab data
-    data = (get_data date_range, models).sort (a,b) ->
+    data = (get_data date_range, models, staffPlanPage).sort (a,b) ->
       [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
       ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
     # Scale
@@ -59,8 +59,7 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   * @param {!Array}  models     Models to gather data from.
   * @returns {!Object}          Mapping of data to weeks for a given date range.
 *###
-get_data = (date_range, models) ->
-  
+get_data = (date_range, models, staffPlanPage) ->
   # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
@@ -75,18 +74,15 @@ get_data = (date_range, models) ->
   ww["#{d.year}-#{d.cweek}"] ?= [dummy(d)] for d in date_range # Fill empty weeks
 
   # Total hours for each week
-  _.map ww, (hours, key) =>
-    _.reduce hours, (m, o) =>
+  _.map ww, (hours, key) ->
+    _.reduce hours, (m, o) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      if @staffPlanPage
-        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-      else
-        assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
-        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
-        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
+      assignment = _.detect window._meta.assignments, (ass) -> 
+        ass[if staffPlanPage then 'project_id' else 'user_id'] == (o.collection?.parent?.id || -1)
+      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false 
+      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
