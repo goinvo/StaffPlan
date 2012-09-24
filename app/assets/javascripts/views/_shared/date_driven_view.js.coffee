@@ -1,27 +1,17 @@
 class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    # @fromDate = moment(window._meta.fromDate)
-    # 
-    # # default to show 3 months, we'll defer re-rendering the proper
-    # # amount until we have something to measure in the DOM
-    # @weekInterval = 15
-    # @toDate = @fromDate.clone().add('weeks', @weekInterval)
-    # setTimeout @delayedOnWindowResized, 100
-    # 
-    # $( window ).bind 'resize', @onWindowResized
+    @fromDate = moment.utc().subtract('years', 2)
+    
+    setTimeout =>
+      $( window ).bind 'resize', @onWindowResized
     
   setWeekIntervalAndToDate: ->
     # find first project's work week list, measure the width of its months-and-weeks container
-    
-    $container = $( @container_selector )
-    $inputContainer = $container.find( '.plan-actual:first' )
-    
-    if $inputContainer.length == 0
-      @onWindowResized()
-      return
+    $container = @$el.find '#interval-width-target'
+    $inputContainer = $container.find '.plan-actual:first'
     
     containerWidth = $container.width()
-    inputWidth = $container.find( '.plan-actual div:not(.row-label):first' ).first().width()
+    inputWidth = 35
     
     # 105 accounts for plan/actual labels, totals and delta/remove icons
     idealWeekInterval = Math.floor ( containerWidth - 105 ) / inputWidth
@@ -30,7 +20,6 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     # there's ~3px of junk space between input elements that we need to account for and adjust
     mysterySpace = idealWeekInterval * 3
     @weekInterval = idealWeekInterval - Math.ceil( mysterySpace / 35 )
-    
     @toDate = @fromDate.clone().add('weeks', @weekInterval)
     
   dateChanged: (event) ->
@@ -46,13 +35,15 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     toDate: @toDate
     dates: @getYearsAndWeeks()
 
-  getYearsAndWeeks: ->
-    yearsAndWeeks = []
+  getYearsAndWeeks: (expireCache=false) ->
+    if @yearsAndWeeks == undefined || expireCache
+      @yearsAndWeeks = []
+      
     from = @fromDate.clone()
     to = @toDate.clone()
-
+    
     while from < to
-      yearsAndWeeks.push
+      @yearsAndWeeks.push
         year:  from.year()
         cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
         month: from.month() + 1 # NOTE: Months in moment.js are 0-indexed
@@ -61,7 +52,8 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
         weekHasPassed: from < moment()
 
       from.add('weeks', 1)
-    yearsAndWeeks
+      
+    @yearsAndWeeks
   
   onWindowResized: (event) =>
     if event == undefined
@@ -80,6 +72,7 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   
   delayedOnWindowResized: =>
     @setWeekIntervalAndToDate()
-    @renderHeaderTemplate( true )
-    @renderWeekHourCounter()
+    #     @renderHeaderTemplate( true )
+    #     @renderWeekHourCounter()
     @renderContent( true ) if @renderContent?
+    

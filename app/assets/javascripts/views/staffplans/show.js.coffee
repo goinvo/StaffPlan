@@ -17,7 +17,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     <div class='header grid-row padded'>
       <div class='grid-row-element fixed-180 title'><span>Client</span></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
-      <div class="grid-row-element flex">some stuff about dates or something</div>
+      <div class="grid-row-element flex" id="interval-width-target">some stuff about dates or something</div>
     </div>
     '''
   
@@ -28,6 +28,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
     
     @model = @options.user
+    @model.view = @
     @clients = new window.StaffPlan.Collections.Clients @gatherClientsByAssignments()
     @frameTemplate = Handlebars.compile @templates.frame
     @assignmentTemplate = Handlebars.compile @templates.assignment
@@ -45,4 +46,9 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     
   render: ->
     @$el.appendTo('section.main .content')
+    @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
+  
+  leave: ->
+    @off()
+    @remove()
