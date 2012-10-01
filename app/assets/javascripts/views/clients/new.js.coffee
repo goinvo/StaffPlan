@@ -1,36 +1,43 @@
 # This view is used by both NEW and EDIT actions
 class window.StaffPlan.Views.Clients.New extends Support.CompositeView
+  tagName: "form"
+  className: "form-horizontal"
   templates:
     newClient: '''
-      <div class="input">
-        <label for="client_name">Name</label>
-        <input id="client_name" data-attribute="name" size="30" type="text" value="{{clientName}}">
+      <div class="control-group">
+        <label class="control-label" for="client_name">Name</label>
+        <div class="controls">
+          <input id="client_name" data-attribute="name" size="30" type="text" value="{{clientName}}">
+        </div>
       </div>
-      <div class="input">
-        <label for="client_description">Description</label>
+      <div class="control-group">
+        <label class="control-label" for="client_description">Description</label>
+        <div class="controls">
         <textarea cols="40" id="client_description" data-attribute="description" rows="20">{{clientDescription}}</textarea>
+        </div>
       </div>
-      <div class="input">
-        <label for="client_active">Active</label>
-        {{#if clientActive}}
-          <input checked="checked" id="client_active" data-attribute="active" type="checkbox" value="1">
-        {{else}}
-          <input id="client_active" data-attribute="active" type="checkbox" value="0">
-        {{/if}}
+      <div class="control-group">
+        <div class="controls">
+          {{#if clientActive}}
+            <input checked="checked" id="client_active" data-attribute="active" type="checkbox" value="1">
+          {{else}}
+            <input id="client_active" data-attribute="active" type="checkbox" value="0">
+          {{/if}}
+          Active?
+        </div>
       </div>
-      <div class="actions">
+      <div class="form-actions">
         {{#if clientIsNew}}
-          <input name="commit" type="submit" data-action="save" value="Save">
+          <button data-action="save" type="submit" class="btn btn-primary">Save changes</button>
         {{else}}
-          <input name="commit" type="submit" data-action="update" value="Update">
+          <button data-action="update" type="submit" class="btn btn-primary">Update client</button>
         {{/if}}
-        <a href="/clients" data-action="cancel">Back to list of clients</a>
+        <button type="button" class="btn">Back to list of clients</button>
       </div>
     '''
   
   initialize: ->
     @clientInfoTemplate = Handlebars.compile(@templates.newClient)
-    console.log "CLIENT ACTIF? " + (if @model.get("active") then "YES" else "NO")
     @$el.html @clientInfoTemplate
       clientDescription: @model.get("description") || ""
       clientName: @model.get("name") || ""
@@ -41,7 +48,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
 
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
-    "click div.actions > input[type=submit][data-action=save], input[type=submit][data-action=update]": "saveClient"
+    "click div.form-actions > button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
   
   render: ->
     @$el.appendTo('section.main .content')
@@ -52,6 +59,8 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
     elem.val((parseInt($(elem).val(), 10) + 1) % 2)
 
   saveClient: (event) =>
+    event.preventDefault()
+    event.stopPropagation()
     attributes = _.reduce $('[data-attribute]'), (memo, elem) ->
                       memo[$(elem).attr('data-attribute')] = $(elem).val()
                       memo
