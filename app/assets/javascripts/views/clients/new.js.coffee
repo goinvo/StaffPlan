@@ -13,9 +13,9 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
       <div class="input">
         <label for="client_active">Active</label>
         {{#if clientActive}}
-          <input checked="true" id="client_active" data-attribute="active" type="checkbox" value="1">
+          <input checked="checked" id="client_active" data-attribute="active" type="checkbox" value="1">
         {{else}}
-          <input checked="false" id="client_active" data-attribute="active" type="checkbox" value="0">
+          <input id="client_active" data-attribute="active" type="checkbox" value="0">
         {{/if}}
       </div>
       <div class="actions">
@@ -30,11 +30,11 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
   
   initialize: ->
     @clientInfoTemplate = Handlebars.compile(@templates.newClient)
-    
+    console.log "CLIENT ACTIF? " + (if @model.get("active") then "YES" else "NO")
     @$el.html @clientInfoTemplate
       clientDescription: @model.get("description") || ""
       clientName: @model.get("name") || ""
-      clientActive: !!@model.get("active")
+      clientActive: if @model.get("active") then "checked=\"checked\"" else ""
       clientIsNew: @model.isNew()
     
     @render()
@@ -47,7 +47,6 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
     @$el.appendTo('section.main .content')
 
 
-  # FIXME: Not so sure about this one, there must be a more elegant way to achieve that
   updateCheckbox: ->
     elem = @$el.find("input#client_active")
     elem.val((parseInt($(elem).val(), 10) + 1) % 2)
@@ -65,4 +64,3 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
       success: (model, response) =>
         if isNew then @collection.add model
         Backbone.history.navigate(@collection.url(), true)
-        # We should have some special view to display information to the user. That view should be used by other views
