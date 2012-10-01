@@ -32,7 +32,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
         {{else}}
           <button data-action="update" type="submit" class="btn btn-primary">Update client</button>
         {{/if}}
-        <button type="button" class="btn">Back to list of clients</button>
+        <button data-action="cancel" type="button" class="btn">Back to list of clients</button>
       </div>
     '''
   
@@ -49,6 +49,8 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
     "click div.form-actions > button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
+    "click div.form-actions button[data-action=cancel]": (event) ->
+      Backbone.history.navigate("/clients", true)
   
   render: ->
     @$el.appendTo('section.main .content')
@@ -66,6 +68,8 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
                       memo
                     , {}
     isNew = @model.isNew()
+    if isNew
+      @collection.add @model
     @model.save attributes,
       error: (model, response) =>
         console.log(response)
