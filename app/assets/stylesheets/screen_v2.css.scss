@@ -193,64 +193,64 @@ section.main {
 
 #staffplans.index, #staffplans.inactive, #users, #clients, #projects, #companies {
   section.main {
-    section {
-      > ul {
-        list-style-type: none;
-        > li {
-          position: relative;
-          padding: 12px 15px;
-          overflow: hidden;
-          @include transition(background-color 0.2s ease-out);
-          & + li {
-            border-top: 1px solid #e0e0e0;
+    //section {
+    ul {
+      list-style-type: none;
+      li {
+        position: relative;
+        padding: 12px 15px;
+        overflow: hidden;
+        @include transition(background-color 0.2s ease-out);
+        & + li {
+          border-top: 1px solid #e0e0e0;
+        }
+        .controls {
+          position: absolute;
+          right: -200px;
+          bottom: 12px;
+          @include transition(right 0.2s ease-out);
+          a {
+            &:hover {
+              text-decoration: none;
+            }
           }
+          @include inline-bullets;
+        }
+        &:hover {
+          background-color: #f7f7f7;
           .controls {
-            position: absolute;
-            right: -200px;
-            bottom: 12px;
-            @include transition(right 0.2s ease-out);
-            a {
-              &:hover {
-                text-decoration: none;
-              }
-            }
-            @include inline-bullets;
-          }
-          &:hover {
-            background-color: #f7f7f7;
-            .controls {
-              right: 15px;
-            }
-          }
-        }
-      }
-      .info {
-        .active {
-          padding-left: 16px + 6px;
-          line-height: 18px;
-          background: transparent image-url("icons/inactive.png") left top no-repeat;
-          &[data-active] {
-            background-image: image-url("icons/active.png");
-          }
-        }
-        ul {
-          list-style-type: none;
-          li {
-            margin: 5px 0;
-            // padding: 5px 0
-            img {
-              margin-right: 5px;
-              padding: 1px;
-              width: 15px;
-              @include box-shadow(0 0 2px hsla(0, 0%, 0%, 0.6));
-              @include box-sizing(border-box);
-              background-color: white;
-              vertical-align: text-bottom;
-            }
+            right: 15px;
           }
         }
       }
     }
+    .info {
+      .active {
+        padding-left: 16px + 6px;
+        line-height: 18px;
+        background: transparent image-url("icons/inactive.png") left top no-repeat;
+        &[data-active] {
+          background-image: image-url("icons/active.png");
+        }
+      }
+      ul {
+        list-style-type: none;
+        li {
+          margin: 5px 0;
+          // padding: 5px 0
+          img {
+            margin-right: 5px;
+            padding: 1px;
+            width: 15px;
+            @include box-shadow(0 0 2px hsla(0, 0%, 0%, 0.6));
+            @include box-sizing(border-box);
+            background-color: white;
+            vertical-align: text-bottom;
+          }
+        }
+      }
+    }
+    //}
   }
 }
 
