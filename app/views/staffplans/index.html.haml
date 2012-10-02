@@ -1,23 +1,38 @@
 - content_for(:stylesheet_includes) do
   = stylesheet_link_tag('staffplans')
-  
+- content_for(:javascript_includes) do
+  :javascript
+    $(document).ready(function(){
+      $(".sorting > div").click(function(){
+        window.location.href = "/staffplans?" + $.param({from: "#{@start}", sort: $(this).data('sort'), order: $(this).data('order')})
+      }).mouseover(function(){
+        $(this).siblings("div").empty();
+        if($(this).data('order') == "desc"){
+          $(this).html("&#9650;").data("order", "asc");
+        }
+        else {
+          $(this).html("&#9660;").data("order", "desc");
+        }
+      });
+
+    });
 %section
   .user-header
     %header
-      = link_to("Add Staff", new_user_path)
-      %span.inactive-users
-        = link_to "Show inactive users", inactive_staffplans_path
-      - if @sort == "name"
-        - sorting_criterion = :workload
-      - elsif @sort == "workload" || @sort.nil?
-        - sorting_criterion = :name
-      %span.sort
-        = link_to("Sort by #{sorting_criterion.to_s}", staffplans_path(:from => @start, :sort => sorting_criterion))
+      = link_to "Add Staff", new_user_path
     = render :partial => "date_switcher", :locals => { :date_range => @date_range, :sort => @sort.nil? ? "workload" : @sort.to_s}
-        
   %ul.users
+    .sorting{:style => "overflow: auto"}
+      .name{:"data-sort" => "name", :"data-order" => (@order == "asc") ? "desc" : "asc"}
+        - if @sort == "name"
+          = raw(@order == "asc" ? "&#9650;" : "&#9660;")
+      .workload{:"data-sort" => "workload", :"data-order" => (@order == "asc") ? "desc" : "asc"}
+        - if @sort == "workload"
+          = raw(@order == "asc" ? "&#9650;" : "&#9660;")
     - @users.each do |user|
       %li
         = render partial: 'shared/user-info', locals: {user: user, url: staffplan_url(user)}
         %ul.week-hour-counter
           = user.chart_for_date_range(@date_range)
+  .inactive-users
+    = link_to "Show inactive users", inactive_staffplans_path

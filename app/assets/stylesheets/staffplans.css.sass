@@ -61,6 +61,9 @@
 body#staffplans.index
   section.main
     .content
+      section
+        div.inactive-users
+          padding-left: 16px
       .user-header
         position: relative
         margin-bottom: 15px
@@ -91,23 +94,26 @@ body#staffplans.index
         header
           line-height: 30px
           padding-left: 15px
-          /* Styling for sort and inactive users on staffplans page */
-          span.inactive-users
-            padding: 0 8px
-            color: black
-            font-weight: bold
-          span.sort
-            margin-left: 16px
-            margin-left: 16px
-            background-color: #D6D6D6
-            font-weight: bold
-            font-size: 10pt
-            padding: 8px
-            a
-              color: #555 
-              margin-right: 8px
 
       ul.users
+        .sorting
+          overflow: auto
+          .name
+            display: inline-block
+            width: 190px
+            line-height: 16px
+            height: 16px
+            padding-left: 190px
+            &:hover
+              cursor: pointer
+          .workload
+            display: inline-block
+            width: 300px
+            line-height: 16px
+            height: 16px
+            padding-left: 300px
+            &:hover
+              cursor: pointer
         > li
           & > *
             display: inline-block
@@ -117,7 +123,6 @@ body#staffplans.index
 
           .week-hour-counter
             +week-hour-counter
-
 
 //\\//\\//\\//\\//\\
 //      Show      \\

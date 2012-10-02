@@ -26,8 +26,9 @@ class StaffplansController < ApplicationController
   end
 
   def index
-    @start = params[:from] # We need to save that for the view
+    @start = params[:from] || Date.today.at_beginning_of_week # We need to save that for the view
     @sort ||= params[:sort]
+    @order = params[:order]
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
     @from = 1.week.ago(@from)
     @to = 3.months.from_now(@from)
@@ -48,7 +49,7 @@ class StaffplansController < ApplicationController
         a.last_name <=> b.last_name
       end 
     end
-    @users = UserDecorator.decorate(u)
+    @users = UserDecorator.decorate(params[:order] == "asc" ? u : u.reverse)
   end
   
   def my_staffplan
