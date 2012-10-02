@@ -1,7 +1,7 @@
 class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   templates:
     clientInfo: '''
-    <h2>List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a></h2> 
+    <h2 class="lead">List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a></h2> 
     <ul class="unstyled">
       {{#each clients}}
         <li data-client-id="{{this.id}}">
@@ -21,7 +21,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
         </li>
       {{/each}}
     </ul>
-    <a href="/clients/new">Add Client</a>
+    <button data-action="new" class="btn btn-primary">Add client</button>
     '''
   
   initialize: ->
@@ -36,6 +36,10 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     
   events: ->
     "click a[data-action=delete]": "deleteClient"
+    "click button[data-action=new]": (event) ->
+      event.preventDefault()
+      event.stopPropagation()
+      Backbone.history.navigate("/clients/new", true)
 
   deleteClient: (event) ->
     event.preventDefault()
