@@ -1,7 +1,9 @@
 class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   templates:
     clientInfo: '''
-    <h2 class="lead">List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a></h2> 
+    <h2 class="lead">
+      List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a>
+    </h2> 
     <ul class="unstyled">
       {{#each clients}}
         <li data-client-id="{{this.id}}">

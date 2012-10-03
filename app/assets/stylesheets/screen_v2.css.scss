@@ -201,6 +201,9 @@ section.main {
         padding: 12px 15px;
         overflow: hidden;
         @include transition(background-color 0.2s ease-out);
+        &.user-list-item {
+          padding: 4px 15px
+        }
         & + li {
           border-top: 1px solid #e0e0e0;
         }
@@ -214,7 +217,7 @@ section.main {
               text-decoration: none;
             }
           }
-          @include inline-bullets;
+          //@include inline-bullets;
         }
         &:hover {
           background-color: #f7f7f7;
@@ -222,6 +225,10 @@ section.main {
             right: 15px;
           }
         }
+      }
+      div.actions {
+        padding-top: 16px; 
+        padding-left: 32px
       }
     }
     .info {

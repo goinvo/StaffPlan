@@ -17,7 +17,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
         </li>
       {{/each}}
     </ul>
-    <a href="/users/new">Add Staff</a>
+    <div class="actions">
+      <a class="btn btn-primary" href="/users/new">Add Staff</a>
+    </div>
     '''
   
   initialize: ->
