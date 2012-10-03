@@ -106,8 +106,8 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
     </div>
 
     <div class="form-actions">
-      <button data-action="new" type="submit" class="btn btn-primary">Create user</button>
-      <button data-action="cancel" type="button" class="btn">Back to list of users</button>
+      <a href="/users" data-action="create" class="btn btn-primary">Create user</a>
+      <a href="/users" data-action="cancel" class="btn">Back to list of users</a>
     </div>
 
     '''
@@ -118,7 +118,7 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
     @render()
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
-    "click div.form-actions input[type=submit]": "saveUser"
+    "click div.form-actions a[data-action=create]": "createUser"
   
   refreshSalaryRelatedFields: (event) ->
     selected = $(event.currentTarget).val()
@@ -128,7 +128,7 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
     @$el.find('div#salary_information div.' + selected).find('input, select').show().prop('disabled', false)
     @$el.find('div#salary_information div.' + selected).show()
 
-  saveUser: =>
+  createUser: =>
     userAttributes = _.reduce $("div[data-model=user] input:not(:disabled)"), (memo, elem) ->
         memo[$(elem).data('attribute')] = $(elem).val()
         memo
