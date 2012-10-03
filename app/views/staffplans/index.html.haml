@@ -24,7 +24,7 @@
   %ul.users
     .sorting{:style => "overflow: auto"}
       .name{:"data-sort" => "name", :"data-order" => (@order == "asc") ? "desc" : "asc"}
-        - if @sort == "name"
+        - if @sort == "name" || @sort.blank?
           = raw(@order == "asc" ? "&#9650;" : "&#9660;")
       .workload{:"data-sort" => "workload", :"data-order" => (@order == "asc") ? "desc" : "asc"}
         - if @sort == "workload"
