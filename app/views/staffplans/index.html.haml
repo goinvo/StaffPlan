@@ -4,14 +4,22 @@
   :javascript
     $(document).ready(function(){
       $(".sorting > div").click(function(){
-        window.location.href = "/staffplans?" + $.param({from: "#{@start}", sort: $(this).data('sort'), order: $(this).data('order')})
-      }).mouseover(function(){
-        $(this).siblings("div").empty();
         if($(this).data('order') == "desc"){
-          $(this).html("&#9650;").data("order", "asc");
+          $(this).html("&#9650;")
         }
         else {
-          $(this).html("&#9660;").data("order", "desc");
+          $(this).html("&#9660;")
+        }
+        window.location.href = "/staffplans?" + $.param({from: "#{@start}", sort: $(this).data('sort'), order: $(this).data('order')})
+      }).mouseover(function(){
+        if($(this).text().trim() == "") {
+          $(this).siblings("div").empty();
+          if($(this).data('order') == "desc"){
+            $(this).html("&#9660;");
+          }
+          else {
+            $(this).html("&#9650;")
+          }
         }
       });
 
