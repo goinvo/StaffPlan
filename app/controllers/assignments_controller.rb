@@ -7,7 +7,7 @@ class AssignmentsController < ApplicationController
     if @assignment.save
       respond_with @assignment and return
     else
-      respond_with {:status => :unprocessable_entity }
+      render :json => {:status => :unprocessable_entity }
     end
   end
 
@@ -16,14 +16,14 @@ class AssignmentsController < ApplicationController
     if @assignment.update_attributes(params[:assignment])  
       respond_with @assignment and return
     else
-      respond_with {:status => :unprocessable_entity }
+      render :json => {:status => :unprocessable_entity }
     end
   end
 
   def destroy
     @assignment = Assignment.where(id: params[:id]).first
     @assignment.destroy
-    respond_with { :status => :ok }  
+    render :json => { :status => :ok }  
   end
 
 end

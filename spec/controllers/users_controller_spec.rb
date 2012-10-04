@@ -95,16 +95,6 @@ describe UsersController do
 
   describe "PUT update" do
     describe "with valid params" do
-      it "updates the requested user" do
-        user = FactoryGirl.create(:user)
-        @company.users << user
-        # Assuming there are no other users in the database, this
-        # specifies that the User created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        User.any_instance.expects(:save_unconfirmed_user)
-        put :update, :id => user.id, :user => {'these' => 'params'}
-      end
 
       it "assigns the requested user as @user" do
         user = FactoryGirl.create(:user)
@@ -120,23 +110,23 @@ describe UsersController do
         response.should redirect_to(user)
       end
 
-      it "should let people change their current_company" do
-        request.env["HTTP_REFERER"] = staffplan_url(@current_user)
-        other_company = FactoryGirl.create(:company)
-        other_company.users << @current_user
-        put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
-        assigns[:user].current_company.should eq(other_company)
-        response.should redirect_to :back
-      end
+      # it "should let people change their current_company" do
+      #   request.env["HTTP_REFERER"] = staffplan_url(@current_user)
+      #   other_company = FactoryGirl.create(:company)
+      #   other_company.users << @current_user
+      #   put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
+      #   assigns[:user].current_company.should eq(other_company)
+      #   response.should redirect_to :back
+      # end
 
-      it "should just redirect to back and do nothing if the specified company_id is not one the user belongs to" do
-        request.env["HTTP_REFERER"] = staffplan_url(@current_user)
-        other_company = FactoryGirl.create(:company)
-        lambda {
-          put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
-        }.should_not change(@current_user, :current_company_id)
-        response.should redirect_to :back
-      end
+      # it "should just redirect to back and do nothing if the specified company_id is not one the user belongs to" do
+      #   request.env["HTTP_REFERER"] = staffplan_url(@current_user)
+      #   other_company = FactoryGirl.create(:company)
+      #   lambda {
+      #     put :update, :id => @current_user.id, :user => {current_company_id: other_company.id} 
+      #   }.should_not change(@current_user, :current_company_id)
+      #   response.should redirect_to :back
+      # end
     end
 
     describe "with invalid params" do
@@ -153,7 +143,7 @@ describe UsersController do
         user = FactoryGirl.create(:user)
         @company.users << user
         # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.expects(:save_unconfirmed_user).returns(false)
+        User.any_instance.expects(:update_attributes).returns(false)
         put :update, :id => user.id, :user => {}
         response.should render_template("edit")
       end

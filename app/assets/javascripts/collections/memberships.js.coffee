@@ -1,6 +1,8 @@
 class window.StaffPlan.Collections.Memberships extends Backbone.Collection
   model: window.StaffPlan.Models.Membership
 
-  # /users/:user_id/memberships (or possibly /companies/:company_id/memberships) 
+  initialize: (models, options) ->
+    @parent = options.parent
+    
   url: ->
     @parent.url() + "/memberships"

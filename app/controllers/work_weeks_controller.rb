@@ -7,7 +7,7 @@ class WorkWeeksController < ApplicationController
     if @work_week = @assignment.work_weeks.create(params[:work_week])
       respond_with @work_week and return
     else
-      respond_with {:status => :unprocessable_entity } and return
+      render :json => { :status => :unprocessable_entity } and return
     end
   end
 
@@ -16,7 +16,7 @@ class WorkWeeksController < ApplicationController
     if @work_week.update_attributes params[:work_week]
       respond_with @work_week and return
     else
-      respond_with {:status => :unprocessable_entity } and return
+      render :json => {:status => :unprocessable_entity } and return
     end
   end
 

@@ -7,12 +7,9 @@ class window.StaffPlan.Models.User extends Backbone.Model
       parent: @
 
   toJSON: ->
-    userAttributes =
-      first_name: @get("first_name")
-      last_name: @get("last_name")
-      email: @get("email")
-    membershipAttributes = membership: _.clone(@membership.attributes)
-    user: _.extend userAttributes, membershipAttributes
+    first_name: @get("first_name")
+    last_name: @get("last_name")
+    email: @get("email")
 
   dateChanged: (event) ->
     event.preventDefault()

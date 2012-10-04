@@ -142,17 +142,21 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
         memo
       , {permissions: []}
 
-    membership = new window.StaffPlan.Models.Membership membershipAttributes
-    @model.set('membership', membership)
-    @model.set userAttributes
-
-    @collection.add @model
-    @model.save {},
+    @collection.create userAttributes,
       success: (model, response) ->
-        Backbone.history.navigate("/staffplans", true)
+        # We have a new user
+        membership = new window.StaffPlan.Models.Membership (_.extend membershipAttributes, {user_id: model.id, company_id: window.StaffPlan.currentCompany.id})
+        membership.save {},
+          success: (resource, response) ->
+            # Successful save for the membership, let's embed it in the User model client-side
+            model.set "membership", membership
+          error: (model, response) ->
+            console.log "ERROR :/ " + response
+          , {wait: true}
       error: (model, response) ->
-        @collection.remove model
-        alert "something went wrong"
+        alert "Could not save the user to the database. ERROR: " + response
+      , {wait: true}
+
   render: ->
     @$el.appendTo("section.main .content")
     # Hides the appropriate fields so that we can handle the permissions information

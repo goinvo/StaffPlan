@@ -7,7 +7,14 @@ class User < ActiveRecord::Base
   has_paper_trail
   has_secure_password
   
-  # has_many :projects, :through => :assignments
+  has_many :assignments, :dependent => :destroy do
+    def for_company(company)
+      self.select do |a|
+        a.project.company_id == company.id
+      end
+    end
+  end
+  has_many :projects, :through => :assignments
   has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true
 

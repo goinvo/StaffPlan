@@ -23,7 +23,9 @@ StaffPlan::Application.routes.draw do
   resources :clients
 
   # Companies have users (members/employees), projects and clients
-  resources :companies, only: [:new, :create]
+  resources :companies, only: [:new, :create] do
+    resources :memberships, :only => [:create, :update, :destroy]
+  end
 
   # The staff plan is the compound of hours and involvement in projects 
   # by a given user for a given client and a given company
