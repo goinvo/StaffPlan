@@ -70,7 +70,7 @@ class UserDecorator < Draper::Base
 
 
     project_ids = user.current_company.projects.map(&:id)
-    workload = user.work_weeks.for_range(range.first, range.last).for_projects(project_ids)
+    workload = user.assignments.map(&:work_weeks).flatten.for_range(range.first, range.last).for_projects(project_ids)
 
     assignments = user.assignments.where(project_id: project_ids).all
 

@@ -2,5 +2,7 @@
 
 FactoryGirl.define do
   factory :assignment do
+    user { FactoryGirl.create(:user) }
+    project { FactoryGirl.create(:project) }
   end
 end

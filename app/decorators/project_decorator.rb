@@ -65,7 +65,7 @@ class ProjectDecorator < Draper::Base
       range.each do |date|
         is_current_week = (date.year == Date.today.year && date.cweek == Date.today.cweek)
         load_for_week = workload.select { |ww| ww.cweek == date.cweek and ww.year == date.year }
-        proposed_for_week = load_for_week.select { |ww| assignments.detect{ |a| a.user_id == ww.user_id }.try(:proposed?) || false }
+        proposed_for_week = load_for_week.select { |ww| assignments.detect{ |a| a.user_id == ww.assignment.user_id }.try(:proposed?) || false }
         msg = (((date.cweek < Date.today.at_beginning_of_week.cweek) && (date.year <= Date.today.at_beginning_of_week.year)) || is_current_week) ? :actual_hours : :estimated_hours
         total = load_for_week.inject(0) { |memo, week| memo += week.send(msg) || 0 }
 

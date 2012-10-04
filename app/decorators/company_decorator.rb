@@ -32,7 +32,9 @@ class CompanyDecorator < Draper::Base
     Jbuilder.encode do |json|
       json.array!(model.users) do |json, user|
         user = user.decorate
-        user_assignments = user.assignments.for_company(model.id)
+        user_assignments = user.assignments.select do |ass| 
+          ass.project.company_id == model.id
+        end
     
         json.(user, :id, :first_name, :last_name, :full_name, :email, :gravatar, :current_company_id)
         json.membership model.memberships.where(:user_id => user.id).first

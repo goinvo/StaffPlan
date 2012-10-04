@@ -31,7 +31,7 @@ class Company < ActiveRecord::Base
         json.(company, :name)
         json.users company.users do |json, user|
           json.(user, :id, :first_name, :last_name)
-          json.project_ids user.projects.map(&:id)
+          json.project_ids user.assignments.map(&:project_id)
         end
         json.projects company.projects do |json, project|
           json.(project, :id, :name)

@@ -61,7 +61,7 @@ describe Users::ProjectsController do
         }.should_not change(Client, :count).by(1)
         
         client.reload.projects.find_by_name(@project_name).should_not be_nil
-        @user.reload.projects.find_by_name(@project_name).should_not be_nil
+        @user.reload.assignments.all.map(&:project).find_by_name(@project_name).should_not be_nil
       end
       
       it "should render OK JSON if the project saves" do
@@ -81,9 +81,9 @@ describe Users::ProjectsController do
       end
       
       it "should append the project to the target user's projects if the project saves" do
-        @user.projects.map(&:name).should_not include(@project_name)
+        @user.assignments.all.map(&:project).map(&:name).should_not include(@project_name)
         post :create, :user_id => @user.id, :client_name => @client_name, :name => @project_name
-        @user.reload.projects.map(&:name).should include(@project_name)
+        @user.reload.assignments.all.map(&:project).map(&:name).should include(@project_name)
       end
       
       it "should find existing projects for the client without regard to case of the name" do
@@ -94,7 +94,7 @@ describe Users::ProjectsController do
         }.should change(Project, :count).by(1)
         
         client.reload.projects.find_by_name(@project_name).should_not be_nil
-        @user.reload.projects.find_by_name(@project_name).should_not be_nil
+        @user.reload.assignments.map(&:project).find_by_name(@project_name).should_not be_nil
       end
     end
   end
@@ -134,9 +134,9 @@ describe Users::ProjectsController do
     
     it "should remove the project from the target user's projects" do
       project = FactoryGirl.create(:project, company: @company, :users => [@user])
-      @user.reload.projects.map(&:name).should include(project.name)
+      @user.reload.assignments.map(&:project).map(&:name).should include(project.name)
       delete :destroy, :user_id => @user.id, :id => project.id
-      @user.reload.projects.map(&:name).should_not include(project.name)
+      @user.reload.assignments.map(&:project).map(&:name).should_not include(project.name)
     end
   end
 end

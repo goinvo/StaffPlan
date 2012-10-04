@@ -4,8 +4,9 @@ class StaffplansController < ApplicationController
     respond_to do |format|
       format.html {}
       format.mobile do
+        @target_user = User.where(id: params[:id]).first
         @date = (Date.parse(params[:date]) rescue Date.today).at_beginning_of_week
-        @projects = @target_user.projects.group_by { |project| project.client.name }
+        @projects = @target_user.assignments.map(&:project).group_by { |project| project.client.name }
         render(layout: false) if request.xhr?
       end
     end

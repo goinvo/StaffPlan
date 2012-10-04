@@ -38,8 +38,10 @@ def user_with_clients_and_projects(target_user=FactoryGirl.create(:user))
     2.times { FactoryGirl.create(:project, :client => client) }
   end
   
-  Project.all.each { |p| p.users << target_user }
-  
+  Project.all.each do |p|
+    p.assignments.create(user_id: target_user.id)
+  end
+
   target_user
 end
 

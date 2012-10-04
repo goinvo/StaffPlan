@@ -40,7 +40,11 @@ describe UsersController do
 
   describe "POST create" do
     before(:each) do
-      @parameters = {first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, email: Faker::Internet.email} 
+      @parameters = {
+        first_name: Faker::Name.first_name, 
+        last_name: Faker::Name.last_name, 
+        email: Faker::Internet.email
+      } 
     end
 
     describe "with valid params" do

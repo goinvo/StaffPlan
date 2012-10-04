@@ -32,7 +32,7 @@ class Users::ProjectsController < ApplicationController
   end
   
   def destroy
-    @target_user.projects.delete(@project)
+    @target_user.assignments.where(project_id: @project.id).first.try(:destroy)
     render(:json => {
       status: 'ok'
     }) and return

@@ -7,10 +7,11 @@ describe WorkWeek do
     end
     
     it "should be valid? with valid attributes" do
-      work_week = WorkWeek.new
-      work_week.user = FactoryGirl.create(:user)
-      work_week.project = FactoryGirl.create(:project)
-      work_week.valid?.should be_true
+      ww_user = FactoryGirl.create :user
+      ww_project = FactoryGirl.create :project
+      ww_user.assignments.create(project_id: ww_project.id)
+      a = Assignment.where(user_id: ww_user.id, project_id: ww_project.id).first
+      a.work_weeks.create.should be_valid
     end
     
     it "should validate numericality of *_hours" do

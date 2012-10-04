@@ -17,10 +17,11 @@ describe UserDecorator do
       @user = user_with_clients_and_projects
       @company = Company.create(:name => "Test Company")
       @company.users << @user
-      @company.projects << @user.projects
+      @company.projects << @user.assignments.all.map(&:project)
       @user.current_company_id = @company.id
       @user.save!
     end
+    
     it "should return a collection of li elements, one per week" do
       @decorator = UserDecorator.new(@user)
       snippet = Nokogiri::HTML(@decorator.chart_for_date_range(@date_range))
@@ -37,7 +38,7 @@ describe UserDecorator do
 
     it "should return a collection of HTML li elements whose height should be the total hours for the associated weeks" do
       # @user has 4 projects
-      @user.projects.each do |project| 
+      @user.assignments.all.map(&:project).each do |project| 
         @date_range.each do |date|
           WorkWeek.create(user_id: @user.id, project_id: project.id, year: date.year, cweek: date.cweek, estimated_hours: rand(20) + 2, actual_hours: rand(20) + 2) 
         end

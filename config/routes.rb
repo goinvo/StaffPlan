@@ -2,20 +2,36 @@ StaffPlan::Application.routes.draw do
   
   get "sign_out" => "sessions#destroy", :as => "sign_out"
   get "sign_in" => "sessions#new", :as => "sign_in"
-
-  resources :password_resets, except: [:destroy, :show, :index]
+  
+  # Users
   resources :users do
-    resources :assignments, :only => [:update, :create, :destroy],
-                            :controller => "users/assignments" do
-      resources :work_weeks, :only => [:show, :update, :create],
-                             :controller => "users/assignments/work_weeks"
-    end
-    resources :projects, :only => [:update, :create, :destroy],
-                         :controller => "users/projects" do
-      resources :work_weeks, :only => [:show, :update, :create],
-                             :controller => "users/projects/work_weeks"
-    end
+    resources :projects, :only => [:update, :create, :destroy], :controller => "users/projects"
   end
+  
+  # Projects
+  resources :projects do
+    resources :users, only: [:update, :create, :destroy], controller: "projects/users"
+  end
+  
+  # An assignment is the relation between a user and a project
+  # That's where the work weeks reside
+  resources :assignments, :only => [:update, :create, :destroy] do
+    resources :work_weeks, :only => [:show, :update, :create]
+  end
+  
+  # A project involves a company, a client and a user (through a given assignment) 
+  resources :clients
+
+  # Companies have users (members/employees), projects and clients
+  resources :companies, only: [:new, :create]
+
+  # The staff plan is the compound of hours and involvement in projects 
+  # by a given user for a given client and a given company
+  resources :staffplans, :only => [:show, :index] do
+    get 'inactive', :on => :collection
+  end
+  
+  resources :password_resets, except: [:destroy, :show, :index]
   
   resources :registrations, only: [:new, :create] do
     post :complete, on: :collection
@@ -26,20 +42,6 @@ StaffPlan::Application.routes.draw do
   get "/api/companies/:secret" => "api/companies#index", format: :json
 
   resources :sessions, :only => [:new, :create, :destroy]
-  resources :clients
-  
-  resources :projects do
-    resources :users, only: [:update, :create, :destroy],
-                      controller: "projects/users" do
-      resources :work_weeks, only: [:show, :update, :create],
-                             controller: "projects/users/work_weeks"
-    end
-  end
-  
-  resources :staffplans, :only => [:show, :index] do
-    get 'inactive', :on => :collection
-  end
-  resources :companies, only: [:new, :create]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   

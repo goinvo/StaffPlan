@@ -43,9 +43,11 @@ class UsersController < ApplicationController
     respond_to do |format|
       if @user.save_unconfirmed_user
         current_user.current_company.users << @user
-        @user.memberships.first.update_attributes membership.except(:permissions)
+        if membership
+          @user.memberships.first.update_attributes(membership.except(:permissions))
+          @user.update_permissions(membership[:permissions], current_user.current_company)
+        end
         @user.send_invitation(current_user)
-        @user.update_permissions(membership[:permissions], current_user.current_company)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
         format.json { render json: @user, status: :created}
       else
@@ -61,37 +63,16 @@ class UsersController < ApplicationController
     @membership = params[:user].delete(:membership)
     respond_to do |format|
       @user.update_attributes params[:user]
-      @user.memberships.find(@membership[:id]).update_attributes(@membership.except(:permissions, :id, :user_id))
-      @user.update_permissions(@membership[:permissions], current_user.current_company)
+      if @membership
+        @user.memberships.find(@membership[:id]).update_attributes(@membership.except(:permissions, :id, :user_id))
+        @user.update_permissions(@membership[:permissions], current_user.current_company)
+      end
       unless @user.errors.present?
         format.json { render :json => @user, :status => :accepted }
       else  
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end
-    # if [:password, :password_confirmation].all? { |m| params[:user][m].blank? }
-    #   params[:user].delete_if {|k,v| k =~ /password/ }
-    # end
-    # respond_to do |format|
-    #   # Case where the user changed his/her current company in the dropdown in the navigation bar
-    #   # We should probably handle this in a different action to avoid clutter
-    #   if new_current_company_id = params[:user].present? ? params[:user].delete(:current_company_id) : nil
-    #     company = current_user.companies.find_by_id(new_current_company_id)
-    #     redirect_to :back and return if company.nil?
-    #     @user.current_company_id = company.id
-    #     @user.save
-    #     redirect_to :back and return
-    #   end
-    #   if @user.attributes = params[:user].except(:membership) and @user.save_unconfirmed_user
-    #     @user.memberships.where(company_id: current_user.current_company_id).first.update_attributes(params[:user][:membership])
-    #     @user.update_permissions(params[:permissions], current_user.current_company)
-    #     format.html { redirect_to @user, notice: "User was successfully updated" }
-    #     format.json { render json: @user, :status => :accepted } 
-    #   else
-    #     format.html { @membership = @user.memberships.where(company_id: @user.current_company_id).first; render action: "edit" }
-    #     format.json { render json: @user.errors, status: :unprocessable_entity }
-    #   end
-    # end
   end
 
   # DELETE /users/1

@@ -2,29 +2,14 @@ class User < ActiveRecord::Base
 
   include StaffPlan::UserRoles
 
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :current_company_id
 
   has_paper_trail
   has_secure_password
   
-  has_many :assignments, :dependent => :destroy do
-    def for_company(company_id)
-      self.select { |a| a.project.company_id == company_id }
-    end
-  end
-  
-  has_many :projects, :through => :assignments
+  # has_many :projects, :through => :assignments
   has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true
-
-  has_many :work_weeks, dependent: :destroy do
-    def for_project(project)
-      self.select { |ww| ww.project_id == project.id }
-    end
-    def for_projects(project_ids)
-      self.select { |ww| project_ids.include? ww.project_id }
-    end
-  end
 
   after_update do |user|
     terminator = user.versions.last.try(:terminator)
@@ -104,16 +89,6 @@ class User < ActiveRecord::Base
     return false unless self.companies.include?(company)
     self.current_company_id = company.id
     self.save
-  end
-
-  def plan_for(project_ids, from_date)
-    self.work_weeks.inject(0) do |sum, ww|
-      if project_ids.include?(ww.project_id) && (ww.year > from_date.year || (ww.year == from_date.year && ww.cweek >= from_date.cweek))
-        sum += ww.estimated_hours || 0
-      end
-
-      sum
-    end
   end
 
   def selectable_companies

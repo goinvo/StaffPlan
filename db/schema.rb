@@ -27,8 +27,8 @@ ActiveRecord::Schema.define(:version => 20120922205053) do
     t.string   "name"
     t.text     "description"
     t.boolean  "active",      :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
     t.integer  "company_id"
   end
 
@@ -58,8 +58,8 @@ ActiveRecord::Schema.define(:version => 20120922205053) do
     t.integer  "client_id"
     t.string   "name"
     t.boolean  "active",                                           :default => true
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                                                            :null => false
+    t.datetime "updated_at",                                                            :null => false
     t.integer  "company_id"
     t.boolean  "proposed",                                         :default => false,   :null => false
     t.decimal  "cost",              :precision => 12, :scale => 2, :default => 0.0,     :null => false
@@ -69,8 +69,8 @@ ActiveRecord::Schema.define(:version => 20120922205053) do
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",         :null => false
+    t.datetime "updated_at",         :null => false
     t.integer  "current_company_id"
     t.string   "registration_token"
     t.string   "first_name"
@@ -91,10 +91,10 @@ ActiveRecord::Schema.define(:version => 20120922205053) do
   create_table "work_weeks", :force => true do |t|
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek"
-    t.integer  "year"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.integer  "cweek",           :limit => 2
+    t.integer  "year",            :limit => 2
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
     t.integer  "assignment_id"
   end
 

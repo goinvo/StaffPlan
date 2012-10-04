@@ -5,6 +5,7 @@ describe Users::Projects::WorkWeeksController do
   before(:each) do
     @user, @company = login_user
     @project = FactoryGirl.create(:project, :users => [@user], company: @company)
+    @assignment = @project.assignments.where(user_id: @user.id).first
   end
 
   def base_params
@@ -31,7 +32,7 @@ describe Users::Projects::WorkWeeksController do
           cweek: Date.today.cweek, 
           year: Date.today.year 
         }) 
-        ww = FactoryGirl.create(:work_week, parameters) 
+        ww = WorkWeek.create parameters 
         lambda {post :create, parameters.merge(format: "js")}.should_not change(WorkWeek, :count) 
 
         @body = JSON.parse(response.body)
@@ -57,7 +58,7 @@ describe Users::Projects::WorkWeeksController do
   describe '#update' do
 
     before(:each) do
-      @work_week = FactoryGirl.create(:work_week, user: @user, project: @project)
+      @work_week = FactoryGirl.create(:work_week, assignment: @assignment) 
     end
 
     context "format: 'js'" do
@@ -79,6 +80,7 @@ describe Users::Projects::WorkWeeksController do
         put :update, {
           user_id: @user.id, 
           project_id: @project.id, 
+          assignment_id: @assignment.id,
           id: @work_week.id, 
           cweek: 19, 
           format: 'js'
@@ -92,6 +94,7 @@ describe Users::Projects::WorkWeeksController do
         attrs = {
           user_id: @user.id, 
           project_id: @project.id, 
+          assignment_id: @assignment.id,
           id: @work_week.id, 
           cweek: 18, 
           year: "2012", 
@@ -114,6 +117,7 @@ describe Users::Projects::WorkWeeksController do
         put :update, {
           user_id: @user.id, 
           project_id: @project.id, 
+          assignment_id: @assignment.id,
           id: @work_week.id, 
           cweek: 19, 
           format: 'js'
@@ -131,6 +135,7 @@ describe Users::Projects::WorkWeeksController do
         put :update, {
           user_id: @user.id, 
           project_id: @project.id, 
+          assignment_id: @assignment.id,
           id: @work_week.id, 
           cweek: 19, 
           format: 'mobile'
@@ -144,6 +149,7 @@ describe Users::Projects::WorkWeeksController do
         put :update, {
           user_id: @user.id, 
           project_id: @project.id, 
+          assignment_id: @assignment.id,
           id: @work_week.id, 
           cweek: 19, 
           format: 'mobile'

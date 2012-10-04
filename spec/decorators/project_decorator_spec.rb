@@ -21,7 +21,7 @@ describe ProjectDecorator do
     @company = Company.create(name: "Test Company")
 
     [@michael, @john].each do |user|
-      user.projects << @project
+      user.assignments.create(project_id: @project.id) 
       @company.projects << @project
       @company.users << user
       user.current_company_id = @company.id
@@ -43,8 +43,9 @@ describe ProjectDecorator do
       [@john, @michael].each do |user|
         @date_range.each do |date|
           ww = WorkWeek.new(cweek: date.cweek, year: date.year, estimated_hours: rand(20) + 1, actual_hours: rand(20) + 1) 
-          ww.project_id = @project.id
-          ww.user_id = user.id
+          # ww.assignment.project_id = @project.id
+          # ww.user_id = user.id
+          ww.assignment_id = Assignment.where(user_id: user.id, project_id: @project.id).first.id
           ww.save!
         end
       end 
@@ -57,8 +58,8 @@ describe ProjectDecorator do
         msg = ((date.cweek < Date.today.at_beginning_of_week.cweek) && (date.year <= Date.today.at_beginning_of_week.year) or is_current_week) ? :actual_hours : :estimated_hours
         bar = snippet.css("li[data-year=\"#{date.year}\"][data-week=\"#{date.cweek}\"]").first # css method returns a NodeSet
 
-        proposed_hours = @john.work_weeks.where(cweek: date.cweek, year: date.year, project_id: @project.id).first.send(msg)
-        regular_hours = @michael.work_weeks.where(cweek: date.cweek, year: date.year, project_id: @project.id).first.send(msg)
+        proposed_hours = @john.assignments.where(project_id: @project.id).first.work_weeks.where(cweek: date.cweek, year: date.year).first.send(msg)
+        regular_hours = @michael.assignments.where(project_id: @project.id).first.work_weeks.where(cweek: date.cweek, year: date.year).first.send(msg)
         if msg == :actual_hours || (proposed_hours + regular_hours) == 0 
           bar.attributes["style"].value.should eq("height: #{proposed_hours + regular_hours}px")
         else
