@@ -172,4 +172,4 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
       undefinedClientId.remove()
       @model.projects.add {}
 
-views.staffplans.UserView = views.staffplans.UserView
+views.staffplans.UserView= views.staffplans.UserView
