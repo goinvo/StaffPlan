@@ -2,7 +2,7 @@ class AssociateWorkWeeksWithAssignments < ActiveRecord::Migration
   def up
     # a little data clean up, some orphaned work weeks exist in production
     WorkWeek.all.each do |ww|
-      ww.destroy if Assignment.where(user_id: ww.user).where(project_id: ww.project).first.nil?
+      ww.destroy if Assignment.where(user_id: ww.user_id).where(project_id: ww.project_id).first.nil?
     end
     
     add_column(:work_weeks, :assignment_id, :integer)
