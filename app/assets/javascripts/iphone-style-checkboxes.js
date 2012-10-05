@@ -32,7 +32,7 @@
       this.offSpan = this.offLabel.children('span');
       this.onLabel = $("<label class='" + this.labelOnClass + "'>\n  <span>" + this.checkedLabel + "</span>\n</label>").appendTo(this.container);
       this.onSpan = this.onLabel.children('span');
-      return this.handle = $("<div class='" + this.handleClass + "'>\n  <div class='" + this.handleRightClass + "'>\n    <div class='" + this.handleCenterClass + "' />\n  </div>\n</div>").appendTo(this.container);
+      return this.handle = $("<div class='" + this.handleClass + "'>").appendTo(this.container);
     };
     iOSCheckbox.prototype.disableTextSelection = function() {
       if ($.browser.msie) {
@@ -54,12 +54,12 @@
         newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
         newWidth += this._getDimension(this.handle, "width") + this.handleMargin;
         return this.container.css({
-          width: newWidth
+          width: "80px"
         });
       } else {
         newWidth = onLabelWidth > offLabelWidth ? onLabelWidth : offLabelWidth;
         return this.handle.css({
-          width: newWidth
+          width: "25px"
         });
       }
     };
@@ -122,7 +122,10 @@
       return this.didChange();
     };
     iOSCheckbox.prototype.didChange = function() {
-      var new_left;
+      var new_left,
+          new_width,
+          new_span_right;
+          
       if (typeof this.onChange === "function") {
         this.onChange(this.elem, this.elem.prop('checked'));
       }
@@ -132,16 +135,21 @@
       } else {
         this.container.removeClass(this.disabledClass);
       }
-      new_left = this.elem.prop('checked') ? this.rightSide : 0;
+      new_left = this.elem.prop('checked') ? this.rightSide : 4;
       this.handle.animate({
         left: new_left
       }, this.duration);
+      
+      new_width = this.elem.prop('checked') ? new_left + this.handleRadius : 0;
       this.onLabel.animate({
-        width: new_left + this.handleRadius
+        width: new_width
       }, this.duration);
+      
+      new_span_right = this.elem.prop('checked') ? this.rightSide : 0;
       this.offSpan.animate({
-        marginRight: -new_left
+        marginRight: -new_span_right
       }, this.duration);
+      
       return this.onSpan.animate({
         marginLeft: new_left - this.rightSide
       }, this.duration);
