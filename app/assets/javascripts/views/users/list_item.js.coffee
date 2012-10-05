@@ -1,6 +1,4 @@
 class window.StaffPlan.Views.Users.ListItem extends Backbone.View
-  tagName: "li"
-
   templates:
     userListItem: '''
     <li class="user-list-item" data-user-id="{{user.id}}">

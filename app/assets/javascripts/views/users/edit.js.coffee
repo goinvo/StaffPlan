@@ -67,7 +67,7 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
           <div class="control-group">
             <label class="control-label" for="user_fte">Full-Time Equivalent</label>
             <div class="controls">
-              <input id="user_fte" data-attribute=full_time_equivalent size="30" type="number">
+              <input id="user_full_time_equivalent" data-attribute=full_time_equivalent size="30" type="number">
             </div>
           </div>
         </div>
@@ -151,13 +151,13 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
         Backbone.history.navigate("/staffplans", true)
       error: (model, response) ->
         alert "something went wrong"
+  
   render: ->
-    selected = @model.membership.get("employment_status")
-
+    selected = @model.membership.get 'employment_status'
     @$el.find("select#user_employment_status").val(selected)
     @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
 
-    _.each @model.membership.get("permissions"), (perm) =>
+    _.each (@model.membership.get 'permissions'), (perm) =>
       @$el.find("div#permissions input#user_permissions_" + perm + "[type=checkbox]").prop("checked", true)
 
     switch selected
@@ -167,6 +167,5 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
       when "contractor"
         _.each ["weekly_allocation", "rate", "payment_frequency"], (attr) =>
           @$el.find("#user_" + attr + "").val @model.membership.get(attr)
-
     @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
     @$el.appendTo("section.main .content")

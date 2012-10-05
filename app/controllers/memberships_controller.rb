@@ -1,7 +1,7 @@
 class MembershipsController < ApplicationController
 
   def create
-    @membership = Membership.new params[:membership]
+    @membership = Membership.new(params[:membership])
     if @membership.save
       render :json => @membership, :status => :ok
     else

@@ -136,20 +136,24 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
     
     membershipAttributes = _.reduce $("div[data-model=membership] input:not(:disabled)"), (memo, elem) ->
         if $(elem).data('attribute') is "permissions"
-          memo['permissions'].push $(elem).val()
+          if $(elem).prop('checked')
+            if not memo['permissions']?
+              memo['permissions'] = [$(elem).val()]
+            else
+              memo['permissions'].push $(elem).val()
         else
           memo[$(elem).data('attribute')] = $(elem).val()
         memo
-      , {permissions: []}
-
+      , {}
     @collection.create userAttributes,
       success: (model, response) ->
         # We have a new user
-        membership = new window.StaffPlan.Models.Membership (_.extend membershipAttributes, {user_id: model.id, company_id: window.StaffPlan.currentCompany.id})
-        membership.save {},
+        membership = new window.StaffPlan.Models.Membership
+          company_id: window.StaffPlan.currentCompany.id
+        membership.save (_.extend membershipAttributes, {user_id: model.id}),
           success: (resource, response) ->
             # Successful save for the membership, let's embed it in the User model client-side
-            model.set "membership", membership
+            model.membership.set resource
           error: (model, response) ->
             console.log "ERROR :/ " + response
           , {wait: true}

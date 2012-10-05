@@ -33,10 +33,9 @@ class UsersController < ApplicationController
     @user.current_company_id = current_user.current_company_id
     respond_to do |format|
       if @user.save_unconfirmed_user
-        current_user.current_company.users << @user
         @user.send_invitation(current_user)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
-        format.json { render json: @user, status: :created}
+        format.json { render :json => @user.attributes.merge({:gravatar => UserDecorator.decorate(@user).gravatar}), status: :created}
       else
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }

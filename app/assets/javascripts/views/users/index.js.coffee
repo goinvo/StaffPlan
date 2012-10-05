@@ -14,7 +14,6 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
     event.preventDefault()
     event.stopPropagation()
     userId = $(event.target).data("user-id")
-    console.log @collection
     user = @collection.get(userId)
     user.destroy()
     @collection.remove(user)
