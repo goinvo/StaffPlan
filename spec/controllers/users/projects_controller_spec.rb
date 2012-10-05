@@ -61,7 +61,7 @@ describe Users::ProjectsController do
         }.should_not change(Client, :count).by(1)
         
         client.reload.projects.find_by_name(@project_name).should_not be_nil
-        @user.reload.assignments.all.map(&:project).find_by_name(@project_name).should_not be_nil
+        @user.reload.assignments.all.map(&:project).select{|p| p.name == @project_name}.should_not be_nil
       end
       
       it "should render OK JSON if the project saves" do
@@ -94,7 +94,7 @@ describe Users::ProjectsController do
         }.should change(Project, :count).by(1)
         
         client.reload.projects.find_by_name(@project_name).should_not be_nil
-        @user.reload.assignments.map(&:project).find_by_name(@project_name).should_not be_nil
+        @user.reload.assignments.map(&:project).select{|p| p.name == @project_name}.should_not be_nil
       end
     end
   end
@@ -115,7 +115,7 @@ describe Users::ProjectsController do
     end
     
     it "should render FAIL JSON if the project doesn't update" do
-      Project.any_instance.expects(:update_attributes).with(anything).returns(false)
+      Assignment.any_instance.expects(:update_attributes).with(anything).returns(false)
       put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
       response.should be_success
       response.body.match("\"status\":\"fail\"").should_not be_nil

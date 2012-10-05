@@ -11,7 +11,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
                 <a href="/staffplans/{{this.id}}">{{this.full_name}}</a>
               </span>
             </a>
-            <a href="/users/{{this.id}}">Show user's profile</a>
+          </div>
+          <div class="controls">
+            <a class="btn btn-info" href="/users/{{this.id}}">Show profile</a>
           </div>
           <ul class='week-hour-counter'></ul>
         </li>

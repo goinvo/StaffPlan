@@ -13,10 +13,10 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
             </a>
           </div>
           <div class="controls"> 
-            <a href="/clients/{{this.id}}/edit">
+            <a class="btn btn-info" href="/clients/{{this.id}}/edit">
               Edit
             </a>
-            <a href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
+            <a class="btn btn-danger" href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
               Delete
             </a>
           </div>

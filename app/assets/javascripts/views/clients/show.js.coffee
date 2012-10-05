@@ -3,15 +3,15 @@ class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
     clientInfo: '''
     <div class="client-info">
       <div class="client-name">
-        <h2>Name</h2>
+        <h3>Name</h3>
         {{client.name}}
       </div>
       <div class="client-description">
-        <h2>Description</h2>
+        <h3>Description</h3>
         {{client.description}}
       </div>
       <div class="client-active">
-        <h2>Status</h2>
+        <h3>Status</h3>
         This client is 
         {{#if client.active}}
           active 
@@ -19,17 +19,16 @@ class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
           inactive
         {{/if}}
       </div>
-      <h2>List of {{client.name}}'s projects</h2>
-      <ul class="client-projects">
+      <h3>List of {{client.name}}'s projects</h3>
         {{#each projects}}
-          <li class="client-project">
+          <div class="client-project">
             <a href="/projects/{{this.id}}">{{this.name}}</a>
-          </li>
+          </div>
         {{/each}}
       </div>
     </div>
     <div class="actions">
-      <a href="/clients">Back to list of clients</a>
+      <a class="btn btn-primary btn-large" href="/clients">Back to list of clients</a>
     </div>
     '''
   initialize: ->

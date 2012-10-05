@@ -50,7 +50,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, :notice => "Successfully updated user" }
         format.json { render :json => @user, :status => :accepted }
       else  
-        format.html { render :edit, :notice => "An error occurred, please try again" }
+        format.html { render action: "edit" }
         format.json { render :json => @user.errors, :status => :unprocessable_entity }
       end
     end

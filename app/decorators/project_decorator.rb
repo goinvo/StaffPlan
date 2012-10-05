@@ -13,7 +13,7 @@ class ProjectDecorator < Draper::Base
       json.users self.users do |json, user|
         json.(user, :id, :email, :first_name, :last_name)
         json.gravatar UserDecorator.new(user).gravatar
-        json.work_weeks user.work_weeks.for_project(self) do |json, work_week|
+        json.work_weeks self.assignments.where(user_id: user.id).first.work_weeks do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end
       end

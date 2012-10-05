@@ -24,7 +24,7 @@ class Users::ProjectsController < ApplicationController
     if params.try(:[], :project).try(:[], :assignment).present?
       @project.assignments.where(user_id: params[:user_id]).first.update_attributes(params[:project][:assignment])
     end
-    if @project.update_attributes(params[:project].except(:assignment))
+    if params.try(:[], :project) && @project.update_attributes(params[:project].except(:assignment))
       render_json_ok
     else
       render_json_fail

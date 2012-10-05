@@ -21,11 +21,11 @@ describe ProjectsController do
 
       get :index
       assigns(:projects).should eq([project])
+    end
 
-      @company.projects.destroy_all
-
+    it "should not return any projects in @projects if the current company has no projects" do
       get :index
-      assigns(:projects).should eq([])
+      assigns(:projects).size.should == 0
     end
 
     it "should return projects ordered by name" do

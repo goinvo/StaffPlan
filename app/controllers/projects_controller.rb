@@ -16,7 +16,6 @@ class ProjectsController < ApplicationController
       @date_range << start
       start = start + 7.days
     end
-
     @projects = ProjectDecorator.decorate(current_user.current_company.projects.sort do |a,b|
       a.name.downcase <=> b.name.downcase
     end)

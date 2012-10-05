@@ -191,6 +191,16 @@ section.main {
   width: 150px !important;
 }
 
+body#clients.show {
+  section.main {
+    div.content {
+      div.client-info {
+        margin-bottom: 16px
+      }
+    }
+  }
+}
+
 #staffplans.index, #staffplans.inactive, #users, #clients, #projects, #companies {
   section.main {
     //section {
@@ -260,7 +270,15 @@ section.main {
     //}
   }
 }
-
+body#staffplans.index {
+  section.main {
+    div.content {
+      div.actions {
+        padding-left: 40px
+      }
+    }
+  }
+}
 #projects {
   ul {
     li {
