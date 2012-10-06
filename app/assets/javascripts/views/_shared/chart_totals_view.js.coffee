@@ -12,17 +12,12 @@ class ChartTotalsView extends Backbone.View
     else
       staffPlanPage = @parentsSelector is ".user-select"
     @render @dates, @models, staffPlanPage if @dates and @models and @el
-  ###*
-    * Render week hour counter.
-    * @param {!Object} date_range Date range meta from User model.
-    * @param {!Array}  models     Models to gather data from.
-    * @returns {*}
-  *###
+
   render: (date_range, models, staffPlanPage) ->
     # Grab data
-    data = (get_data date_range, models, staffPlanPage).sort (a,b) ->
-      [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
-      ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
+    data = _.sortBy (get_data date_range, models, staffPlanPage), (obj) ->
+      moment([obj.date.year, obj.date.month, obj.date.mday]).unix()
+    
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -38,11 +33,15 @@ class ChartTotalsView extends Backbone.View
       .style("background-image", get_gradient_moz)
       .style("background-image", get_gradient_webkit)
       .attr("class", get_class)
+      .attr("data-year", get_year)
+      .attr("data-cweek", get_cweek)
       .select("span")
         .text(get_value)
 
     list.enter().append("li")
       .attr("class", get_class)
+      .attr("data-year", get_year)
+      .attr("data-cweek", get_cweek)
       .style("height", height)
       .style("background-image", get_gradient_moz)
       .style("background-image", get_gradient_webkit)
@@ -126,11 +125,18 @@ get_gradient_webkit = (d) ->
   return "" if d.date.weekHasPassed || d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+
+get_cweek = (d) ->
+  d.date.cweek
+  
+get_year = (d) ->
+  d.date.year
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
   * @returns {!String} Class for week.
 *###
+
 get_class = (d) ->
   if d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
     if d.actual == 0 then "present" else "passed"
