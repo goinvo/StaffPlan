@@ -21,15 +21,18 @@ class Users::ProjectsController < ApplicationController
   end
   
   def update
-    if params.try(:[], :project).try(:[], :assignment).present?
-      @project.assignments.where(user_id: params[:user_id]).first.update_attributes(params[:project][:assignment])
-    end
-    if @project.update_attributes(params[:project].except(:assignment))
-      render_json_ok
+    if params[:project].is_a?(Hash) and params[:project].has_key?(:assignment)
+      @assignment = @project.assignments.where(user_id: params[:user_id]).first
+      if @assignment and @assignment.update_attributes(params[:project][:assignment])
+        render_json_ok
+      else
+        render_json_fail
+      end
     else
       render_json_fail
     end
   end
+  
   
   def destroy
     @target_user.projects.delete(@project)

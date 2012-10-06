@@ -107,7 +107,8 @@ describe Users::ProjectsController do
     end
     
     it "should render OK JSON if the project updates" do
-      put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
+      dummy = FactoryGirl.create(:project, :company => @company, :users => [@user])
+      put :update, :user_id => @user.id, :id => dummy.id, :project => {:assignment => {:proposed => true}} 
       response.should be_success
       response.body.match("\"status\":\"ok\"").should_not be_nil
       response.body.match("\"clients\":").should_not be_nil
@@ -115,8 +116,9 @@ describe Users::ProjectsController do
     end
     
     it "should render FAIL JSON if the project doesn't update" do
-      Project.any_instance.expects(:update_attributes).with(anything).returns(false)
-      put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
+      Assignment.any_instance.expects(:update_attributes).with(anything).returns(false)
+      dummy = FactoryGirl.create(:project, :company => @company, :users => [@user])
+      put :update, :user_id => @user.id, :id => dummy.id, :project => {:assignment => {:proposed => true}} 
       response.should be_success
       response.body.match("\"status\":\"fail\"").should_not be_nil
       response.body.match("\"errors\":").should_not be_nil

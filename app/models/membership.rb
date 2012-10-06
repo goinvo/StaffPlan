@@ -1,16 +1,35 @@
 class Membership < ActiveRecord::Base
 
-  attr_accessible :company_id, :salary, :rate, :full_time_equivalent, :payment_frequency
-  attr_accessible :weekly_allocation, :employment_status, :disabled, :archived
+  attr_accessible :company_id, :salary, :rate, :full_time_equivalent, :payment_frequency #, :user_id
+  attr_accessible :weekly_allocation, :employment_status, :disabled, :archived #, :permissions
   
   belongs_to :user
   belongs_to :company
 
-  # validates :weekly_allocation, :payment_frequency, :rate, :presence => true, :if => Proc.new { |m| m.?(:contractor) }
-  # validates :salary, :full_time_equivalent, :presence => true, :if => Proc.new { |m| m.roles?(:employee) }
+  # ASSOC = {
+  #   :admin => :administrates!,
+  #   :financials => :handles_financials_of!
+  # } 
 
-  bitmask :roles, :as => [:admin, :employee, :contractor, :financials], :null => false
+  # bitmask :roles, :as => [:admin, :employee, :contractor, :financials], :null => false
   bitmask :permissions, :as => [:admin, :financials], :null => false
+
+  # def permissions=(perms)
+  #   unless perms.nil?
+  #     perms.each do |perm|
+  #       self.permissions << perm.to_sym 
+  #     end
+  #     (Membership.values_for_permissions - perms.map(&:to_sym)).each do |perm|
+  #       permissions.delete perm
+  #       save
+  #     end
+  #   else
+  #     Membership.values_for_permissions.each do |perm|
+  #       permissions.delete perm
+  #     end
+  #     save
+  #   end
+  # end
 
   before_save do |record|
     if record.disabled?
