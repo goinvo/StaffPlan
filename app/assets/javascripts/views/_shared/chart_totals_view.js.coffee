@@ -7,7 +7,7 @@ class ChartTotalsView extends Backbone.View
   *###
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
-    if @models.size > 0 
+    if @models.size > 0
       staffPlanPage = _.has(_.first @models, "users")
     else
       staffPlanPage = @parentsSelector is ".user-select"
@@ -21,8 +21,7 @@ class ChartTotalsView extends Backbone.View
   render: (date_range, models, staffPlanPage) ->
     # Grab data
     data = (get_data date_range, models, staffPlanPage).sort (a,b) ->
-      [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
-      ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
+      moment([a.year, a.month, a.mday]).unix() - moment([b.year, b.month, b.mday]).unix()
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -126,6 +125,7 @@ get_gradient_webkit = (d) ->
   return "" if d.date.weekHasPassed || d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
