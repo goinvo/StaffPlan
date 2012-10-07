@@ -8,7 +8,7 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
     @render @dates, @models if @dates and @models and @el
-    @staffPlanPage = if @models.size == 0 
+    @staffPlanPage = if @models.size == 0
       @parentsSelector is ".user-select" # Fallback on weaker test if the models array is empty
     else
       _.has(_.first @models, "projects")

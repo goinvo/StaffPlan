@@ -1,9 +1,20 @@
 class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   tagName: 'ul'
   className: 'user-list'
+  
   initialize: ->
-    @collection.on "change", (model) =>
-      #model.view.render()
+    @collection.bind "remove", () =>
+      @render()
+  templates:
+    actions:
+      addUser: '''
+        <div class="actions">
+          <a href="/users/new" class="btn btn-primary" data-action="new">
+            <i class="icon-list"></i>
+            Add user
+          </a>
+        </div>
+        '''
   events:
     "click div.controls a[data-action=delete]": "deleteUser"
     "click div.controls a[data-action=edit]": "editUser"
@@ -14,10 +25,14 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
     event.preventDefault()
     event.stopPropagation()
     userId = $(event.target).data("user-id")
-    user = @collection.get(userId)
-    user.destroy()
-    @collection.remove(user)
-    @$el.find('li[data-user-id=' + userId + ']').remove()
+    deleteView = new window.StaffPlan.Views.Users.Delete
+      model: @collection.get(userId)
+      collection: @collection
+    @$el.append deleteView.render().el
+    $('#delete_modal').modal
+      show: true
+      keyboard: true
+      backdrop: 'static'
 
   newUser: ->
 
@@ -32,7 +47,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
       view = new window.StaffPlan.Views.Users.ListItem
         model: user
       @$el.append view.render().el
-    @$el.append "<div class=\"actions\"><a href=\"/users/new\" class=\"btn btn-primary\" data-action=\"new\"><i class=\"icon-list\"></i>Add user</a></div>"
+    @$el.append Handlebars.compile(@templates.actions.addUser)
     @$el.appendTo 'section.main div.content'
 
     @

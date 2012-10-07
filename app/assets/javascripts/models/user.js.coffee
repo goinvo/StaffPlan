@@ -5,6 +5,10 @@ class window.StaffPlan.Models.User extends Backbone.Model
     
     @membership = new window.StaffPlan.Models.Membership @get( "membership" ),
       parent: @
+    
+    @bind "remove", () ->
+      @destroy()
+
 
   toJSON: ->
     first_name: @get("first_name")

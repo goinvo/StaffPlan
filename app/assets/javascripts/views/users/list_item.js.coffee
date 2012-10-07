@@ -19,7 +19,7 @@ class window.StaffPlan.Views.Users.ListItem extends Backbone.View
             <i class="icon-edit icon-white"></i>
             Edit
           </a>
-          <a class="btn btn-danger" data-action="delete" data-user-id="{{user.id}}" href="/users">
+          <a class="btn btn-danger" data-action="delete" data-user-id="{{user.id}}">
             <i class="icon-trash icon-white"></i>
             Delete
           </a>

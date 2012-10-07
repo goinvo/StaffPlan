@@ -10,6 +10,7 @@
 //= require jquery-ujs
 //= require xdate
 //= require d3.v2
+//= require bootstrap.min
 
 //= require underscore
 //= require backbone
