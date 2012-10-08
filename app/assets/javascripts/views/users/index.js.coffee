@@ -25,7 +25,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
     event.preventDefault()
     event.stopPropagation()
     userId = $(event.target).data("user-id")
-    deleteView = new window.StaffPlan.Views.Users.Delete
+    deleteView = new window.StaffPlan.Views.Shared.DeleteModal
       model: @collection.get(userId)
       collection: @collection
     @$el.append deleteView.render().el

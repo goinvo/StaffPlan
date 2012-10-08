@@ -44,7 +44,7 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
 
   render: =>
     @$el.append Handlebars.compile(@templates.header)
-      resourceName: @model.NAME 
+      resourceName: @model.NAME
     @$el.append Handlebars.compile(@templates.body)
     @$el.append Handlebars.compile(@templates.actions)
       resourceName: @model.NAME

@@ -1,4 +1,5 @@
 class window.StaffPlan.Models.User extends Backbone.Model
+  NAME: "user"
   initialize: ->
     @assignments = new window.StaffPlan.Collections.Assignments @get( "assignments" ),
       parent: @
@@ -9,6 +10,7 @@ class window.StaffPlan.Models.User extends Backbone.Model
     @bind "remove", () ->
       @destroy()
 
+  
 
   toJSON: ->
     first_name: @get("first_name")
