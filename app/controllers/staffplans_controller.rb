@@ -27,8 +27,8 @@ class StaffplansController < ApplicationController
 
   def index
     @start = params[:from] || Date.today.at_beginning_of_week # We need to save that for the view
-    @sort ||= params[:sort]
-    @order = params[:order]
+    @sort = params[:sort] || "workload"
+    @order = params[:order] || "asc"
     @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
     @from = 1.week.ago(@from)
     @to = 3.months.from_now(@from)
@@ -41,15 +41,18 @@ class StaffplansController < ApplicationController
       start = start + 7.days
     end
     project_ids = current_user.current_company.projects.map(&:id)
-    
     u = current_user.current_company.active_users.sort do |a, b|
-      if @sort.nil? || @sort == "workload"
+      if @sort == "workload"
         a.plan_for(project_ids, @date_range.first) <=> b.plan_for(project_ids, @date_range.first)
       else
         a.last_name <=> b.last_name
       end 
     end
-    @users = UserDecorator.decorate(params[:order] == "asc" ? u : u.reverse)
+    if @order == "asc" 
+      @users = UserDecorator.decorate u
+    else
+      @users = UserDecorator.decorate u.reverse
+    end
   end
   
   def my_staffplan

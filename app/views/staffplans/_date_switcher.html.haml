@@ -1,7 +1,7 @@
 %table.weeks
   %tr
     %td{rowspan: 2}
-      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 3.months.ago(date_range.first), :sort => sort), :class => 'previous')
+      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 3.months.ago(date_range.first), :sort => sort, :order => order), :class => 'previous')
     - last_month = date_range.first.month
     - date_range.each_with_index do |date, idx|
       %td
@@ -10,7 +10,7 @@
             = Date::ABBR_MONTHNAMES[ date.month ]
       - last_month = date.month
     %td{rowspan: 2}
-      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 1.week.from_now(date_range.last), :sort => sort), :class => 'next') 
+      .month= link_to("&nbsp;".html_safe, staffplans_path(:from => 1.week.from_now(date_range.last), :sort => sort, :order => order), :class => 'next') 
   %tr
     - date_range.each do |date|
       %td
