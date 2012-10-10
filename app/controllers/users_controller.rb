@@ -45,7 +45,7 @@ class UsersController < ApplicationController
 
   def update
     respond_to do |format|
-      unless @user.update_attributes(params[:user])
+      if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :notice => "Successfully updated user" }
         format.json { render :json => @user, :status => :accepted }
       else  
