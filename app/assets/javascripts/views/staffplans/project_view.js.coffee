@@ -4,7 +4,7 @@ class views.staffplans.ProjectView extends Support.CompositeView
   id: "project-#{@cid}"
   
   initialize: ->
-    this.collapsed = false
+    @collapsed = false
     
     @work_weeks = new views.staffplans.WorkWeekListView
       model: @model.work_weeks
@@ -127,11 +127,16 @@ class views.staffplans.ProjectView extends Support.CompositeView
     "click span.hide-project" : "hideProject"
   
   hideProject: (event) ->
-    state = this.collapsed
-    
-    console.log( state )
-    
-    this.collapsed = (state) ? false : true 
+    if @collapsed
+        dist = "75px"
+        @collapsed = false
+        $( event.target ).removeClass("hidden");
+    else
+        dist = "35px"
+        @collapsed = true
+        $( event.target ).addClass("hidden");
+        
+    $( @el ).stop().animate({"height":dist},400)
   
   addNewProject: (event) ->
     @model.collection.add
