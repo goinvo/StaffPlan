@@ -137,8 +137,14 @@ body#staffplans.show
       padding: 10px 20px
       
       .user-select
-        position: relative
+        position: fixed
+        top: 38px
+        border-top: 8px solid #EEE 
+        padding-left: 20px
+        z-index: 1000
+        background-color: #EEE
         height: 75px
+        width: 100%
 
         .user-info
           position: absolute
@@ -175,8 +181,7 @@ body#staffplans.show
           .week-hour-counter
             +week-hour-counter
             padding-top: 22px
-            
-      .project-list
+      .project-list.headers
         .headers
           +staffplan-columns
           +display-box
@@ -186,6 +191,11 @@ body#staffplans.show
           border-right: none
           border-left: none
           background-color: #F7F7F7
+          z-index: 1000
+          position: fixed
+          top: 116px
+          left: 20px
+          width: 100%
 
           .client-name 
       
@@ -208,6 +218,7 @@ body#staffplans.show
             display: block
 
             section
+              padding-left: 2px
               .plan-actual
                 & + .plan-actual
                   margin-top: 6px
@@ -216,6 +227,8 @@ body#staffplans.show
                 .row-label
                   width: 40px
 
+      #project-list
+        margin-top: 140px
         section
           padding-top: 6px
           padding-bottom: 6px

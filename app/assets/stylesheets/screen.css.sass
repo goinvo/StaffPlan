@@ -46,16 +46,21 @@ ul
 //\\//\\//\\//\\//\\
 body > header
   margin: 0
+  background-color: #EEE
+  z-index: 1000
   padding: 6px 0
-  line-height: 24px
-  border-bottom: 1px solid #CCCCCC
-  +box-shadow(0 1px 0 #FFF)
+  //line-height: 24px
+  height: 32px
+  //+box-shadow(0 1px 0 #FFF)
   
   .inner
-    position: relative
-    margin: 0 auto
+    position: fixed 
+    top: 0px
+    margin: 0 0 
     padding: 0 10px
+    background-color: #EEE
     width: 100%
+    z-index: 1000
     +box-sizing(border-box)
 
   ul
@@ -66,6 +71,7 @@ body > header
     li
       display: inline-block
       margin-left: 5px
+      padding-top: 4px
       & + li
         margin-left: 20px
 
@@ -76,9 +82,11 @@ body > header
         line-height: 24px
 
   .right
-    position: absolute
-    right: 15px
-    bottom: 0
+    float: right
+    padding-top: 8px
+    // position: absolute
+    // right: 15px
+    // bottom: 0
     +inline-bullets
 
 // Nav sprites
@@ -145,8 +153,10 @@ section.main
       font-size: 16px
 
 body > header .inner
-  width: 1100px
+  //width: 1100px
+  width: 100%
   min-width: 1100px
+  padding: 0 6%
 
 section.main
   width: 1100px

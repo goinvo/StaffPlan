@@ -17,7 +17,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
-    @container_selector = '.project-list > section[data-client-id]:first .months-and-weeks'
+    @container_selector = '#project-list > section[data-client-id]:first .months-and-weeks'
     
     @model.view = @
     @model.url = ->
@@ -110,13 +110,15 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
         <a href='#' data-change-page='next' class='next'>&rarr;</a>
       </div>
     </div>
-    <div class='project-list'>
+    <div class='project-list headers'>
       <section class='headers'>
         <div class='client-name'>Client</div>
         <div class='new-project'>&nbsp;</div>
         <div class='project-name'>Project</div>
         <div class='months-and-weeks'></div>
       </section>
+    </div>
+    <div id='project-list'>
     </div>
     """
     
@@ -163,7 +165,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
         .find("section[data-client-id='#{clientId}']")
         .replaceWith( section )
     else
-      @$('.project-list').append section
+      @$('#project-list').append section
   
 
   addNewProjectRow: ->

@@ -31,8 +31,8 @@
             - else
               = current_user.current_company.try(:name) || "N/A"
         
-        .header-content
-          = yield(:header_content)
+        -# .header-content
+        -#   = yield(:header_content)
          
         .right
           = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "StaffPlan Feedback")
