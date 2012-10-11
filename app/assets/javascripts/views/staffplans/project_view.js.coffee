@@ -4,6 +4,8 @@ class views.staffplans.ProjectView extends Support.CompositeView
   id: "project-#{@cid}"
   
   initialize: ->
+    this.collapsed = false
+    
     @work_weeks = new views.staffplans.WorkWeekListView
       model: @model.work_weeks
       project: @
@@ -99,11 +101,14 @@ class views.staffplans.ProjectView extends Support.CompositeView
       <a class='add-new-project button-minimal'>+</a>
     </div>
     <div class='project-name'>
-      {{#isNew}}
-      <input type='text' name='project[name]' />
-      {{/isNew}}
-      {{^isNew}}
-      <a href='/projects/{{ projectId }}'>{{ name }}</a>
+      <div class='cf'>
+        <span class='hide-project'>H</span>
+        {{#isNew}}
+        <input type='text' name='project[name]' />
+        {{/isNew}}
+        {{^isNew}}
+        <a href='/projects/{{ projectId }}'>{{ name }}</a>
+      </div>
       <input type='hidden' name='project[name]' />
       <p class="switch">
         <input type="checkbox" class="apple-switch" data-project-id="{{projectId}}" {{isProposed}} />
@@ -119,7 +124,15 @@ class views.staffplans.ProjectView extends Support.CompositeView
     "keydown input[name='project[name]']" : "onKeydown"
     "focusin input[name='client[name]']" : "initClientAutocomplete"
     "focusin input[name='project[name]']" : "initProjectAutocomplete"
+    "click span.hide-project" : "hideProject"
+  
+  hideProject: (event) ->
+    state = this.collapsed
     
+    console.log( state )
+    
+    this.collapsed = (state) ? false : true 
+  
   addNewProject: (event) ->
     @model.collection.add
       "client_id": $( @el ).closest( 'section' ).data().clientId
