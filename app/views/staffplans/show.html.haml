@@ -6,9 +6,6 @@
     window._meta =
       assignments: #{@target_user.decorate.assignments_as_json}
       clients: new ClientList(#{@clients})
-      days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-      months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-      abbr_days: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
       fromDate: "#{@from}"
     
     $( ->

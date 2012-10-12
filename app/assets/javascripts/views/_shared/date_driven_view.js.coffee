@@ -1,7 +1,6 @@
 class views.shared.DateDrivenView extends Support.CompositeView
   initialize: ->
     @fromDate = moment(window._meta.fromDate)
-    
     # default to show 3 months, we'll defer re-rendering the proper
     # amount until we have something to measure in the DOM
     @weekInterval = 15

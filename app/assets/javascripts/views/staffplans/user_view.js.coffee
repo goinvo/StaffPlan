@@ -5,6 +5,11 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
   events:
     "click a[data-change-page]" : "changePage"
+    "change span[data-action=filter] select": "changeYear"
+
+
+  changeYear: (event) ->
+    document.location.href = "/staffplans/#{@model.id}/#{$(event.currentTarget).val()}"
 
   changePage: (event) ->
     @dateChanged event
@@ -45,13 +50,13 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
   templateData: ->
     name: @model.get("full_name")
     fromDate: @fromDate
-    gravatar: @model.get("gravatar")
+    gravatar: "https://secure.gravatar.com/avatar/3bf6284fd2b367047c2ce8005554e942"
     id: @model.get("id")
 
   headerTemplateData: ->
     meta = @dateRangeMeta()
-    currentYear: ->
-      moment().year()
+    selectedYear: ->
+      moment(window._meta.fromDate).year()
     monthNames: ->
       # meta.dates is an array of date objects, as created in getYearsAndWeeks
       _.map meta.dates, (dateMeta, idx, dateMetas) ->
@@ -97,6 +102,16 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
         <span class='name'>{{ name }}</span>
         <span class='email'>{{ email }}</span>
       </a>
+      <span data-action="filter"> 
+        <select>
+          <option value="0">--</option>
+          <option value="2011">2011</option> 
+          <option value="2012">2012</option> 
+          <option value="2013">2013</option> 
+          <option value="2014">2014</option> 
+          <option value="2015">2015</option> 
+        </select>
+      </span>
     </div>
     """
     
@@ -125,7 +140,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     work_week_header: """
     <section>
       <div class='plan-actual'>
-        <div class='row-label'>{{ currentYear }}</div>
+        <div class='row-label'>{{ selectedYear }}</div>
         {{#monthNames}}
         <div>{{ name }}</div>
         {{/monthNames}}
