@@ -3,10 +3,26 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   tagName: "div"
   
   templates:
-    row_children: '''
-      <div class="grid-row-element fixed-180 sexy">{{clientName}}</div>
+    show: '''
+      <div class="grid-row-element fixed-180 sexy">
+        <span>{{clientName}}</span>
+        {{#if clientName}}
+          <a class='action-right add-project btn btn-mini return-false' onclick="return false;" href="/staffplans/{{user_id}}">Add Project</a>
+        {{/if}}
+      </div>
       <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
       <div class="grid-row-element flex work-weeks"></div>
+    '''
+    
+    new: '''
+    <div class="grid-row-element fixed-180 sexy">
+      <span>{{clientName}}</span>
+      {{#if clientName}}
+        <a class='action-right add-project btn btn-mini return-false' href="#">Add Project</a>
+      {{/if}}
+    </div>
+    <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
+    <div class="grid-row-element flex work-weeks"></div>
     '''
     
   initialize: ->
@@ -14,14 +30,12 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @client = @options.client
     @user = @options.user
     @index = @options.index
+    @project = StaffPlan.projects.get( @model.get 'project_id' )
     
-    @project = StaffPlan.projects.get( @model.get( 'project_id' ) )
+    @showTemplate = Handlebars.compile @templates.show
+    @newTemplate = Handlebars.compile @templates.new
     
-    @rowChildrenTemplate = Handlebars.compile @templates.row_children
-    
-    @$el.append @rowChildrenTemplate
-      clientName: if @index == 0 then @client.get('name') else ""
-      projectName: @project.get('name')
+    @$el.data('cid', @cid)
     
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
@@ -33,9 +47,22 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
         @model.work_weeks.add
           cweek: meta.cweek
           year: meta.year
+  
+  renderNew: ->
+    @newTemplate
+      showClientInput: @client.isNew()
+  
+  renderShow: ->
+    @showTemplate
+      clientName: if @index == 0 then @client?.get('name') else ""
+      projectName: @project?.get('name')
+      user_id: @user.id
     
   render: ->
+    @$el.html (if @model.isNew() then @renderNew() else @renderShow())
+      
     @ensureWorkWeekRange()
-    @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
-    @
     
+    @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
+    
+    @

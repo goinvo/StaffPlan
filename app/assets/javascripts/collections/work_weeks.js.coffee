@@ -1,5 +1,5 @@
 class window.StaffPlan.Collections.WorkWeeks extends Backbone.Collection
-  model: window.StaffPlan.Models.WorkWeek
+  model: StaffPlan.Models.WorkWeek
   
   initialize: (models, attrs) ->
     _.extend @, models

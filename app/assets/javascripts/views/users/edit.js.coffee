@@ -116,6 +116,7 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
       membership: @model.membership.attributes
 
     @render()
+    
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"

@@ -1,5 +1,5 @@
 class window.StaffPlan.Collections.Projects extends Backbone.Collection
-  model: window.StaffPlan.Models.Project
+  model: StaffPlan.Models.Project
   
   initialize: (models, attrs) ->
     _.extend @, models

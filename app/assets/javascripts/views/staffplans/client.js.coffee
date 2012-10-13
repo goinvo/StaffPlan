@@ -5,20 +5,35 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
   initialize: ->
     @model = @options.model
     @user = @options.user
-    @assignments = @options.assignments
+    
+    @assignments = new window.StaffPlan.Collections.Assignments @options.assignments,
+      parent: @
+    
+    @assignments.map (assignment, index) =>
+      @addAssignmentView assignment, index
+        
+    @assignments.bind 'add', (assignment) =>
+      @addAssignmentView assignment, @assignments.models.length - 1
+      assignment.view.render()
     
     @$el.attr('data-client-id', @model.get('id'))
     
-    @assignmentViews = @assignments.map (assignment, index) =>
-      new window.StaffPlan.Views.StaffPlans.Assignment
-        model: assignment
-        client: @model
-        user: @user
-        index: index
-    
-    @$el.append @assignmentViews.map (assignment) -> assignment.el
+    @$el.append @assignments.map (assignment) -> assignment.view.el
     
   render: ->
     @$el.appendTo('section.main .content .staffplan')
-    @assignmentViews.map (assignment) -> assignment.render()
+    @assignments.map (assignment) -> assignment.view.render()
     @
+  
+  events:
+    "click a.add-project": "onAddProjectClick"
+  
+  onAddProjectClick: ->
+    @assignments.add()
+  
+  addAssignmentView: (assignment, index) ->
+    assignment.view = new window.StaffPlan.Views.StaffPlans.Assignment
+      model: assignment
+      client: @model
+      user: @user
+      index: index

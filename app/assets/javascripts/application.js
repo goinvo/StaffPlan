@@ -28,4 +28,11 @@ $( document ).ready(function() {
   $( 'select#user_current_company_id' ).live( 'change', function() {
     $( this ).closest( 'form' ).submit();
   });
+  
+  $( 'a.return-false' ).live( 'click', function(event) {
+    debugger
+    event.stopPropagation();
+    event.preventDefault();
+    return false;
+  });
 });

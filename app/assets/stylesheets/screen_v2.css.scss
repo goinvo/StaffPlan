@@ -370,12 +370,12 @@ footer {
       padding: 5px 0 0 5px;
     }
     
-    &.sexy {
-      -moz-mask-image: -moz-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
-      -o-mask-image: -o-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
-      -webkit-mask-image: -webkit-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
-      mask-image: linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
-    }
+//    &.sexy {
+//      -moz-mask-image: -moz-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
+//      -o-mask-image: -o-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
+//      -webkit-mask-image: -webkit-linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
+//      mask-image: linear-gradient(left, black, black 80%, hsla(0, 0%, 0%, 0));
+//    }
     
     &.fixed-180 {
       width: 180px;
@@ -400,6 +400,11 @@ footer {
       &:first-child {
         display: initial;
       }
+    }
+    
+    .btn.action-right {
+      float: right;
+      margin-right: 10px;
     }
   }
   

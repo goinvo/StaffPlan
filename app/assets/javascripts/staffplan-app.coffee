@@ -18,7 +18,7 @@ window.StaffPlan =
     @clients = new StaffPlan.Collections.Clients data.clients
     @currentCompany = data.currentCompany
 
-    new window.StaffPlan.Routers.StaffPlan
+    new StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects
       clients: @clients

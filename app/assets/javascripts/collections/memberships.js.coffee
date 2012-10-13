@@ -1,5 +1,5 @@
 class window.StaffPlan.Collections.Memberships extends Backbone.Collection
-  model: window.StaffPlan.Models.Membership
+  model: StaffPlan.Models.Membership
 
   initialize: (models, options) ->
     @parent = options.parent

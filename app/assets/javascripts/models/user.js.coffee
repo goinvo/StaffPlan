@@ -1,10 +1,10 @@
 class window.StaffPlan.Models.User extends Backbone.Model
   NAME: "user"
   initialize: ->
-    @assignments = new window.StaffPlan.Collections.Assignments @get( "assignments" ),
+    @assignments = new StaffPlan.Collections.Assignments @get( "assignments" ),
       parent: @
     
-    @membership = new window.StaffPlan.Models.Membership @get( "membership" ),
+    @membership = new StaffPlan.Models.Membership @get( "membership" ),
       parent: @
     
     @bind "remove", () ->
