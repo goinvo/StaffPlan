@@ -23,7 +23,6 @@ gem 'bitmask_attributes'
 
 group :assets do
   gem 'compass-rails'
-  gem 'compass_twitter_bootstrap'
   gem 'coffee-rails', '~> 3.2'
   gem 'uglifier',     '>= 1.0'
 end

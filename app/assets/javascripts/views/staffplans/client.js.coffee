@@ -14,6 +14,7 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
         
     @assignments.bind 'add', (assignment) =>
       @addAssignmentView assignment, @assignments.models.length - 1
+      @$el.append assignment.view.el
       assignment.view.render()
     
     @$el.attr('data-client-id', @model.get('id'))
@@ -29,7 +30,9 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     "click a.add-project": "onAddProjectClick"
   
   onAddProjectClick: ->
-    @assignments.add()
+    @assignments.add
+      user_id: @user.get('id')
+      client_id: @model.get('id')
   
   addAssignmentView: (assignment, index) ->
     assignment.view = new window.StaffPlan.Views.StaffPlans.Assignment

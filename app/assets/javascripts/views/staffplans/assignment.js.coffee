@@ -5,9 +5,14 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   templates:
     show: '''
       <div class="grid-row-element fixed-180 sexy">
-        <span>{{clientName}}</span>
-        {{#if clientName}}
-          <a class='action-right add-project btn btn-mini return-false' onclick="return false;" href="/staffplans/{{user_id}}">Add Project</a>
+        <div class='client-or-project-name'>{{clientName}}</div>
+        {{#if showAddProject}}
+        <span class='plus-with-text'>
+          <a class='add-project return-false' href="/staffplans/{{user_id}}">
+            <i class='icon-plus'>&nbsp;</i>
+            <span class='text'>Project</span>
+          </a>
+        </span>
         {{/if}}
       </div>
       <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
@@ -16,13 +21,16 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
     new: '''
     <div class="grid-row-element fixed-180 sexy">
-      <span>{{clientName}}</span>
-      {{#if clientName}}
-        <a class='action-right add-project btn btn-mini return-false' href="#">Add Project</a>
+      {{#if showClientInput}}
+        <input type="text" class="client-name-input input-medium" data-model="Client" data-attribute="name" data-trigger-save />
       {{/if}}
     </div>
-    <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
-    <div class="grid-row-element flex work-weeks"></div>
+    <div class="grid-row-element fixed-180 sexy">
+      <input type="text" class="project-name-input input-medium" data-model="Project" data-attribute="name" data-trigger-save />
+    </div>
+    <div class="grid-row-element flex">
+      <input type="button" class='btn' data-trigger-save value="Save" />
+    </div>
     '''
     
   initialize: ->
@@ -54,6 +62,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   
   renderShow: ->
     @showTemplate
+      showAddProject: @index == 0
       clientName: if @index == 0 then @client?.get('name') else ""
       projectName: @project?.get('name')
       user_id: @user.id
@@ -66,3 +75,17 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
     
     @
+  
+  events:
+    "click input[type='button'][data-trigger-save]": "onSaveTriggered"
+    "keydown input[type='text'][data-trigger-save]": "onSaveTriggeredByKeydown"
+  
+  onSaveTriggeredByKeydown: (event) ->
+    if event.keyCode == 13
+      @onSaveTriggered(event)
+  
+  onSaveTriggered: (event) ->
+    @model.save
+      wait: true
+      project_name: @$el.find('[data-model="Project"][data-attribute="name"]').val()
+      client_name: @$el.find('[data-model="Client"][data-attribute="name"]').val()

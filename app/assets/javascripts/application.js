@@ -10,7 +10,7 @@
 //= require jquery-ujs
 //= require xdate
 //= require d3.v2
-//= require bootstrap.min
+//= require bootstrap
 
 //= require underscore
 //= require backbone
@@ -30,7 +30,6 @@ $( document ).ready(function() {
   });
   
   $( 'a.return-false' ).live( 'click', function(event) {
-    debugger
     event.stopPropagation();
     event.preventDefault();
     return false;

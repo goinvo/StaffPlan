@@ -1,4 +1,5 @@
 class Assignment < ActiveRecord::Base
+  
   has_many :work_weeks, dependent: :destroy do
     def for_range(lower, upper)
       if lower.cweek <= upper.cweek 
@@ -9,6 +10,9 @@ class Assignment < ActiveRecord::Base
       end
     end
   end
+  
   belongs_to :project
   belongs_to :user
+  
+  validates_presence_of :project, :user
 end

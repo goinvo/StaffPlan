@@ -5,20 +5,9 @@ class ProjectsController < ApplicationController
   # GET /projects
   # GET /projects.json
   def index
-    @from = Date.parse(params[:from] || '').at_beginning_of_week rescue Date.today.at_beginning_of_week
-    @from = 1.week.ago(@from)
-    @to = 3.months.from_now(@from)
-    
-    @date_range = []
-    start = @from.clone
-    
-    while start < @to
-      @date_range << start
-      start = start + 7.days
-    end
-    @projects = ProjectDecorator.decorate(current_user.current_company.projects.sort do |a,b|
+    @projects = current_user.current_company.projects.sort do |a,b|
       a.name.downcase <=> b.name.downcase
-    end)
+    end
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @projects }
