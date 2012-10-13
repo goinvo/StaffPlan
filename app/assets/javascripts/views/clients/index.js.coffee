@@ -13,17 +13,22 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
             </a>
           </div>
           <div class="controls"> 
-            <a class="btn btn-info" href="/clients/{{this.id}}/edit">
+            <a class="btn btn-info btn-small" href="/clients/{{this.id}}/edit">
+              <i class="icon-white icon-edit"></i>
               Edit
             </a>
-            <a class="btn btn-danger" href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
+            <a class="btn btn-danger btn-small" href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
+              <i class="icon-white icon-trash"></i>
               Delete
             </a>
           </div>
         </li>
       {{/each}}
     </ul>
-    <button data-action="new" class="btn btn-primary">Add client</button>
+    <button data-action="new" class="btn btn-primary">
+      <i class="icon-white icon-list"></i>
+      Add client
+    </button>
     '''
   
   initialize: ->

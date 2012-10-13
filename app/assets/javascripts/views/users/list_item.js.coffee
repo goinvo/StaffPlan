@@ -11,19 +11,18 @@ class window.StaffPlan.Views.Users.ListItem extends Backbone.View
         </a>
       </div>
       <div class="controls">
-        <div class="btn-group">
-          <a class="btn btn-info" data-action="show" data-user-id="{{user.id}}" href="/users/{{user.id}}">
-            Show
-          </a>
-          <a class="btn btn-inverse" data-action="edit" data-user-id="{{user.id}}" href="/users/{{user.id}}/edit">
-            <i class="icon-edit icon-white"></i>
-            Edit
-          </a>
-          <a class="btn btn-danger" data-action="delete" data-user-id="{{user.id}}">
-            <i class="icon-trash icon-white"></i>
-            Delete
-          </a>
-        </div>
+        <a class="btn btn-info btn-small" data-action="show" data-user-id="{{user.id}}" href="/users/{{user.id}}">
+          <i class="icon-white icon-leaf"></i>
+          Show
+        </a>
+        <a class="btn btn-inverse btn-small" data-action="edit" data-user-id="{{user.id}}" href="/users/{{user.id}}/edit">
+          <i class="icon-edit icon-white"></i>
+          Edit
+        </a>
+        <a class="btn btn-danger btn-small" data-action="delete" data-user-id="{{user.id}}">
+          <i class="icon-trash icon-white"></i>
+          Delete
+        </a>
       </div>
     </li>
     '''

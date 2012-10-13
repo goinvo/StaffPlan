@@ -236,8 +236,7 @@ body#clients.show {
         }
       }
       div.actions {
-        padding-top: 16px; 
-        padding-left: 32px
+        padding: 16px;
       }
     }
     .info {
@@ -269,11 +268,11 @@ body#clients.show {
     //}
   }
 }
-body#staffplans.index {
+body#staffplans.index, body#users.index {
   section.main {
     div.content {
       div.actions {
-        padding-left: 40px
+        padding-left: 16px 
       }
     }
   }

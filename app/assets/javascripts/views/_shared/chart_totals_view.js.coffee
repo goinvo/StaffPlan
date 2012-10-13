@@ -60,7 +60,7 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   * @returns {!Object}          Mapping of data to weeks for a given date range.
 *###
 get_data = (date_range, models) ->
-  
+
   # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->

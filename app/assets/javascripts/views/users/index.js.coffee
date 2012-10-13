@@ -10,7 +10,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
       addUser: '''
         <div class="actions">
           <a href="/users/new" class="btn btn-primary" data-action="new">
-            <i class="icon-list"></i>
+            <i class="icon-list icon-white"></i>
             Add user
           </a>
         </div>
