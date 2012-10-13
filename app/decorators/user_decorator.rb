@@ -10,9 +10,8 @@ class UserDecorator < Draper::Base
   end
 
   def assignments_as_json
-    assigns = Assignment.select("proposed, project_id").where(:user_id => model.id)
     Jbuilder.encode do |json|
-      json.array! assigns do |json, assignment|
+      json.array! self.assignments do |json, assignment|
         json.user_id model.id
         json.project_id assignment.project_id
         json.proposed assignment.proposed
@@ -125,20 +124,15 @@ class UserDecorator < Draper::Base
     end
   end
 
-  def staff_plan_json(company_id, year=nil)
-    user_assignments = Assignment.select("proposed, project_id").where(:user_id => model.id)
+  def staff_plan_json(company_id)
     user_projects = user.projects.for_company(company_id)
-    ww = if year.present?
-           user.work_weeks.where(:year => year).group_by(&:project_id)
-         else
-           user.work_weeks.group_by(&:project_id)
-         end
+    ww = user.work_weeks.group_by(&:project_id)
     Jbuilder.encode do |json|
       json.(user, :id, :full_name, :email)
       json.gravatar gravatar
       json.projects user_projects do |json, project|
         json.(project, :id, :name, :client_id)
-        json.proposed user_assignments.detect{|ass| ass.project_id == project.id}.try(:proposed) || false 
+        json.proposed Assignment.where(user_id: user.id, project_id: project.id).first.try(:proposed) || false
         json.work_weeks ww[project.id] do |json, work_week|
           json.(work_week, :id, :project_id, :actual_hours, :estimated_hours, :cweek, :year)
         end

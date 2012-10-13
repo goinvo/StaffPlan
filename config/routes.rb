@@ -37,7 +37,6 @@ StaffPlan::Application.routes.draw do
   resources :companies, only: [:new, :create]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
-  get   '/staffplans/:id/:year' => "staffplans#show", :constraints => {:year => /20\d\d/}
   
   root :to => 'staffplans#my_staffplan'
 end
