@@ -52,6 +52,9 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       
     delta: =>
       @delta()
+
+    deltaPositive: =>
+      (Math.abs @delta()) is @delta()
       
     yearsAndCweeks: =>
       dates = meta.dates
@@ -100,7 +103,12 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
         {{/isRemoveable}}
         <span class='delta'>
           {{#hasDelta}}
-          &#916; {{ delta }}
+            {{#deltaPositive}}
+              &#916; +{{ delta }}
+            {{/deltaPositive}}
+            {{^deltaPositive}}
+              <span class="negative-delta">&#916; {{ delta }}</span>
+            {{/deltaPositive}}
           {{/hasDelta}}
         </span>
       </div>
