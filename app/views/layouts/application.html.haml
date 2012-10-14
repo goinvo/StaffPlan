@@ -33,8 +33,7 @@
           = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "StaffPlan Feedback")
           = link_to(t('.sign_out'), sign_out_path, {"data-bypass" => true})
       
-    %section.main
-      .content= yield
+    %section.main= yield
       
     %footer
       = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")

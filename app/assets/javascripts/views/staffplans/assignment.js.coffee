@@ -22,23 +22,27 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     new: '''
     <div class="grid-row-element fixed-180 sexy">
       {{#if showClientInput}}
-        <input type="text" class="client-name-input input-medium" data-model="Client" data-attribute="name" data-trigger-save />
+        <input type="text" class="client-name-input input-medium" data-model="Client" data-attribute="name" data-trigger-save placeholder="Client Name" />
       {{/if}}
     </div>
     <div class="grid-row-element fixed-180 sexy">
-      <input type="text" class="project-name-input input-medium" data-model="Project" data-attribute="name" data-trigger-save />
+      <input type="text" class="project-name-input input-medium" data-model="Project" data-attribute="name" data-trigger-save placeholder="Project Name" />
     </div>
     <div class="grid-row-element flex">
-      <input type="button" class='btn' data-trigger-save value="Save" />
+      <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
     </div>
     '''
+  
+  project: ->
+    StaffPlan.projects.get( @model.get 'project_id' )
+    
+  client: ->
+    StaffPlan.clients.get( @project()?.get('client_id') )
     
   initialize: ->
     @model = @options.model
-    @client = @options.client
     @user = @options.user
     @index = @options.index
-    @project = StaffPlan.projects.get( @model.get 'project_id' )
     
     @showTemplate = Handlebars.compile @templates.show
     @newTemplate = Handlebars.compile @templates.new
@@ -48,8 +52,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
       user: @user
-    
+  
   ensureWorkWeekRange: =>
+    # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed to all inputs are rendered.
     for meta in @user.view.getYearsAndWeeks()
       unless _.any(@model.work_weeks.where({cweek: meta.cweek, year: meta.year}))
         @model.work_weeks.add
@@ -57,23 +62,22 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
           year: meta.year
   
   renderNew: ->
-    @newTemplate
-      showClientInput: @client.isNew()
+    @$el.html @newTemplate
+      showClientInput: @client() == undefined or @client().isNew()
   
   renderShow: ->
-    @showTemplate
+    @$el.html @showTemplate
       showAddProject: @index == 0
-      clientName: if @index == 0 then @client?.get('name') else ""
-      projectName: @project?.get('name')
+      clientName: if @index == 0 then @client().get('name') else ""
+      projectName: @project()?.get('name')
       user_id: @user.id
     
-  render: ->
-    @$el.html (if @model.isNew() then @renderNew() else @renderShow())
-      
     @ensureWorkWeekRange()
     
     @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
     
+  render: ->
+    if @model.isNew() then @renderNew() else @renderShow()
     @
   
   events:
@@ -85,7 +89,22 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
       @onSaveTriggered(event)
   
   onSaveTriggered: (event) ->
+    unless @model.get('client_id')? && (client = StaffPlan.clients.get(@model.get('client_id')))?
+      StaffPlan.addClientByName clientName = @$el.find('[data-model="Client"][data-attribute="name"]').val(), (client, reponse) =>
+        @addProjectByNameAndClient client
+    else
+      @addProjectByNameAndClient client
+    
+  addProjectByNameAndClient: (client) ->
+    projectNameValue = @$el.find('[data-model="Project"][data-attribute="name"]').val()
+    unless (project = _.first StaffPlan.projects.where(name: projectNameValue, client_id: client.get('id')))?
+      StaffPlan.addProjectByNameAndClient projectNameValue, client, (project, response) =>
+        @_save project
+    else
+      @_save project
+  
+  _save: (project) ->
+    debugger if project.isNew()
+    
     @model.save
-      wait: true
-      project_name: @$el.find('[data-model="Project"][data-attribute="name"]').val()
-      client_name: @$el.find('[data-model="Client"][data-attribute="name"]').val()
+      project_id: project.get('id')

@@ -162,7 +162,7 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
       , {wait: true}
 
   render: ->
-    @$el.appendTo("section.main .content")
+    @$el.appendTo("section..main")
     # Hides the appropriate fields so that we can handle the permissions information
     selected = $('select[data-attribute="employment_status"]').val()
     $("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)

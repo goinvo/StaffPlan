@@ -340,7 +340,6 @@ footer {
   @include display-box;
   @include box-orient("horizontal");
   overflow: hidden;
-  width: 100%;
   
   &.header {
     padding: 6px 15px;

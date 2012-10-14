@@ -30,3 +30,16 @@ window.StaffPlan =
       event.preventDefault()
       href = $(event.currentTarget).attr('href').slice(1)
       Backbone.history.navigate(href, true)
+  
+  addClientByName: (name, callback) ->
+    @clients.create
+      name: name
+    ,
+      success: callback
+      
+  addProjectByNameAndClient: (name, client, callback) ->
+    @projects.create
+      name: name
+      client_id: client.get('id')
+    ,
+      success: callback
