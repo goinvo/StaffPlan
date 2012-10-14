@@ -14,25 +14,26 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
     @model.getByCid cid
   
   actualTotal: ->
-    @model.reduce (total, workWeek, idx, workWeeks) ->
+    @model.selectedSubset().reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
       total
     , 0
   
   estimatedTotal: ->
-    @model.reduce (total, workWeek, idx, workWeeks) ->
+    
+    @model.selectedSubset().reduce (total, workWeek, idx, workWeeks) ->
       total += if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
       total
     , 0
   
   delta: ->
-    @model.reduce (totalDelta, workWeek, idx, workWeeks) ->
-      estimated = if workWeek.get('estimated_hours')? && workWeek.get('estimated_hours') != "" then parseInt(workWeek.get('estimated_hours'), 10) else 0
-      actual = if workWeek.get('actual_hours')? && workWeek.get('actual_hours') != "" then parseInt(workWeek.get('actual_hours'), 10) else 0
-      
-      totalDelta += actual - estimated if actual != 0
-      totalDelta
+    totalActual = _.reduce (_.without @model.selectedSubset().pluck('actual_hours'), null), (total, elem) ->
+      total += elem
     , 0
+    totalEstimated = _.reduce (_.without @model.selectedSubset().pluck('estimated_hours'), null), (total, elem) ->
+      total += elem
+    , 0
+    totalDelta = if totalActual isnt 0 then totalActual - totalEstimated else 0
     
   templateData: ->
     meta = @dateRangeMeta()
@@ -47,7 +48,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       @estimatedTotal()
     
     hasDelta: =>
-      @delta() != 0
+      @delta() isnt 0
       
     delta: =>
       @delta()
