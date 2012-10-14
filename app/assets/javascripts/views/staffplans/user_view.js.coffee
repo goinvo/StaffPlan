@@ -5,6 +5,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
   events:
     "click a[data-change-page]" : "changePage"
+    "change span.year.filter select": "changeSelectedYear"
 
   changePage: (event) ->
     @dateChanged event
@@ -14,6 +15,13 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
     @$('section.headers div.months-and-weeks div.plan-actual:first .row-label').html @fromDate.year()
     
+  changeSelectedYear: (event) ->
+    if Modernizr.localstorage
+      localStorage.setItem "yearFilter", $(event.currentTarget).val()
+    else
+      alert "localStorage not available wtf"
+    @render()
+    @renderContent()
   initialize: ->
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
@@ -46,6 +54,9 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     name: @model.get("full_name")
     fromDate: @fromDate
     gravatar: @model.get("gravatar")
+    yearOptions: _.range(moment().year() - 10, moment().year() + 10).map (y) ->
+      optionText: y
+      optionValue: y
     id: @model.get("id")
 
   headerTemplateData: ->
@@ -82,6 +93,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
 
     $( @el )
       .appendTo '.content'
+    @$el.find("span.year.filter select").val(localStorage.getItem("yearFilter"))
 
     @renderWeekHourCounter()
 
@@ -97,6 +109,14 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
         <span class='name'>{{ name }}</span>
         <span class='email'>{{ email }}</span>
       </a>
+      <span class="year filter">
+        <select>
+          <option value="0">--</option>
+          {{#yearOptions}}
+            <option value="{{optionValue}}">{{optionText}}</option>
+          {{/yearOptions}}
+        </select>
+      </span>
     </div>
     """
     

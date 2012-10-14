@@ -7,7 +7,7 @@ class ChartTotalsView extends Backbone.View
   *###
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
-    if @models.size > 0 
+    if @models.size > 0
       staffPlanPage = _.has(_.first @models, "users")
     else
       staffPlanPage = @parentsSelector is ".user-select"
@@ -62,7 +62,7 @@ get_data = (date_range, models, staffPlanPage) ->
   # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
-      p.work_weeks.find (m) ->
+      _.find p.work_weeks.selectedSubset(), (m) ->
         if m.get('cweek') == date.mweek and m.get('year') == date.year
           m.set "date", date
           true
@@ -71,16 +71,15 @@ get_data = (date_range, models, staffPlanPage) ->
     "#{w.get('year')}-#{w.get('cweek')}"
 
   ww["#{d.year}-#{d.cweek}"] ?= [dummy(d)] for d in date_range # Fill empty weeks
-
   # Total hours for each week
   _.map ww, (hours, key) ->
     _.reduce hours, (m, o) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      assignment = _.detect window._meta.assignments, (ass) -> 
+      assignment = _.detect window._meta.assignments, (ass) ->
         ass[if staffPlanPage then 'project_id' else 'user_id'] == (o.collection?.parent?.id || -1)
-      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false 
+      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
       m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}

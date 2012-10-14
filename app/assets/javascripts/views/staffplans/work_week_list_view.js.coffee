@@ -57,7 +57,7 @@ class views.staffplans.WorkWeekListView extends Support.CompositeView
       _.map dates, (dateObject) =>
         workWeek = @workWeekByCweekAndYear dateObject.mweek, dateObject.year
         
-        if workWeek?
+        if workWeek? and workWeek.inSelectedSubset()
           dateObject.actual_hours =    (workWeek.get('actual_hours') or '')
           dateObject.estimated_hours = (workWeek.get('estimated_hours') or '')
           dateObject.cid = workWeek.cid
