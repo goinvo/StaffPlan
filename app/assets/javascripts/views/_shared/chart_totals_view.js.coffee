@@ -62,7 +62,7 @@ get_data = (date_range, models, staffPlanPage) ->
   # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
-      _.find p.work_weeks.selectedSubset(), (m) ->
+      p.work_weeks.selectedSubset().find (m) ->
         if m.get('cweek') == date.mweek and m.get('year') == date.year
           m.set "date", date
           true

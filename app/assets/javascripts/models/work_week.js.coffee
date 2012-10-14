@@ -19,12 +19,9 @@ class WorkWeekList extends Backbone.Collection
     @parent.dateRangeMeta()
   
   selectedSubset: ->
-    if Modernizr.localstorage and !!localStorage.getItem("yearFilter")
-      if localStorage.getItem("yearFilter") is "0"
-        @
-      else
-        @filter (ww) ->
-          ww.get('year') is parseInt(localStorage.getItem("yearFilter"), 10)
+    if Modernizr.localstorage and !!localStorage.getItem("yearFilter") and (localStorage.getItem("yearFilter") isnt "0")
+      new Backbone.Collection @filter (ww) ->
+        ww.get('year') is parseInt(localStorage.getItem("yearFilter"), 10)
     else
       @ # TODO: Maybe add the cookie handling here in case localStorage is not available 
 
