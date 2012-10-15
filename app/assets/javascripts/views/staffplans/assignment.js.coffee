@@ -113,6 +113,3 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @model.save
       project_id: project.get('id')
       target_user_id: @user.get('id')
-    ,
-      success: (assignment, response) =>
-        assignment.view.user.view.clients.add() if $('[data-client-id="-1"]').length == 0
