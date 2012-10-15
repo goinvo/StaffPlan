@@ -89,8 +89,14 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
       @onSaveTriggered(event)
   
   onSaveTriggered: (event) ->
-    unless @model.get('client_id')? && (client = StaffPlan.clients.get(@model.get('client_id')))?
-      StaffPlan.addClientByName clientName = @$el.find('[data-model="Client"][data-attribute="name"]').val(), (client, reponse) =>
+    clientNameValue = @$el.find('[data-model="Client"][data-attribute="name"]').val()
+    client = StaffPlan.clients.get(@model.get('client_id'))
+    
+    unless client?
+      client = StaffPlan.clients.where(name: clientNameValue)[0]
+      
+    unless client?
+      StaffPlan.addClientByName clientNameValue, (client, reponse) =>
         @addProjectByNameAndClient client
     else
       @addProjectByNameAndClient client
@@ -103,8 +109,10 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     else
       @_save project
   
-  _save: (project) ->
-    debugger if project.isNew()
-    
+  _save: (project) =>
     @model.save
       project_id: project.get('id')
+      target_user_id: @user.get('id')
+    ,
+      success: (assignment, response) =>
+        assignment.view.user.view.clients.add() if $('[data-client-id="-1"]').length == 0

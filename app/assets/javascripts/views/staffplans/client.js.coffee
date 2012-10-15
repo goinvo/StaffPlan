@@ -15,6 +15,7 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
       @$el.append assignment.view.el
       assignment.view.render()
     
+    
     @$el.attr('data-client-id', @model.get('id'))
     
     @$el.append @assignments.map (assignment) -> assignment.view.el
