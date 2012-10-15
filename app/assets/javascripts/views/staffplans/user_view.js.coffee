@@ -19,7 +19,6 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
     @container_selector = '.project-list > section[data-client-id]:first .months-and-weeks'
-    @visibleproject = 0
     
     @model.view = @
     @model.url = ->
@@ -77,10 +76,10 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     projectid = $(evt.target).data("projectid")
     clientid  = $(evt.target).data("clientid")
     project   = @model.getProjectById( projectid )
+    nextvisible = @findNextVisible(clientid)
     project.view.hide( )
-    if @visibleproject == $( project.view.el ).index()
-        @findNextVisible(clientid)
-        next = $( project.view.el ).parent().find("div.project")[@visibleproject]
+    if nextvisible == $( project.view.el ).index()
+        next = $( project.view.el ).parent().find("div.project")[@findNextVisible(clientid)]
         $(next).find(".client-name").css("visibility","visible")
     
     
@@ -97,7 +96,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
             return
         indx++
     
-    @visibleproject = final
+    return final
     
   render: ->
     $( @el )
