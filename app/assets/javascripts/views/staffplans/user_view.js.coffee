@@ -5,6 +5,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     
   events:
     "click a[data-change-page]" : "changePage"
+    "click span.hide-project" : "hideProject"
 
   changePage: (event) ->
     @dateChanged event
@@ -18,6 +19,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     views.shared.DateDrivenView.prototype.initialize.call(this)
     
     @container_selector = '.project-list > section[data-client-id]:first .months-and-weeks'
+    @visibleproject = 0
     
     @model.view = @
     @model.url = ->
@@ -71,6 +73,32 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     else
       html
   
+  hideProject: (evt) ->
+    projectid = $(evt.target).data("projectid")
+    clientid  = $(evt.target).data("clientid")
+    project   = @model.getProjectById( projectid )
+    project.view.hide( )
+    if @visibleproject == $( project.view.el ).index()
+        @findNextVisible(clientid)
+        next = $( project.view.el ).parent().find("div.project")[@visibleproject]
+        $(next).find(".client-name").css("visibility","visible")
+    
+    
+  findNextVisible: (clientid) ->
+    projects = @model.getProjectsByClient(clientid)
+    indx     = 0
+    set      = false
+    final    = 0
+    
+    _.each projects, (project) ->
+        if !project.view.collapsed && !set 
+            final = indx
+            set = true
+            return
+        indx++
+    
+    @visibleproject = final
+    
   render: ->
     $( @el )
       .attr(

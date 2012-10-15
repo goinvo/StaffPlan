@@ -42,6 +42,20 @@ class User extends Backbone.Model
 
       from.add('weeks', 1)
     yearsAndWeeks
+  
+  getProjectById: (id) ->
+    final = { }
+    _.each @projects.models, (project) ->
+        if project.id == id
+            final = project      
+    return final
+
+  getProjectsByClient: (clientid) ->
+    final = { }
+    _.each @projects.models, (project) ->
+        if project.getClientId() == clientid
+            final[project.id] = project 
+    return final
 
   projectsByClient: ->
     _.reduce @projects.models, (projectsByClient, project) ->
@@ -50,6 +64,7 @@ class User extends Backbone.Model
         projectsByClient[ clientId ].push project
         projectsByClient
       , {}
+      
 
 class UserList extends Backbone.Collection
   model: User

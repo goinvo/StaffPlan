@@ -4,7 +4,8 @@ class views.staffplans.ProjectView extends Support.CompositeView
   id: "project-#{@cid}"
   
   initialize: ->
-    @collapsed = false
+    @collapsed  = false
+    @topproject = 0
     
     @work_weeks = new views.staffplans.WorkWeekListView
       model: @model.work_weeks
@@ -102,7 +103,7 @@ class views.staffplans.ProjectView extends Support.CompositeView
     </div>
     <div class='project-name'>
       <div class='cf'>
-        <span class='hide-project'>H</span>
+        <span class='hide-project' data-projectid='{{projectId}}' data-clientid='{{ clientId }}'>H</span>
         {{#isNew}}
         <input type='text' name='project[name]' />
         {{/isNew}}
@@ -124,20 +125,13 @@ class views.staffplans.ProjectView extends Support.CompositeView
     "keydown input[name='project[name]']" : "onKeydown"
     "focusin input[name='client[name]']" : "initClientAutocomplete"
     "focusin input[name='project[name]']" : "initProjectAutocomplete"
-    "click span.hide-project" : "hideProject"
   
-  hideProject: (event) ->
-    if @collapsed
-        dist = "75px"
-        @collapsed = false
-        $( event.target ).removeClass("hidden");
-    else
-        dist = "35px"
-        @collapsed = true
-        $( event.target ).addClass("hidden");
-        
-    $( @el ).stop().animate({"height":dist},400)
-  
+  hide: ->
+    @collapsed = true
+    $el = $( @el )
+    $el.addClass("hidden");  
+    $el.stop().animate({"height":"0px"},400)
+    
   addNewProject: (event) ->
     @model.collection.add
       "client_id": $( @el ).closest( 'section' ).data().clientId
