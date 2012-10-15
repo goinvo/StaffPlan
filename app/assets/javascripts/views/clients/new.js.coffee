@@ -53,7 +53,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
       Backbone.history.navigate("/clients", true)
   
   render: ->
-    @$el.appendTo('section..main')
+    @$el.appendTo('section.main')
 
 
   updateCheckbox: ->

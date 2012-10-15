@@ -189,4 +189,4 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
         _.each ["weekly_allocation", "rate", "payment_frequency"], (attr) =>
           @$el.find("#user_" + attr + "").val @model.membership.get(attr)
     @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
-    @$el.appendTo("section..main")
+    @$el.appendTo("section.main")

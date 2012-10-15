@@ -39,4 +39,4 @@ class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
     @render()
  
   render: ->
-    @$el.appendTo('section..main')
+    @$el.appendTo('section.main')
