@@ -3,8 +3,9 @@ class AssignmentsController < ApplicationController
   respond_to :json
 
   def create
-    find_or_create_company_project_by_name
-    @assignment = Assignment.new(params[:assignment].merge(project_id: @project.id))
+    target_user = current_user.current_company.users.find_by_id(params[:target_user_id])
+    @assignment = target_user.assignments.build(params[:assignment])
+    
     if @assignment.save
       respond_with @assignment and return
     else

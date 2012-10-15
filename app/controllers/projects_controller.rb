@@ -1,4 +1,7 @@
 class ProjectsController < ApplicationController
+  
+  respond_to :json
+  
   before_filter only: [:show, :edit, :update, :destroy] do |c|
     c.find_target
   end
@@ -42,25 +45,18 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    client = params[:client].present? ? Client.new(params[:client]) : Client.find_by_id(params[:project].delete(:client_id))
+    client = Client.find_by_id(params[:client_id])
+    
     unless client.present?
-      redirect_to projects_url, notice: "Client is required." and return
+      render json: {status: :unprocessable_entity} and return
     end
     
-    @project = Project.new(params[:project])
-    @project.client = client
+    @project = current_user.current_company.projects.build(params[:project].merge(client: client))
 
-    respond_to do |format|
-      if @project.save
-        Assignment.create({project_id: @project.id, user_id: current_user.id}.merge(params[:project][:assignment]))
-        current_user.current_company.projects << @project
-        current_user.current_company.clients << @project.client
-        format.html { redirect_to @project, notice: 'Project was successfully created.' }
-        format.json { render json: @project, status: :created, location: @project }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @project.errors, status: :unprocessable_entity }
-      end
+    if @project.save
+      respond_with @project and return
+    else
+      render json: {status: :unprocessable_entity}
     end
   end
 

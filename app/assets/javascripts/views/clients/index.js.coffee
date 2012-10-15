@@ -58,4 +58,4 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     @$el.find('li[data-client-id=' + clientId + ']').remove()
     
   render: ->
-    @$el.appendTo('section.main .content')
+    @$el.appendTo('section.main')

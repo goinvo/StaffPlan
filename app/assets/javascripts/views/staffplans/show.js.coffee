@@ -29,14 +29,26 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     
     @model = @options.user
     @model.view = @
-    @clients = new window.StaffPlan.Collections.Clients @gatherClientsByAssignments()
+    
+    # a local list of clients for whom this user is assigned projects
+    @clients = new StaffPlan.Collections.Clients @gatherClientsByAssignments()
+    @clients.bind 'add', (client) =>
+      @clientViews.push client.view = new StaffPlan.Views.StaffPlans.Client
+        model: client
+        user: @model
+        assignments: []
+      client.view.assignments.add()
+      client.view.render()
+      @$el.append client.view.el
+      
+    
     @frameTemplate = Handlebars.compile @templates.frame
     @assignmentTemplate = Handlebars.compile @templates.assignment
     
     @$el.append( @frameTemplate( user: @model.attributes ) )
     
     @$el.append @clientViews = @clients.map (client) =>
-      new window.StaffPlan.Views.StaffPlans.Client
+      client.view = new StaffPlan.Views.StaffPlans.Client
         model: client
         user: @model
         assignments: @model.assignments.where
@@ -45,10 +57,17 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @$el.append @clientViews.map (clientView) -> clientView.el
     
   render: ->
-    @$el.appendTo('section.main .content')
+    @$el.appendTo('section.main')
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
+    
+    setTimeout => @addNewClientAndProjectInputs()
+    
+    @  
   
+  addNewClientAndProjectInputs: ->
+    @clients.add()
+    
   leave: ->
     @off()
     @remove()

@@ -65,7 +65,7 @@ class views.projects.ProjectView extends window.StaffPlan.Views.Shared.DateDrive
     
   render: ->
     $( @el )
-      .appendTo( 'section.main .content' )
+      .appendTo( 'section.main' )
       .html( @projectTemplate
         clientName: window._meta.clients.detect((client) => client.get('id') == @model.get('client_id'))?.get('name')
         project: @model.attributes

@@ -39,5 +39,5 @@ class window.StaffPlan.Views.Users.Show extends Support.CompositeView
     @render()
     
   render: ->
-    @$el.appendTo('section.main .content')
+    @$el.appendTo('section.main')
 
