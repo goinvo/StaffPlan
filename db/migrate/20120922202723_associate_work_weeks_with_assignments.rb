@@ -11,7 +11,7 @@ class AssociateWorkWeeksWithAssignments < ActiveRecord::Migration
     Assignment.all.map(&:touch)
     
     problems = []
-    
+    WorkWeek.reset_column_information    
     WorkWeek.transaction do
       WorkWeek.all.each do |work_week|
         assignment = Assignment.where(user_id: work_week.user_id, project_id: work_week.project_id).first
