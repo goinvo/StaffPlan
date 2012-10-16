@@ -9,5 +9,5 @@
     = text_field_tag :email
     .actions.cf
       = submit_tag t('.submit'), :class => "btn rounded"
-      = button_tag t('.cancel'), :id => "cancel_btn", :class => "btn rounded", :type => 'reset'
+      = link_to t('.cancel'), "/sessions/new"
 

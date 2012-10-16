@@ -88,14 +88,13 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     indx     = 0
     set      = false
     final    = 0
-    
+
     _.each projects, (project) ->
         if !project.view.collapsed && !set 
             final = indx
             set = true
             return
         indx++
-    
     return final
     
   render: ->

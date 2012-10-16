@@ -3,40 +3,103 @@
 @import compass/css3/text-shadow
 @import compass/css3/box
 @import "_flash_mixin"
+@import compass/css3/images
+
 body
   font-family: 'Open Sans', Helvetica, Arial, sans-serif
+  background-color: white
   +text-shadow
   +formatted_flash
-      
+  
+  .cf:before,
+  .cf:after
+    content: " "
+    display: table
+    
+  .cf:after
+    clear: both
+   
+  .fleft
+    float: left
+  
   section.main
+    width: 1000px
+    margin: auto
+    
     section
-      width: 256px
-      margin: 15px auto 0
-      padding: 15px
+      width: 440px
+      background-color: #FFF
+      border-radius: 2px
+      margin: 150px auto 0
+      padding: 50px
+      border: 6px solid #999292
       
       h1
-        font-size: 22px
-        padding: 20px 0
+        font-size: 30px
+        font-family: serif
+        color: #5e5e5e
+        margin-bottom: 5px
+        font-weight: 100
       
       form
+      
         .user
-          margin-bottom: 16px
+          margin-top: 16px
           
+          label 
+            font-size: 12px
+            color: #555
+              
         .field
           label
             display: block
             font-size: 14px
+            color: #555
         
           input
+            border: 1px solid #e7e7e7
+            border-radius: 3px
+            height: 30px
+            color: rgba(0,0,0,0.3)
+            box-shadow: inset 0px 0px 1px 1px rgba(0,0,0,0.1)
+            outline: none
+            width: 400px
+            padding-left: 10px
             font-size: 16px
-            width: 100%
-            margin: 2px 0 2px 0
-            +border-radius
+            @include background-image(linear-gradient(#fcfcfc, #fafafa))
+            margin-top: 5px
+            margin-bottom: 10px
+            
           .disclaimer
-            font-size: 7pt
+            font-size: 10px
+            margin-bottom: 10px
             
         .submit
+          float: right
+            
+          a,
           input[type="submit"]
-            border: 1px #444 solid 
+            float: left
+            margin-top: 20px
+            box-shadow: 0px 2px 1px rgba(0,0,0,0.2)
+            color: #787878
+            border: none
+            display: block
+            text-align: center
+            outline: none
+            padding: 5px 10px 5px 10px
+            height: 30px
+            min-width: 90px
+            font-size: 12px
+            margin-right: 10px
+            cursor:pointer
+            +border-radius
+            +text-shadow 
+            @include background-image(linear-gradient(#f8f8fa, #d4deed))
+            
+          a  
+            line-height: 30px
+            @include background-image(linear-gradient(#fafafa, #f4f4f4))
+            padding: 0px
             
 @import _flash

@@ -2,9 +2,9 @@
   = stylesheet_link_tag('registrations')
 
 %section
-  %h1 Create your StaffPlan
+  %h1 Create StaffPlans for your company
   
-  = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
+  = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration cf"} do |f|
     .user.first-name.field
       = f.label :first_name, "Your first name:"
       = f.text_field :first_name
@@ -13,12 +13,12 @@
       = f.text_field :last_name
     .user.email.field
       = f.label :email, "Enter your email address:"
-      = f.text_field :email
+      = f.text_field :email, :autocomplete => "off"
       .disclaimer
         = "We will never disclose your email address to third parties."
     .user.password.field
       = f.label :password, "Choose a password"
-      = f.password_field :password
+      = f.password_field :password, :autocomplete => "off"
       .disclaimer
         = "Must be at least 6 characters long."
     .user.company-information.field
@@ -27,3 +27,5 @@
         = c.text_field :name
     .submit
       = f.submit "Create account"
+      = link_to 'CANCEL', "/sessions/new"
+      
