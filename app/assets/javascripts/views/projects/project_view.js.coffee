@@ -163,7 +163,7 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       
   
   cancelAddSomeone: (event) ->
-    $( event.currentTarget ).closest( '.add-new-someone' ).remove();
+    $( event.currentTarget ).closest( '.add-new-someone' ).remove()
     
   addNewSomeoneSubmit: (event) ->
     newUserId = parseInt $('#newSomeone').val(), 10
@@ -173,7 +173,8 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       wait: true
       success: (project, response) =>
         @model.users.reset response.users.map (userString) -> JSON.parse(userString)
-        @render()
+        # We don't have to render manually since the reset event on the collection triggers a refresh 
+        # @render()
         
       error: (project, response) =>
         alert("Couldn't save that user to the project, sorry.")
