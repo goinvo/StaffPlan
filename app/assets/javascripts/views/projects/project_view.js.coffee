@@ -173,8 +173,6 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
       wait: true
       success: (project, response) =>
         @model.users.reset response.users.map (userString) -> JSON.parse(userString)
-        # We don't have to render manually since the reset event on the collection triggers a refresh 
-        # @render()
         
       error: (project, response) =>
         alert("Couldn't save that user to the project, sorry.")
