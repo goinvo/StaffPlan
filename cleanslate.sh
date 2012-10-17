@@ -15,3 +15,6 @@ RAILS_ENV=test bundle exec rake db:migrate
 
 # Run the tests
 bundle exec rspec
+
+# Make Bertrand part of Involution Studios for testing purposes
+bundle exec rake db:involution
