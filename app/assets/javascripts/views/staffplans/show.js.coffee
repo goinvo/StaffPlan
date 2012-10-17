@@ -14,7 +14,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       <div id="user-chart" class="grid-row-element flex chart-totals-view">
         <div class='box'>
           <a class="previous flex">Previous</a>
-          <ul class="unstyled flex"></ul>
+            <svg id="bar-chart">
+            </svg>
           <a class="next flex">Next</a>
         </div>
       </div>
@@ -99,7 +100,14 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
 
-    
+    view = new StaffPlan.Views.WeeklyAggregates
+      cweek: 45
+      year: 2012
+      numberOfWeeks: 30
+      el: @$el.find('svg#bar-chart')
+      offsetLeft: @$el.find('section.work-weeks').first().find('input[data-cid][data-attribute]:first').offset().left
+      collection: @createAggregates()
+
     @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
       assignmentArray.push client.view.assignments.models
       assignmentArray

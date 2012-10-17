@@ -35,6 +35,15 @@ body {
   }
 }
 
+#user-chart {
+  svg {
+    margin-left: 2px;
+    rect.bar {
+      fill: teal
+    }
+  }
+}
+
 @import "forms";
 
 ul, ol, dl, p, form {
