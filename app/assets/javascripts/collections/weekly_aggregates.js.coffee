@@ -1,6 +1,6 @@
 class StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
   
-  model: Staffplan.Models.WeeklyAggregate
+  model: StaffPlan.Models.WeeklyAggregate
  
   initialize: (models) ->
 

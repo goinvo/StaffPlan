@@ -25,17 +25,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     _.uniq @model.assignments.pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
     
   initialize: ->
-    # _.groupBy weeks, (week) ->
-    #   "#{week.get('year')}-#{week.get('cweek')}"
-
-    # groupedByYear = _.groupBy weeks, (week) ->
-    #   week.get('year')
-    # _.reduce groupedByYear, (memo, weeks, year, obj) ->
-    #   groupedByWeek = _.groupBy weeks, (week) ->
-    #     week.get('cweek')
-    #   memo[year] = _.map groupedByWeek, (weeks, week)
-    #     , {}
-
+    
     window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
     
     @model = @options.user
@@ -82,19 +72,19 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       _.keys a
     
     _.map weeks, (week) ->
-      [year, week] = week.split "-"
+      [year, cweek] = _.map week.split("-"), (n) ->
+        parseInt n, 10
       year: year
-      cweek: week
+      cweek: cweek
 
-  getHoursForWeek: (d) ->
-    _.flatten (@model.assignments.map (assignment) ->
-      assignment.work_weeks.where (elem) ->
-        (elem.get('year') is d.year) and (elem.get('cweek') is d.cweek))
+  getHoursForWeek: (criteria) ->
+    _.flatten @model.assignments.map (assignment) ->
+      assignment.work_weeks.where criteria
 
   createAggregates: =>
     _.map @getWeekSpan(), (week) =>
       new StaffPlan.Models.WeeklyAggregate
-        weeks: @getHoursForWeek week
+        weeks: @getHoursForWeek(week)
         year: week.year
         cweek: week.cweek
 
@@ -103,13 +93,13 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
 
-    # allWeeks = _.flatten @model.assignments.map (ass) ->
-    #     ass.work_weeks.models
     
-    # groupedByYearCweek = _.groupBy allWeeks, (w) ->
-    #   "#{w.get 'year'}-#{w.get 'cweek'}"
-    
-    console.log @createAggregates()
+
+    aggregatesView = new StaffPlan.Views.WeeklyAggregates
+      collection: new Backbone.Collection(@createAggregates())
+      cweek: 23
+      year: 2012
+      numberOfWeeks: 16
 
     @
   
