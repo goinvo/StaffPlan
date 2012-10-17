@@ -42,9 +42,8 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     toDate: @toDate
     dates: @getYearsAndWeeks()
 
-  getYearsAndWeeks: (expireCache=false) ->
-    if @yearsAndWeeks == undefined || expireCache
-      @yearsAndWeeks = []
+  getYearsAndWeeks: ->
+    @yearsAndWeeks = []
       
     from = @fromDate.clone()
     to = @toDate.clone()

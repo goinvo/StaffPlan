@@ -8,10 +8,7 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
     @render @dates, @models if @dates and @models and @el
-    @staffPlanPage = if @models.size == 0
-      @parentsSelector is ".user-select" # Fallback on weaker test if the models array is empty
-    else
-      _.has(_.first @models, "projects")
+
   ###*
     * Render week hour counter.
     * @param {!Object} date_range Date range meta from User model.
@@ -32,9 +29,8 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
 
     list = chart.selectAll("li")
       .data(data, (d) -> d.id)
-
+    
     list
-      .style("height", height)
       .style("background-image", get_gradient_moz)
       .style("background-image", get_gradient_webkit)
       .attr("class", get_class)
@@ -65,14 +61,13 @@ get_data = (date_range, models) ->
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
       p.work_weeks.find (m) ->
-        if m.get('cweek') == date.cweek and m.getUTCFullYear() == date.year
+        if m.get('cweek') == date.cweek and m.get('year') == date.year
           m.set "date", date
           true
+          
   # Format data
   ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
     "#{w.get('year')}-#{w.get('cweek')}"
-
-  ww["#{d.year}-#{d.cweek}"] ?= [dummy(d)] for d in date_range # Fill empty weeks
 
   # Total hours for each week
   _.map ww, (hours, key) =>
@@ -80,13 +75,13 @@ get_data = (date_range, models) ->
       m.date = o.get "date"
       m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
       m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      if @staffPlanPage
-        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
-      else
-        assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
-        m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
-        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
+      # if @staffPlanPage
+      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if o.collection?.parent?.collection?.get(o.get("project_id"))?.get("proposed") || false
+      # else
+      #   assignment = _.detect window._meta.assignments, (assignment) -> assignment.user_id == (o.collection?.parent?.id || -1)
+      #   m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
+      #   m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
       m
     , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
@@ -122,12 +117,12 @@ get_proposed_value = (d) ->
     total
 
 get_gradient_moz = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
+  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
   
 get_gradient_webkit = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
+  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
   percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
   "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
 ###*
@@ -136,7 +131,7 @@ get_gradient_webkit = (d) ->
   * @returns {!String} Class for week.
 *###
 get_class = (d) ->
-  if d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
+  if d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
     if d.actual == 0 then "present" else "passed"
   else if d.date.weekHasPassed
     if d.actual == 0 then "" else "passed"
@@ -152,7 +147,3 @@ get_class = (d) ->
 *###
 get_height = (ratio, d) ->
   "#{get_value(d) * ratio}px"
-
-# Make dummy week
-dummy = (date) ->
-  get: (x) -> if x == "date" then date else 0

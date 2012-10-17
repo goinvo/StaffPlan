@@ -32,15 +32,19 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     '''
   
   initialize: ->
-    
     @clientInfoTemplate = Handlebars.compile(@templates.clientInfo)
     
+    @populateElement()
+    
+    @collection.bind 'change:id', => @render()
+    
+    @render()
+  
+  populateElement: ->
     @$el.html @clientInfoTemplate
       clients: @collection.map (client) -> client.attributes
       currentCompany: @options.currentCompany
-      
-    @render()
-    
+  
   events: ->
     "click a[data-action=delete]": "deleteClient"
     "click button[data-action=new]": (event) ->
