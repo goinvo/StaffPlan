@@ -69,26 +69,47 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     
     
     @$el.append @clientViews.map (clientView) -> clientView.el
+  
+  # ################################################# #
+  # FIXME: /!\ Kind of stupid, find a better way /!\  #
+  # ################################################# #
+  getWeekSpan: ->
+    grouped = @model.assignments.map (a) ->
+      _.groupBy a.work_weeks.models, (week) ->
+        "#{week.get("year")}-#{week.get("cweek")}"
+        
+    weeks = _.uniq _.flatten _.map grouped, (a) ->
+      _.keys a
     
+    _.map weeks, (week) ->
+      [year, week] = week.split "-"
+      year: year
+      cweek: week
+
+  getHoursForWeek: (d) ->
+    _.flatten (@model.assignments.map (assignment) ->
+      assignment.work_weeks.where (elem) ->
+        (elem.get('year') is d.year) and (elem.get('cweek') is d.cweek))
+
+  createAggregates: =>
+    _.map @getWeekSpan(), (week) =>
+      new StaffPlan.Models.WeeklyAggregate
+        weeks: @getHoursForWeek week
+        year: week.year
+        cweek: week.cweek
+
   render: ->
     @$el.appendTo('section.main')
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
 
-    weeks = _.flatten (@model.assignments.map (assignment) ->
-      assignment.work_weeks.select (elem) ->
-        (elem.get('year') is 2012) and (elem.get('cweek') is 32))
-    
-    @aggregate = new StaffPlan.Models.WeeklyAggregate(collection: weeks, year: 2012, cweek: 32)
-    
-    console.log @aggregate
     # allWeeks = _.flatten @model.assignments.map (ass) ->
     #     ass.work_weeks.models
     
     # groupedByYearCweek = _.groupBy allWeeks, (w) ->
     #   "#{w.get 'year'}-#{w.get 'cweek'}"
     
-
+    console.log @createAggregates()
 
     @
   
