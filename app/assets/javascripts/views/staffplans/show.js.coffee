@@ -72,7 +72,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
   # ################################################# #
   getWeekSpan: ->
     grouped = @model.assignments.map (a) ->
-      _.groupBy a.work_weeks.models, (week) ->
+      a.work_weeks.groupBy (week) ->
         "#{week.get("year")}-#{week.get("cweek")}"
         
     weeks = _.uniq _.flatten _.map grouped, (a) ->
