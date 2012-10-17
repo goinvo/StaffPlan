@@ -62,7 +62,7 @@ $arrows-spacing: 20px;
 @mixin next-and-previous {
   .next, .previous {
     display: inline-block;
-    width: 10px;
+    width: 35px;
     height: 17px;
     text-indent: -9999px;
   }
@@ -79,32 +79,39 @@ $arrows-spacing: 20px;
 //\\//\\//\\//\\//\\//\\
 @mixin week-hour-counter {
   margin: 0;
-  padding: 15px 0 0;
   list-style-type: none;
   font-size: $font-size;
-  li {
-    position: relative;
-    display: inline-block;
-    margin: 0 3px;
-    padding: 0;
-    width: 32px;
-    height: 10px;
-    background: #5e9b69;
-    @include box-sizing(border-box);
-    vertical-align: bottom;
-    @include transition(all 0.2s ease-out);
-    span {
-      position: absolute;
-      display: block;
-      top: -15px;
+  height: 75px;
+  
+  ul {
+    @include box-flex(1);
+    margin: 0;
+    height: 100%;
+    
+    li {
+      position: relative;
+      display: inline-block;
+      margin: 0 3px;
+      padding: 0;
       width: 32px;
-      text-align: center;
-    }
-    &.passed {
-      background: #d6d6d6;
-    }
-    &.actuals {
-      background: #d6d6d6;
+      height: 10px;
+      background: #5e9b69;
+      @include box-sizing(border-box);
+      vertical-align: bottom;
+      @include transition(all 0.2s ease-out);
+      span {
+        position: absolute;
+        display: block;
+        top: -15px;
+        width: 32px;
+        text-align: center;
+      }
+      &.passed {
+        background: #d6d6d6;
+      }
+      &.actuals {
+        background: #d6d6d6;
+      }
     }
   }
 }

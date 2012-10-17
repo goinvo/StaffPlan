@@ -4,20 +4,26 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
   
   templates:
     frame: '''
-    <div id="user-select" class="grid-row user-info">
+    <div id="user-select" class="grid-row user-info padded">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>
       </div>
-      <div id="user-chart" class="grid-row-element flex"></div>
+      <div id="user-chart" class="grid-row-element flex chart-totals-view">
+        <div class='box'>
+          <a class="previous flex">Previous</a>
+          <ul class="unstyled flex"></ul>
+          <a class="next flex">Next</a>
+        </div>
+      </div>
       <div class="grid-row-element"></div>
     </div>
     <div class='header grid-row padded'>
       <div class='grid-row-element fixed-180 title'><span>Client</span></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
-      <div class="grid-row-element flex" id="interval-width-target">some stuff about dates or something</div>
+      <div class="grid-row-element flex" id="interval-width-target">dates and shit</div>
     </div>
     '''
   
@@ -60,6 +66,13 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @$el.appendTo('section.main')
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
+    
+    @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
+      assignmentArray.push client.view.assignments.models
+      assignmentArray
+    , [], @)))
+    , ".user-select", @$ ".chart-totals-view ul"
+    
     
     setTimeout => @addNewClientAndProjectInputs()
     

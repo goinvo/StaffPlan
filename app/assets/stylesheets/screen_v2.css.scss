@@ -271,10 +271,8 @@ body#clients.show {
 }
 body#staffplans.index {
   section.main {
-    div.content {
-      div.actions {
-        padding-left: 40px
-      }
+    div.actions {
+      padding-left: 40px
     }
   }
 }
@@ -336,6 +334,14 @@ footer {
   }
 }
 
+#user-select {
+  @include next-and-previous;
+  
+  .chart-totals-view {
+    @include week-hour-counter;
+  }
+}
+
 .grid-row {
   @include display-box;
   @include box-orient("horizontal");
@@ -379,6 +385,10 @@ footer {
     
     &.flex {
       @include box-flex(1);
+    }
+    
+    .box {
+      @include display-box;
     }
     
     &.fixed-80 {
