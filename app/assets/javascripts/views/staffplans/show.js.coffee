@@ -67,53 +67,34 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     
     @$el.append @clientViews.map (clientView) -> clientView.el
   
-  # ################################################# #
-  # FIXME: /!\ Kind of stupid, find a better way /!\  #
-  # ################################################# #
-  getWeekSpan: ->
-    grouped = @model.assignments.map (a) ->
-      a.work_weeks.groupBy (week) ->
-        "#{week.get("year")}-#{week.get("cweek")}"
-        
-    weeks = _.uniq _.flatten _.map grouped, (a) ->
-      _.keys a
-    
-    _.map weeks, (week) ->
-      [year, cweek] = _.map week.split("-"), (n) ->
-        parseInt n, 10
-      year: year
-      cweek: cweek
-
-  getHoursForWeek: (criteria) ->
-    _.flatten @model.assignments.map (assignment) ->
-      assignment.work_weeks.where criteria
-
-  createAggregates: =>
-    _.map @getWeekSpan(), (week) =>
-      new StaffPlan.Models.WeeklyAggregate
-        weeks: @getHoursForWeek(week)
-        year: week.year
-        cweek: week.cweek
 
   render: ->
     @$el.appendTo('section.main')
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
 
-    view = new StaffPlan.Views.WeeklyAggregates
+
+    ############################ DOESN'T REALLY BELONG HERE #################################
+    @aggregates = new window.StaffPlan.Collections.WeeklyAggregates {}, @model
+    
+    window.StaffPlan.aggregates = @aggregates.populate()
+
+    
+    view = new StaffPlan.Views.WeeklyAggregates # Hardwired for now, but works
       cweek: 45
       year: 2012
       numberOfWeeks: 30
       el: @$el.find('svg#bar-chart')
       offsetLeft: @$el.find('section.work-weeks').first().find('input[data-cid][data-attribute]:first').offset().left
-      collection: @createAggregates()
+      collection: window.StaffPlan.aggregates
+    
+    #########################################################################################
 
     @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
       assignmentArray.push client.view.assignments.models
       assignmentArray
     , [], @)))
     , ".user-select", @$ ".chart-totals-view ul"
-    
     
     setTimeout => @addNewClientAndProjectInputs()
     

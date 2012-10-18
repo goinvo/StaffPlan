@@ -23,7 +23,7 @@
           %li#nav-my-staff-plan= link_to(t('.my_staff_plan'), staffplan_path(current_user))
           %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
           %li#nav-clients= link_to(t('.clients'), clients_path)
-          %li#nav-projects= link_to(t('.projects'))
+          %li#nav-projects= link_to(t('.projects'), projects_path)
           %li#current-company= current_user.current_company_selector
         
         .header-content

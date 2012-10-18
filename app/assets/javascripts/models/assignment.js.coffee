@@ -3,5 +3,4 @@ class window.StaffPlan.Models.Assignment extends Backbone.Model
     @work_weeks = new StaffPlan.Collections.WorkWeeks @get( 'work_weeks' ),
       parent: @
     @work_weeks.sort()
-    # Once the association to the work weeks has been established, no need to keep duplicates??
-    @unset( 'work_weeks' )
+    # FIXME: Maybe @unset 'work_weeks' at this point since it's been made into an association?

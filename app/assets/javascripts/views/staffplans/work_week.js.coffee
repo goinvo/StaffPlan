@@ -10,20 +10,20 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     <div class="grid-row flex">
       <div class='row-label'>Plan</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+      <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+      <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} "data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     '''
       
   initialize: ->
     @model = @options.model
-    @assignment = @options.assignment
+    @assignment = @options.parent
     @client = @options.client
     @user = @options.user
     
@@ -60,9 +60,17 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     "click  .row-filler": "fillNextRows"
   
   queueEstimatedUpdateOrCreate: (event) ->
+
     $currentTarget = $( event.currentTarget )
     cid = $currentTarget.data 'cid'
-    
+
+    # [year, cweek] = _.map ["year", "cweek"], (prop) ->
+    #   $currentTarget.data(prop)
+
+    # aggregate = StaffPlan.Collections.WeeklyAggregates.findOrCreate
+    #   year: year
+    #   cweek: cweek
+    #   agg.year is year and agg.cweek is cweek
     @queueUpdateOrCreate event, cid,
       estimated_hours: $currentTarget.val()
     
@@ -76,7 +84,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   queueUpdateOrCreate: (event, cid, attributes) ->
     window.clearTimeout event.currentTarget.timeout
     event.currentTarget.timeout = setTimeout =>
-      @updateOrCreateWorkWeek event, cid, attributes 
+      @updateOrCreateWorkWeek event, cid, attributes
     , 500
   
   updateOrCreateWorkWeek: (event, cid, attributes) ->
@@ -84,9 +92,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     workWeek = @collection.getByCid cid
     workWeek.save attributes,
       success: (lol, foo, bar, baz) ->
-        debugger
+        #debugger
       error: (wat, another, argument, here) ->
-        debugger
+        #debugger
       
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer

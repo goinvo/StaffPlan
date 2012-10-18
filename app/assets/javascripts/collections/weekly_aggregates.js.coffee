@@ -1,19 +1,30 @@
-class StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
+class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
   
-  model: StaffPlan.Models.WeeklyAggregate
+  model: window.StaffPlan.Models.WeeklyAggregate
  
-  initialize: (models) ->
+  initialize: (models, parent) ->
+     
+    @parent = parent
+    
+  populate: () ->
+    @parent.assignments.each (assignment) =>
+      assignment.work_weeks.each (week) =>
+        # FIXME: Refactor with a findOrCreate that encapsulates all this non-sense.
+        aggregate = @detect (agg) ->
+          ( agg.year is parseInt week.get "year" ) and ( agg.cweek is parseInt week.get "cweek" )
+        if aggregate?
+          aggregate.updateTotals week.toJSON()
+        else
+          foobar = @add week.toJSON()
+          # TODO: I don't know how to reference the newly added model here
+          # I need it to do a week.set("aggregator", newlyAddedWeeklyAggregate)
+    @
 
   comparator: (first, second) ->
-    firstYear = first['year']
-    secondYear = second['year']
+    firstYear = first.year
+    secondYear = second.year
     
     if firstYear == secondYear
-      if first['cweek'] < second['cweek'] then -1 else 1
+      if first.cweek < second.cweek then -1 else 1
     else
       if firstYear < secondYear then -1 else 1
-
-  # TODO: This collection has a view now...
-  # The view will have a render function that takes a collection of aggregates, a starting date and a size
-  # It will expose a subset of the collection to d3 (the subset defined by start and size)
-  # which will in turn update the graph accordingly

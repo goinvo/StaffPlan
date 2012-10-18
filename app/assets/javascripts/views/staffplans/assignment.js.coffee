@@ -52,7 +52,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
       user: @user
-  
+
   ensureWorkWeekRange: =>
     # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed to all inputs are rendered.
     for meta in @user.view.getYearsAndWeeks()

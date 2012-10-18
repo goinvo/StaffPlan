@@ -16,17 +16,15 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     
     # At this point we have an array of objects containing all the information we need to create the bar graph
     # d3 is bound to that data
-    # @el.empty()
     chart = d3.select(@el)
       .attr('width', 1400)
       .attr('height', 75)
       .attr('x', @offsetLeft)
     
     values = dataset.map (aggregate) ->
-      estimated: aggregate.values.estimated
+      estimated: aggregate.totals.estimated
       cid: aggregate.cid
 
-    console.log values
     list = chart.selectAll('rect').data(values, (d) -> d.cid)
 
     list

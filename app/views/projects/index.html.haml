@@ -1,15 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
-%section
-  %header
-    %h2= t('.listing_projects')
-    = link_to t('.new_project'), new_project_path
-    .user-header
-      = render :partial => 'date_switcher', :locals => {:date_range => @date_range, :target => "projects"}
-
-  %ul
-    - @projects.each do |project|
-      = project.info_and_controls
-      %li.chart
-        %ul.week-hour-counter
-          = project.chart_for_date_range(@date_range)
+= render :partial => 'shared/backbone_bootstrap'
