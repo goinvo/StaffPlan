@@ -133,11 +133,18 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
     _.reduce @$el.find(selector), (values, formElement) =>
       values[$(formElement).data('model')][$(formElement).data('attribute')] = @getFormElementValue formElement
       values
-    , _.reduce _.uniq(_.map(@$el.find(selector), (e) -> $(e).data "model")), (memo, elem) ->
-        memo[elem] = {}
-        memo
-      , {}
-
+    , _.chain(@$el.find selector)
+        .map( (e) ->
+          $(e).data "model"
+        )
+        .uniq()
+        .reduce( (m, e) ->
+          m[e] = {}
+          m
+        , {}
+        )
+        .value()
+  
   getFormElementValue: (element) ->
     switch $(element).prop('tagName').toLowerCase()
       when "select"
