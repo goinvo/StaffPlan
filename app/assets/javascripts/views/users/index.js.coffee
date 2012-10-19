@@ -42,12 +42,13 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   
   render: ->
     @$el.empty()
+    
     @collection.each (user) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
         model: user
       @$el.append view.render().el
     @$el.append Handlebars.compile(@templates.actions.addUser)
-    @$el.appendTo 'section.main div.content'
+    @$el.appendTo 'section.main'
 
     @

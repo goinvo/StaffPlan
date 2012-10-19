@@ -45,19 +45,32 @@ class ProjectsController < ApplicationController
   # POST /projects
   # POST /projects.json
   def create
-    client = Client.find_by_id(params[:client_id])
-    
-    unless client.present?
-      render json: {status: :unprocessable_entity} and return
-    end
-    
-    @project = current_user.current_company.projects.build(params[:project].merge(client: client))
+    @project = Project.new params[:project]
+    @project.client_id = params[:client_id]
+    @project.company_id = params[:company_id]
 
     if @project.save
-      respond_with @project and return
+      respond_to do |format|
+        format.json { render :json => @project }
+      end
     else
-      render json: {status: :unprocessable_entity}
+      respond_to do |format|
+        format.json { render :json => @project.errors, :status => :unprocessable_entity }
+      end
     end
+    # client = Client.find_by_id(params[:client_id])
+    
+    # unless client.present?
+    #   render json: {status: :unprocessable_entity} and return
+    # end
+    
+    # @project = current_user.current_company.projects.build(params[:project].merge(client: client))
+
+    # if @project.save
+    #   respond_with @project and return
+    # else
+    #   render json: {status: :unprocessable_entity}
+    # end
   end
 
   def edit

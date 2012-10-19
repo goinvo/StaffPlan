@@ -6,6 +6,11 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @collection.bind "remove", () =>
       @render()
   templates:
+    header: '''
+      <div>
+        <h3>List of Projects</h3>
+      </div>
+      '''
     actions:
       addProject: '''
         <div class="actions">
@@ -32,12 +37,14 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       backdrop: 'static'
 
   render: ->
+    @$el.empty()
+    @$el.append Handlebars.compile @templates.header
     @collection.each (project) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Projects.ListItem
         model: project
-      @$el.append view.render()
-    @$el.append Handlebars.compile(@templates.actions.addProject)
-    @$el.appendTo 'section.main div.content'
+      @$el.append view.render().el
+    @$el.append Handlebars.compile @templates.actions.addProject
+    @$el.appendTo 'section.main'
 
     @

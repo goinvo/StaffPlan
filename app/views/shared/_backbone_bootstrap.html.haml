@@ -1,11 +1,12 @@
 %script{type: "text/json", id: "bootstrap"}
   :erb
-    { "users": <%= current_user.current_company.users_json %>
-    , "clients": <%= current_user.current_company.clients_as_json %>
-    , "currentCompany": <%= current_user.current_company.self_as_json %>
-    , "projects": <%= current_user.current_company.projects_as_json %>
+    { 
+    "users": <%= current_user.current_company.users_json %>, 
+    "clients": <%= current_user.current_company.clients_as_json %>, 
+    "currentCompany": <%= current_user.current_company.self_as_json %>, 
+    "projects": <%= current_user.current_company.projects_as_json %>,
+    "currentUser": <%= current_user.self_as_json %>
     }
-</script>
 
 = content_for :javascript do
   :javascript

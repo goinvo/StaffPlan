@@ -92,10 +92,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     workWeek = @collection.getByCid cid
     workWeek.save attributes,
       success: (lol, foo, bar, baz) ->
-        #debugger
+        debugger
       error: (wat, another, argument, here) ->
-        #debugger
-      
+        debugger
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
 

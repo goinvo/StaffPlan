@@ -3,9 +3,7 @@ class AssignmentsController < ApplicationController
   respond_to :json
 
   def create
-    target_user = current_user.current_company.users.find_by_id(params[:target_user_id])
-    @assignment = target_user.assignments.build(params[:assignment])
-    
+    @assignment = Assignment.new params[:assignment]
     if @assignment.save
       respond_with @assignment and return
     else

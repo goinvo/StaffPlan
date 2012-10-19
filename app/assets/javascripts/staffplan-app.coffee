@@ -17,13 +17,14 @@ window.StaffPlan =
     @projects = new StaffPlan.Collections.Projects data.projects
     @clients = new StaffPlan.Collections.Clients data.clients
     @currentCompany = data.currentCompany
+    @currentUser = data.currentUser
 
     new StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects
       clients: @clients
       currentCompany: @currentCompany
-    
+      currentUser: @currentUser 
     $ -> Backbone.history.start(pushState: true)
     
     $('a:not([data-bypass])').live 'click', (event) =>

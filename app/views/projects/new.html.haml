@@ -1,11 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
-  
-%section
-  %header
-    %h2 Add Project
-
-  = render 'form'
-
-- content_for(:javascript_includes) do
-  = javascript_include_tag('projects/new')
+= render :partial => "shared/backbone_bootstrap"
