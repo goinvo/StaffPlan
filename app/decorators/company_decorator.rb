@@ -41,7 +41,7 @@ class CompanyDecorator < Draper::Base
           json.client_id assignment.project.client_id
           json.work_weeks assignment.work_weeks do |json, work_week|
             json.(work_week, :id, :actual_hours, :estimated_hours, :cweek, :year)
-            json.proposed work_week.assignment.proposed?
+            json.proposed assignment.proposed 
           end
         end
       end
