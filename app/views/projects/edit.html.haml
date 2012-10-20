@@ -1,11 +1,1 @@
-- content_for(:stylesheets) do
-  = stylesheet_link_tag('projects')
-  
-%section
-  %header
-    %h2
-      = @project.name
-
-  = render 'form'
-  %span.actions
-    = link_to "Delete Project", @project, :confirm => t('crud_shared.delete_confirmation'), :method => :delete
+= render :partial => 'shared/backbone_bootstrap'

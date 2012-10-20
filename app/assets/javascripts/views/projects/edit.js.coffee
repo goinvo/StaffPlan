@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Projects.New extends Support.CompositeView
+class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
   
   tagName: "form"
   className: "form-horizontal"
@@ -67,9 +67,9 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
           Payment Frequency
         </label>
         <radiogroup data-model=project data-attribute=payment_frequency>
-          <input data-model=project data-attribute=payment_frequency type="radio" checked="checked" value="monthly"> Monthly  
-          <input data-model=project data-attribute=payment_frequency type="radio" value="total"> Total
-        </radiogroup>
+          <input type="radio" checked="checked" value="monthly"> Monthly  
+          <input type="radio" value="total"> Total
+        <radiogroup>
       </div>
         
        <div class="control-group">
@@ -81,7 +81,7 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
     
     </div>
     <div class="form-actions">
-      <a href="/projects" data-action="create" class="btn btn-primary">Create project</a>
+      <a href="/projects" data-action="update" class="btn btn-primary">Update project</a>
       <a href="/projects" data-action="cancel" class="btn">Back to list of projects</a>
     </div>
 
@@ -89,33 +89,35 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
   
   events: ->
     "change select#client-picker": "clientSelectionChanged"
-    "click div.form-actions a[data-action=create]": "createUser"
+    "click div.form-actions a[data-action=update]": "updateUser"
 
 
-  createUser: ->
+  updateUser: ->
     formValues = @getFormValues("input, select")
     if @newClient
       # First create the client
       @clients.create { name: formValues.client.name },
         success: (model, response) =>
-          @createProjectAndAssignment model.id, formValues
+          @updateProjectAndAssignment model.id, formValues
         error: (model, response) ->
     else
-      @createProjectAndAssignment formValues.client.id, formValues
+      @updateProjectAndAssignment formValues.client.id, formValues
 
-  createProjectAndAssignment: (clientId, formValues) ->
+  updateProjectAndAssignment: (clientId, formValues) ->
     # Each model should expose a whitelistedAttributes so that we only transmit what's needed
     projectAttributes = _.extend (_.pick formValues.project, ['name', 'active', 'payment_frequency', 'cost']),
       company_id: window.StaffPlan.currentCompany.id
       client_id: clientId
-    @collection.create projectAttributes,
+    @model.save projectAttributes,
       success: (model, response) =>
         # Each model should expose a whitelistedAttributes so that we only transmit what's needed
         assignmentAttributes =
           project_id: model.id
           user_id: @currentUser.id
           proposed: formValues.project.proposed
-        @currentUser.assignments.create assignmentAttributes,
+        assignment = @currentUser.assignments.detect (a) =>
+          a.get('project_id') is @model.id
+        assignment.save assignmentAttributes,
           success: (model, response) ->
           error: (model, response) ->
       error: (model, response) ->
@@ -158,12 +160,36 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
           when "checkbox"
             return $(element).prop "checked"
       
+  populateFields: ->
+    unless @model.isNew()
+      projectAssignment = @currentUser.assignments.detect (assignment) =>
+        assignment.get("project_id") is @model.id
+      attrs = _.extend @model.toJSON(),
+        proposed: projectAssignment.get("proposed")
       
+      @$el
+        .find("select[data-model=client][data-attribute=id]")
+        .val(attrs.client_id)
       
+      _.each ["name", "cost"], (prop) =>
+        @$el
+          .find("[data-model=project][data-attribute=#{prop}]")
+          .val(attrs[prop])
+      
+      @$el
+        .find("radiogroup[data-model=project][data-attribute=payment_frequency]")
+        .find("input[type=radio][value=#{attrs.payment_frequency}]")
+        .prop("checked", true)
+      
+      _.each ["proposed", "active"], (prop) =>
+        @$el
+          .find("[data-model=project][data-attribute=#{prop}]")
+          .prop "checked", attrs[prop]
   render: ->
     @$el.append Handlebars.compile(@templates.projectNew)
       clients: @clients.map (client) -> client.toJSON()
     @$el.find(".initially-hidden").hide()
+    @populateFields()
     @$el.appendTo "section.main"
 
     @

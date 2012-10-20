@@ -12,6 +12,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     "users"             : "userIndex"
     "projects"          : "projectIndex"
     "projects/new"      : "projectNew"
+    "projects/:id/edit" : "projectEdit"
     
     
   initialize: (data) ->
@@ -92,6 +93,16 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
       currentUser: window.StaffPlan.users.get(@currentUser.id)
     @swap projectNew
   
+  projectEdit: (projectId) ->
+    project = window.StaffPlan.projects.get projectId
+    projectEdit = new window.StaffPlan.Views.Projects.Edit
+      router: @
+      clients: window.StaffPlan.clients
+      currentUser: window.StaffPlan.users.get(@currentUser.id)
+      model: project
+      collection: window.StaffPlan.projects
+    @swap projectEdit
+
   projectIndex: ->
     projectIndex = new window.StaffPlan.Views.Projects.Index
       router: @

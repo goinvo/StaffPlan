@@ -1,14 +1,6 @@
 class window.StaffPlan.Models.Project extends Backbone.Model
   NAME: "project"
   initialize: ->
-    # 
-    # @work_weeks = new WorkWeekList @get('work_weeks'),
-    #   parent: @
-    #   
-    # @users = new UserList @get('users'),
-    #   parent: @
-    # 
-    # @bind 'destroy', (event) -> @collection.remove @
   
   url: ->
     id = if @id? then "/#{@id}" else ""

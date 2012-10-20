@@ -83,9 +83,9 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       if @project.update_attributes(params[:project])
         # The user just updated the project, we need to update the proposed state for this assignment if needed
-        @project.assignments.where(user_id: current_user.id).first.update_attributes(params[:project][:assignment])
+        # @project.assignments.where(user_id: current_user.id).first.update_attributes(params[:project][:assignment])
         format.html { redirect_to @project, notice: 'Project was successfully updated.' }
-        format.json { head :ok }
+        format.json { render json: @project, status: :ok } 
       else
         format.html { render action: "edit" }
         format.json { render json: @project.errors, status: :unprocessable_entity }
