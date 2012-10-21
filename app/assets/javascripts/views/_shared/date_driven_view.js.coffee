@@ -31,9 +31,14 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
   dateChanged: (event) ->
     event.preventDefault()
-    interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.add('weeks', interval)
-    @toDate.add('weeks', interval)
+    
+    if event.type == "keydown"
+      interval = if event.keyIdentifier.toLowerCase() == 'right' then @weekInterval else -@weekInterval
+    else
+      interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
+    
+    @fromDate.addWeeks(interval)
+    @toDate.addWeeks(interval)
     
     @trigger('date:changed')
 
@@ -78,7 +83,5 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   
   delayedOnWindowResized: =>
     @setWeekIntervalAndToDate()
-    #     @renderHeaderTemplate( true )
-    #     @renderWeekHourCounter()
-    @renderContent( true ) if @renderContent?
+    @render()
     
