@@ -50,6 +50,7 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
     while from < to
       @yearsAndWeeks.push
+        xdate:  new XDate(from)
         year:  from.getUTCFullYear()
         cweek: from.getWeek()
         month: from.getMonth() + 1 # NOTE: Months in moment.js are 0-indexed
