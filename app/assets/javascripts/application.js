@@ -16,6 +16,7 @@
 //= require backbone
 //= require backbone-support
 //= require handlebars
+//= require keymaster
 
 //= require staffplan-app
 
