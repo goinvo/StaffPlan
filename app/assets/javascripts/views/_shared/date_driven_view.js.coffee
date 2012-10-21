@@ -1,13 +1,13 @@
 class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    today = new XDate()
-    if today.getDay() == 1
-      today = today.addDays(-5)
-    else if today.getDay() > 2
-      while today.getDay() >= 2
-        today = today.addDays( -1 )
-
-    @fromDate = today
+    today = new XDate().addDays(5)
+    if today.getDay() == 0 # sunday
+      today = today.addDays(-6)
+    else if today.getDay() > 1
+      while today.getDay() > 1
+        today = today.addDays(-1)
+    
+    @fromDate = today.addWeeks(-2) # move back two weeks to start
     
     setTimeout =>
       $( window ).bind 'resize', @onWindowResized
