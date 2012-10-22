@@ -14,8 +14,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       <div id="user-chart" class="grid-row-element flex chart-totals-view">
         <div class='box'>
           <a class="previous flex">Previous</a>
-            <svg id="bar-chart">
-            </svg>
+            <ul>
+            </ul>
           <a class="next flex">Next</a>
         </div>
       </div>
@@ -72,23 +72,6 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @$el.appendTo('section.main')
     @setWeekIntervalAndToDate()
     @clientViews.map (clientView) -> clientView.render()
-
-
-    ############################ DOESN'T REALLY BELONG HERE #################################
-    @aggregates = new window.StaffPlan.Collections.WeeklyAggregates {}, @model
-    
-    window.StaffPlan.aggregates = @aggregates.populate()
-
-    
-    view = new StaffPlan.Views.WeeklyAggregates # Hardwired for now, but works
-      cweek: 45
-      year: 2012
-      numberOfWeeks: 30
-      el: @$el.find('svg#bar-chart')
-      offsetLeft: @$el.find('section.work-weeks').first().find('input[data-cid][data-attribute]:first').offset().left
-      collection: window.StaffPlan.aggregates
-    
-    #########################################################################################
 
     @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
       assignmentArray.push client.view.assignments.models
