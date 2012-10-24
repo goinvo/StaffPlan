@@ -30,9 +30,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     
     event.preventDefault()
     event.stopPropagation()
+    # TODO: Need that stupid closest because the source of the event can be the i used by
+    # Bootstrap for the button icon. Might be a better way
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
-    assignment = user.assignments.detect (a) =>
-      a.get('project_id') is @model.id
+    assignment = user.assignments.detect (assignment) => @model.id is assignment.get "project_id"
     deleteView = new window.StaffPlan.Views.Shared.DeleteModal
       model: assignment 
       collection: user.assignments 
@@ -53,31 +54,28 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       user_id: targetUser.id
       proposed: false
     , success: (model, response) =>
-        @render()
+        # I don't know what to do here. Maybe contact 
+        # dispatcher for notifications
+        console.log "SUCCESS" 
     , error: (model, response) ->
         alert "SOMETHING WENT WRONG"
+    @render()
   render: ->
-    assignedUsers = StaffPlan.users.select (user) =>
-      user.assignments.any (assignment) =>
-        assignment.get("project_id") is @model.id
-    
-    unassignedUsers = _.difference StaffPlan.users.models, assignedUsers
+    assignedUsers = @model.getUsers()
+    unassignedUsers = @model.getUnassignedUsers() 
     
     @$el.empty()
-    # Header
+    
     @$el.append @headerTemplate 
       name: @model.get "name"
-      # List of assigned users
-    _.each assignedUsers, (user) =>
+    assignedUsers.each (user) =>
       view = new StaffPlan.Views.Assignments.ListItem
         model: user 
       @$el.append view.render().el
-    # Assign a user to the project
-    # templateData = _.map unassignedUsers, (user) -> 
-    #   user.attributes
-    if unassignedUsers.length
+    # If there are users not assigned to this project in the current company, show them here
+    unless unassignedUsers.isEmpty()
       @$el.append @addSomeone
-        unassignedUsers: (_.map unassignedUsers, (user) -> user.attributes) 
+        unassignedUsers: unassignedUsers.map (u) -> u.attributes 
     @$el.appendTo "section.main"
     
     @

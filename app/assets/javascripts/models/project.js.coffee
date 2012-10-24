@@ -15,3 +15,11 @@ class window.StaffPlan.Models.Project extends Backbone.Model
   
   getClientId: ->
     @get("client_id") || "new_client"
+  
+  getUsers: -> new StaffPlan.Collections.Users StaffPlan.users.select (user) =>
+      user.assignments.any (assignment) =>
+        assignment.get("project_id") is @id
+
+  getUnassignedUsers: -> new StaffPlan.Collections.Users StaffPlan.users.select (user) =>
+      user.assignments.all (assignment) =>
+        assignment.get("project_id") isnt @id
