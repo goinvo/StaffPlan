@@ -55,7 +55,7 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   deleteClient: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    clientId = $(event.target).data("client-id")
+    clientId = $(event.target).closest("a[data-action=delete]").data("client-id")
     client = @collection.get(clientId)
     client.destroy()
     @collection.remove(client)

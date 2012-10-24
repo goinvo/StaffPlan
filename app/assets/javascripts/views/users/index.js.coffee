@@ -6,6 +6,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
     @collection.bind "remove", () =>
       @render()
   templates:
+    header: "<h3>List of users</h3>"
     actions:
       addUser: '''
         <div class="actions">
@@ -42,7 +43,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   
   render: ->
     @$el.empty()
-    
+    @$el.append Handlebars.compile(@templates.header) 
     @collection.each (user) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
