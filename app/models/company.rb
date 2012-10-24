@@ -42,6 +42,10 @@ class Company < ActiveRecord::Base
     end
   end
 
+  def assignments
+    Assignment.where(:user_id => self.users.map(&:id), :project_id => self.projects.map(&:id))
+  end
+
   def total_recap_for_date_range(lower, upper)
     {}.tap do |recap|
       projects.each do |project|

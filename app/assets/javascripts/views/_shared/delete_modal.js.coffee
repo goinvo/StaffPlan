@@ -21,7 +21,7 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
     actions: '''
     <div class="modal-footer">
       <a href="#" data-dismiss="modal" class="btn btn-warning">Delete {{resourceName}}</a>
-      <a href="/users" class="btn btn-info">Back to list of {{collectionName}}</a>
+      <a href="#" class="btn btn-info">Back to list of {{collectionName}}</a>
     </div>
     '''
   events:
@@ -29,9 +29,15 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
     "click a.btn-info": "showCollection"
     
   initialize: ->
-  
+    @parentView = @options.parentView
+    
   deleteResource: (event) ->
-    @collection.remove @model # Destroys the model as well, see app/assets/javascript/models/users.js.coffee
+    event.preventDefault()
+    event.stopPropagation()
+    @collection.remove @model # Destroys the model as well, see app/assets/javascript/collections/users.js.coffee
+    # FIXME: Dirty hack :/ We need assignments client-side and projects and users to only carry id
+    if @parentView?
+      @parentView.render()
     @remove()
 
   showCollection: (event) ->
