@@ -12,12 +12,10 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
         </span>
       </div>
       <div id="user-chart" class="grid-row-element flex chart-totals-view">
-        <div class='box'>
-          <a class="previous flex" href="#" data-change-page='previous'>Previous</a>
-            <ul>
-            </ul>
-          <a class="next flex" href="#" data-change-page='next'>Next</a>
-        </div>
+        <a class="previous flex" href="#" data-change-page='previous'>Previous</a>
+          <ul>
+          </ul>
+        <a class="next flex" href="#" data-change-page='next'>Next</a>
       </div>
       <div class="grid-row-element"></div>
     </div>
@@ -116,7 +114,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
         assignmentArray.push client.view.assignments.models
         assignmentArray
       , [], @)))
-      , ".user-select", @$ ".chart-totals-view ul"
+      , "#user-chart", @$ ".chart-totals-view ul"
     
       setTimeout => @addNewClientAndProjectInputs()
     
@@ -136,7 +134,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       assignmentArray.push client.view.assignments.models
       assignmentArray
     , [], @)))
-    , ".user-select", @$ ".chart-totals-view ul"
+    , "#user-chart", @$ ".chart-totals-view ul"
     
     @
   
