@@ -1,10 +1,9 @@
 class window.StaffPlan.Collections.WorkWeeks extends Backbone.Collection
   model: StaffPlan.Models.WorkWeek
   
-  initialize: (models, attrs) ->
-    _.extend @, models
-    _.extend @, attrs
-  
+  initialize: (models, options) ->
+    _.extend @, options
+
   dateRangeMeta: ->
     @parent.dateRangeMeta()
   

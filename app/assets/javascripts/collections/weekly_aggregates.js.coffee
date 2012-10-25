@@ -1,25 +1,28 @@
 class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
   
   model: window.StaffPlan.Models.WeeklyAggregate
- 
-  initialize: (models, parent) ->
-     
-    @parent = parent
-    
+
+  initialize: (models, options) ->
+    @parent = options.parent
+
   populate: () ->
     @parent.assignments.each (assignment) =>
       assignment.work_weeks.each (week) =>
-        # FIXME: Refactor with a findOrCreate that encapsulates all this non-sense.
-        aggregate = @detect (agg) ->
-          ( agg.year is parseInt week.get "year" ) and ( agg.cweek is parseInt week.get "cweek" )
-        if aggregate?
-          aggregate.updateTotals week.toJSON()
-        else
-          foobar = @add week.toJSON()
-          # TODO: I don't know how to reference the newly added model here
-          # I need it to do a week.set("aggregator", newlyAddedWeeklyAggregate)
+        @aggregateWeek(week)
     @
+  
+      
+  aggregateWeek: (week) ->
+    aggregate = @detect (a) -> _.all ['cweek', 'year'], 
+      (attr) -> a.get(attr) is week.get(attr)
+    unless aggregate?
+      aggregate = new StaffPlan.Models.WeeklyAggregate week.pick(['cweek', 'year', 'hasPassed'])
+      @add aggregate
+    
+    aggregate.update week.pick(['proposed', 'estimated_hours', 'actual_hours'])
 
+    @
+    
   comparator: (first, second) ->
     firstYear = first.year
     secondYear = second.year
