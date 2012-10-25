@@ -417,6 +417,17 @@ footer {
       margin-top: 2px;
     }
     
+    .cweeks-and-years {
+      div {
+        display: inline-block;
+        width: 35px;
+        height: 15px;
+        margin: 0 5px 0 0;
+        padding: 0;
+        text-align: center;
+      }
+    }
+    
 //    .plus-with-text {
 //      span.text {
 //        position: absolute;

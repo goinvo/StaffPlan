@@ -1,13 +1,13 @@
 class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-    today = new XDate()
-    if today.getDay() == 1
-      today = today.addDays(-5)
-    else if today.getDay() > 2
-      while today.getDay() >= 2
-        today = today.addDays( -1 )
-
-    @fromDate = today
+    today = new XDate().addDays(5)
+    if today.getDay() == 0 # sunday
+      today = today.addDays(-6)
+    else if today.getDay() > 1
+      while today.getDay() > 1
+        today = today.addDays(-1)
+    
+    @fromDate = today.addWeeks(-2) # move back two weeks to start
     
     setTimeout =>
       $( window ).bind 'resize', @onWindowResized
@@ -31,9 +31,14 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
   dateChanged: (event) ->
     event.preventDefault()
-    interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
-    @fromDate.add('weeks', interval)
-    @toDate.add('weeks', interval)
+    
+    if event.type == "keydown"
+      interval = if event.keyIdentifier.toLowerCase() == 'right' then @weekInterval else -@weekInterval
+    else
+      interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
+    
+    @fromDate.addWeeks(interval)
+    @toDate.addWeeks(interval)
     
     @trigger('date:changed')
 
@@ -50,6 +55,7 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
     while from < to
       @yearsAndWeeks.push
+        xdate:  new XDate(from)
         year:  from.getUTCFullYear()
         cweek: from.getWeek()
         month: from.getMonth() + 1 # NOTE: Months in moment.js are 0-indexed
@@ -77,7 +83,5 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   
   delayedOnWindowResized: =>
     @setWeekIntervalAndToDate()
-    #     @renderHeaderTemplate( true )
-    #     @renderWeekHourCounter()
-    @renderContent( true ) if @renderContent?
+    @render()
     

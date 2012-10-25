@@ -16,7 +16,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} "data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+        {{#if hasPassedOrIsCurrent}}
+        <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} "data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+        {{/if}}
       {{/each}}
     </div>
     '''
@@ -43,6 +45,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     @$el.append @rowTemplate
       visibleWorkWeeks: workWeeks.map (workWeek) -> _.extend workWeek.attributes,
         cid: workWeek.cid
+        hasPassedOrIsCurrent: workWeek.hasPassedOrIsCurrent()
     
     @rowFiller = @$el.find('.row-filler').hide()
     
@@ -83,11 +86,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     workWeek = @collection.getByCid cid
     workWeek.save attributes,
       success: (lol, foo, bar, baz) ->
-        console.log "LOL"
-        # debugger
+        console.log('success')
       error: (wat, another, argument, here) ->
-        console.log "WAT"
-        # debugger
+        alert('fail')
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
 
