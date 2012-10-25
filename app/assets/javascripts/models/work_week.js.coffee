@@ -5,7 +5,7 @@ class window.StaffPlan.Models.WorkWeek extends Backbone.Model
     _.reduce attrs, (memo, elem) =>
       if typeof this[elem] is "function"
         memo[elem] = this[elem].apply(@)
-      else 
+      else
         memo[elem] = @get elem
       memo
     , {}
