@@ -9,7 +9,8 @@ window.StaffPlan =
       Assignments: {}
     Assignments: {}
     Users: {}
-    Projects: {}
+    Projects:
+      WorkWeeks: {}
     Clients: {}
   Routers: {}
   
@@ -25,7 +26,7 @@ window.StaffPlan =
       projects: @projects
       clients: @clients
       currentCompany: @currentCompany
-      currentUser: @currentUser 
+      currentUser: @currentUser
     $ -> Backbone.history.start(pushState: true)
     
     $('a:not([data-bypass])').live 'click', (event) =>

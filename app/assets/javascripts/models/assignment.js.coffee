@@ -6,6 +6,7 @@ class window.StaffPlan.Models.Assignment extends Backbone.Model
     @work_weeks = new StaffPlan.Collections.WorkWeeks weeks,
       parent: @
     
+    @work_weeks.sort()
     # No need for this anymore
     @unset "work_weeks"
     

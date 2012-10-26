@@ -1,4 +1,6 @@
 class window.StaffPlan.Collections.WorkWeeks extends Backbone.Collection
+  WEEK_IN_MILLISECONDS: 7 * 24 * 3600 * 1000
+  
   model: StaffPlan.Models.WorkWeek
   
   initialize: (models, options) ->
@@ -9,6 +11,23 @@ class window.StaffPlan.Collections.WorkWeeks extends Backbone.Collection
   
   url: ->
     @parent.url() + "/work_weeks"
+  
+  between: (start, end) ->
+    startTime = start.getTime()
+    endTime = end.getTime()
+    weeks = _.map _.range(startTime, endTime, @WEEK_IN_MILLISECONDS), (timestamp) =>
+      d = new XDate(timestamp)
+      week = @detect (week) =>
+        week.get("year") is d.getFullYear() and
+          week.get("cweek") is d.getWeek()
+      console.log week if week?
+      week or new StaffPlan.Models.WorkWeek
+        cweek: d.getWeek()
+        year: d.getFullYear()
+        actual_hours: 0
+        estimated_hours: 0
+        proposed: false
+    new StaffPlan.Collections.WorkWeeks weeks
   
   comparator: (first, second) ->
     firstYear = first.get('year')

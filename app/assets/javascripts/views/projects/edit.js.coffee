@@ -176,6 +176,11 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
           .find("[data-model=project][data-attribute=#{prop}]")
           .val(attrs[prop])
       
+          
+      @$el
+        .find("radiogroup[data-model=project][data-attribute=payment_frequency]")
+        .find("input[type=radio]")
+        .prop("checked", false)
       @$el
         .find("radiogroup[data-model=project][data-attribute=payment_frequency]")
         .find("input[type=radio][value=#{attrs.payment_frequency}]")
