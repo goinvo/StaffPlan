@@ -24,7 +24,6 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     '''
       
   initialize: ->
-    @model = @options.model
     @assignment = @options.parent
     @client = @options.client
     @user = @options.user
@@ -34,7 +33,6 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     
   render: ->
     @$el.empty()
-    
     yearsAndWeeks = _.reduce @user.view.getYearsAndWeeks(), (memo, dateMeta) ->
       memo[dateMeta.year] ||= []
       memo[dateMeta.year].push dateMeta.cweek
@@ -67,13 +65,6 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     $currentTarget = $( event.currentTarget )
     cid = $currentTarget.data 'cid'
 
-    # [year, cweek] = _.map ["year", "cweek"], (prop) ->
-    #   $currentTarget.data(prop)
-
-    # aggregate = StaffPlan.Collections.WeeklyAggregates.findOrCreate
-    #   year: year
-    #   cweek: cweek
-    #   agg.year is year and agg.cweek is cweek
     @queueUpdateOrCreate event, cid,
       estimated_hours: $currentTarget.val()
     
