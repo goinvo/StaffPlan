@@ -14,7 +14,12 @@ class Users::ProjectsController < ApplicationController
     end
     
     if (@target_user.projects << @project rescue false)
-      render_json_ok
+      render :json => {
+        status: "ok",
+        clients: current_user.current_company.clients.includes(:projects).map(&:staff_plan_json),
+        attributes: @project,
+        assignment: @target_user.assignments.where(project_id: @project.id).first
+      } and return
     else
       render_json_fail
     end

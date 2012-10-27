@@ -149,6 +149,7 @@ class views.staffplans.ProjectView extends Support.CompositeView
       success: (project, response) =>
         if response.status == "ok"
           @model.set response.attributes
+          window._meta.assignments.push _.pick(response.assignment, ["project_id", "user_id", "proposed"])
           window._meta.clients.reset response.clients.map (client) -> JSON.parse(client)
           @model.trigger 'project:created', @model
           
