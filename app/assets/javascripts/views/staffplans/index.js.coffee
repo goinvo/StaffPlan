@@ -4,7 +4,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   templates:
     userInfo: '''
     <div class="span12">
-      <ul class="user-list unstyled">  
+      <ul class="user-list unstyled slick">  
         {{#each users}} 
           <li>
             <div class='user-info'>

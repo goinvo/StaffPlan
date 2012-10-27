@@ -1,6 +1,6 @@
 class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   tagName: 'ul'
-  className: 'user-list'
+  className: 'user-list slick'
   
   initialize: ->
     @collection.bind "remove", () =>
