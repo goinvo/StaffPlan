@@ -1,5 +1,6 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
   tagName: "ul"
+  className: "slick"
   templates:
     header: '''
       <h3>
