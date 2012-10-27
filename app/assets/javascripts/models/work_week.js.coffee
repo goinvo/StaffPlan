@@ -10,10 +10,14 @@ class window.StaffPlan.Models.WorkWeek extends Backbone.Model
 
   pick: (attrs) ->
     _.reduce attrs, (memo, elem) =>
+      if typeof this[elem] is "function"
+        memo[elem] = this[elem].apply(@)
+      else
+        memo[elem] = @get elem
       # See http://underscorejs.org/#result
-      memo[elem] = _.result @, elem
       memo
     , {}
+    
 
   inFuture: ->
     d = new XDate()

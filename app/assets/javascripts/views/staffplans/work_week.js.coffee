@@ -61,8 +61,10 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     "click  .row-filler": "fillNextRows"
   
   queueEstimatedUpdateOrCreate: (event) ->
-
     $currentTarget = $( event.currentTarget )
+    console.log "DELTA : "
+    console.log($currentTarget.val() - $currentTarget.data('current-value'))
+    $currentTarget.data('current-value', $currentTarget.val())
     cid = $currentTarget.data 'cid'
 
     @queueUpdateOrCreate event, cid,

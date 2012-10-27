@@ -20,15 +20,18 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       '''
 
   initialize: ->
+    @startDate = @options.start
     @userItemTemplate = Handlebars.compile @templates.userItem
     @parent = @options.parent
 
   render: ->
     @$el.html @userItemTemplate
       user: StaffPlan.users.get(@model.get("user_id")).attributes
-
+    start = @startDate.clone()
     view = new window.StaffPlan.Views.Projects.WorkWeeks
-      collection: @model.work_weeks.between(new XDate().setWeek(20, 2012), new XDate().setWeek(20, 2012).addWeeks(30))
+    #collection: @model.work_weeks.between(@startDate, @startDate.addWeeks(30))
+      collection: @model.work_weeks.between(start.getTime(), start.addWeeks(30).getTime())
+      start: start
     
     @$el.append view.render().el
     @

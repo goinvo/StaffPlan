@@ -4,6 +4,9 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     header: '''
       <h3>
         {{name}}
+        <div id="pagination">
+          <a class="pagination" data-action=previous href="#">Previous</a>
+          <a class="pagination" data-action=next href="#">Next</a>
       </h3>
     '''
     addSomeone: '''
@@ -19,12 +22,19 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       '''
   initialize: ->
 
+    @startDate = new XDate()
     @headerTemplate = Handlebars.compile(@templates.header)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
 
   events: ->
+    "click div#pagination a.pagination": "paginate"
     "click a[data-action=add-user]": "addUserToProject"
     "click a[data-action=delete]": "deleteAssignment"
+
+  paginate: (event) ->
+    delta = if ($(event.target).data('action') is "previous") then -10 else 10
+    @startDate.addWeeks(delta)
+    @render()
 
   deleteAssignment: ->
 
@@ -54,8 +64,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       user_id: targetUser.id
       proposed: false
     , success: (model, response) =>
-        # I don't know what to do here. Maybe contact
-        # dispatcher for notifications
         console.log "SUCCESS"
     , error: (model, response) ->
         alert "SOMETHING WENT WRONG"
@@ -72,6 +80,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       view = new StaffPlan.Views.Assignments.ListItem
         model: assignment
         parent: @model
+        start: @startDate
       @$el.append view.render().el
     # If there are users not assigned to this project in the current company, show them here
     unless unassignedUsers.isEmpty()
