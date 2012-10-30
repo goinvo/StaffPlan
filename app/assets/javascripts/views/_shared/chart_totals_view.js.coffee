@@ -8,16 +8,14 @@ class ChartTotalsView extends Backbone.View
   initialize: (@dates, @models=[], @parentsSelector, @el) ->
     @maxHeight = @el.parents(@parentsSelector).height() - 20
     if @models.size > 0
-      staffPlanPage = _.has(_.first @models, "users")
+      @staffPlanPage = _.has(_.first @models, "users")
     else
-      staffPlanPage = @parentsSelector is ".user-select"
-    @render @dates, @models, staffPlanPage if @dates and @models and @el
+      @staffPlanPage = @parentsSelector is ".user-select"
+    @render @dates, @models if @dates and @models and @el
 
-  render: (date_range, models, staffPlanPage) ->
+  render: (date_range, models) ->
     # Grab data
-    data = _.sortBy (get_data date_range, models, staffPlanPage), (obj) ->
-      moment([obj.date.year, obj.date.month, obj.date.mday]).unix()
-    
+    data = _.sortBy (get_data date_range, models, @staffPlanPage), (obj) -> obj.id
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -52,44 +50,26 @@ class ChartTotalsView extends Backbone.View
       .remove()
 
 
-###*
-  * Get data for current date range
-  * @param {!Object} date_range Date range meta from User model.
-  * @param {!Array}  models     Models to gather data from.
-  * @returns {!Object}          Mapping of data to weeks for a given date range.
-*###
-get_data = (date_range, models, staffPlanPage) ->
-  # At this point, models should be either an array of User objects or an array of Project objects
-  ww = _.map models, (p) ->
-    _.map date_range, (date) ->
-      p.work_weeks.selectedSubset().find (m) ->
-        if m.get('cweek') == date.mweek and m.get('year') == date.year
-          m.set "date", date
-          true
-  # Format data
-  ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
-    "#{w.get('year')}-#{w.get('cweek')}"
+get_data = (date_range, models, staffPlanPage) =>
+  ww = _.map date_range, (date) =>
+    dummy = {id: "#{date.year}-#{date.cweek}", date: date, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0} }
+    weeks = _.map models, (model) -> # Can be a project or a user
+      model.work_weeks.select (week) ->
+        week.get('year') is date.year and week.get('cweek') is date.cweek
+    if weeks.length is 0
+      dummy
+    else
+      _.reduce (_.flatten weeks), (m, o) ->
+        assignment = _.detect window._meta.assignments, (ass) ->
+          ass[if staffPlanPage then 'project_id' else 'user_id'] == (o.collection?.parent?.id || -1)
+        m.proposed.actual    += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
+        m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
+        m.actual             += (parseInt(o.get('actual_hours'),    10) or 0)
+        m.estimated          += (parseInt(o.get('estimated_hours'), 10) or 0)
+        m
+      , dummy
 
-  ww["#{d.year}-#{d.cweek}"] ?= [dummy(d)] for d in date_range # Fill empty weeks
-  # Total hours for each week
-  _.map ww, (hours, key) ->
-    _.reduce hours, (m, o) ->
-      m.date = o.get "date"
-      m.actual    += (parseInt(o.get('actual_hours'),    10) or 0)
-      m.estimated += (parseInt(o.get('estimated_hours'), 10) or 0)
-      assignment = _.detect window._meta.assignments, (ass) ->
-        ass[if staffPlanPage then 'project_id' else 'user_id'] == (o.collection?.parent?.id || -1)
-      m.proposed.actual += (parseInt(o.get('actual_hours'),    10) or 0) if assignment?.proposed || false
-      m.proposed.estimated += (parseInt(o.get('estimated_hours'), 10) or 0) if assignment?.proposed || false
-      m
-    , {id: key, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0}}
 
-###*
-  * Determine the ratio to be applied to each bar's height.
-  * @param {!Number} u_bound Maximum height.
-  * @param {!Object} ww      Mapping of data to weeks.
-  * @returns {!Number}       Ratio.
-*###
 get_ratio = (u_bound, ww) ->
   max = Math.max.apply( null, _.pluck( ww, 'actual' ).concat( _.pluck( ww, 'estimated' ) ) ) || 1
   u_bound / max
@@ -137,7 +117,7 @@ get_year = (d) ->
 *###
 
 get_class = (d) ->
-  if d.date.year == moment().year() and d.date.cweek == (+moment().format('w'))
+  if d.date.year == moment().isoyear() and d.date.cweek == moment().isoweek() 
     if d.actual == 0 then "present" else "passed"
   else if d.date.weekHasPassed
     if d.actual == 0 then "" else "passed"

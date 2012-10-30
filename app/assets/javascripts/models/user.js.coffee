@@ -34,9 +34,9 @@ class User extends Backbone.Model
     while from < to
       yearsAndWeeks.push
         year:  from.year()
-        cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        cweek: from.isoweek()
         month: from.month() + 1
-        mweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        mweek: from.isoweek()
         mday:  from.date()
         weekHasPassed: from < moment()
 

@@ -14,6 +14,7 @@
 //= require mustache
 //= require handlebars
 //= require moment
+//= require moment.isocalendar
 //= require d3.v2
 //= require iphone-style-checkboxes
 //= require backbone-bootstrap

@@ -63,14 +63,14 @@ class ProjectDecorator < Draper::Base
 
     capture_haml do  
       range.each do |date|
-        is_current_week = (date.year == Date.today.year && date.cweek == Date.today.cweek)
-        load_for_week = workload.select { |ww| ww.cweek == date.cweek and ww.year == date.year }
+        is_current_week = (date.cwyear == Date.today.cwyear && date.cweek == Date.today.cweek)
+        load_for_week = workload.select { |ww| ww.cweek == date.cweek and ww.year == date.cwyear }
         proposed_for_week = load_for_week.select { |ww| assignments.detect{ |a| a.user_id == ww.user_id }.try(:proposed?) || false }
-        msg = (((date.cweek < Date.today.at_beginning_of_week.cweek) && (date.year <= Date.today.at_beginning_of_week.year)) || is_current_week) ? :actual_hours : :estimated_hours
+        msg = (((date.cweek < Date.today.at_beginning_of_week.cweek) && (date.cwyear <= Date.today.at_beginning_of_week.cwyear)) || is_current_week) ? :actual_hours : :estimated_hours
         total = load_for_week.inject(0) { |memo, week| memo += week.send(msg) || 0 }
 
         if (total > 0 && msg == :actual_hours)
-          haml_tag :li, {:class => "actuals", :style => "height: #{total}px", "data-week" => date.cweek, "data-year" => date.year} do
+          haml_tag :li, {:class => "actuals", :style => "height: #{total}px", "data-week" => date.cweek, "data-year" => date.cwyear} do
             haml_tag :span do
               haml_concat total.to_s
             end
@@ -88,7 +88,7 @@ class ProjectDecorator < Draper::Base
 
           gradient = [moz_gradient, webkit_gradient].join(";") 
 
-          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}", "data-week" => date.cweek, "data-year" => date.year}) do
+          haml_tag(:li, {:style => "height: #{total}px; #{percentage_proposed == 0 ? "" : gradient}", "data-week" => date.cweek, "data-year" => date.cwyear}) do
             haml_tag :span do
               haml_concat total.to_s
             end

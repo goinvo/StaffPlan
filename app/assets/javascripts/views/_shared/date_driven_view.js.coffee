@@ -53,10 +53,10 @@ class views.shared.DateDrivenView extends Support.CompositeView
 
     while from < to
       yearsAndWeeks.push
-        year:  from.year()
-        cweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        year:  from.isoyear()
+        cweek: from.isoweek() 
         month: from.month() + 1 # NOTE: Months in moment.js are 0-indexed
-        mweek: +from.format('w') # moment is nice but unfortunately doesn't yet provide an .isoWeek function
+        mweek: from.isoweek()
         mday:  from.date()
         weekHasPassed: from < moment()
 

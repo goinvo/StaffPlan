@@ -83,8 +83,8 @@ class UserDecorator < Draper::Base
 
     capture_haml do 
       range.each do |date|
-        is_current_week = Date.today.cweek == date.cweek and Date.today.year == date.year
-        load_for_week = workload.select { |ww| date.cweek == ww.cweek and date.year == ww.year }
+        is_current_week = Date.today.cweek == date.cweek and Date.today.cwyear == date.cwyear
+        load_for_week = workload.select { |ww| date.cweek == ww.cweek and date.cwyear == ww.year }
         proposed_for_week = load_for_week.select {|ww| assignments.detect{|a| a.project_id == ww.project_id}.try(:proposed?) || false }
 
         msg = (date < Date.today.at_beginning_of_week or is_current_week) ? :actual_hours : :estimated_hours
