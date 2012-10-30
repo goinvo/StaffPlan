@@ -1,6 +1,4 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
-  tagName: "ul"
-  className: "slick"
   templates:
     header: '''
       <h3>
@@ -9,6 +7,11 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
           <a class="pagination" data-action=previous href="#">Previous</a>
           <a class="pagination" data-action=next href="#">Next</a>
       </h3>
+      <svg class="user-chart">
+      </svg>
+    '''
+    mainContent: '''
+      <ul class="slick"></ul>
     '''
     addSomeone: '''
       <select class="unassigned-users">
@@ -25,6 +28,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
 
     @startDate = new XDate()
     @headerTemplate = Handlebars.compile(@templates.header)
+    @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
 
   events: ->
@@ -70,19 +74,34 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         alert "SOMETHING WENT WRONG"
     @render()
   render: ->
-    unassignedUsers = @model.getUnassignedUsers()
-
     @$el.empty()
-
+    
+    # Create all the aggregates for that project and populate
+    aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+      parent: @model
+    aggregates.populate() # FIXME: This belongs in the initialize function really, doesn't it?
+    
+    
     @$el.append @headerTemplate
       name: @model.get "name"
+    # Create a view based on that collection
+    projectChartView = new StaffPlan.Views.WeeklyAggregates
+      collection: aggregates.takeSliceFrom(10, 2012, 20) # Take 20 from cweek 30 of year 2012
+      el: @$el.find('svg.user-chart')
+    projectChartView.render()
+    # Render the view and put it where it belongs
+    
+    unassignedUsers = @model.getUnassignedUsers()
+
+    @$el.append @mainContent
+
     
     @model.getAssignments().each (assignment) =>
       view = new StaffPlan.Views.Assignments.ListItem
         model: assignment
         parent: @model
         start: @startDate
-      @$el.append view.render().el
+      @$el.find('ul.slick').append view.render().el
     # If there are users not assigned to this project in the current company, show them here
     unless unassignedUsers.isEmpty()
       @$el.append @addSomeone

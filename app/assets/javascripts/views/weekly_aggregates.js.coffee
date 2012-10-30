@@ -10,11 +10,9 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
 
   getWidth: ->
-    # TODO: Key off the size of the collection here
+    1000
 
   render: ->
-    
-    
     # At this point we have an array of objects containing all the information we need to create the bar graph
     # d3 is bound to that data
     chart = d3.select(@el)
@@ -32,11 +30,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .attr('height', (d) -> d.estimated)
       .attr('width', @barWidth)
       .attr('x', (d, i) -> i * 40)
-      .attr('y', (d) -> @height - d.estimated)
+      .attr('y', (d) => @height - d.estimated)
     list.enter()
       .append('rect')
       .attr('height', (d) -> d.estimated)
       .attr('width', @barWidth)
       .attr('x', (d, i) -> i * 40)
-      .attr('y', (d) -> @height - d.estimated )
+      .attr('y', (d) => @height - d.estimated )
       .attr('class', 'bar')
+    @

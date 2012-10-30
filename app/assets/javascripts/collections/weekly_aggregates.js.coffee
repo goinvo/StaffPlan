@@ -6,7 +6,7 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
     @parent = options.parent
 
   populate: () ->
-    @parent.assignments.each (assignment) =>
+    @parent.getAssignments().each (assignment) =>
       assignment.work_weeks.each (week) =>
         @aggregateWeek(week)
     @

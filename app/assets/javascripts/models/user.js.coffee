@@ -10,6 +10,9 @@ class window.StaffPlan.Models.User extends Backbone.Model
     @bind "remove", () ->
       @destroy()
 
+  # Proxy so that the aggregation is generic
+  getAssignments: () ->
+    @assignments
   
 
   toJSON: ->
