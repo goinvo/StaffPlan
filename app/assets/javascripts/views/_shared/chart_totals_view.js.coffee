@@ -51,7 +51,7 @@ class ChartTotalsView extends Backbone.View
 
 
 get_data = (date_range, models, staffPlanPage) =>
-  ww = _.map date_range, (date) =>
+  _.map date_range, (date) =>
     dummy = {id: "#{date.year}-#{date.cweek}", date: date, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0} }
     weeks = _.map models, (model) -> # Can be a project or a user
       model.work_weeks.select (week) ->
