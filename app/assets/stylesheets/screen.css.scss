@@ -187,11 +187,6 @@ section.main {
   }
 }
 
-body > header .inner {
-  width: 1100px;
-  min-width: 1100px;
-}
-
 section.main {
   margin: 0 auto;
   .content {
@@ -355,6 +350,10 @@ footer {
   
   .chart-totals-view {
     @include week-hour-counter;
+    
+    ul {
+      display: inline-block;
+    }
   }
 }
 

@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.Membership extends Backbone.Model
+class window.StaffPlan.Models.Membership extends StaffPlan.Model
   initialize: (options) ->
     @companyId = options.company_id
   

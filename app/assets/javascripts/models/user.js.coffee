@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.User extends Backbone.Model
+class window.StaffPlan.Models.User extends StaffPlan.Model
   NAME: "user"
   initialize: ->
     @assignments = new StaffPlan.Collections.Assignments @get( "assignments" ),

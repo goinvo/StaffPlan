@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.WeeklyAggregate extends Backbone.Model
+class window.StaffPlan.Models.WeeklyAggregate extends StaffPlan.Model
   initialize: (options) =>
     # All the updating will be based on those two criteria
     @set "cweek",         options.cweek

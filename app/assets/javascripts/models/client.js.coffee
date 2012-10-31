@@ -1,2 +1,2 @@
-class window.StaffPlan.Models.Client extends Backbone.Model
-  NAME: "client"
+class window.StaffPlan.Models.Client extends StaffPlan.Model
+  name: "client"

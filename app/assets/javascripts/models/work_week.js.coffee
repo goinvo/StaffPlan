@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.WorkWeek extends Backbone.Model
+class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
   
   hasPassedOrIsCurrent: (fromDate=@collection.parent.view.user.view.fromDate) ->
     (@get('year') < fromDate.getUTCFullYear() ||
