@@ -130,7 +130,6 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
         {{#each unassignedUsers}}
           <option value='{{this.id}}'>{{this.full_name}}</option>
         {{/each}}
-        <option value="-1">Dummy User</option>
       </select>
       <input type="submit" value="Add" />
       <a href="#" class="cancel-add-someone">nevermind</a>
@@ -168,37 +167,17 @@ class views.projects.ProjectView extends views.shared.DateDrivenView
     
   addNewSomeoneSubmit: (event) ->
     newUserId = parseInt $('#newSomeone').val(), 10
-    if newUserId is -1 # We need to add a dummy user
-      $.ajax
-        url: "/users/dummy"
-        type: "POST",
-        data:
-          user:
-            first_name: "Dummy"
-            last_name: "User"
-            email: "dummyuser" + new Date().getTime() + "@staffplan.com"
-            password: "dummy"
-        dataType: "json"
-        success: (model, response) =>
-          @model.users.create model,
-            wait: true
-            success: (project, response) =>
-              @model.users.reset response.users.map (userString) -> JSON.parse(userString)
-            error: (project, response) =>
-              alert("Couldn't save that user to the project, sorry.")
-              @model.users.remove companyUser
-              @render()
-
-    else
-      companyUser = window._meta.users.detect (user) -> user.get('id') == newUserId
-      @model.users.create companyUser.attributes,
-        wait: true
-        success: (project, response) =>
-          @model.users.reset response.users.map (userString) -> JSON.parse(userString)
-        error: (project, response) =>
-          alert("Couldn't save that user to the project, sorry.")
-          @model.users.remove companyUser
-          @render()
+    companyUser = window._meta.users.detect (user) -> user.get('id') == newUserId
+    
+    @model.users.create companyUser.attributes,
+      wait: true
+      success: (project, response) =>
+        @model.users.reset response.users.map (userString) -> JSON.parse(userString)
+        
+      error: (project, response) =>
+        alert("Couldn't save that user to the project, sorry.")
+        @model.users.remove companyUser
+        @render()
         
     false
   

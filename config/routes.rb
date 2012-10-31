@@ -5,7 +5,6 @@ StaffPlan::Application.routes.draw do
 
   resources :password_resets, except: [:destroy, :show, :index]
   resources :users do
-    post :dummy, on: :collection
     resources :projects, :only => [:update, :create, :destroy],
                          :controller => "users/projects" do
       resources :work_weeks, :only => [:show, :update, :create],

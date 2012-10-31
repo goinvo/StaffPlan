@@ -55,26 +55,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def dummy
-    @user = User.new params[:user]
-    @user.current_company_id = current_user.current_company_id
-    respond_to do |format|
-      if @user.save!
-        current_user.current_company.users << @user
-        @user.memberships.first.update_attributes(
-          :disabled             => false,
-          :archived             => false,
-          :salary               => 0,
-          :full_time_equivalent => 0,
-          :employment_status    => "fte"
-        )
-        format.json { render json: @user, status: :created }
-      else
-        format.json { render json: @user.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   # PUT /users/1
   # PUT /users/1.json
   def update
