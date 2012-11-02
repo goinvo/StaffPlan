@@ -76,27 +76,11 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     projectid = $(evt.target).data("projectid")
     clientid  = $(evt.target).data("clientid")
     project   = @model.getProjectById( projectid )
-    nextvisible = @findNextVisible(clientid)
     project.view.hide( )
-    if nextvisible == $( project.view.el ).index()
-        next = $( project.view.el ).parent().find("div.project")[@findNextVisible(clientid)]
-        $(next).find(".client-name").css("visibility","visible")
-    
-    
-  findNextVisible: (clientid) ->
-    projects = @model.getProjectsByClient(clientid)
-    indx     = 0
-    set      = false
-    final    = 0
+    nextopen  = $(project.view.el).parent().find("div.project").not(".hidden").first()
+    nextopen.find(".client-name").css("visibility","visible")
 
-    _.each projects, (project) ->
-        if !project.view.collapsed && !set 
-            final = indx
-            set = true
-            return
-        indx++
-    return final
-    
+
   render: ->
     $( @el )
       .attr(
