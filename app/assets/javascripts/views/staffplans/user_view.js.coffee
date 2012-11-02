@@ -54,7 +54,7 @@ class views.staffplans.UserView extends views.shared.DateDrivenView
     name: @model.get("full_name")
     fromDate: @fromDate
     gravatar: @model.get("gravatar")
-    yearOptions: _.range(moment().year() - 10, moment().year() + 10).map (y) ->
+    yearOptions: window._meta.relevantYears.map (y) ->
       optionText: y
       optionValue: y
     id: @model.get("id")

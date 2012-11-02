@@ -57,6 +57,9 @@ class User < ActiveRecord::Base
     [first_name, last_name].join(" ")
   end
 
+  def relevant_years_for_company(company)
+    work_weeks.where(:project_id => company.projects.map(&:id)).select(:year).uniq
+  end
 
   def self.with_registration_token(token)
     self.where("registration_token = ?", token).first

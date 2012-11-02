@@ -5,6 +5,7 @@
   :coffeescript
     window._meta =
       assignments: #{@target_user.decorate.assignments_as_json}
+      relevantYears: #{@target_user.relevant_years_for_company(current_user.current_company).map(&:year).sort.to_json}
       clients: new ClientList(#{@clients})
       days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
