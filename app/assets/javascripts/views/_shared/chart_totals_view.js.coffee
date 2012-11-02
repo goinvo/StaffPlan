@@ -54,7 +54,7 @@ get_data = (date_range, models, staffPlanPage) =>
   _.map date_range, (date) =>
     dummy = {id: "#{date.year}-#{date.cweek}", date: date, actual: 0, estimated: 0, proposed: {actual: 0, estimated: 0} }
     weeks = _.map models, (model) -> # Can be a project or a user
-      model.work_weeks.select (week) ->
+      model.work_weeks.selectedSubset().select (week) ->
         week.get('year') is date.year and week.get('cweek') is date.cweek
     if weeks.length is 0
       dummy
