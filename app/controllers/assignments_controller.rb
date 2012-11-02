@@ -1,9 +1,12 @@
 class AssignmentsController < ApplicationController
   
+  before_filter :find_target_user
+  
   respond_to :json
 
   def create
-    @assignment = Assignment.new params[:assignment]
+    @assignment = @target_user.assignments.build(params[:assignment])
+    
     if @assignment.save
       respond_with @assignment and return
     else
@@ -29,36 +32,9 @@ class AssignmentsController < ApplicationController
   
   private
   
-  def find_or_create_company_project_by_name
-    @project = if current_user.current_company.projects.exists?(name: params["project_name"])
-      current_user.current_company.projects.where(name: params["project_name"]).first
-    else
-      # create project, first find client
-      client = find_or_create_company_client_by_name
-      current_user.current_company.projects.create!(
-        name: params["project_name"],
-        client: client
-      )
-    end
-    
-  rescue => e
-    # TODO: catch this case with backbone validations?
-    Rails.logger.info("#{e.message}\n#{e.backtrace.join("\n")}")
-    render :json => {:status => :unprocessable_entity }
+  def find_target_user
+    @target_user = current_user.current_company.users.find(params[:target_user_id])
+  rescue
+    render(status: 404)
   end
-  
-  def find_or_create_company_client_by_name
-    client = if current_user.current_company.clients.exists?(id: params[:client_id])
-      current_user.current_company.clients.find(params[:client_id])
-    else
-      current_user.current_company.clients.create!(
-        name: params[:client_name] || "random-#{Time.now.to_i}"
-      )
-    end
-  rescue => e
-    # TODO: catch this case with backbone validations?
-    Rails.logger.info("#{e.message}\n#{e.backtrace.join("\n")}")
-    render :json => {:status => :unprocessable_entity }
-  end
-
 end

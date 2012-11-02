@@ -47,7 +47,7 @@ class ProjectsController < ApplicationController
   def create
     @project = Project.new params[:project]
     @project.client_id = params[:client_id]
-    @project.company_id = params[:company_id]
+    @project.company = current_user.current_company
 
     if @project.save
       respond_to do |format|

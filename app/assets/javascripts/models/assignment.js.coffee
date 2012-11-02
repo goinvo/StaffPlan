@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.Assignment extends Backbone.Model
+class window.StaffPlan.Models.Assignment extends StaffPlan.Model
   NAME: "assignment"
   initialize: ->
     weeks = _.map @get("work_weeks"), (week) ->

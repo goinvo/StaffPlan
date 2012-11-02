@@ -1,4 +1,4 @@
-class window.StaffPlan.Models.Project extends Backbone.Model
+class window.StaffPlan.Models.Project extends StaffPlan.Model
   NAME: "project"
   initialize: ->
 

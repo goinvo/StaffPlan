@@ -66,8 +66,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
         html
       , ""
     
-    @$el.bind 'click', "[data-change-page]", (event) => @changePage( event )
-    key 'left, right', (event) => @changePage( event )
+    # @$el.bind 'click', "[data-change-page]", (event) => @changePage( event )
+    # key 'left, right', (event) => @changePage( event )
       
     @model = @options.user
     @model.view = @
