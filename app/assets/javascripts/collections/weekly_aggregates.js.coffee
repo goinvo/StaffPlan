@@ -6,13 +6,18 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
     @parent = options.parent
 
   populate: () ->
+    begin = new XDate().setWeek(1, 2011)
+    end = begin.clone().addWeeks(300)
+    _.each _.range(begin.getTime(), end.getTime(), 7 * 24 * 3600 * 1000), (timestamp) =>
+      date = new XDate(timestamp)
+      @findOrCreateRelevantAggregate
+        cweek: date.getWeek()
+        year: date.getFullYear()
+
     @parent.getAssignments().each (assignment) =>
       assignment.work_weeks.each (week) =>
         @aggregateWeek(week)
     @
-  # NOTE: This function shouldn't be used on sparse collections
-  # We SUPPOSE that there are no gaps here, i.e. we use a range to initialize the 
-  # collection and fill the gaps with dummy aggregates
   takeSliceFrom: (cweek, year, size) ->
     index = @indexOf @detect (aggregate) ->
       cweek is aggregate.get("cweek") and
@@ -27,16 +32,24 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
     , 0
       
   aggregateWeek: (week) ->
-    aggregate = @detect (a) -> _.all ['cweek', 'year'],
-      (attr) -> a.get(attr) is week.get(attr)
-    unless aggregate?
-      aggregate = new StaffPlan.Models.WeeklyAggregate week.pick(['cweek', 'year', 'inFuture'])
-      @add aggregate
-    
+    aggregate = @findOrCreateRelevantAggregate week.pick(['cweek', 'year'])
     aggregate.update week.pick(['proposed', 'estimated_hours', 'actual_hours'])
 
     @
     
+  findOrCreateRelevantAggregate: (week) ->
+    aggregate = @detect (a) -> _.all ['cweek', 'year'],
+      (attr) -> a.get(attr) is week[attr]
+    unless aggregate?
+      aggregate = new StaffPlan.Models.WeeklyAggregate _.extend week,
+        proposed: false
+        actual_hours: 0
+        estimated_hours: 0
+      
+      @add aggregate
+
+    aggregate
+
   comparator: (first, second) ->
     firstYear = first.get('year')
     secondYear = second.get('year')

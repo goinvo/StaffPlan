@@ -4,7 +4,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     header: '''
       <div class="project-header row-fluid">
         <div class="project-info span2">
-          {{name}}
+          {{name}} - {{date}}
           <div id="pagination">
             <a class="pagination" data-action=previous href="#">Previous</a>
             <a class="pagination" data-action=next href="#">Next</a>
@@ -95,9 +95,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     
     @$el.append @headerTemplate
       name: @model.get "name"
+      date: new XDate(@startDate).getWeek() + " " + new XDate(@startDate).getFullYear()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    numberOfBars = Math.round(chartContainerWidth / 40) - 2 
+    numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
