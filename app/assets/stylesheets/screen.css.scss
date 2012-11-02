@@ -220,15 +220,43 @@ body#clients.show {
   
 section.main {
   //section {
+  div.project-header.row-fluid {
+    div.chart-container {
+      svg.user-chart {
+        margin-left: 40px;
+        rect.bar {
+          fill: #5E9B69
+        }
+      }  
+    } 
+  }
   ul.slick {
     list-style-type: none;
+    &.no-margin {
+      margin: 0 0 10px 0px
+    }
     li {
       position: relative;
       padding: 12px 15px;
       overflow: hidden;
       @include transition(background-color 0.2s ease-out);
       &.user-list-item {
-        padding: 4px 15px
+        padding: 4px 15px;
+        
+        div.user-info {
+          margin-right: 0px
+        }
+        &.assignment-user {
+          padding: 12px 0px
+        }
+
+        section.work-weeks input, div.row-label {
+          display: inline-block;
+          width: 35px;
+          margin-right: 2px;
+          text-align: center;
+          height: 25px
+        }
       }
       & + li {
         border-top: 1px solid #e0e0e0;

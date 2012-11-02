@@ -1,17 +1,26 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
+  className: "project-show"
   templates:
     header: '''
-      <h3>
-        {{name}}
-        <div id="pagination">
-          <a class="pagination" data-action=previous href="#">Previous</a>
-          <a class="pagination" data-action=next href="#">Next</a>
-      </h3>
-      <svg class="user-chart">
-      </svg>
+      <div class="project-header row-fluid">
+        <div class="project-info span2">
+          {{name}}
+          <div id="pagination">
+            <a class="pagination" data-action=previous href="#">Previous</a>
+            <a class="pagination" data-action=next href="#">Next</a>
+          </div>
+        </div>
+        <div class="chart-container span10">
+          <svg class="user-chart">
+          </svg>
+        </div>
+      </div>
     '''
     mainContent: '''
-      <ul class="slick"></ul>
+      <div class="user-list row-fluid">
+        <ul class="slick no-margin">
+        </ul>
+      </div>
     '''
     addSomeone: '''
       <select class="unassigned-users">
@@ -30,6 +39,12 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @headerTemplate = Handlebars.compile(@templates.header)
     @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
+    
+    # Create all the aggregates for that project and populate
+    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+      parent: @model
+    @aggregates.populate()
+    
 
   events: ->
     "click div#pagination a.pagination": "paginate"
@@ -37,6 +52,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     "click a[data-action=delete]": "deleteAssignment"
 
   paginate: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
     delta = if ($(event.target).data('action') is "previous") then -10 else 10
     @startDate.addWeeks(delta)
     @render()
@@ -76,33 +93,29 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   render: ->
     @$el.empty()
     
-    # Create all the aggregates for that project and populate
-    aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-      parent: @model
-    aggregates.populate() # FIXME: This belongs in the initialize function really, doesn't it?
-    
-    
     @$el.append @headerTemplate
       name: @model.get "name"
-    # Create a view based on that collection
-    projectChartView = new StaffPlan.Views.WeeklyAggregates
-      collection: aggregates.takeSliceFrom(10, 2012, 20) # Take 20 from cweek 30 of year 2012
-      el: @$el.find('svg.user-chart')
-    projectChartView.render()
-    # Render the view and put it where it belongs
     
-    unassignedUsers = @model.getUnassignedUsers()
-
+    @projectChartView = new StaffPlan.Views.WeeklyAggregates
+      maxHeight: @aggregates.getBiggestTotal()
+      # TODO: Make all parameters generic
+      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), 30)
+      el: @$el.find("svg.user-chart")
+      width: ($("body").width() - 40) * 10 / 12
+    
+    @projectChartView.render()
+    
     @$el.append @mainContent
 
-    
     @model.getAssignments().each (assignment) =>
       view = new StaffPlan.Views.Assignments.ListItem
         model: assignment
         parent: @model
         start: @startDate
       @$el.find('ul.slick').append view.render().el
+
     # If there are users not assigned to this project in the current company, show them here
+    unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()
       @$el.append @addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes

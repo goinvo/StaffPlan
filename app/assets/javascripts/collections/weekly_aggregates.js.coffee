@@ -19,6 +19,12 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
         year is aggregate.get("year")
     new StaffPlan.Collections.WeeklyAggregates @models.slice(index, index + size),
       parent: @parent
+
+  getBiggestTotal: () ->
+    @reduce (biggestTotal, aggregate) ->
+      totals = aggregate.get "totals"
+      biggestTotal = Math.max(biggestTotal, if (totals.actual > 0) then totals.actual else totals.estimated)
+    , 0
       
   aggregateWeek: (week) ->
     aggregate = @detect (a) -> _.all ['cweek', 'year'],
