@@ -96,12 +96,15 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @$el.append @headerTemplate
       name: @model.get "name"
     
+    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
+    numberOfBars = Math.round(chartContainerWidth / 40) - 2 
+
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
       # TODO: Make all parameters generic
-      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), 30)
+      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
       el: @$el.find("svg.user-chart")
-      width: ($("body").width() - 40) * 10 / 12
+      width: chartContainerWidth
     
     @projectChartView.render()
     
@@ -112,6 +115,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         model: assignment
         parent: @model
         start: @startDate
+        numberOfBars: numberOfBars
       @$el.find('ul.slick').append view.render().el
 
     # If there are users not assigned to this project in the current company, show them here
