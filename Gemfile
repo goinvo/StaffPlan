@@ -2,7 +2,6 @@ source 'http://rubygems.org'
 
 gem 'rails',          '3.2.2'
 
-gem 'heroku'
 gem "backbone-support"
 gem 'bcrypt-ruby',    '~> 3.0.1'
 gem 'coffee-filter'
