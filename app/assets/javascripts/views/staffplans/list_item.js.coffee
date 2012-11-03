@@ -1,5 +1,6 @@
 class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
-
+  tagName: "li"
+  className: "row-fluid staffplan-list-item"
   initialize: ->
     @startDate = @options.startDate 
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem
@@ -11,7 +12,6 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
 
   templates:
     staffplanListItem: '''
-    <li class="row-fluid staffplan-list-item">
       <div class='user-info span2'>
         <a href="/staffplans/{{user.id}}">
           <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
@@ -20,10 +20,9 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
           </span>
         </a>
       </div>
-      <div class="chart-container span9">
+      <div class="chart-container span10">
         <svg class="user-chart"></svg>
       </div>
-    </li>
     '''
   render: ->
     @$el.html @staffplanListItemTemplate

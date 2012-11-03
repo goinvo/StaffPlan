@@ -235,6 +235,11 @@ section.main {
       padding: 12px 15px;
       overflow: hidden;
       @include transition(background-color 0.2s ease-out);
+      &.staffplan-list-item {
+        div.user-info.span2 {
+          margin-right: 0
+        }
+      }
       &.user-list-item {
         padding: 4px 15px;
         
