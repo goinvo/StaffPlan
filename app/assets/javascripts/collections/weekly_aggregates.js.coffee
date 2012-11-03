@@ -1,22 +1,32 @@
 class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
-  
+
   model: window.StaffPlan.Models.WeeklyAggregate
 
   initialize: (models, options) ->
     @parent = options.parent
 
   populate: () ->
-    # Fill the gaps...
-    begin = new XDate()
-    # The number of weeks we add should be increased but too computationally expensive :/
-    end = begin.clone().addWeeks(30)
+    begin = new XDate().addWeeks(-150)
+    end = begin.clone().addWeeks(300)
+    range = _.range(begin.getTime(), end.getTime(), 7 * 86400 * 1000)
+
+    baseAggregate = new StaffPlan.Models.WeeklyAggregate
+      cweek: 0
+      year: 0
+      timestamp: 0
+      totals:
+        estimated: 0
+        actual: 0
+        proposedEstimated: 0
+        proposedActual: 0
     date = new XDate()
-    
-    _.each _.range(begin.getTime(), end.getTime(), 7 * 24 * 3600 * 1000), (timestamp) =>
-      date.setTime(timestamp)
-      @findOrCreateRelevantAggregate
-        cweek: date.getWeek()
-        year: date.getFullYear()
+    dummies = range.map (timestamp) ->
+      dateClone = date.clone().setTime(timestamp)
+      baseAggregate.clone().set
+        cweek: dateClone.getWeek()
+        year: dateClone.getFullYear()
+        timestamp: timestamp
+    @add dummies
 
     @parent.getAssignments().each (assignment) =>
       assignment.work_weeks.each (week) =>
@@ -34,13 +44,13 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
       totals = aggregate.get "totals"
       biggestTotal = Math.max(biggestTotal, if (totals.actual > 0) then totals.actual else totals.estimated)
     , 0
-      
+
   aggregateWeek: (week) ->
     aggregate = @findOrCreateRelevantAggregate week.pick(['cweek', 'year'])
     aggregate.update week.pick(['proposed', 'estimated_hours', 'actual_hours'])
 
     @
-    
+
   findOrCreateRelevantAggregate: (week) ->
     aggregate = @detect (a) -> _.all ['cweek', 'year'],
       (attr) -> a.get(attr) is week[attr]
@@ -49,7 +59,7 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
         proposed: false
         actual_hours: 0
         estimated_hours: 0
-      
+
       @add aggregate
 
     aggregate
@@ -57,7 +67,7 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
   comparator: (first, second) ->
     firstYear = first.get('year')
     secondYear = second.get('year')
-    
+
     if firstYear == secondYear
       if first.get('cweek') < second.get('cweek') then -1 else 1
     else
