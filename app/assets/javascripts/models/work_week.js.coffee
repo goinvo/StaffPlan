@@ -14,11 +14,9 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
         memo[elem] = this[elem].apply(@)
       else
         memo[elem] = @get elem
-      # See http://underscorejs.org/#result
       memo
     , {}
     
-
   inFuture: ->
     d = new XDate()
     timeAtBeginningOfCurrentWeek = new XDate().setWeek(d.getWeek(), d.getFullYear()).getTime()

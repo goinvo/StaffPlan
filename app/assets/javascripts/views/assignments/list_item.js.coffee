@@ -1,4 +1,4 @@
-class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView 
+class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   templates:
     userItem: '''
       <li class="user-list-item row-fluid assignment-user" data-user-id={{user.id}}>

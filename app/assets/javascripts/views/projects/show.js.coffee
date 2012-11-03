@@ -102,7 +102,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
 
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      # TODO: Make all parameters generic
       collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth

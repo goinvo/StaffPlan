@@ -6,10 +6,14 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
     @parent = options.parent
 
   populate: () ->
-    begin = new XDate().setWeek(1, 2011)
-    end = begin.clone().addWeeks(300)
+    # Fill the gaps...
+    begin = new XDate()
+    # The number of weeks we add should be increased but too computationally expensive :/
+    end = begin.clone().addWeeks(30)
+    date = new XDate()
+    
     _.each _.range(begin.getTime(), end.getTime(), 7 * 24 * 3600 * 1000), (timestamp) =>
-      date = new XDate(timestamp)
+      date.setTime(timestamp)
       @findOrCreateRelevantAggregate
         cweek: date.getWeek()
         year: date.getFullYear()

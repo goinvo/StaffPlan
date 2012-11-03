@@ -4,8 +4,10 @@ class window.StaffPlan.Collections.Assignments extends Backbone.Collection
   
   initialize: (models, options) ->
     @parent = options.parent
-    # @bind 'change:id', (assignment) ->
-    #   assignment.view.render()
-  
+
+  proposed: () ->
+    new StaffPlan.Collections.Assignments (@select (assignment) -> assignment.get "proposed"),
+      parent: @parent
+
   url: ->
     "/assignments"
