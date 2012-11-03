@@ -6,8 +6,8 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
     @parent = options.parent
 
   populate: () ->
-    begin = new XDate().addWeeks(-150)
-    end = begin.clone().addWeeks(300)
+    begin = new XDate().addWeeks(-50)
+    end = begin.clone().addWeeks(100)
     range = _.range(begin.getTime(), end.getTime(), 7 * 86400 * 1000)
 
     baseAggregate = new StaffPlan.Models.WeeklyAggregate

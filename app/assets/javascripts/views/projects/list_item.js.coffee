@@ -23,9 +23,6 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
       parent: @model
     
     @aggregates.populate()
-    
-
-    @render()
 
   render: ->
     @$el.html @projectListItemTemplate

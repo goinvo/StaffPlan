@@ -14,6 +14,14 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
   getAssignments: () ->
     @assignments
   
+  pick: (attrs) ->
+    _.reduce attrs, (memo, elem) =>
+      if typeof this[elem] is "function"
+        memo[elem] = this[elem].apply(@)
+      else
+        memo[elem] = @get elem
+      memo
+    , {}
 
   toJSON: ->
     first_name: @get("first_name")
