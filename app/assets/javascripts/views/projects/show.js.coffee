@@ -56,7 +56,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    delta = if ($(event.target).data('action') is "previous") then -10 else 10
+    delta = if ($(event.target).data('action') is "previous") then -30 else 30
     @startDate.addWeeks(delta)
     @render()
 
@@ -107,6 +107,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       begin: @startDate.getTime()
       end: @startDate.clone().addWeeks(30).getTime()
     @aggregates.populate()
+    console.log @aggregates.getBiggestTotal()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
       collection: @aggregates#.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)

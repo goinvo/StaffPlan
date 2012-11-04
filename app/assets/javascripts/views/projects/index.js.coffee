@@ -3,12 +3,17 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   className: 'project-list slick'
   
   initialize: ->
+    @startDate = new XDate()
     @collection.bind "remove", () =>
       @render()
   templates:
     header: '''
       <div>
         <h3>List of Projects</h3>
+      </div>
+      <div id="pagination">
+        <a class="pagination" data-action=previous href="#">Previous</a>
+        <a class="pagination" data-action=next href="#">Next</a>
       </div>
       '''
     actions:
@@ -22,6 +27,14 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         '''
   events:
     "click div.controls a[data-action=delete]": "deleteProject"
+    "click div#pagination a.pagination": "paginate"
+
+  paginate: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    delta = if ($(event.target).data('action') is "previous") then -30 else 30
+    @startDate.addWeeks(delta)
+    @render()
 
   deleteProject: ->
     event.preventDefault()
@@ -43,6 +56,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Projects.ListItem
         model: project
+        startDate: @startDate
       @$el.append view.render().el
     @$el.append Handlebars.compile @templates.actions.addProject
     @$el.appendTo 'section.main'

@@ -2,7 +2,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   tagName: "li"
   className: "row-fluid staffplan-list-item"
   initialize: ->
-    @startDate = @options.startDate 
+    @startDate = @options.startDate
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem
     
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],

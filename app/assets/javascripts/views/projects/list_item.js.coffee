@@ -14,7 +14,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     '''
 
   initialize: ->
-    @startDate = new XDate()
+    @startDate = @options.startDate
     @model.on "change", (event) =>
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
