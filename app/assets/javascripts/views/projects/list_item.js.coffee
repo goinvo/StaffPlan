@@ -21,9 +21,11 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
 
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
       parent: @model
+      begin: @startDate.getTime()
+      end: @startDate.clone().addWeeks(29).getTime()
     
     @aggregates.populate()
-
+    
   render: ->
     @$el.html @projectListItemTemplate
       project: @model.toJSON()
@@ -33,7 +35,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
+      collection: @aggregates#.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth
     @projectChartView.render()

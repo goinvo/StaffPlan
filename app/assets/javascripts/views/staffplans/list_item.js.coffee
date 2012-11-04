@@ -7,6 +7,8 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
      parent: @model
+     begin: @startDate.getTime()
+     end: @startDate.clone().addWeeks(30).getTime()
     
     @aggregates.populate()
 
@@ -33,7 +35,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
+      collection: @aggregates
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth
     @projectChartView.render()

@@ -43,6 +43,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # Create all the aggregates for that project and populate
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
       parent: @model
+      begin: @startDate.getTime()
+      end: @startDate.clone().addWeeks(30).getTime()
     @aggregates.populate()
     
 
@@ -100,9 +102,14 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
+    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+      parent: @model
+      begin: @startDate.getTime()
+      end: @startDate.clone().addWeeks(30).getTime()
+    @aggregates.populate()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
+      collection: @aggregates#.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth
     

@@ -4,11 +4,11 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
 
   initialize: (models, options) ->
     @parent = options.parent
+    @begin = options.begin
+    @end = options.end
 
   populate: () ->
-    begin = new XDate().addWeeks(-50)
-    end = begin.clone().addWeeks(100)
-    range = _.range(begin.getTime(), end.getTime(), 7 * 86400 * 1000)
+    range = _.range(@begin, @end, 7 * 86400 * 1000)
 
     baseAggregate = new StaffPlan.Models.WeeklyAggregate
       cweek: 0
@@ -30,7 +30,8 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
 
     @parent.getAssignments().each (assignment) =>
       assignment.work_weeks.each (week) =>
-        @aggregateWeek(week)
+        t = date.setWeek(week.get('cweek'), week.get('year')).getTime()
+        @aggregateWeek(week) if (t >= range[0] and t <= range[range.length - 1])
     @
   takeSliceFrom: (cweek, year, size) ->
     index = @indexOf @detect (aggregate) ->
