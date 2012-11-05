@@ -43,11 +43,17 @@ body {
   }
 }
 
-#user-chart {
-  svg {
-    margin-left: 2px;
-    rect.bar {
-      fill: teal
+svg.user-chart {
+  margin-left: 2px;
+  rect {
+    &.actuals {
+      fill: gray
+    }
+    &.estimates {
+      fill: #5E9B69
+    }
+    &.proposed {
+      fill: #7EBA8D
     }
   }
 }
@@ -219,9 +225,6 @@ section.main {
     div.chart-container {
       svg.user-chart {
         margin-left: 40px;
-        rect.bar {
-          fill: #5E9B69
-        }
       }  
     } 
   }

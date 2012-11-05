@@ -19,12 +19,6 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
 
-    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-      parent: @model
-      begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(29).getTime()
-    
-    @aggregates.populate()
     
   render: ->
     @$el.html @projectListItemTemplate
@@ -33,11 +27,17 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     numberOfBars = Math.round(chartContainerWidth / 40) - 2
     
+    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+      parent: @model
+      begin: @startDate.getTime()
+      end: @startDate.clone().addWeeks(numberOfBars).getTime()
+    @aggregates.populate()
+    
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates#.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
+      collection: @aggregates
       el: @$el.find("svg.user-chart")
-      width: chartContainerWidth
+      width: @chartContainerWidth
     @projectChartView.render()
 
     @
