@@ -4,15 +4,16 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     header: '''
       <div class="project-header row-fluid">
         <div class="project-info span2">
-          {{name}} - {{date}}
-          <div id="pagination">
-            <a class="pagination" data-action=previous href="#">Previous</a>
-            <a class="pagination" data-action=next href="#">Next</a>
-          </div>
+          {{name}}
         </div>
         <div class="chart-container span10">
           <svg class="user-chart">
           </svg>
+        </div>
+      <div class="row-fluid"> 
+        <div class="span2">
+        </div>
+        <div id="date-target" class="span10">
         </div>
       </div>
     '''
@@ -105,7 +106,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
       parent: @model
       begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(30).getTime()
+      end: @startDate.clone().addWeeks(numberOfBars).getTime()
     @aggregates.populate()
     console.log @aggregates.getBiggestTotal()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
@@ -125,7 +126,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         start: @startDate
         numberOfBars: numberOfBars
       @$el.find('ul.slick').append view.render().el
-
+    
+    dateRangeView = new StaffPlan.Views.DateRangeView
+      collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(numberOfBars).getTime(), 7 * 86400 * 1000)
+    @$el.find("#date-target").html dateRangeView.render().el
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()

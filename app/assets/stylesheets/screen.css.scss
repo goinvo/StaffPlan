@@ -199,6 +199,33 @@ section.main {
     padding: 10px;
     min-height: 400px;
   }
+  div.project-header {
+    #date-target {
+      div.date-range {
+        margin-left: 40px;
+        div.month-names {
+          span.month-name {
+            display: inline-block;
+            width: 35px;
+            background-color: rgba(254, 191, 151, 0.5);
+            margin-right: 2px;
+            height: 25px;
+            text-align: center
+          }
+        }
+        div.week-numbers {
+          span.week-number {
+            display: inline-block;
+            width: 35px;
+            background-color: rgba(191, 254, 151, 0.5);
+            margin-right: 2px;
+            height: 25px;
+            text-align: center
+          }
+        }
+      }
+    }
+  }
 }
 
 .client-name {
