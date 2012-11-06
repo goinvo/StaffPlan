@@ -97,9 +97,8 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     @$el.empty()
     
     @$el.append @rowTemplate
-      visibleWorkWeeks: @collection.map (workWeek) -> _.extend workWeek.attributes,
-        hasPassedOrIsCurrent: not workWeek.inFuture()
-        cid: workWeek.cid
+      visibleWorkWeeks: @collection.map (workWeek) ->
+        workWeek.formatForTemplate() 
 
     @rowFiller = @$el.find('.row-filler').hide()
     

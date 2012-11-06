@@ -17,7 +17,7 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
     @get("client_id") || "new_client"
   
   getAssignments: () ->
-    StaffPlan.users.reduce (assignments, user) =>
+    @assignments ?= StaffPlan.users.reduce (assignments, user) =>
       assignments.add user.assignments.select (assignment) =>
         @id is assignment.get("project_id")
       , silent: true

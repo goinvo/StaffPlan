@@ -18,15 +18,19 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @model.on "change", (event) =>
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
-
     
-  render: ->
     @$el.html @projectListItemTemplate
       project: @model.toJSON()
+
+    StaffPlan.Dispatcher.on "date:changed", (message) =>
+      @startDate = message.date
+      @render()
+
+  render: ->
+    @$el.find("svg.user-chart").empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     numberOfBars = Math.round(chartContainerWidth / 40) - 2
-    
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
       parent: @model
       begin: @startDate.getTime()

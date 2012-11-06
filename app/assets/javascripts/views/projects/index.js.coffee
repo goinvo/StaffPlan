@@ -6,6 +6,15 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @startDate = new XDate()
     @collection.bind "remove", () =>
       @render()
+
+    @projectListItemViews = @collection.reduce (memo, project) =>
+      # For each element in the collection, create a subview
+      memo.push new window.StaffPlan.Views.Projects.ListItem
+        model: project
+        startDate: @startDate
+      memo
+    , []
+
   templates:
     header: '''
       <div>
@@ -34,7 +43,8 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     event.stopPropagation()
     delta = if ($(event.target).data('action') is "previous") then -30 else 30
     @startDate.addWeeks(delta)
-    @render()
+    StaffPlan.Dispatcher.trigger "date:changed"
+      date: @startDate 
 
   deleteProject: ->
     event.preventDefault()
@@ -52,12 +62,9 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   render: ->
     @$el.empty()
     @$el.append Handlebars.compile @templates.header
-    @collection.each (project) =>
-      # For each element in the collection, create a subview
-      view = new window.StaffPlan.Views.Projects.ListItem
-        model: project
-        startDate: @startDate
+    _.each @projectListItemViews, (view) =>
       @$el.append view.render().el
+    
     @$el.append Handlebars.compile @templates.actions.addProject
     @$el.appendTo 'section.main'
 

@@ -17,6 +17,14 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
       memo
     , {}
     
+  formatForTemplate: -> _.extend (@pick ["cweek", "year"]),
+    proposed: if @get("proposed") then "true" else "false"
+    estimated_hours: @get("estimated_hours") or 0
+    actual_hours: @get("actual_hours") or 0
+    hasPassedOrIsCurrent: not @inFuture()
+    cid: @cid
+
+
   inFuture: ->
     d = new XDate()
     timeAtBeginningOfCurrentWeek = new XDate().setWeek(d.getWeek(), d.getFullYear()).getTime()
