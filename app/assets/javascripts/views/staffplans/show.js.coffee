@@ -61,6 +61,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       
     
     Handlebars.registerHelper 'calendarWeeks',   (dates) ->
+      console.log dates
       _.reduce dates, (html, date, index, dates) ->
         html += "<div>W#{Math.ceil(date.mday / 7)}</div>"
         html

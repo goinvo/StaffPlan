@@ -18,11 +18,15 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   templates:
     header: '''
       <div>
-        <h3>List of Projects</h3>
-      </div>
-      <div id="pagination">
-        <a class="pagination" data-action=previous href="#">Previous</a>
-        <a class="pagination" data-action=next href="#">Next</a>
+        <li class="row-fluid">
+          <div class="span2">
+            List of Projects
+          </div>
+          <div id="pagination" class="span10" style="border-left: 2px solid black">
+            <a class="pagination" data-action=previous href="#"><--</a>
+            <a class="pagination" data-action=next href="#">--></a>
+          </div>
+        </li>
       </div>
       '''
     actions:
@@ -43,6 +47,16 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     event.stopPropagation()
     delta = if ($(event.target).data('action') is "previous") then -30 else 30
     @startDate.addWeeks(delta)
+    # window.dateRange = _.range(@startDate.getTime(), @startDate.clone().addWeeks(30).getTime(), 7 * 86400 * 1000)
+    # date = new XDate()
+    # _.map dateRange, (timestamp) ->
+    #   d = date.setTime(timestamp)
+    #   d.setWeek(d.getWeek(), d.getFullYear())
+    #   if (a = Math.ceil(d.getDate() / 7)) is 1
+    #     "" + d.toString("MMM") + "/W" + a;
+    #   else
+    #     "W" + a;
+    
     StaffPlan.Dispatcher.trigger "date:changed"
       date: @startDate 
 

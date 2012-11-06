@@ -7,7 +7,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
           {{project.name}}
         </a>
       </div>
-      <div class="chart-container span10">
+      <div class="chart-container span10" style="border-left: 2px solid black">
         <svg class="user-chart"></svg>
       </div>
     </li>
