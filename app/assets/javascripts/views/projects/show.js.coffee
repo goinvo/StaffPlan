@@ -10,7 +10,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
           <svg class="user-chart">
           </svg>
         </div>
-      <div class="row-fluid"> 
+      </div>
+      <div class="row-fluid date-paginator"> 
         <div class="span2">
         </div>
         <div id="date-target" class="span10">
