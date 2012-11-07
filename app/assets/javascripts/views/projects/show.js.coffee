@@ -13,6 +13,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       </div>
       <div class="row-fluid date-paginator"> 
         <div class="span2">
+          <a href="#" class="pagination" data-action=previous>Previous</a>
+          <a href="#" class="pagination" data-action=next>Next</a>
         </div>
         <div id="date-target" class="span10">
         </div>
@@ -51,7 +53,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     
 
   events: ->
-    "click div#pagination a.pagination": "paginate"
+    "click div.date-paginator a.pagination": "paginate"
     "click a[data-action=add-user]": "addUserToProject"
     "click a[data-action=delete]": "deleteAssignment"
 
@@ -60,6 +62,9 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     event.stopPropagation()
     delta = if ($(event.target).data('action') is "previous") then -30 else 30
     @startDate.addWeeks(delta)
+    StaffPlan.Dispatcher.trigger "date:changed",
+      begin: @startDate.getTime()
+      end: @startDate.clone().addWeeks(30).getTime()
     @render()
 
   deleteAssignment: ->
@@ -97,6 +102,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   render: ->
     @$el.empty()
     
+    # HEADER
     @$el.append @headerTemplate
       name: @model.get "name"
       date: new XDate(@startDate).getWeek() + " " + new XDate(@startDate).getFullYear()
@@ -104,6 +110,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
+    # PROJECT CHART
     @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
       parent: @model
       begin: @startDate.getTime()
@@ -112,14 +119,16 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     console.log @aggregates.getBiggestTotal()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates#.takeSliceFrom(@startDate.getWeek(), @startDate.getFullYear(), numberOfBars)
+      collection: @aggregates
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth
     
     @projectChartView.render()
     
+    # PLACEHOLDER FOR THE USERS
     @$el.append @mainContent
 
+    # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>
       view = new StaffPlan.Views.Assignments.ListItem
         model: assignment
@@ -128,6 +137,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         numberOfBars: numberOfBars
       @$el.find('ul.slick').append view.render().el
     
+    # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(numberOfBars).getTime(), 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el

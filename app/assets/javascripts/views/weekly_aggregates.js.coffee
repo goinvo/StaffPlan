@@ -1,11 +1,13 @@
 class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   initialize: ->
-    @startDate = @options.startDate
-    @collection = @options.collection
-    @height = 75
-    @barWidth = 35
-    @chartWidth = @options.width
-    @maxHeight = @options.maxHeight
+    # @startDate = @options.startDate
+    # @collection = @options.collection
+    # @height = 75
+    # @barWidth = 35
+    # @chartWidth = @options.width
+    # @maxHeight = @options.maxHeight
+
+  getData: ->
 
   render: ->
     svg = d3.select(@el)

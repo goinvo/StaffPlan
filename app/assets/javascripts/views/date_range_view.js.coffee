@@ -17,7 +17,10 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     '''
   initialize: ->
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
-  
+    StaffPlan.Dispatcher.on "date:changed", (message) =>
+      @collection = _.range(message.begin, message.start, 7 * 86400 * 1000)
+      @render()
+
   render: ->
     d = new XDate()
     data = _.map @collection, (timestamp) ->
@@ -28,8 +31,12 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
           month: dd.toString("MMM")
           week: "W" + weekNumber
         when 2
-          month: "(#{dd.getFullYear()})"
-          week: "W" + weekNumber
+          if dd.getMonth() is 0
+            month: "(#{dd.getFullYear()})"
+            week: "W" + weekNumber
+          else
+            month: ""
+            week: "W" + weekNumber
         else
           month: "&nbsp;"
           week: "W" + weekNumber
