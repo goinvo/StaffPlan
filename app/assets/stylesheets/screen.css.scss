@@ -207,7 +207,7 @@ section.main {
           span.month-name {
             display: inline-block;
             width: 35px;
-            background-color: rgba(254, 191, 151, 0.5);
+            font-weight: bold;
             margin-right: 2px;
             height: 25px;
             text-align: center
@@ -217,7 +217,6 @@ section.main {
           span.week-number {
             display: inline-block;
             width: 35px;
-            background-color: rgba(191, 254, 151, 0.5);
             margin-right: 2px;
             height: 25px;
             text-align: center

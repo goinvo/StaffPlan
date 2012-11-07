@@ -4,14 +4,14 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     style: "margin-left: 40px"
   templates:
     dates: '''
-      <div class="month-names">
-        {{#each months}}
-          <span class="month-name">{{this}}</span> 
-        {{/each}}
-      </div>
       <div class="week-numbers">
         {{#each weeks}}
           <span class="week-number">{{this}}</span>
+        {{/each}}
+      </div>
+      <div class="month-names">
+        {{#each months}}
+          <span class="month-name">{{this}}</span> 
         {{/each}}
       </div>
     '''
