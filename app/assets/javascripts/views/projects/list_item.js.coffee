@@ -38,8 +38,10 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @aggregates.populate()
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
-      maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates
+      maxHeight: 60
+      model: @model
+      @begin = @startDate.getTime()
+      @end = @startDate.clone().getTime()
       el: @$el.find("svg.user-chart")
       width: @chartContainerWidth
     @projectChartView.render()

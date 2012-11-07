@@ -18,7 +18,6 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     '''
   initialize: ->
     @rowTemplate = Handlebars.compile @templates.row
-    @startDate = @options.start
 
   events:
     "focus  input[data-work-week-input][data-attribute='estimated_hours']": "showRowFiller"
@@ -98,7 +97,7 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     
     @$el.append @rowTemplate
       visibleWorkWeeks: @collection.map (workWeek) ->
-        workWeek.formatForTemplate() 
+        workWeek.formatForTemplate()
 
     @rowFiller = @$el.find('.row-filler').hide()
     

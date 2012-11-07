@@ -58,7 +58,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     #     "W" + a;
     
     StaffPlan.Dispatcher.trigger "date:changed"
-      date: @startDate 
+      date: @startDate
 
   deleteProject: ->
     event.preventDefault()

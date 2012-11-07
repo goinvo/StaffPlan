@@ -1,4 +1,5 @@
 class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
+
   templates:
     userItem: '''
       <li class="user-list-item row-fluid assignment-user" data-user-id={{user.id}}>
@@ -15,7 +16,13 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       </li>
       '''
 
+  updateWorkWeeksView: (begin) ->
+    @workWeeksView.collection = @model.work_weeks.between(begin, begin + @numberOfBars * 7 * 86400 * 1000)
+    @workWeeksView.render()
+
   initialize: ->
+    StaffPlan.Dispatcher.on "date:changed", (message) =>
+      @updateWorkWeeksView(message.begin)
     @startDate = @options.start
     @userItemTemplate = Handlebars.compile @templates.userItem
     @parent = @options.parent
@@ -24,11 +31,10 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   render: ->
     @$el.html @userItemTemplate
       user: StaffPlan.users.get(@model.get("user_id")).attributes
-    start = @startDate.clone()
-    view = new window.StaffPlan.Views.Projects.WorkWeeks
-    #collection: @model.work_weeks.between(@startDate, @startDate.addWeeks(30))
-      collection: @model.work_weeks.between(start.getTime(), start.addWeeks(@numberOfBars).getTime())
-      start: start
+    @workWeeksView = new window.StaffPlan.Views.Projects.WorkWeeks
+      collection: @model.work_weeks.between(@startDate.getTime(), @startDate + @numberOfBars * 7 * 86400 * 1000)
+      start: @startDate
     
-    @$el.find("div.user-hour-inputs").html view.render().el
+    @$el.find("div.user-hour-inputs").html @workWeeksView.render().el
     @
+  

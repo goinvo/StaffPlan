@@ -45,11 +45,11 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @addSomeone = Handlebars.compile(@templates.addSomeone)
     
     # Create all the aggregates for that project and populate
-    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-      parent: @model
-      begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(30).getTime()
-    @aggregates.populate()
+    # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+    #   parent: @model
+    #   begin: @startDate.getTime()
+    #   end: @startDate.clone().addWeeks(30).getTime()
+    # @aggregates.populate()
     
 
   events: ->
@@ -64,8 +64,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @startDate.addWeeks(delta)
     StaffPlan.Dispatcher.trigger "date:changed",
       begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(30).getTime()
-    @render()
+      count: @numberOfBars 
+    # @render()
 
   deleteAssignment: ->
 
@@ -108,18 +108,21 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       date: new XDate(@startDate).getWeek() + " " + new XDate(@startDate).getFullYear()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    numberOfBars = Math.round(chartContainerWidth / 40) - 2
+    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
     # PROJECT CHART
-    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-      parent: @model
-      begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(numberOfBars).getTime()
-    @aggregates.populate()
-    console.log @aggregates.getBiggestTotal()
+    # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+    #   parent: @model
+    #   begin: @startDate.getTime()
+    #   end: @startDate.clone().addWeeks(numberOfBars).getTime()
+    # @aggregates.populate()
+    # console.log @aggregates.getBiggestTotal()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
-      maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates
+      # FIXME: Hardwired value in here for now
+      maxHeight: 100
+      begin: @startDate.getTime()
+      count: @numberOfBars
+      model: @model
       el: @$el.find("svg.user-chart")
       width: chartContainerWidth
     
@@ -134,12 +137,12 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         model: assignment
         parent: @model
         start: @startDate
-        numberOfBars: numberOfBars
+        numberOfBars: @numberOfBars
       @$el.find('ul.slick').append view.render().el
     
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(numberOfBars).getTime(), 7 * 86400 * 1000)
+      collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(@numberOfBars).getTime(), 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()

@@ -18,7 +18,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
   initialize: ->
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
     StaffPlan.Dispatcher.on "date:changed", (message) =>
-      @collection = _.range(message.begin, message.start, 7 * 86400 * 1000)
+      @collection = _.range(message.begin, message.begin + message.count * 7 * 86400 * 1000, 7 * 86400 * 1000)
       @render()
 
   render: ->
