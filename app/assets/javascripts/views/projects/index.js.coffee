@@ -68,5 +68,4 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @$el.find("#date-target").html dateRangeView.render().el
     @$el.append Handlebars.compile @templates.actions.addProject
     @$el.appendTo 'section.main'
-
     @

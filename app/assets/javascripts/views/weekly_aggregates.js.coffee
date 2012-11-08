@@ -56,44 +56,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
           cweek: aggregate.cweek
           year: aggregate.year
 
-      # debugger
-
-      # grouped = _.groupBy weeks, (week) ->
-      #   "#{week.get("year")}-#{week.get("cweek")}"
-      # week_range = _.map _.range(@begin, @end, WEEK_IN_MILLISECONDS), (elem) ->
-      #   d = date.clone().setTime(elem)
-      #   "#{d.getFullYear()}-#{d.getWeek()}"
-
-      # _.reduce week_range, (memo, week) ->
-      #   unless _.has(memo, week)
-      #     memo[week] = [].push new StaffPlan.Models.WorkWeek
-      #       proposed: false
-      #       actual_hours: 0
-      #       estimated_hours: 0
-      #   memo
-      # , grouped
-
-      # _.map grouped, (value, key) ->
-      #   [year, cweek] = key.split "-"
-      #   agg = _.reduce value, (memo, element) ->
-      #     memo.estimated_hours += element.get("estimated_hours") or 0
-      #     memo.actual_hours    += element.get("actual_hours") or 0
-      #     memo.proposed        += if element.get("proposed") then element.get("estimated_hours") else 0
-      #     memo
-      #   , { proposed: 0, estimated_hours: 0, actual_hours: 0 }
-      #   if agg.actual_hours isnt 0
-      #     total: agg.actual_hours
-      #     proposed: 0
-      #     cweek: cweek
-      #     year: year
-      #     cssClass: "actuals"
-      #   else
-      #     total: agg.estimated_hours
-      #     proposed: agg.proposed
-      #     cweek: cweek
-      #     year: year
-      #     cssClass: "estimates"
-
   render: ->
     @$el.empty()
     svg = d3.select(@el)
@@ -119,6 +81,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
     data = @getData()
+
     groups = weeks.selectAll(".bar")
       .data(data, (d) -> d.cid)
       .enter().append("g")

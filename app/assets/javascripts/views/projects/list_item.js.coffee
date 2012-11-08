@@ -26,7 +26,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @$el.find("svg.user-chart").empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    numberOfBars = Math.round(chartContainerWidth / 40) - 2
+    numberOfBars = 16#Math.round(chartContainerWidth / 40) - 2
     # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
     #   parent: @model
     #   begin: @startDate.getTime()
