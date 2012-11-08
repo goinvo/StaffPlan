@@ -22,43 +22,77 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   getData: ->
       date = new XDate()
       
-      timestampAtBeginningOfCurrentWeek = date.setWeek(date.getWeek(), date.getFullYear()).getTime()
-      weeks = @model.getAssignments().map (assignment) =>
+      aggs = _.reduce _.range(@begin, @end, WEEK_IN_MILLISECONDS), (memo, timestamp) ->
+        date.setTime(timestamp)
+        memo["#{date.getFullYear()}-#{date.getWeek()}"] =
+          cweek: date.getWeek()
+          year: date.getFullYear()
+          proposed: 0
+          actual_hours: 0
+          estimated_hours: 0
+        memo
+      , {}
+      weeks = _.flatten @model.getAssignments().map (assignment) =>
         assignment.work_weeks.between(@begin, @end).models
       
-      grouped = _.groupBy (_.flatten weeks), (week) ->
-        "#{week.get("year")}-#{week.get("cweek")}"
-      
-      week_range = _.map _.range(@begin, @end, WEEK_IN_MILLISECONDS), (elem) ->
-        d = date.clone().setTime(elem)
-        "#{d.getFullYear()}-#{d.getWeek()}"
-      
-      _.reduce week_range, (memo, week) ->
-        unless _.has(memo, week)
-          memo[week] = [{proposed: false, actual_hours: 0, estimated_hours: 0}]
+      aggregates = _.reduce weeks, (memo, week) ->
+        memo["#{week.get('year')}-#{week.get('cweek')}"]['estimated_hours'] += (week.get("estimated_hours") or 0)
+        memo["#{week.get('year')}-#{week.get('cweek')}"]['actual_hours'] += (week.get("actual_hours") or 0)
+        memo["#{week.get('year')}-#{week.get('cweek')}"]['proposed'] += if week.get("proposed") then (week.get("estimated_hours") or 0) else 0
         memo
-      , grouped
-
-      _.map grouped, (value, key) ->
-        [year, cweek] = key.split "-"
-        agg = _.reduce value, (memo, element) ->
-          memo.estimated_hours += element.get("estimated_hours") or 0
-          memo.actual_hours    += element.get("actual_hours") or 0
-          memo.proposed        += if element.get("proposed") then element.get("estimated_hours") else 0
-          memo
-        , { proposed: 0, estimated_hours: 0, actual_hours: 0 }
-        if agg.actual_hours isnt 0
-          total: agg.actual_hours
+      , aggs
+      
+      _.map aggregates, (aggregate) ->
+        if aggregate.actual_hours isnt 0
+          total: aggregate.actual_hours
           proposed: 0
-          cweek: cweek
-          year: year
           cssClass: "actuals"
+          cweek: aggregate.cweek
+          year: aggregate.year
         else
-          total: agg.estimated_hours
-          proposed: agg.proposed
-          cweek: cweek
-          year: year
+          total: aggregate.estimated_hours
+          proposed: aggregate.proposed
           cssClass: "estimates"
+          cweek: aggregate.cweek
+          year: aggregate.year
+
+      # debugger
+
+      # grouped = _.groupBy weeks, (week) ->
+      #   "#{week.get("year")}-#{week.get("cweek")}"
+      # week_range = _.map _.range(@begin, @end, WEEK_IN_MILLISECONDS), (elem) ->
+      #   d = date.clone().setTime(elem)
+      #   "#{d.getFullYear()}-#{d.getWeek()}"
+
+      # _.reduce week_range, (memo, week) ->
+      #   unless _.has(memo, week)
+      #     memo[week] = [].push new StaffPlan.Models.WorkWeek
+      #       proposed: false
+      #       actual_hours: 0
+      #       estimated_hours: 0
+      #   memo
+      # , grouped
+
+      # _.map grouped, (value, key) ->
+      #   [year, cweek] = key.split "-"
+      #   agg = _.reduce value, (memo, element) ->
+      #     memo.estimated_hours += element.get("estimated_hours") or 0
+      #     memo.actual_hours    += element.get("actual_hours") or 0
+      #     memo.proposed        += if element.get("proposed") then element.get("estimated_hours") else 0
+      #     memo
+      #   , { proposed: 0, estimated_hours: 0, actual_hours: 0 }
+      #   if agg.actual_hours isnt 0
+      #     total: agg.actual_hours
+      #     proposed: 0
+      #     cweek: cweek
+      #     year: year
+      #     cssClass: "actuals"
+      #   else
+      #     total: agg.estimated_hours
+      #     proposed: agg.proposed
+      #     cweek: cweek
+      #     year: year
+      #     cssClass: "estimates"
 
   render: ->
     @$el.empty()
@@ -85,7 +119,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
     data = @getData()
-    console.log _.map(data, (d) -> d.total)
     groups = weeks.selectAll(".bar")
       .data(data, (d) -> d.cid)
       .enter().append("g")

@@ -64,7 +64,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @startDate.addWeeks(delta)
     StaffPlan.Dispatcher.trigger "date:changed",
       begin: @startDate.getTime()
-      count: @numberOfBars 
+      count: @numberOfBars
     # @render()
 
   deleteAssignment: ->
@@ -110,13 +110,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
-    # PROJECT CHART
-    # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-    #   parent: @model
-    #   begin: @startDate.getTime()
-    #   end: @startDate.clone().addWeeks(numberOfBars).getTime()
-    # @aggregates.populate()
-    # console.log @aggregates.getBiggestTotal()
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       # FIXME: Hardwired value in here for now
       maxHeight: 100

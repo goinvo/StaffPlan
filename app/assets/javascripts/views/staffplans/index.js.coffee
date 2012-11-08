@@ -4,10 +4,14 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   
   templates:
     pagination: '''
-    <div id="pagination">
-      <a class="pagination" data-action=previous href="#">Previous</a>
-      <a class="pagination" data-action=next href="#">Next</a>
-    </div>
+      <div class="row-fluid date-paginator"> 
+        <div class="span2">
+          <a href="#" class="pagination" data-action=previous>Previous</a>
+          <a href="#" class="pagination" data-action=next>Next</a>
+        </div>
+        <div id="date-target" class="span10">
+        </div>
+      </div>
     '''
     addStaff: '''
     <div class="actions">
@@ -15,14 +19,16 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     </div>
     '''
   events:
-    "click div#pagination a.pagination": "paginate"
+    "click div.date-paginator a.pagination": "paginate"
 
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
     delta = if ($(event.target).data('action') is "previous") then -30 else 30
     @startDate.addWeeks(delta)
-    @render()
+    StaffPlan.Dispatcher.trigger "date:changed"
+      begin: @startDate.getTime()
+      count: 30
  
   initialize: ->
     @users = @options.users
@@ -31,15 +37,19 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   render: ->
     @$el.empty()
     @$el.append Handlebars.compile @templates.pagination
+    
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
-        startDate: @startDate
+        startDate: @startDate.getTime()
       @$el.append view.render().el
 
     @$el.append Handlebars.compile @templates.addStaff
     @$el.appendTo('section.main')
     
-  leave: ->
-    @off()
-    @remove()
+    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
+    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
+ 
+    dateRangeView = new StaffPlan.Views.DateRangeView
+      collection: _.range(@startDate.getTime(), @startDate.getTime() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+    @$el.find("#date-target").html dateRangeView.render().el

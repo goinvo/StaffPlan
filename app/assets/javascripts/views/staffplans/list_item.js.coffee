@@ -4,13 +4,9 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   initialize: ->
     @startDate = @options.startDate
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem
-    
-    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-     parent: @model
-     begin: @startDate.getTime()
-     end: @startDate.clone().addWeeks(30).getTime()
-    
-    @aggregates.populate()
+    StaffPlan.Dispatcher.on "date:changed", (message) =>
+      @startDate = message.begin
+      @render()
 
   templates:
     staffplanListItem: '''
@@ -31,13 +27,15 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       user: @model.pick ["id", "gravatar", "full_name"]
       
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    numberOfBars = Math.round(chartContainerWidth / 40) - 2
+    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
-      maxHeight: @aggregates.getBiggestTotal()
-      collection: @aggregates
+      maxHeight: 100
+      model: @model
+      begin: @startDate
       el: @$el.find("svg.user-chart")
-      width: chartContainerWidth
+      count: @numberOfBars
+
     @projectChartView.render()
 
     @

@@ -7,14 +7,14 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
           {{project.name}}
         </a>
       </div>
-      <div class="chart-container span10" style="border-left: 2px solid black">
+      <div class="chart-container span10"> 
         <svg class="user-chart"></svg>
       </div>
     </li>
     '''
 
   initialize: ->
-    @startDate = @options.startDate
+    @startDate = @options.start
     @model.on "change", (event) =>
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
@@ -22,28 +22,23 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @$el.html @projectListItemTemplate
       project: @model.toJSON()
 
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
-      @startDate = message.date
-      @render()
-
   render: ->
     @$el.find("svg.user-chart").empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     numberOfBars = Math.round(chartContainerWidth / 40) - 2
-    @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-      parent: @model
-      begin: @startDate.getTime()
-      end: @startDate.clone().addWeeks(numberOfBars).getTime()
-    @aggregates.populate()
+    # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
+    #   parent: @model
+    #   begin: @startDate.getTime()
+    #   end: @startDate.clone().addWeeks(numberOfBars).getTime()
+    # @aggregates.populate()
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 60
       model: @model
-      @begin = @startDate.getTime()
-      @end = @startDate.clone().getTime()
+      begin: @startDate.getTime()
+      count: 36
       el: @$el.find("svg.user-chart")
-      width: @chartContainerWidth
     @projectChartView.render()
 
     @
