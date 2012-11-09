@@ -1,5 +1,4 @@
 class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
-  tagName: "li"
   className: "row-fluid staffplan-list-item"
   initialize: ->
     @startDate = @options.startDate

@@ -21,10 +21,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       </div>
     '''
     mainContent: '''
-      <div class="user-list row-fluid">
-        <ul class="slick no-margin">
-        </ul>
-      </div>
     '''
     addSomeone: '''
       <select class="unassigned-users">
@@ -74,7 +70,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # TODO: Need that stupid closest because the source of the event can be the i used by
     # Bootstrap for the button icon. Might be a better way
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
-    assignment = user.getAassignments().detect (assignment) => 
+    assignment = user.getAassignments().detect (assignment) =>
       @model.id is assignment.get "project_id"
     deleteView = new window.StaffPlan.Views.Shared.DeleteModal
       model: assignment
@@ -102,6 +98,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @render()
   render: ->
     @$el.empty()
+
+    fragment = document.createDocumentFragment()
     
     # HEADER
     @$el.append @headerTemplate
@@ -122,8 +120,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     
     @projectChartView.render()
     
-    # PLACEHOLDER FOR THE USERS
-    @$el.append @mainContent
 
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>
@@ -132,8 +128,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         parent: @model
         start: @startDate
         numberOfBars: @numberOfBars
-      @$el.find('ul.slick').append view.render().el
-    
+      fragment.appendChild view.render().el
+    @$el.append $(fragment)
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(@numberOfBars).getTime(), 7 * 86400 * 1000)

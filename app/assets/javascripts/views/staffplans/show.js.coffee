@@ -96,7 +96,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       client.view = new StaffPlan.Views.StaffPlans.Client
         model: client
         user: @model
-        assignments: @model.assignments.where
+        assignments: @model.getAssignments().where
           client_id: client.id
     
     

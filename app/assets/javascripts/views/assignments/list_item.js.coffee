@@ -1,20 +1,18 @@
 class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
-
+  className: "user-list-item row-fluid"
   templates:
     userItem: '''
-      <li class="user-list-item row-fluid assignment-user" data-user-id={{user.id}}>
-        <div class="user-info span2">
-          <a href="/users/{{user.id}}">
-            <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
-            <span class='name'>
-              <a href="/staffplans/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
-            </span>
-          </a>
-        </div>
-        <div class="user-hour-inputs span10">
-        </div>
-      </li>
-      '''
+      <div class="user-info span2">
+        <a href="/users/{{user.id}}">
+          <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
+          <span class='name'>
+            <a href="/staffplans/{{user.id}}">{{user.first_name}} {{user.last_name}}</a>
+          </span>
+        </a>
+      </div>
+      <div class="user-hour-inputs span10">
+      </div>
+    '''
 
   updateWorkWeeksView: (begin) ->
     @workWeeksView.collection = @model.work_weeks.between(begin, begin + @numberOfBars * 7 * 86400 * 1000)

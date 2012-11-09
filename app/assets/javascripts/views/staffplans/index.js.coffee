@@ -1,6 +1,4 @@
 class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
-  tagName: 'ul'
-  className: 'staffplan-list slick'
   
   templates:
     pagination: '''
@@ -36,14 +34,15 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       
   render: ->
     @$el.empty()
+    fragment = document.createDocumentFragment()
     @$el.append Handlebars.compile @templates.pagination
     
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
         startDate: @startDate.getTime()
-      @$el.append view.render().el
-
+      fragment.appendChild view.render().el
+    @$el.append $(fragment)
     @$el.append Handlebars.compile @templates.addStaff
     @$el.appendTo('section.main')
     

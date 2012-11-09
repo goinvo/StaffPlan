@@ -198,7 +198,7 @@ section.main {
     padding: 10px;
     min-height: 400px;
 }
-div.date-paginator, div.project-list-item {
+div.date-paginator, div.project-list-item, div.staffplan-list-item {
   margin-top: 32px;
   margin-left: 25px; // Align with ul.slick
 }
@@ -246,6 +246,25 @@ body#clients.show {
 }
   
 section.main {
+
+  .project-list-item, .user-list-item, .staffplan-list-item {
+    section.work-weeks input, div.row-label {
+      display: inline-block;
+      width: 35px;
+      margin-right: 2px;
+      text-align: center;
+      height: 25px
+    }
+  }
+
+  div.project-show {
+    div.row-fluid.date-paginator {
+      margin: 40px
+    }
+  }
+
+
+
   //section {
   div.project-header.row-fluid {
     div.chart-container {
@@ -264,28 +283,13 @@ section.main {
       padding: 12px 15px;
       overflow: hidden;
       @include transition(background-color 0.2s ease-out);
-      &.staffplan-list-item {
-        div.user-info.span2 {
-          margin-right: 0
-        }
-      }
-      &.user-list-item {
-        padding: 4px 15px;
-        
-        div.user-info {
-          margin-right: 0px
-        }
-        &.assignment-user {
-          padding: 12px 0px
-        }
-
-        section.work-weeks input, div.row-label {
-          display: inline-block;
-          width: 35px;
-          margin-right: 2px;
-          text-align: center;
-          height: 25px
-        }
+      
+      section.work-weeks input, div.row-label {
+        display: inline-block;
+        width: 35px;
+        margin-right: 2px;
+        text-align: center;
+        height: 25px
       }
       & + li {
         border-top: 1px solid #e0e0e0;
@@ -379,7 +383,7 @@ footer {
 
 .user-info {
   display: inline-block;
-  margin-right: 25px;
+  //margin-right: 25px;
   line-height: 35px;
   font-size: 18px;
   img {
