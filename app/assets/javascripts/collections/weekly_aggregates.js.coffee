@@ -4,6 +4,10 @@ class window.StaffPlan.Collections.WeeklyAggregates extends Backbone.Collection
 
   # A collection of aggregates is created for a given date range
   # The parent is whatever is tied to an assignment, can be a project or a user
+  # begin and end define the range for which we're actually building aggregates.
+  #
+  # Could be just the weeks currently being shown or that plus 30 in the
+  # past and 30 in the future
   initialize: (models, options) ->
     @parent = options.parent
     @begin = options.begin

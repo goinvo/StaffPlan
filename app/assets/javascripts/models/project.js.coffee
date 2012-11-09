@@ -16,6 +16,9 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
   getClientId: ->
     @get("client_id") || "new_client"
   
+  # Since we don't have a direct association between projects and assignments, we
+  # need to go through all the users to find out.
+  # Trying to cache those assignments for the subsequent accesses
   getAssignments: () ->
     @assignments ?= StaffPlan.users.reduce (assignments, user) =>
       assignments.add user.assignments.select (assignment) =>
