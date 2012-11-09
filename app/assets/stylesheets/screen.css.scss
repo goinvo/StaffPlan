@@ -504,6 +504,10 @@ footer {
     margin-right: 2px;
     text-align: center;
     height: 25px;
+    
+    &[type="number"] {
+      padding: 0;
+    }
   }
   
   .row-label {
