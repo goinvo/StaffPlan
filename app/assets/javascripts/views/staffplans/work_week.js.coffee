@@ -117,7 +117,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     event.preventDefault()
     event.stopPropagation()
     @_lastFocused.focus()
-    $(@_lastFocused).parent().nextAll().find('input[data-work-week-input]')
+    $(@_lastFocused).nextAll('input[data-work-week-input]')
       .val(@_lastFocused.value)
       .trigger('change')
 
