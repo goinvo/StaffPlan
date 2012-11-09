@@ -18,6 +18,7 @@ window.StaffPlan =
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
     @clients = new StaffPlan.Collections.Clients data.clients
+    @assignments = new StaffPlan.Collections.Assignments data.assignments
     @currentCompany = data.currentCompany
     @currentUser = data.currentUser
 

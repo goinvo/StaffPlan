@@ -1,7 +1,5 @@
 class StaffPlan.Views.DateRangeView extends Support.CompositeView
   className: "date-range"
-  attributes:
-    style: "margin-left: 40px"
   templates:
     dates: '''
       <div class="week-numbers">

@@ -1,16 +1,15 @@
 class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
+  className: "row-fluid project-list-item"
   templates:
     projectListItem: '''
-    <li class="project-list-item row-fluid" data-project-id="{{project.id}}">
-      <div class='project-info span2'>
-        <a href="/projects/{{project.id}}">
-          {{project.name}}
-        </a>
-      </div>
-      <div class="chart-container span10"> 
-        <svg class="user-chart"></svg>
-      </div>
-    </li>
+    <div class='project-info span2'>
+      <a href="/projects/{{project.id}}">
+        {{project.name}}
+      </a>
+    </div>
+    <div class="chart-container span10"> 
+      <svg class="user-chart"></svg>
+    </div>
     '''
 
   initialize: ->
@@ -32,7 +31,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
       maxHeight: 60
       model: @model
       begin: @startDate.getTime()
-      count: @numberOfBars 
+      count: @numberOfBars
       el: @$el.find("svg.user-chart")
     @projectChartView.render()
 

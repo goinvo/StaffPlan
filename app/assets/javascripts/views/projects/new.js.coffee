@@ -115,7 +115,7 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
           project_id: model.id
           user_id: @currentUser.id
           proposed: formValues.project.proposed
-        @currentUser.assignments.create assignmentAttributes,
+        StaffPlan.assignments.create assignmentAttributes,
           success: (model, response) ->
           error: (model, response) ->
       error: (model, response) ->

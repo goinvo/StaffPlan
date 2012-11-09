@@ -32,7 +32,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     """
   
   gatherClientsByAssignments: ->
-    _.uniq @model.assignments.pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
+    _.uniq @model.getAssignments().pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
     
   initialize: ->
     window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)

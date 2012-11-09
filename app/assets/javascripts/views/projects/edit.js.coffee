@@ -115,7 +115,7 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
           project_id: model.id
           user_id: @currentUser.id
           proposed: formValues.project.proposed
-        assignment = @currentUser.assignments.detect (a) =>
+        assignment = @currentUser.getAssignments().detect (a) =>
           a.get('project_id') is @model.id
         assignment.save assignmentAttributes,
           success: (model, response) ->
@@ -162,7 +162,7 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
       
   populateFields: ->
     unless @model.isNew()
-      projectAssignment = @currentUser.assignments.detect (assignment) =>
+      projectAssignment = @currentUser.getAssignments().detect (assignment) =>
         assignment.get("project_id") is @model.id
       attrs = _.extend @model.toJSON(),
         proposed: projectAssignment.get("proposed")

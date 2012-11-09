@@ -44,7 +44,6 @@ body {
 }
 
 svg.user-chart {
-  margin-left: 2px;
   rect {
     &.actuals {
       fill: gray
@@ -198,33 +197,34 @@ section.main {
   .content {
     padding: 10px;
     min-height: 400px;
-  }
-  div.date-paginator {
-    margin-top: 32px;
-    #date-target {
-      div.date-range {
-        margin-left: 40px;
-        div.month-names {
-          span.month-name {
-            display: inline-block;
-            width: 35px;
-            margin-right: 2px;
-            height: 25px;
-            text-align: center
-          }
-        }
-        div.week-numbers {
-          span.week-number {
-            display: inline-block;
-            width: 35px;
-            margin-right: 2px;
-            height: 25px;
-            text-align: center
-          }
+}
+div.date-paginator, div.project-list-item {
+  margin-top: 32px;
+  margin-left: 25px; // Align with ul.slick
+}
+
+div.date-paginator #date-target {
+  div.date-range {
+    div.month-names {
+      span.month-name {
+        display: inline-block;
+        width: 35px;
+        margin-right: 2px;
+        height: 25px;
+        text-align: center
         }
       }
-    }  
-  }
+      div.week-numbers {
+        span.week-number {
+          display: inline-block;
+          width: 35px;
+          margin-right: 2px;
+          height: 25px;
+          text-align: center
+        }
+      }
+    }
+  }  
 }
 
 .client-name {

@@ -76,7 +76,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     # to all bars
     weeks = svg.append("g")
       .attr("class", "weeks")
-      .attr("transform", "translate(19, 0)")
+      .attr("transform", "translate(17.5, 0)")
     
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
@@ -86,7 +86,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .data(data, (d) -> d.cid)
       .enter().append("g")
         .attr("class", "week")
-        .attr("transform", (d, i) -> "translate(#{i * 39.72}, 0)")
+        .attr("transform", (d, i) -> "translate(#{i * 40}, 0)")
         .attr("data-cweek", (d) -> d.cweek)
         .attr("data-year", (d) -> d.year)
 

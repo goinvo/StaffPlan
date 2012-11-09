@@ -74,10 +74,11 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # TODO: Need that stupid closest because the source of the event can be the i used by
     # Bootstrap for the button icon. Might be a better way
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
-    assignment = user.assignments.detect (assignment) => @model.id is assignment.get "project_id"
+    assignment = user.getAassignments().detect (assignment) => 
+      @model.id is assignment.get "project_id"
     deleteView = new window.StaffPlan.Views.Shared.DeleteModal
       model: assignment
-      collection: user.assignments
+      collection: user.getAssignments()
       parentView: @
 
     @$el.append deleteView.render().el
@@ -90,7 +91,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     event.preventDefault()
     event.stopPropagation()
     targetUser = StaffPlan.users.get(@$el.find("select.unassigned-users").val())
-    targetUser.assignments.create
+    StaffPlan.assignments.create
       project_id: @model.id
       user_id: targetUser.id
       proposed: false

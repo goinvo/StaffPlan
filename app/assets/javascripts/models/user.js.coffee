@@ -1,8 +1,6 @@
 class window.StaffPlan.Models.User extends StaffPlan.Model
   NAME: "user"
   initialize: ->
-    @assignments = new StaffPlan.Collections.Assignments @get( "assignments" ),
-      parent: @
     
     @membership = new StaffPlan.Models.Membership @get( "membership" ),
       parent: @
@@ -12,7 +10,8 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
 
   # Proxy so that the aggregation is generic
   getAssignments: () ->
-    @assignments
+    new StaffPlan.Collections.Assignments StaffPlan.assignments.select (assignment) =>
+      assignment.get("user_id") is @id
   
   pick: (attrs) ->
     _.reduce attrs, (memo, elem) =>

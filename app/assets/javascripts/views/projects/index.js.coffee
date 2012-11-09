@@ -1,6 +1,4 @@
 class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
-  tagName: 'ul'
-  className: 'project-list slick'
   
   initialize: ->
     @startDate = new XDate()
@@ -17,11 +15,10 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         <div id="date-target" class="span10">
         </div>
       </div>
-
       '''
     actions:
       addProject: '''
-        <div class="actions">
+        <div class="row-fluid actions">
           <a href="/projects/new" class="btn btn-primary" data-action="new">
             <i class="icon-list icon-white"></i>
             Add project
@@ -35,11 +32,11 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    delta = if ($(event.target).data('action') is "previous") then -30 else 30
+    delta = if ($(event.target).data('action') is "previous") then -@numberOfBars else @numberOfBars
     @startDate.addWeeks(delta)
     StaffPlan.Dispatcher.trigger "date:changed"
       begin: @startDate.getTime()
-      count: 36
+      count: @numberOfBars
 
   deleteProject: ->
     event.preventDefault()
@@ -55,6 +52,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       backdrop: 'static'
 
   render: ->
+    fragment = document.createDocumentFragment()
     @$el.empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
@@ -65,10 +63,13 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       view = new StaffPlan.Views.Projects.ListItem
         model: project
         start: @startDate
-      @$el.append view.render().el
+      fragment.appendChild view.render().el
+    @$el.append $(fragment)
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.getTime(), @startDate.getTime() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+    
     @$el.find("#date-target").html dateRangeView.render().el
     @$el.append Handlebars.compile @templates.actions.addProject
     @$el.appendTo 'section.main'
+    
     @
