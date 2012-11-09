@@ -4,7 +4,6 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   
   initialize: ->
     @startDate = new XDate()
-    @numberOfBars = 36
     @collection.bind "remove", () =>
       @render()
 
@@ -57,6 +56,10 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
 
   render: ->
     @$el.empty()
+    
+    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
+    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
+
     @$el.append Handlebars.compile @templates.header
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem

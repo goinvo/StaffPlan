@@ -49,7 +49,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
- 
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.getTime(), @startDate.getTime() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el
