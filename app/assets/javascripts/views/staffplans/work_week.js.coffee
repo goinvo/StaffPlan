@@ -62,8 +62,6 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   
   queueEstimatedUpdateOrCreate: (event) ->
     $currentTarget = $( event.currentTarget )
-    console.log "DELTA : "
-    console.log($currentTarget.val() - $currentTarget.data('current-value'))
     $currentTarget.data('current-value', $currentTarget.val())
     cid = $currentTarget.data 'cid'
 
@@ -91,6 +89,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
         console.log('success')
       error: (wat, another, argument, here) ->
         alert('fail')
+  
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
 
