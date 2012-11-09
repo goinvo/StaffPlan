@@ -18,6 +18,9 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       @count = message.count
       @render()
 
+    StaffPlan.Dispatcher.on "week:updated", (message) =>
+      @redrawBar(message.cweek, message.year, message.value)
+
   # We need to retrieve the aggregates for the given date range
   getData: ->
       date = new XDate()
@@ -63,7 +66,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .attr('height', @height)
 
     # Scale all the heights so that we don't get overflow on the y-axis
-    heightScale = d3.scale.linear()
+    @heightScale = d3.scale.linear()
       .domain([0, @maxHeight])
       .range([0, @height - 20])
     
@@ -97,7 +100,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .enter().append("text")
         .attr("text-anchor", "middle")
         .attr 'y', (d) =>
-          @height - heightScale(d) - (if d is 0 then 0 else 10)
+          @height - @heightScale(d) - (if d is 0 then 0 else 10)
         .attr("font-family", "sans-serif")
         .attr("font-size", "11px")
         .attr("fill", "black")
@@ -112,9 +115,27 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         .attr("x", -@barWidth / 2)
         .attr("width", @barWidth)
         .attr "y", (d) =>
-          @height - heightScale(d.value)
-        .attr "height", (d) ->
-          heightScale(d.value)
+          @height - @heightScale(d.value)
+        .attr "height", (d) =>
+          @heightScale(d.value)
         .attr "class", (d) ->
           d.cssClass
     @
+
+
+  redrawBar: (cweek, year, value) ->
+    svg = d3.select('svg g.weeks')
+    svg.selectAll("g.week[data-cweek=\"#{cweek}\"][data-year=\"#{year}\"] rect").data([{value: value, cssClass: "estimates"}, {value: value / 2, cssClass: "proposed estimates"}])
+      .transition()
+      .delay(1000)
+      .attr "y", (d) =>
+        @height - @heightScale(d.value)
+      .attr "height", (d) =>
+        @heightScale(d.value)
+    svg.select("g.weeks [data-cweek=\"#{cweek}\"][data-year=\"#{year}\"] text").data(value)
+      .transition()
+      .delay(1000)
+      .ease("elastic", .45, .1)
+      .attr 'y', (d) =>
+        @height - @heightScale(d) - (if d is 0 then 0 else 10)
+      .text((d) -> d + "")
