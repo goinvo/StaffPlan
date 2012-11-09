@@ -8,7 +8,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     @height = 75 || @options.height
     @barWidth = 35 || @options.barWidth
     
-    @end = @begin + @count * WEEK_IN_MILLISECONDS
     @chartWidth = @count * 40
 
     @maxHeight = @options.maxHeight
@@ -25,7 +24,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   getData: ->
       date = new XDate()
       
-      aggs = _.reduce _.range(@begin, @end, WEEK_IN_MILLISECONDS), (memo, timestamp) ->
+      aggs = _.reduce _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS), (memo, timestamp) ->
         date.setTime(timestamp)
         memo["#{date.getFullYear()}-#{date.getWeek()}"] =
           cweek: date.getWeek()
@@ -36,7 +35,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         memo
       , {}
       weeks = _.flatten @model.getAssignments().map (assignment) =>
-        assignment.work_weeks.between(@begin, @end).models
+        assignment.work_weeks.between(@begin, @begin + @count * WEEK_IN_MILLISECONDS).models
       
       aggregates = _.reduce weeks, (memo, week) ->
         memo["#{week.get('year')}-#{week.get('cweek')}"]['estimated_hours'] += (week.get("estimated_hours") or 0)
@@ -60,6 +59,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
           year: aggregate.year
 
   render: ->
+    console.log @model
     @$el.empty()
     svg = d3.select(@el)
       .attr('width', @chartWidth)
