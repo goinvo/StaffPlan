@@ -26,7 +26,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @startDate.addWeeks(delta)
     StaffPlan.Dispatcher.trigger "date:changed"
       begin: @startDate.getTime()
-      count: 30
+      count: @numberOfBars
  
   initialize: ->
     @users = @options.users
