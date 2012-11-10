@@ -1,6 +1,7 @@
 window.StaffPlan =
   Models: {}
   Collections: {}
+  Templates: {}
   Views:
     Shared: {}
     StaffPlans:

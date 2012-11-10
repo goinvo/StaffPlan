@@ -35,7 +35,7 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     if event.type == "keydown"
       interval = if event.keyIdentifier.toLowerCase() == 'right' then @weekInterval else -@weekInterval
     else
-      interval = if $(event.currentTarget).data().changePage == 'next' then @weekInterval else -@weekInterval
+      interval = if $(event.target).data().changePage == 'next' then @weekInterval else -@weekInterval
     
     @fromDate.addWeeks(interval)
     @toDate.addWeeks(interval)

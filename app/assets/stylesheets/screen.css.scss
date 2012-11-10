@@ -452,6 +452,11 @@ footer {
     white-space: nowrap;
     position: relative;
     
+    .add-project {
+      margin-right: 10px;
+      float: right;
+    }
+    
     &.padding-top-left {
       padding: 5px 0 0 5px;
     }
@@ -483,11 +488,6 @@ footer {
       &:first-child {
         display: initial;
       }
-    }
-    
-    .client-or-project-name {
-      display: inline-block;
-      margin-top: 2px;
     }
     
     .cweeks-and-years {

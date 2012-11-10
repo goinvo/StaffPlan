@@ -13,13 +13,12 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     
     @assignments.bind 'add', (assignment) =>
       @addAssignmentView assignment, @assignments.models.length - 1
-      @$el.append assignment.view.el
-      assignment.view.render()
+      @$el.append assignment.view.render().el
+      
     
     @assignments.bind 'change:id', (assignment) =>
       @model.set('id', assignment.view.client().get('id')) if @model.isNew()
       @$el.attr('data-client-id', @model.get('id'))
-      @user.view.clients.add() if $('[data-client-id="-1"]').length == 0
       
     @$el.attr('data-client-id', if @model.get('id')? then @model.get('id') else "-1")
     
@@ -27,6 +26,7 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     
   render: ->
     @assignments.map (assignment) -> assignment.view.render()
+    
     @
   
   events:

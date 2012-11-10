@@ -2,37 +2,6 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   className: "assignment-row grid-row padded"
   tagName: "div"
   
-  templates:
-    show: '''
-      <div class="grid-row-element fixed-180 sexy">
-        <div class='client-or-project-name'>{{clientName}}</div>
-        {{#if showAddProject}}
-        <span class='plus-with-text'>
-          <a class='add-project return-false' href="/staffplans/{{user_id}}">
-            <i class='icon-plus'>&nbsp;</i>
-            <span class='text'>Project</span>
-          </a>
-        </span>
-        {{/if}}
-      </div>
-      <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
-      <div class="grid-row-element flex work-weeks"></div>
-    '''
-    
-    new: '''
-    <div class="grid-row-element fixed-180 sexy">
-      {{#if showClientInput}}
-        <input type="text" class="client-name-input input-medium" data-model="Client" data-attribute="name" data-trigger-save placeholder="Client Name" />
-      {{/if}}
-    </div>
-    <div class="grid-row-element fixed-180 sexy">
-      <input type="text" class="project-name-input input-medium" data-model="Project" data-attribute="name" data-trigger-save placeholder="Project Name" />
-    </div>
-    <div class="grid-row-element flex">
-      <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
-    </div>
-    '''
-  
   project: ->
     StaffPlan.projects.get( @model.get 'project_id' )
     
@@ -44,10 +13,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @user = @options.user
     @index = @options.index
     
-    @showTemplate = Handlebars.compile @templates.show
-    @newTemplate = Handlebars.compile @templates.new
-    
     @$el.data('cid', @cid)
+    
+    @model.bind 'change:id', => @render()
     
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
@@ -60,24 +28,21 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
         @model.work_weeks.add
           cweek: meta.cweek
           year: meta.year
-  
-  renderNew: ->
-    @$el.html @newTemplate
-      showClientInput: @client() == undefined or @client().isNew()
-  
-  renderShow: ->
-    @$el.html @showTemplate
-      showAddProject: @index == 0
-      clientName: if @index == 0 then @client().get('name') else ""
-      projectName: @project()?.get('name')
-      user_id: @user.id
-    
-    @ensureWorkWeekRange()
-    
-    @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
     
   render: ->
-    if @model.isNew() then @renderNew() else @renderShow()
+    if @model.isNew()
+      @$el.html StaffPlan.Templates.StaffPlans.assignment_new
+    else
+      @$el.html StaffPlan.Templates.StaffPlans.assignment_show
+        showAddProject: @index == 0
+        clientName: if @index == 0 then @client().get('name') else ""
+        projectName: @project()?.get('name')
+        user_id: @user.id
+    
+      @ensureWorkWeekRange()
+    
+      @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
+    
     @
   
   events:

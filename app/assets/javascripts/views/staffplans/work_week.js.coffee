@@ -1,36 +1,12 @@
 class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   className: "work-weeks"
   tagName: "section"
-  
-  templates:
-    row: '''
-    <div class='row-filler'>
-      <a href='#'>&rarr;</a>
-    </div>
-    <div class="grid-row flex">
-      <div class='row-label'>Plan</div>
-      {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
-      {{/each}}
-    </div>
-    <div class="grid-row flex">
-      <div class='row-label'>Actual</div>
-      {{#each visibleWorkWeeks}}
-        {{#if hasPassedOrIsCurrent}}
-        <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} "data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
-        {{/if}}
-      {{/each}}
-    </div>
-    '''
       
   initialize: ->
     @assignment = @options.parent
     @client = @options.client
     @user = @options.user
-    
-    @rowTemplate = Handlebars.compile @templates.row
-    @inputTemplate = Handlebars.compile @templates.input
-    
+        
   render: ->
     @$el.empty()
     yearsAndWeeks = _.reduce @user.view.getYearsAndWeeks(), (memo, dateMeta) ->
@@ -42,7 +18,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     workWeeks = @collection.filter (workWeek) =>
       yearsAndWeeks[workWeek.get('year')] != undefined && _.include(yearsAndWeeks[workWeek.get('year')], workWeek.get('cweek'))
     
-    @$el.append @rowTemplate
+    @$el.append StaffPlan.Templates.StaffPlans.work_week_row
       visibleWorkWeeks: workWeeks.map (workWeek) -> _.extend workWeek.attributes,
         cid: workWeek.cid
         hasPassedOrIsCurrent: workWeek.hasPassedOrIsCurrent()
