@@ -64,21 +64,21 @@ _templates =
       <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
       <ul class="dropdown-menu">
         {{#if isDeletable}}
-          <li><a href="#" class='delete-assignment'>Delete<i class='icon-trash'></i></a></li>
+          <li><a href="#" class='delete-assignment'><i class='icon-trash'></i> Delete</a></li>
         {{else}}
-          <li><a href="#"><strike>Delete</strike><i class='icon-trash'></i></a></li>
+          <li><a href="#"><strike><i class='icon-trash'></i> Delete</strike></a></li>
         {{/if}}
             
         {{#if archived}}
-        <li><a href="#">Unarchive</a></li>
+        <li><a href="#"><i class='icon-check'></i> Unarchive</a></li>
         {{else}}
-        <li><a href="#">Archive</a></li>
+        <li><a href="#"><i class='icon-inbox'></i> Archive</a></li>
         {{/if}}
             
         {{#if proposed}}
-          <li><a href="#">Make Proposed</a></li>
+          <li><a href="#"><i class='icon-ok-sign'></i> Make Actual</a></li>
         {{else}}
-          <li><a href="#">Make Actual</a></li>
+          <li><a href="#"><i class='icon-question-sign'></i> Make Proposed</a></li>
         {{/if}}
       </ul>
       """
