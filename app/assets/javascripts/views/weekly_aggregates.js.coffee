@@ -15,7 +15,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
-      @redrawChart()
+      @render()
+      #@redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
       @redrawBar(message.cweek, message.year, message.value)
