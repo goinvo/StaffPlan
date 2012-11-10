@@ -426,7 +426,6 @@ footer {
 .grid-row {
   @include display-box;
   @include box-orient("horizontal");
-  overflow: hidden;
   
   &.header {
     padding: 6px 15px;
@@ -448,7 +447,6 @@ footer {
   }
   
   .grid-row-element {
-    overflow: hidden;
     white-space: nowrap;
     position: relative;
     
@@ -459,6 +457,10 @@ footer {
     
     &.padding-top-left {
       padding: 5px 0 0 5px;
+    }
+    
+    &.fixed-60 {
+      width: 60px;
     }
     
     &.fixed-180 {

@@ -16,7 +16,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @$el.data('cid', @cid)
     
     @model.bind 'change:id', => @render()
-    
+    @assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
+      assignment: @
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
       user: @user
@@ -28,6 +29,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
         @model.work_weeks.add
           cweek: meta.cweek
           year: meta.year
+  
+  isDeletable: ->
+    !@model.work_weeks.any (ww) -> ww.get('actual_hours')? && ww.get('actual_hours') > 0
     
   render: ->
     if @model.isNew()
@@ -39,9 +43,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
         clientName: if @index == 0 then @client().get('name') else ""
         projectName: @project()?.get('name')
         user_id: @user.id
+        isDeletable: @isDeletable()
     
       @ensureWorkWeekRange()
-    
+      
+      @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
       @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
     
     @
@@ -49,6 +55,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   events:
     "click input[type='button'][data-trigger-save]": "onSaveTriggered"
     "keydown input[type='text'][data-trigger-save]": "onSaveTriggeredByKeydown"
+    "click a.delete-assignment": "onDeleteAssignmentClicked"
+  
+  onDeleteAssignmentClicked: (event) ->
+    @model.destroy()
+    @remove()
   
   onSaveTriggeredByKeydown: (event) ->
     if event.keyCode == 13

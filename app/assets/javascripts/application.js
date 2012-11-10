@@ -12,7 +12,7 @@
 //= require d3.v2
 //= require bootstrap
 
-//= require underscore 
+//= require lodash
 //= require backbone
 //= require backbone-support
 //= require handlebars

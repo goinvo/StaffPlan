@@ -56,8 +56,32 @@ _templates =
     <div class="cweeks-and-years"><div>{{{staffplans_show_calendarYears dates}}}</div>{{{staffplans_show_calendarMonths dates}}}</div>
     <div class="cweeks-and-years"><div></div>{{{staffplans_show_calendarWeeks dates}}}</div>
     """
-
+  
   assignment:
+    actions:
+      """
+      <button class="btn btn-mini"><i class="icon-cog"></i></button>
+      <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        {{#if isDeletable}}
+          <li><a href="#" class='delete-assignment'>Delete<i class='icon-trash'></i></a></li>
+        {{else}}
+          <li><a href="#"><strike>Delete</strike><i class='icon-trash'></i></a></li>
+        {{/if}}
+            
+        {{#if archived}}
+        <li><a href="#">Unarchive</a></li>
+        {{else}}
+        <li><a href="#">Archive</a></li>
+        {{/if}}
+            
+        {{#if proposed}}
+          <li><a href="#">Make Proposed</a></li>
+        {{else}}
+          <li><a href="#">Make Actual</a></li>
+        {{/if}}
+      </ul>
+      """
     show: '''
       <div class="grid-row-element fixed-180 sexy">
         <div class='client-or-project-name'>{{clientName}}</div>
@@ -65,7 +89,9 @@ _templates =
         <a class='add-project return-false btn btn-mini' href="/staffplans/{{user_id}}"><i class='icon-plus-sign'></i>Add Project</a>
         {{/if}}
       </div>
-      <div class="grid-row-element fixed-180 sexy">{{projectName}}</div>
+      <div class="grid-row-element fixed-180 sexy assignment-actions-target">
+        {{projectName}}
+      </div>
       <div class="grid-row-element flex work-weeks"></div>
     '''
     
@@ -81,6 +107,7 @@ _templates =
     <div class="grid-row-element flex">
       <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
     </div>
+    <div class="grid-row-element fixed-60">Actions</div>
     '''
     
   work_week:
@@ -110,5 +137,6 @@ StaffPlan.Templates.StaffPlans = {
   show_newClientAndProject: Handlebars.compile _templates.show.newClientAndProject
   assignment_show: Handlebars.compile _templates.assignment.show
   assignment_new: Handlebars.compile _templates.assignment.new
+  assignment_actions: Handlebars.compile _templates.assignment.actions
   work_week_row: Handlebars.compile _templates.work_week.row
 }

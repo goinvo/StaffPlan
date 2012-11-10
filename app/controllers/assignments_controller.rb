@@ -1,6 +1,6 @@
 class AssignmentsController < ApplicationController
   
-  before_filter :find_target_user
+  before_filter :find_target_user, only: [:create]
   
   respond_to :json
 
