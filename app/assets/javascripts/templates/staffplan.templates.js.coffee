@@ -46,7 +46,7 @@ _templates =
       <div class="grid-row-element"></div>
     </div>
     <div class='header grid-row padded'>
-      <div class='grid-row-element fixed-180 title'><span>Client</span></div>
+      <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='return-false add-client'><i class='icon-plus-sign'></i></a></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
       <div class="grid-row-element flex date-range-target" id="interval-width-target"></div>
     </div>
@@ -56,22 +56,7 @@ _templates =
     <div class="cweeks-and-years"><div>{{{staffplans_show_calendarYears dates}}}</div>{{{staffplans_show_calendarMonths dates}}}</div>
     <div class="cweeks-and-years"><div></div>{{{staffplans_show_calendarWeeks dates}}}</div>
     """
-    
-    newClientAndProject: """
-    <section class="client zebra" data-client-id="new">
-      <div class="assignment-row grid-row padded">
-        <div class="grid-row-element fixed-180 sexy">
-          <input type="text" class="client-name-input input-medium" data-model="Client" data-attribute="name" data-trigger-save placeholder="Client Name" />
-        </div>
-        <div class="grid-row-element fixed-180 sexy">
-          <input type="text" class="project-name-input input-medium" data-model="Project" data-attribute="name" data-trigger-save placeholder="Project Name" />
-        </div>
-        <div class="grid-row-element flex">
-          <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
-        </div>
-      </div>
-    </section>
-    """
+
   assignment:
     show: '''
       <div class="grid-row-element fixed-180 sexy">

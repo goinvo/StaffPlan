@@ -12,9 +12,11 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     @assignments.map (assignment, index) => @addAssignmentView assignment, index
     
     @assignments.bind 'add', (assignment) =>
+      assignment.client = @model
       @addAssignmentView assignment, @assignments.models.length - 1
       @$el.append assignment.view.render().el
-      
+    
+    @assignments.add() if @model.isNew()
     
     @assignments.bind 'change:id', (assignment) =>
       @model.set('id', assignment.view.client().get('id')) if @model.isNew()

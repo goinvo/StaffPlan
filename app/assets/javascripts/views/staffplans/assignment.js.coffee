@@ -32,6 +32,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   render: ->
     if @model.isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
+        showClientInput: @model.client.isNew()
     else
       @$el.html StaffPlan.Templates.StaffPlans.assignment_show
         showAddProject: @index == 0
