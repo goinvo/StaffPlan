@@ -5,6 +5,9 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @collection.bind "remove", () =>
       @render()
 
+  leave: ->
+    @off()
+    @remove()
   templates:
     header: '''
       <div class="row-fluid date-paginator"> 

@@ -19,6 +19,10 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   events:
     "click div.date-paginator a.pagination": "paginate"
 
+  leave: ->
+    @off()
+    @remove()
+
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()

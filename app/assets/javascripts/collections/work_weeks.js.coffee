@@ -13,20 +13,13 @@ class window.StaffPlan.Collections.WorkWeeks extends Backbone.Collection
     @parent.url() + "/work_weeks"
   
   between: (begin, end) ->
-    weeks = _.map _.range(begin, end, @WEEK_IN_MILLISECONDS), (timestamp) =>
-      d = new XDate(timestamp)
-      week = @detect (week) =>
-        week.get("year") is d.getFullYear() and
-          week.get("cweek") is d.getWeek()
-      week or new StaffPlan.Models.WorkWeek
-        cweek: d.getWeek()
-        year: d.getFullYear()
-        actual_hours: 0
-        estimated_hours: 0
-        proposed: false
-    new StaffPlan.Collections.WorkWeeks weeks,
-      parent: @parent
-   
+    date = new XDate()
+    weeks = @select (week) ->
+      date.setWeek(week.get("cweek"), week.get("year"))
+      time = date.getTime()
+      (time > begin) and (time < end)
+    _.map weeks, (week) -> week.toJSON()
+
   comparator: (first, second) ->
     firstYear = first.get('year')
     secondYear = second.get('year')

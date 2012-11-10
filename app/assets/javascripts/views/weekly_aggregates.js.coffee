@@ -15,11 +15,13 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
-      @render()
+      @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
       @redrawBar(message.cweek, message.year, message.value)
-
+  leave: ->
+    @off()
+    @remove()
   # We need to retrieve the aggregates for the given date range
   getData: ->
       date = new XDate()
@@ -35,12 +37,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         memo
       , {}
       weeks = _.flatten @model.getAssignments().map (assignment) =>
-        assignment.work_weeks.between(@begin, @begin + @count * WEEK_IN_MILLISECONDS).models
+        assignment.work_weeks.between(@begin, @begin + (@count - 1) * WEEK_IN_MILLISECONDS)
       
       aggregates = _.reduce weeks, (memo, week) ->
-        memo["#{week.get('year')}-#{week.get('cweek')}"]['estimated_hours'] += (week.get("estimated_hours") or 0)
-        memo["#{week.get('year')}-#{week.get('cweek')}"]['actual_hours'] += (week.get("actual_hours") or 0)
-        memo["#{week.get('year')}-#{week.get('cweek')}"]['proposed'] += if week.get("proposed") then (week.get("estimated_hours") or 0) else 0
+        memo["#{week['year']}-#{week['cweek']}"]['estimated_hours'] += (week["estimated_hours"] or 0)
+        memo["#{week['year']}-#{week['cweek']}"]['actual_hours'] += (week["actual_hours"] or 0)
+        memo["#{week['year']}-#{week['cweek']}"]['proposed'] += if week["proposed"] then (week["estimated_hours"] or 0) else 0
         memo
       , aggs
       
@@ -59,7 +61,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
           year: aggregate.year
 
   render: ->
-    console.log @model
     @$el.empty()
     svg = d3.select(@el)
       .attr('width', @chartWidth)
@@ -94,24 +95,25 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         .attr("data-year", (d) -> d.year)
 
     # The label for the bar (number of hours aggregated for a given week)
-    groups.selectAll("text")
-      .data (d) ->
+    labels = groups.selectAll("text").data (d) ->
         [d.total]
-      .enter().append("text")
-        .attr("text-anchor", "middle")
-        .attr 'y', (d) =>
-          @height - @heightScale(d) - (if d is 0 then 0 else 10)
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
-        .attr("fill", "black")
-        .text (d) ->
-          d + ""
+    
+    labels.enter().append("text")
+      .attr("text-anchor", "middle")
+      .attr 'y', (d) =>
+        @height - @heightScale(d) - (if d is 0 then 0 else 10)
+      .attr("font-family", "sans-serif")
+      .attr("font-size", "11px")
+      .attr("fill", "black")
+      .text (d) ->
+        d + ""
+    labels.exit()
+      .remove()
 
     # The bars themselves, data is split up between two objects so that each bar has its own set of data
-    groups.selectAll("rect")
-      .data (d) ->
+    rects = groups.selectAll("rect").data (d) ->
         [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
-      .enter().append("rect")
+    rects.enter().append("rect")
         .attr("x", -@barWidth / 2)
         .attr("width", @barWidth)
         .attr "y", (d) =>
@@ -120,8 +122,10 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
           @heightScale(d.value)
         .attr "class", (d) ->
           d.cssClass
+    
+    rects.exit()
+      .remove()
     @
-
 
   redrawBar: (cweek, year, value) ->
     svg = d3.select('svg g.weeks')
@@ -135,7 +139,26 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     svg.select("g.weeks [data-cweek=\"#{cweek}\"][data-year=\"#{year}\"] text").data(value)
       .transition()
       .delay(1000)
-      .ease("elastic", .45, .1)
       .attr 'y', (d) =>
         @height - @heightScale(d) - (if d is 0 then 0 else 10)
       .text((d) -> d + "")
+
+  redrawChart: ->
+    data = @getData()
+    svg = d3.select("svg.user-chart")
+    groups = svg.selectAll("g.week").data(data)
+        .attr("data-cweek", (d) -> d.cweek)
+        .attr("data-year", (d) -> d.year)
+    groups.selectAll("text")
+     .data (d) ->
+       [d.total]
+     .attr 'y', (d) =>
+       @height - @heightScale(d) - (if d is 0 then 0 else 10)
+     .text (d) ->
+       d + ""
+    groups.selectAll("rect")
+      .data (d) ->
+        [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
+      .attr("y", (d) => @height - @heightScale(d.value))
+      .attr("height", (d) => @heightScale(d.value))
+      .attr("class", (d) -> d.cssClass)
