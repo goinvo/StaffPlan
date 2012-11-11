@@ -18,6 +18,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @model.bind 'change:id', => @render()
     @assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
       assignment: @
+    @assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
+      assignment: @
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
       collection: @model.work_weeks
       user: @user
@@ -48,7 +50,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
       @ensureWorkWeekRange()
       
       @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
-      @$el.find( 'div.work-weeks' ).append @workWeeksView.render().el
+      @$el.find( 'div.work-weeks' )
+        .append(@workWeeksView.render().el)
+      @$el.append(@assignmentTotalsView.render().el)
     
     @
   

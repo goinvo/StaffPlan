@@ -450,6 +450,10 @@ footer {
     white-space: nowrap;
     position: relative;
     
+    .assignment-totals {
+      height: 35px;
+    }
+    
     .add-project {
       margin-right: 10px;
       float: right;

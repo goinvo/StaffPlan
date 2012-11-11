@@ -58,6 +58,11 @@ _templates =
     """
   
   assignment:
+    totals:
+      """
+      <div class='estimated-hours assignment-totals'>{{hours.estimated}}</div>
+      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='pull-right'>&#916;{{hours.delta}}</span></div>
+      """
     actions:
       """
       <button class="btn btn-mini"><i class="icon-cog"></i></button>
@@ -68,13 +73,13 @@ _templates =
         {{else}}
           <li><a href="#"><strike><i class='icon-trash'></i> Delete</strike></a></li>
         {{/if}}
-            
+        <li class="divider"></li>
         {{#if archived}}
         <li><a href="#"><i class='icon-check'></i> Unarchive</a></li>
         {{else}}
         <li><a href="#"><i class='icon-inbox'></i> Archive</a></li>
         {{/if}}
-            
+        <li class="divider"></li>
         {{#if proposed}}
           <li><a href="#"><i class='icon-ok-sign'></i> Make Actual</a></li>
         {{else}}
@@ -107,7 +112,6 @@ _templates =
     <div class="grid-row-element flex">
       <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
     </div>
-    <div class="grid-row-element fixed-60">Actions</div>
     '''
     
   work_week:
@@ -138,5 +142,6 @@ StaffPlan.Templates.StaffPlans = {
   assignment_show: Handlebars.compile _templates.assignment.show
   assignment_new: Handlebars.compile _templates.assignment.new
   assignment_actions: Handlebars.compile _templates.assignment.actions
+  assignment_totals: Handlebars.compile _templates.assignment.totals
   work_week_row: Handlebars.compile _templates.work_week.row
 }

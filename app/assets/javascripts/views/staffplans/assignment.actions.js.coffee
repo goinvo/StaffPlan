@@ -11,6 +11,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
       isDeletable: @assignment.isDeletable()
       proposed: @assignment.model.get('proposed')
+      archived: @assignment.model.get('archived') || false
     @
   
   events:
