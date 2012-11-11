@@ -81,9 +81,9 @@ _templates =
         {{/if}}
         <li class="divider"></li>
         {{#if proposed}}
-          <li><a href="#"><i class='icon-ok-sign'></i> Make Actual</a></li>
+          <li><a href="#" class='toggle-proposed'><i class='icon-ok-sign'></i> Make Actual</a></li>
         {{else}}
-          <li><a href="#"><i class='icon-question-sign'></i> Make Proposed</a></li>
+          <li><a href="#" class='toggle-proposed'><i class='icon-question-sign'></i> Make Proposed</a></li>
         {{/if}}
       </ul>
       """

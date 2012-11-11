@@ -16,7 +16,12 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
   
   events:
     "click a.delete-assignment": "onDeleteAssignmentClicked"
+    "click a.toggle-proposed": "onToggleProposedClicked"
   
   onDeleteAssignmentClicked: (event) ->
     @assignment.model.destroy()
     @assignment.remove()
+  
+  onToggleProposedClicked: (event) ->
+    @assignment.model.save
+      proposed: !@assignment.model.get('proposed')
