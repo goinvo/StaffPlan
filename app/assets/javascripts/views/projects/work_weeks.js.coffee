@@ -18,6 +18,8 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     '''
   initialize: ->
     @rowTemplate = Handlebars.compile @templates.row
+    @start = @options.start
+    @count = @options.count
 
   events:
     "focus  input[data-work-week-input][data-attribute='estimated_hours']": "showRowFiller"
@@ -103,11 +105,31 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
   render: ->
     @$el.empty()
     
-    @$el.append @rowTemplate
-      visibleWorkWeeks: @collection.map (workWeek) ->
-        w = new StaffPlan.Models.WorkWeek workWeek
-        w.formatForTemplate()
+    # The padding of weeks, the eternal padding of weeks :/
+    range = _.range(@start, @start + @count * 7 * 86400 * 1000, 7 * 86400 * 1000)
+    date = new XDate()
 
+    aggs = _.reduce range, (memo, timestamp) ->
+      date.setTime(timestamp)
+      memo["#{date.getFullYear()}-#{date.getWeek()}"] =
+        cweek: date.getWeek()
+        year: date.getFullYear()
+        proposed: 0
+        actual_hours: 0
+        estimated_hours: 0
+      memo
+    , {}
+
+    weeks = _.reduce @collection, (memo, element) ->
+      memo["#{element['year']}-#{element['cweek']}"] = element
+      memo
+    , aggs
+
+    visibleWorkWeeks = _.map weeks, (workWeek) ->
+      w = new StaffPlan.Models.WorkWeek workWeek
+      w.formatForTemplate()
+    @$el.append @rowTemplate
+      visibleWorkWeeks: visibleWorkWeeks
     @rowFiller = @$el.find('.row-filler').hide()
     
     @

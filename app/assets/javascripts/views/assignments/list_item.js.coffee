@@ -32,7 +32,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @workWeeksView = new window.StaffPlan.Views.Projects.WorkWeeks
       collection: @model.work_weeks.between(@startDate.getTime(), @startDate + @numberOfBars * 7 * 86400 * 1000)
       start: @startDate
-    
+      count: @numberOfBars
     @$el.find("div.user-hour-inputs").html @workWeeksView.render().el
     @
   
