@@ -27,11 +27,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   ensureWorkWeekRange: =>
     # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed to all inputs are rendered.
     for meta in @user.view.getYearsAndWeeks()
-      unless _.any(@model.work_weeks.where({cweek: meta.cweek, year: meta.year}))
+      unless _.any(@model.work_weeks.where({beginning_of_week: meta}))
         @model.work_weeks.add
-          cweek: meta.cweek
-          year: meta.year
-  
+          beginning_of_week: meta
   isDeletable: ->
     !@model.work_weeks.any (ww) -> ww.get('actual_hours')? && ww.get('actual_hours') > 0
     

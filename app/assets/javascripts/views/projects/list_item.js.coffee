@@ -30,7 +30,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 60
       model: @model
-      begin: @startDate.getTime()
+      begin: @startDate
       count: @numberOfBars
       el: @$el.find("svg.user-chart")
     @projectChartView.render()

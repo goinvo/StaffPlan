@@ -1,7 +1,8 @@
 class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   
   initialize: ->
-    @startDate = new XDate()
+    m = moment()
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
     @collection.bind "remove", () =>
       @render()
 
@@ -35,10 +36,12 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    delta = if ($(event.target).data('action') is "previous") then -@numberOfBars else @numberOfBars
-    @startDate.addWeeks(delta)
+    if $(event.target).data('action') is "previous"
+      @startDate.subtract('weeks', @numberOfBars)
+    else
+      @startDate.add('weeks', @numberOfBars)
     StaffPlan.Dispatcher.trigger "date:changed"
-      begin: @startDate.getTime()
+      begin: @startDate.valueOf()
       count: @numberOfBars
 
   deleteProject: ->
@@ -69,7 +72,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       fragment.appendChild view.render().el
     @$el.append $(fragment)
     dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.getTime(), @startDate.getTime() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     
     @$el.find("#date-target").html dateRangeView.render().el
     @$el.append Handlebars.compile @templates.actions.addProject

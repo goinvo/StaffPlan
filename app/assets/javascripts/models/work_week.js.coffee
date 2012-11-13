@@ -1,13 +1,5 @@
 class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
   
-  hasPassedOrIsCurrent: (fromDate=@collection.parent.view.user.view.fromDate) ->
-    (@get('year') < fromDate.getUTCFullYear() ||
-    ((@get('cweek') == fromDate.getWeek() && @get('year') == fromDate.getUTCFullYear()) || (@get('cweek') <= fromDate.getWeek() && @get('year') <= fromDate.getUTCFullYear())))
-    
-  
-  isToday:  (fromDate=@collection.parent.view.user.view.fromDate) ->
-    fromDate.getWeek() == @get('cweek') && fromDate.getUTCFullYear() == @get('year')
-
   pick: (attrs) ->
     _.reduce attrs, (memo, elem) =>
       if typeof this[elem] is "function"
@@ -17,7 +9,7 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
       memo
     , {}
     
-  formatForTemplate: -> _.extend (@pick ["cweek", "year"]),
+  formatForTemplate: -> _.extend (@pick ["beginning_of_week"]),
     proposed: if @get("proposed") then "true" else "false"
     estimated_hours: @get("estimated_hours") or 0
     actual_hours: @get("actual_hours") or 0
@@ -26,8 +18,4 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
 
 
   inFuture: ->
-    d = new XDate()
-    timeAtBeginningOfCurrentWeek = new XDate().setWeek(d.getWeek(), d.getFullYear()).getTime()
-    timeAtBeginningOfWeek = new XDate().setWeek(@get("cweek"), @get("year")).getTime()
-    
-    timeAtBeginningOfWeek > timeAtBeginningOfCurrentWeek
+    @get("beginning_of_week") > moment().utc().startOf('week').startOf('day')

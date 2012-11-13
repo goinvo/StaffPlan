@@ -26,15 +26,18 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    delta = if ($(event.target).data('action') is "previous") then -30 else 30
-    @startDate.addWeeks(delta)
-    StaffPlan.Dispatcher.trigger "date:changed"
-      begin: @startDate.getTime()
+    if $(event.target).data('action') is "previous"
+      @startDate.subtract('weeks', @numberOfBars)
+    else
+      @startDate.add('weeks', @numberOfBars)
+    StaffPlan.Dispatcher.trigger "date:changed",
+      begin: @startDate.valueOf()
       count: @numberOfBars
- 
+
   initialize: ->
     @users = @options.users
-    @startDate = new XDate()
+    m = moment()
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
       
   render: ->
     @$el.empty()
@@ -44,7 +47,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
-        startDate: @startDate.getTime()
+        startDate: @startDate.valueOf()
       fragment.appendChild view.render().el
     @$el.append $(fragment)
     @$el.append Handlebars.compile @templates.addStaff
@@ -53,5 +56,5 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
     dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.getTime(), @startDate.getTime() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el
