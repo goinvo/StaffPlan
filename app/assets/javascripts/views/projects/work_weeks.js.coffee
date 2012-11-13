@@ -107,13 +107,12 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     
     # The padding of weeks, the eternal padding of weeks :/
     range = _.range(@start, @start + @count * 7 * 86400 * 1000, 7 * 86400 * 1000)
-    date = new XDate()
 
     aggs = _.reduce range, (memo, timestamp) ->
-      date.setTime(timestamp)
-      memo["#{date.getFullYear()}-#{date.getWeek()}"] =
-        cweek: date.getWeek()
-        year: date.getFullYear()
+      date = moment(timestamp)
+      memo["#{date.year()}-#{date.format('w')}"] =
+        cweek: date.format('w')
+        year: date.year()
         proposed: 0
         actual_hours: 0
         estimated_hours: 0

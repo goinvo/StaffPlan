@@ -35,19 +35,13 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       '''
   initialize: ->
 
-    @startDate = new XDate()
+    m = moment()
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
+
     @headerTemplate = Handlebars.compile(@templates.header)
     @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
     
-    # Create all the aggregates for that project and populate
-    # @aggregates = new StaffPlan.Collections.WeeklyAggregates [],
-    #   parent: @model
-    #   begin: @startDate.getTime()
-    #   end: @startDate.clone().addWeeks(30).getTime()
-    # @aggregates.populate()
-    
-
   events: ->
     "click div.date-paginator a.pagination": "paginate"
     "click a[data-action=add-user]": "addUserToProject"
@@ -56,12 +50,13 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    delta = if ($(event.target).data('action') is "previous") then -30 else 30
-    @startDate.addWeeks(delta)
-    StaffPlan.Dispatcher.trigger "date:changed",
-      begin: @startDate.getTime()
+    if $(event.target).data('action') is "previous"
+      @startDate.subtract('weeks', @numberOfBars)
+    else
+      @startDate.add('weeks', @numberOfBars)
+    StaffPlan.Dispatcher.trigger "date:changed"
+      begin: @startDate.valueOf()
       count: @numberOfBars
-    # @render()
 
   deleteAssignment: ->
 
@@ -104,7 +99,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # HEADER
     @$el.append @headerTemplate
       name: @model.get "name"
-      date: new XDate(@startDate).getWeek() + " " + new XDate(@startDate).getFullYear()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
@@ -112,7 +106,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       # FIXME: Hardwired value in here for now
       maxHeight: 100
-      begin: @startDate.getTime()
+      begin: @startDate.valueOf()
       count: @numberOfBars
       model: @model
       el: @$el.find("svg.user-chart")
@@ -132,7 +126,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @$el.append $(fragment)
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.getTime(), @startDate.clone().addWeeks(@numberOfBars).getTime(), 7 * 86400 * 1000)
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()

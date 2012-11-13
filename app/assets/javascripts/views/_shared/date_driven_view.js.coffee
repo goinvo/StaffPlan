@@ -1,7 +1,7 @@
 class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
   initialize: ->
-     
-    @fromDate = moment.utc().startOf('week').startOf('day').subtract("weeks", 2) # move back two weeks to start
+    m = moment()
+    @fromDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract("weeks", 2)
     
     setTimeout =>
       $( window ).bind 'resize', @onWindowResized

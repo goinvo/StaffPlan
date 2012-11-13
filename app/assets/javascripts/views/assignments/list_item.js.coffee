@@ -21,7 +21,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   initialize: ->
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @updateWorkWeeksView(message.begin)
-    @startDate = @options.start
+    @startDate = @options.start.valueOf()
     @userItemTemplate = Handlebars.compile @templates.userItem
     @parent = @options.parent
     @numberOfBars = @options.numberOfBars
@@ -30,7 +30,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @$el.html @userItemTemplate
       user: StaffPlan.users.get(@model.get("user_id")).attributes
     @workWeeksView = new window.StaffPlan.Views.Projects.WorkWeeks
-      collection: @model.work_weeks.between(@startDate.getTime(), @startDate + @numberOfBars * 7 * 86400 * 1000)
+      collection: @model.work_weeks.between(@startDate, @startDate + @numberOfBars * 7 * 86400 * 1000)
       start: @startDate
       count: @numberOfBars
     @$el.find("div.user-hour-inputs").html @workWeeksView.render().el

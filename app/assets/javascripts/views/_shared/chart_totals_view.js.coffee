@@ -110,24 +110,25 @@ get_proposed_value = (d) ->
     total
 
 get_gradient_moz = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
-  "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+  console.log d
+  return ""# if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
+  # percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
+  # "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
   
 get_gradient_webkit = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
-  "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+  return "" #if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
+  # percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
+  # "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
   * @returns {!String} Class for week.
 *###
 get_class = (d) ->
-  if d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-    if d.actual == 0 then "present" else "passed"
+  if d.date.year is moment().year() and d.date.cweek is parseInt(moment().format('w'), 10)
+    if d.actual is 0 then "present" else "passed"
   else if d.date.weekHasPassed
-    if d.actual == 0 then "" else "passed"
+    if d.actual is 0 then "" else "passed"
   else
     "future"
 
