@@ -20,6 +20,7 @@ gem 'sass-rails',     '~> 3.2.3'
 gem 'draper'
 gem 'cancan'
 gem 'bitmask_attributes'
+gem 'newrelic_rpm'
 
 group :assets do
   gem 'compass-rails'
