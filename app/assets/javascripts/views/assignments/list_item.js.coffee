@@ -19,8 +19,6 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @workWeeksView.render()
 
   initialize: ->
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
-      @updateWorkWeeksView(message.begin)
     @startDate = @options.start.valueOf()
     @userItemTemplate = Handlebars.compile @templates.userItem
     @parent = @options.parent
