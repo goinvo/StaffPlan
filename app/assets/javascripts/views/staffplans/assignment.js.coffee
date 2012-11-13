@@ -48,6 +48,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
       @ensureWorkWeekRange()
       
+      # We should set the views' element to the following HTML elements instead
+      # That way you just render() every view and it does the same thing automatically
       @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
       @$el.find( 'div.work-weeks' )
         .append(@workWeeksView.render().el)

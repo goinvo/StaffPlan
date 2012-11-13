@@ -123,11 +123,14 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         start: @startDate
         numberOfBars: @numberOfBars
       fragment.appendChild view.render().el
+      true
     @$el.append $(fragment)
+
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @$el.find("#date-target").html dateRangeView.render().el
+
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()

@@ -104,31 +104,19 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
 
   render: ->
     @$el.empty()
-    
-    # The padding of weeks, the eternal padding of weeks :/
+
     range = _.range(@start, @start + @count * 7 * 86400 * 1000, 7 * 86400 * 1000)
+    _.each range, (timestamp) =>
+      unless (@collection.detect (week) -> week.get("beginning_of_week") is timestamp)?
+        @collection.add
+          beginning_of_week: timestamp
+    weeks = @collection.select (week) ->
+      _.include range, week.get("beginning_of_week")
 
-    aggs = _.reduce range, (memo, timestamp) ->
-      date = moment(timestamp)
-      memo["#{date.year()}-#{date.format('w')}"] =
-        cweek: date.format('w')
-        year: date.year()
-        proposed: 0
-        actual_hours: 0
-        estimated_hours: 0
-      memo
-    , {}
-
-    weeks = _.reduce @collection, (memo, element) ->
-      memo["#{element['year']}-#{element['cweek']}"] = element
-      memo
-    , aggs
-
-    visibleWorkWeeks = _.map weeks, (workWeek) ->
-      w = new StaffPlan.Models.WorkWeek workWeek
-      w.formatForTemplate()
-    @$el.append @rowTemplate
-      visibleWorkWeeks: visibleWorkWeeks
+    templateData = _.map weeks, (week) ->
+      week.formatForTemplate()
+    @$el.append StaffPlan.Templates.StaffPlans.work_week_row
+      visibleWorkWeeks: templateData
     @rowFiller = @$el.find('.row-filler').hide()
     
     @

@@ -18,4 +18,4 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
 
 
   inFuture: ->
-    @get("beginning_of_week") > moment().utc().startOf('week').startOf('day')
+    @get("beginning_of_week") > moment().utc().valueOf()
