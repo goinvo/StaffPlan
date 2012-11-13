@@ -41,7 +41,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         assignment.work_weeks.between(@begin, @begin + @count * WEEK_IN_MILLISECONDS)
       
       aggregates = _.reduce weeks, (memo, week) =>
-        console.log week
         obj = memo["#{week['beginning_of_week']}"]
         obj['estimated_hours'] += (week["estimated_hours"] or 0)
         obj['actual_hours'] += (week["actual_hours"] or 0)

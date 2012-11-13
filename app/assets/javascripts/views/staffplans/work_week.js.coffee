@@ -10,12 +10,10 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   render: ->
     @$el.empty()
     
-    workWeeks = @collection.between(_.first @user.view.getYearsAndWeeks, _.last @user.view.getYearsAndWeeks)
-    
     @$el.append StaffPlan.Templates.StaffPlans.work_week_row
-      visibleWorkWeeks: workWeeks.map (workWeek) ->
+      visibleWorkWeeks: @collection.map (workWeek) ->
         week = new StaffPlan.Models.WorkWeek workWeek
-        week.formatForTemplates()
+        week.formatForTemplate()
     @rowFiller = @$el.find('.row-filler').hide()
     
     @
