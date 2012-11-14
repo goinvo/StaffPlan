@@ -16,8 +16,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
-      @render()
-      #@redrawChart()
+      @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
       @redrawBar(message.timestamp, message.value)
@@ -87,7 +86,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     data = @getData()
 
     groups = weeks.selectAll(".bar")
-      .data(data, (d) -> d.cid)
+      .data(data)
       .enter().append("g")
         .attr("class", "week")
         .attr("transform", (d, i) -> "translate(#{i * 40}, 0)")
@@ -144,19 +143,25 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
   redrawChart: ->
     data = @getData()
-    svg = d3.select("svg.user-chart")
+    svg = d3.select(@el)
     groups = svg.selectAll("g.week").data(data)
         .attr("data-timestamp", (d) -> d.beginning_of_week)
+    groups.selectAll("rect")
+      .data (d) ->
+        [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
+      .transition()
+      .delay(500)
+      .ease("linear")
+      .attr("y", (d) => @height - @heightScale(d.value))
+      .attr("height", (d) => @heightScale(d.value))
+      .attr("class", (d) -> d.cssClass)
     groups.selectAll("text")
      .data (d) ->
        [d.total]
+     .transition()
+     .delay(200)
+     .ease("linear")
      .attr 'y', (d) =>
        @height - @heightScale(d) - (if d is 0 then 0 else 10)
      .text (d) ->
        d + ""
-    groups.selectAll("rect")
-      .data (d) ->
-        [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
-      .attr("y", (d) => @height - @heightScale(d.value))
-      .attr("height", (d) => @heightScale(d.value))
-      .attr("class", (d) -> d.cssClass)
