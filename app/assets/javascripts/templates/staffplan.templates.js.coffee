@@ -74,9 +74,9 @@ _templates =
         {{/if}}
         <li class="divider"></li>
         {{#if archived}}
-        <li><a href="#"><i class='icon-check'></i> Unarchive</a></li>
+        <li><a href="#" class="toggle-archived"><i class='icon-check'></i> Unarchive</a></li>
         {{else}}
-        <li><a href="#"><i class='icon-inbox'></i> Archive</a></li>
+        <li><a href="#" class="toggle-archived"><i class='icon-inbox'></i> Archive</a></li>
         {{/if}}
         <li class="divider"></li>
         {{#if proposed}}
@@ -87,13 +87,23 @@ _templates =
       </ul>
       """
     show: '''
-      <div class="grid-row-element fixed-180 sexy">
-        <div class='client-or-project-name'>{{clientName}}</div>
+      <div class="grid-row-element client-name-and-project-name fixed-180 sexy">
+        {{clientName}}
         {{#if showAddProject}}
-        <a class='add-project return-false btn btn-mini' href="/staffplans/{{user_id}}"><i class='icon-plus-sign'></i>Add Project</a>
+        <div class='btn-group pull-right'>
+          <button class="btn btn-mini"><i class="icon-cog"></i></button>
+          <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a class='add-project'><i class='icon-plus-sign'></i>Add Project</a></li>
+            <li class="divider"></li>
+            <li><a href="#" class='destroy-all-assignments return-false'><i class='icon-check'></i> Delete All Assignments</a></li>
+            <li class="divider"></li>
+            <li><a href="#" class='acrhive-all-assignments return-false'><i class='icon-ok-sign'></i> Archive All Assignments</a></li>
+          </ul>
+        </div>
         {{/if}}
       </div>
-      <div class="grid-row-element fixed-180 sexy assignment-actions-target">
+      <div class="grid-row-element fixed-180 sexy client-name-and-project-name assignment-actions-target">
         {{projectName}}
       </div>
       <div class="grid-row-element flex work-weeks"></div>

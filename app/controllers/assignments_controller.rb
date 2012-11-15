@@ -15,9 +15,9 @@ class AssignmentsController < ApplicationController
   end
 
   def update
-    # The proposed field is the ONLY one we can update
+    # The proposed and archived fields are the ONLY ones we can update
     @assignment = Assignment.where(:id => params[:id]).first
-    if @assignment.update_attributes params[:assignment].slice(:proposed)
+    if @assignment.update_attributes params[:assignment].slice(:proposed, :archived)
       respond_with @assignment and return
     else
       render :json => {:status => :unprocessable_entity }

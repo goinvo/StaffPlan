@@ -6,7 +6,10 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     "click a[data-change-page]": "changePage"
     "click a.add-client": "onAddClientClicked"
   
-  onAddClientClicked: ->
+  onAddClientClicked: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    
     @clients.add()
     @$el.append @clients.last().view.render().el
     
@@ -41,7 +44,11 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
       assignments: @model.getAssignments().where
         client_id: client.id
     
-  changePage: (event) -> @dateChanged event
+  changePage: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    
+    @dateChanged event
   
   render: ->
     if @$el.closest('html').length == 0

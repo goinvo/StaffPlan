@@ -13,7 +13,7 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
     proposed: if @get("proposed") then "true" else "false"
     estimated_hours: @get("estimated_hours") or 0
     actual_hours: @get("actual_hours") or 0
-    hasPassedOrIsCurrent: not @inFuture()
+    hasPassedOrIsCurrent: !@inFuture()
     cid: @cid
 
 

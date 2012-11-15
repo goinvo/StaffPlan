@@ -20,10 +20,12 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     @rowTemplate = Handlebars.compile @templates.row
     @start = @options.start
     @count = @options.count
+    
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @start = message.begin
       @count = message.count
       @render()
+      
   events:
     "focus  input[data-work-week-input][data-attribute='estimated_hours']": "showRowFiller"
     "blur   input[data-work-week-input][data-attribute='estimated_hours']": "hideRowFiller"
