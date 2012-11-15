@@ -14,6 +14,10 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
       archived: @assignment.model.get('archived') || false
     @
   
+  leave: ->
+    @off()
+    @remove()
+
   events:
     "click a.delete-assignment": "onDeleteAssignmentClicked"
     "click a.toggle-proposed": "onToggleProposedClicked"

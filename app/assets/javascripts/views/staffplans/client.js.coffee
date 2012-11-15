@@ -31,6 +31,10 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
     
     @
   
+  leave: ->
+    @off()
+    @remove()
+
   events:
     "click a.add-project": "onAddProjectClick"
   

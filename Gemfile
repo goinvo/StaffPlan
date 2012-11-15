@@ -30,6 +30,7 @@ end
 group :development do
   gem 'awesome_print',            require: 'ap'
   gem 'pry',                      require: 'pry'
+  gem 'quiet_assets'
 end
 
 group :test do 

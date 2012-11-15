@@ -1,9 +1,30 @@
 class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
   
+  # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
+  aggregate: (timestamp) ->
+    weeks = _.compact _.flatten @assignments.map (assignment) ->
+      assignment.work_weeks.detect (week) ->
+        parseInt(week.get("beginning_of_week"), 10) is parseInt(timestamp, 10)
+    aggregate = _.reduce weeks, (memo, week) ->
+      memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
+      memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
+      memo['proposed'] += if week.get("proposed") then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
+      memo
+    , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: timestamp}
+    if aggregate.actual_hours isnt 0
+      total: aggregate.actual_hours
+      proposed: 0
+      cssClass: "actuals"
+      beginning_of_week: aggregate.beginning_of_week
+    else
+      total: aggregate.estimated_hours
+      proposed: aggregate.proposed
+      cssClass: "estimates"
+      beginning_of_week: aggregate.beginning_of_week
+
   initialize: ->
-    @model = @options.model
-    
+    @assignments = @model.getAssignments()
     @begin = @options.begin.valueOf()
     @count = @options.count
     @height = 75 || @options.height
@@ -19,29 +40,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
-      # FIXME: Maybe make a function out of this that we can reuse in the getData function (just take timestamp range
-      # and map)
-      weeks = _.flatten @model.getAssignments().map (assignment) ->
-        assignment.work_weeks.detect (week) ->
-          parseInt(week.get("beginning_of_week"), 10) is parseInt(message.timestamp, 10)
-      aggregate = _.reduce weeks, (memo, week) =>
-        memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
-        memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
-        memo['proposed'] += if week["proposed"] then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
-        memo
-      , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: message.timestamp}
-      opts = if aggregate.actual_hours isnt 0
-        total: aggregate.actual_hours
-        proposed: 0
-        cssClass: "actuals"
-        beginning_of_week: aggregate.beginning_of_week
-      else
-        total: aggregate.estimated_hours
-        proposed: aggregate.proposed
-        cssClass: "estimates"
-        beginning_of_week: aggregate.beginning_of_week
-      
-      @redrawBar opts
+      @redrawBar @aggregate(message.timestamp)
+
   leave: ->
     @off()
     @remove()
@@ -49,36 +49,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   getData: ->
       # date = moment().utc()
       range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
-      aggs = _.reduce range, (memo, timestamp) ->
-        memo["#{timestamp}"] =
-          beginning_of_week: timestamp
-          proposed: 0
-          actual_hours: 0
-          estimated_hours: 0
-        memo
-      , {}
-      weeks = _.flatten @model.getAssignments().map (assignment) =>
-        assignment.work_weeks.between(@begin, @begin + @count * WEEK_IN_MILLISECONDS)
-      
-      aggregates = _.reduce weeks, (memo, week) =>
-        obj = memo["#{week['beginning_of_week']}"]
-        obj['estimated_hours'] += (week["estimated_hours"] or 0)
-        obj['actual_hours'] += (week["actual_hours"] or 0)
-        obj['proposed'] += if week["proposed"] then (week["estimated_hours"] or 0) else 0
-        memo
-      , aggs
-      
-      _.map aggregates, (aggregate) ->
-        if aggregate.actual_hours isnt 0
-          total: aggregate.actual_hours
-          proposed: 0
-          cssClass: "actuals"
-          beginning_of_week: aggregate.beginning_of_week
-        else
-          total: aggregate.estimated_hours
-          proposed: aggregate.proposed
-          cssClass: "estimates"
-          beginning_of_week: aggregate.beginning_of_week
+      _.map range, (timestamp) =>
+        @aggregate timestamp
 
   render: ->
     @$el.empty()
@@ -167,7 +139,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .ease("linear")
       .attr 'y', (d) =>
         @height - @heightScale(d) - (if d is 0 then 0 else 10)
-      .text (d) -> 
+      .text (d) ->
         d + ""
 
   redrawChart: ->

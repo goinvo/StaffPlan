@@ -8,6 +8,10 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   client: ->
     StaffPlan.clients.get( @project()?.get('client_id') )
     
+  leave: -> 
+    @off()
+    @remove()
+
   initialize: ->
     @model = @options.model
     @user = @options.user

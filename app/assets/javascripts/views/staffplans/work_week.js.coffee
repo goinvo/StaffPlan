@@ -7,6 +7,10 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     @client = @options.client
     @user = @options.user
         
+  leave: ->
+    @unbind()
+    @remove()
+
   render: ->
     @$el.empty()
     

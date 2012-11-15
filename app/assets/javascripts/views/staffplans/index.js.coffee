@@ -64,19 +64,41 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       count: @numberOfBars
 
   initialize: ->
-    localStorage.setItem "sortCriterion", "name"
-    localStorage.setItem "sortOrder", "asc"
     @users = @options.users
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
     @users.bind "reset", (event) =>
       @render()
+    
+      
+    StaffPlan.Dispatcher.on "membership:disable", (message) =>
+      user = @users.detect (user) -> user.id is message.userId
+      user.membership.save
+        disabled: true
+      , success: (model, response) =>
+          $(message.subview.el).fadeOut 1000, () ->
+            $(@).remove()
+          console.log "Successfully disabled user #{StaffPlan.users.get(message.userId).get('last_name')}"
+      , error: (model, response) ->
+          alert "FAIL"
+      
+      
+    StaffPlan.Dispatcher.on "membership:archive", (message) =>
+      user = @users.detect (user) -> user.id is message.userId
+      user.membership.save
+        archived: true
+      , success: (model, response) =>
+          $(message.subview.el).fadeOut 1000, () ->
+            $(@).remove()
+          console.log "Successfully archived user #{StaffPlan.users.get(message.userId).get('last_name')}"
+      , error: (model, response) ->
+          alert "FAIL"
   render: ->
     @$el.empty()
     fragment = document.createDocumentFragment()
     @$el.append Handlebars.compile @templates.pagination
     
-    @users.each (user) =>
+    _.each (@users.select (user) -> not user.membership.get("archived")), (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
         startDate: @startDate.valueOf()
