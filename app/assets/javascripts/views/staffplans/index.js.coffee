@@ -76,7 +76,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       user.membership.save
         disabled: true
       , success: (model, response) =>
-          $(message.subview.el).fadeOut 1000, () ->
+          $(message.subview.el).slideUp 400, "linear", () ->
             $(@).remove()
           console.log "Successfully disabled user #{StaffPlan.users.get(message.userId).get('last_name')}"
       , error: (model, response) ->
@@ -88,7 +88,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       user.membership.save
         archived: true
       , success: (model, response) =>
-          $(message.subview.el).fadeOut 1000, () ->
+          $(message.subview.el).slideUp 400, "linear", () ->
             $(@).remove()
           console.log "Successfully archived user #{StaffPlan.users.get(message.userId).get('last_name')}"
       , error: (model, response) ->
