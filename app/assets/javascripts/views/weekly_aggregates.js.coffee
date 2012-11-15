@@ -19,8 +19,28 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
-      @redrawBar(message.timestamp, message.value)
-
+      # FIXME: Maybe make a function out of this that we can reuse in the getData function (just take timestamp range
+      # and map)
+      weeks = _.flatten @model.getAssignments().map (assignment) ->
+        assignment.work_weeks.detect (week) ->
+          week.get("beginning_of_week") is message.timestamp
+      aggregate = _.reduce weeks, (memo, week) =>
+        memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
+        memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
+        memo['proposed'] += if week["proposed"] then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
+        memo
+      , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: message.timestamp}
+      foo = if aggregate.actual_hours isnt 0
+        total: aggregate.actual_hours
+        proposed: 0
+        cssClass: "actuals"
+        beginning_of_week: aggregate.beginning_of_week
+      else
+        total: aggregate.estimated_hours
+        proposed: aggregate.proposed
+        cssClass: "estimates"
+        beginning_of_week: aggregate.beginning_of_week
+      @redrawBar(foo)
   leave: ->
     @off()
     @remove()
@@ -70,10 +90,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .domain([0, @maxHeight])
       .range([0, @height - 20])
     
-    # The data we're visualizing
-    # data = @collection.map (aggregate) ->
-    #   aggregate.getTotals()
-
     # The SVG itself contains a g to group all the elements
     # We might need that in the future if we want to apply transformations
     # to all bars
@@ -125,21 +141,33 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .remove()
     @
 
-  redrawBar: (timestamp, value) ->
+  redrawBar: (options) ->
+    window.heightScale = @heightScale
     svg = d3.select('svg g.weeks')
-    svg.selectAll("g.week[data-timestamp=\"#{timestamp}\"] rect").data([{value: value, cssClass: "estimates"}, {value: value / 2, cssClass: "proposed estimates"}])
+    # Find the <g> that groups the two <rect> elements used for the total and the proposed hours
+    # and assign the new data to it
+    formattedData = [
+      { value: options.total, cssClass: "estimates" },
+      { value: options.proposed, cssClass: "estimates proposed" }
+    ]
+    svg.selectAll("g.week[data-timestamp=\"#{options.beginning_of_week}\"] rect").data(formattedData)
       .transition()
-      .delay(1000)
+      .delay(500)
+      .ease("linear")
+      .attr("data-value", (d) -> d.value)
       .attr "y", (d) =>
         @height - @heightScale(d.value)
       .attr "height", (d) =>
         @heightScale(d.value)
-    svg.select("g.weeks [data-timestamp=\"#{timestamp}\"] text").data(value)
+    # Update the text label as well with the new total value
+    svg.select("g.weeks [data-timestamp=\"#{options.beginning_of_week}\"] text").data([options.total])
       .transition()
-      .delay(1000)
+      .delay(500)
+      .ease("linear")
       .attr 'y', (d) =>
         @height - @heightScale(d) - (if d is 0 then 0 else 10)
-      .text((d) -> d + "")
+      .text (d) -> 
+        d + ""
 
   redrawChart: ->
     data = @getData()

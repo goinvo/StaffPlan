@@ -16,7 +16,6 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     templateData = _.map weeks, (week) ->
       week.formatForTemplate()
 
-    console.log templateData
     @$el.append StaffPlan.Templates.StaffPlans.work_week_row
       visibleWorkWeeks: templateData
 

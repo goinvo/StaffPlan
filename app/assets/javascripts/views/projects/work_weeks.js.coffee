@@ -59,15 +59,13 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     workWeek = @collection.getByCid cid
 
     element = $(event.currentTarget)
-    StaffPlan.Dispatcher.trigger "week:updated",
-      cweek: element.data "cweek"
-      year: element.data "year"
-      value: element.val()
-      proposed: element.data "proposed"
 
     workWeek.save attributes,
-      success: (lol, foo, bar, baz) ->
-        console.log('success')
+      success: (lol, foo, bar, baz) =>
+        #console.log('success')
+        if event.type is "change"
+          StaffPlan.Dispatcher.trigger "week:updated",
+            timestamp: element.data("timestamp")
       error: (wat, another, argument, here) ->
         alert('fail')
   showRowFiller: (event) ->
