@@ -23,14 +23,14 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       # and map)
       weeks = _.flatten @model.getAssignments().map (assignment) ->
         assignment.work_weeks.detect (week) ->
-          week.get("beginning_of_week") is message.timestamp
+          parseInt(week.get("beginning_of_week"), 10) is parseInt(message.timestamp, 10)
       aggregate = _.reduce weeks, (memo, week) =>
         memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
         memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
         memo['proposed'] += if week["proposed"] then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
         memo
       , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: message.timestamp}
-      foo = if aggregate.actual_hours isnt 0
+      opts = if aggregate.actual_hours isnt 0
         total: aggregate.actual_hours
         proposed: 0
         cssClass: "actuals"
@@ -40,7 +40,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         proposed: aggregate.proposed
         cssClass: "estimates"
         beginning_of_week: aggregate.beginning_of_week
-      @redrawBar(foo)
+      
+      @redrawBar opts
   leave: ->
     @off()
     @remove()
