@@ -3,16 +3,15 @@ Handlebars.registerHelper 'staffplans_show_calendarYears', (dates) ->
       
 Handlebars.registerHelper 'staffplans_show_calendarMonths', (dates) ->
   currentMonthName = null
-      
   _.reduce dates, (html, date, index, dates) ->
     cell_content = ''
           
     unless currentMonthName?
-      currentMonthName = date.xdate.toString 'MMM'
+      currentMonthName = moment(date).format "MMM"
       cell_content += "<span class='month-name'>#{currentMonthName}</span>"
     else
-      if date.xdate.toString('MMM') != currentMonthName
-        currentMonthName = date.xdate.toString 'MMM'
+      if moment(date).format('MMM') != currentMonthName
+        currentMonthName = moment(date).format "MMM"
         cell_content += "<span class='month-name'>#{currentMonthName}</span>"
         
     html += "<div>#{cell_content}</div>"
@@ -22,12 +21,12 @@ Handlebars.registerHelper 'staffplans_show_calendarMonths', (dates) ->
       
 Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
   _.reduce dates, (html, date, index, dates) ->
-    html += "<div>W#{Math.ceil(date.mday / 7)}</div>"
+    html += "<div>W#{Math.ceil(moment(date).date() / 7)}</div>"
     html
   , ""
 
 
-_templates = 
+_templates =
   show:
     frame: '''
     <div id="user-select" class="grid-row user-info padded">
@@ -122,14 +121,14 @@ _templates =
     <div class="grid-row flex">
       <div class='row-label'>Plan</div>
       {{#each visibleWorkWeeks}}
-      <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+      <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
       {{/each}}
     </div>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
         {{#if hasPassedOrIsCurrent}}
-        <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} "data-proposed="{{proposed}}" data-cweek="{{cweek}}" data-year="{{year}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+        <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
         {{/if}}
       {{/each}}
     </div>

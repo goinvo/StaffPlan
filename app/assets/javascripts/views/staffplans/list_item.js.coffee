@@ -3,9 +3,6 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   initialize: ->
     @startDate = @options.startDate
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
-      @startDate = message.begin
-      @render()
 
   templates:
     staffplanListItem: '''
