@@ -8,7 +8,7 @@
 //= require modernizr
 //= require jquery
 //= require jquery-ujs
-//= require xdate
+//= require moment
 //= require d3.v2
 //= require bootstrap
 

@@ -3,7 +3,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   
   initialize: ->
     @model = @options.model
-    @begin = @options.begin
+    
+    @begin = @options.begin.valueOf()
     @count = @options.count
     @height = 75 || @options.height
     @barWidth = 35 || @options.barWidth
@@ -15,35 +16,55 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     StaffPlan.Dispatcher.on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
-      @render()
-      #@redrawChart()
+      @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
-      @redrawBar(message.cweek, message.year, message.value)
+      # FIXME: Maybe make a function out of this that we can reuse in the getData function (just take timestamp range
+      # and map)
+      weeks = _.flatten @model.getAssignments().map (assignment) ->
+        assignment.work_weeks.detect (week) ->
+          parseInt(week.get("beginning_of_week"), 10) is parseInt(message.timestamp, 10)
+      aggregate = _.reduce weeks, (memo, week) =>
+        memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
+        memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
+        memo['proposed'] += if week["proposed"] then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
+        memo
+      , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: message.timestamp}
+      opts = if aggregate.actual_hours isnt 0
+        total: aggregate.actual_hours
+        proposed: 0
+        cssClass: "actuals"
+        beginning_of_week: aggregate.beginning_of_week
+      else
+        total: aggregate.estimated_hours
+        proposed: aggregate.proposed
+        cssClass: "estimates"
+        beginning_of_week: aggregate.beginning_of_week
+      
+      @redrawBar opts
   leave: ->
     @off()
     @remove()
   # We need to retrieve the aggregates for the given date range
   getData: ->
-      date = new XDate()
-      
-      aggs = _.reduce _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS), (memo, timestamp) ->
-        date.setTime(timestamp)
-        memo["#{date.getFullYear()}-#{date.getWeek()}"] =
-          cweek: date.getWeek()
-          year: date.getFullYear()
+      # date = moment().utc()
+      range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
+      aggs = _.reduce range, (memo, timestamp) ->
+        memo["#{timestamp}"] =
+          beginning_of_week: timestamp
           proposed: 0
           actual_hours: 0
           estimated_hours: 0
         memo
       , {}
       weeks = _.flatten @model.getAssignments().map (assignment) =>
-        assignment.work_weeks.between(@begin, @begin + (@count - 1) * WEEK_IN_MILLISECONDS)
+        assignment.work_weeks.between(@begin, @begin + @count * WEEK_IN_MILLISECONDS)
       
-      aggregates = _.reduce weeks, (memo, week) ->
-        memo["#{week['year']}-#{week['cweek']}"]['estimated_hours'] += (week["estimated_hours"] or 0)
-        memo["#{week['year']}-#{week['cweek']}"]['actual_hours'] += (week["actual_hours"] or 0)
-        memo["#{week['year']}-#{week['cweek']}"]['proposed'] += if week["proposed"] then (week["estimated_hours"] or 0) else 0
+      aggregates = _.reduce weeks, (memo, week) =>
+        obj = memo["#{week['beginning_of_week']}"]
+        obj['estimated_hours'] += (week["estimated_hours"] or 0)
+        obj['actual_hours'] += (week["actual_hours"] or 0)
+        obj['proposed'] += if week["proposed"] then (week["estimated_hours"] or 0) else 0
         memo
       , aggs
       
@@ -52,14 +73,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
           total: aggregate.actual_hours
           proposed: 0
           cssClass: "actuals"
-          cweek: aggregate.cweek
-          year: aggregate.year
+          beginning_of_week: aggregate.beginning_of_week
         else
           total: aggregate.estimated_hours
           proposed: aggregate.proposed
           cssClass: "estimates"
-          cweek: aggregate.cweek
-          year: aggregate.year
+          beginning_of_week: aggregate.beginning_of_week
 
   render: ->
     @$el.empty()
@@ -72,10 +91,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .domain([0, @maxHeight])
       .range([0, @height - 20])
     
-    # The data we're visualizing
-    # data = @collection.map (aggregate) ->
-    #   aggregate.getTotals()
-
     # The SVG itself contains a g to group all the elements
     # We might need that in the future if we want to apply transformations
     # to all bars
@@ -88,12 +103,11 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     data = @getData()
 
     groups = weeks.selectAll(".bar")
-      .data(data, (d) -> d.cid)
+      .data(data)
       .enter().append("g")
         .attr("class", "week")
         .attr("transform", (d, i) -> "translate(#{i * 40}, 0)")
-        .attr("data-cweek", (d) -> d.cweek)
-        .attr("data-year", (d) -> d.year)
+        .attr("data-timestamp", (d) -> d.beginning_of_week)
 
     # The label for the bar (number of hours aggregated for a given week)
     labels = groups.selectAll("text").data (d) ->
@@ -128,38 +142,55 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .remove()
     @
 
-  redrawBar: (cweek, year, value) ->
+  redrawBar: (options) ->
+    window.heightScale = @heightScale
     svg = d3.select('svg g.weeks')
-    svg.selectAll("g.week[data-cweek=\"#{cweek}\"][data-year=\"#{year}\"] rect").data([{value: value, cssClass: "estimates"}, {value: value / 2, cssClass: "proposed estimates"}])
+    # Find the <g> that groups the two <rect> elements used for the total and the proposed hours
+    # and assign the new data to it
+    formattedData = [
+      { value: options.total, cssClass: "estimates" },
+      { value: options.proposed, cssClass: "estimates proposed" }
+    ]
+    svg.selectAll("g.week[data-timestamp=\"#{options.beginning_of_week}\"] rect").data(formattedData)
       .transition()
-      .delay(1000)
+      .delay(500)
+      .ease("linear")
+      .attr("data-value", (d) -> d.value)
       .attr "y", (d) =>
         @height - @heightScale(d.value)
       .attr "height", (d) =>
         @heightScale(d.value)
-    svg.select("g.weeks [data-cweek=\"#{cweek}\"][data-year=\"#{year}\"] text").data(value)
+    # Update the text label as well with the new total value
+    svg.select("g.weeks [data-timestamp=\"#{options.beginning_of_week}\"] text").data([options.total])
       .transition()
-      .delay(1000)
+      .delay(500)
+      .ease("linear")
       .attr 'y', (d) =>
         @height - @heightScale(d) - (if d is 0 then 0 else 10)
-      .text((d) -> d + "")
+      .text (d) -> 
+        d + ""
 
   redrawChart: ->
     data = @getData()
-    svg = d3.select("svg.user-chart")
+    svg = d3.select(@el)
     groups = svg.selectAll("g.week").data(data)
-        .attr("data-cweek", (d) -> d.cweek)
-        .attr("data-year", (d) -> d.year)
+        .attr("data-timestamp", (d) -> d.beginning_of_week)
+    groups.selectAll("rect")
+      .data (d) ->
+        [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
+      .transition()
+      .delay(500)
+      .ease("linear")
+      .attr("y", (d) => @height - @heightScale(d.value))
+      .attr("height", (d) => @heightScale(d.value))
+      .attr("class", (d) -> d.cssClass)
     groups.selectAll("text")
      .data (d) ->
        [d.total]
+     .transition()
+     .delay(200)
+     .ease("linear")
      .attr 'y', (d) =>
        @height - @heightScale(d) - (if d is 0 then 0 else 10)
      .text (d) ->
        d + ""
-    groups.selectAll("rect")
-      .data (d) ->
-        [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
-      .attr("y", (d) => @height - @heightScale(d.value))
-      .attr("height", (d) => @heightScale(d.value))
-      .attr("class", (d) -> d.cssClass)

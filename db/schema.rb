@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120922205053) do
+ActiveRecord::Schema.define(:version => 20121112204741) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "user_id"
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20120922205053) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_id"
+    t.decimal  "beginning_of_week", :precision => 15, :scale => 0
   end
 
 end

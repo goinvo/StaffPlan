@@ -20,17 +20,16 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
       @render()
 
   render: ->
-    d = new XDate()
     data = _.map @collection, (timestamp) ->
-      dd = d.setTime(timestamp)
-      weekNumber = Math.ceil(dd.getDate() / 7)
+      m = moment(timestamp)
+      weekNumber = Math.ceil(m.date() / 7)
       switch weekNumber
         when 1
-          month: dd.toString("MMM")
+          month: m.format("MMM")
           week: "W" + weekNumber
         when 2
-          if dd.getMonth() is 0
-            month: "(#{dd.getFullYear()})"
+          if m.month() is 0
+            month: "(#{m.year()})"
             week: "W" + weekNumber
           else
             month: ""

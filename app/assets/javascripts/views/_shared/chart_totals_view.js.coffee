@@ -17,9 +17,7 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   *###
   render: (date_range, models) ->
     # Grab data
-    data = (get_data date_range, models).sort (a,b) ->
-      [[a ,b], [c,d]] = _.map [a.id, b.id], (e) -> e.split("-")
-      ( (a - c)/Math.abs(a-c) ) or ((b-d)/Math.abs(b-d)) or 0
+    data = (get_data date_range, models)
     # Scale
     ratio = get_ratio @maxHeight, data
     height = _.bind get_height, null, ratio
@@ -31,8 +29,6 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
       .data(data, (d) -> d.id)
     
     list
-      .style("background-image", get_gradient_moz)
-      .style("background-image", get_gradient_webkit)
       .attr("class", get_class)
       .select("span")
         .text(get_value)
@@ -40,8 +36,6 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
     list.enter().append("li")
       .attr("class", get_class)
       .style("height", height)
-      .style("background-image", get_gradient_moz)
-      .style("background-image", get_gradient_webkit)
         .append("span")
         .text(get_value)
 
@@ -56,18 +50,17 @@ class window.StaffPlan.Views.Shared.ChartTotalsView extends Backbone.View
   * @returns {!Object}          Mapping of data to weeks for a given date range.
 *###
 get_data = (date_range, models) ->
-
   # At this point, models should be either an array of User objects or an array of Project objects
   ww = _.map models, (p) ->
     _.map date_range, (date) ->
       p.work_weeks.find (m) ->
-        if m.get('cweek') == date.cweek and m.get('year') == date.year
+        if m.get("beginning_of_week") is date
           m.set "date", date
           true
           
   # Format data
   ww = _.groupBy _.compact(_.flatten(ww)), (w) ->
-    "#{w.get('year')}-#{w.get('cweek')}"
+    "#{w.get("date")}"
 
   # Total hours for each week
   _.map ww, (hours, key) =>
@@ -117,24 +110,24 @@ get_proposed_value = (d) ->
     total
 
 get_gradient_moz = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
-  "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+  return ""# if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
+  # percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
+  # "-moz-linear-gradient(to bottom, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
   
 get_gradient_webkit = (d) ->
-  return "" if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-  percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
-  "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
+  return "" #if d.date.weekHasPassed || d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
+  # percentage = 100 - ((Math.floor(get_proposed_value(d) / get_value(d) * 10000) / 100) || 0)
+  # "-webkit-linear-gradient(top, #5E9B69 " + percentage + "%,  #7EBA8D 0%)"
 ###*
   * Determine the correct class for a given week.
   * @param {!@Object} d Object of week and data.
   * @returns {!String} Class for week.
 *###
 get_class = (d) ->
-  if d.date.year == (new XDate().getUTCFullYear()) and d.date.cweek == (new XDate().getWeek())
-    if d.actual == 0 then "present" else "passed"
+  if d.date.year is moment().year() and d.date.cweek is parseInt(moment().format('w'), 10)
+    if d.actual is 0 then "present" else "passed"
   else if d.date.weekHasPassed
-    if d.actual == 0 then "" else "passed"
+    if d.actual is 0 then "" else "passed"
   else
     "future"
 

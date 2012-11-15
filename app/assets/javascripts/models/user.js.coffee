@@ -22,6 +22,16 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
       memo
     , {}
 
+  # This function returns the number of estimated hours entered in the future by the user
+  workload: ->
+    weeks = @getAssignments().map (assignment) ->
+      assignment.work_weeks.select (week) ->
+        week.get("beginning_of_week") > moment().utc().valueOf()
+    _.reduce (_.flatten weeks), (memo, week) ->
+      memo += parseInt(week.get("estimated_hours"), 10) or 0
+      memo
+    , 0
+
   toJSON: ->
     first_name: @get("first_name")
     last_name: @get("last_name")

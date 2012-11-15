@@ -25,13 +25,12 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
       user: @user
 
   ensureWorkWeekRange: =>
-    # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed to all inputs are rendered.
-    for meta in @user.view.getYearsAndWeeks()
-      unless _.any(@model.work_weeks.where({cweek: meta.cweek, year: meta.year}))
+    # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed so all inputs are rendered.
+    for timestamp in @user.view.getYearsAndWeeks()
+      unless (@model.work_weeks.detect (week) -> timestamp is week.get("beginning_of_week"))
         @model.work_weeks.add
-          cweek: meta.cweek
-          year: meta.year
-  
+          beginning_of_week: timestamp
+
   isDeletable: ->
     !@model.work_weeks.any (ww) -> ww.get('actual_hours')? && ww.get('actual_hours') > 0
     
@@ -49,6 +48,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
       @ensureWorkWeekRange()
       
+      # We should set the views' element to the following HTML elements instead
+      # That way you just render() every view and it does the same thing automatically
       @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
       @$el.find( 'div.work-weeks' )
         .append(@workWeeksView.render().el)
@@ -74,7 +75,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     client = StaffPlan.clients.get(@model.get('client_id'))
     
     unless client?
-      client = StaffPlan.clients.where(name: clientNameValue)[0]
+      client = StaffPlan.clients.detect (client) ->
+        client.get("name") is clientNameValue
       
     unless client?
       StaffPlan.addClientByName clientNameValue, (client, reponse) =>
@@ -84,7 +86,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
   addProjectByNameAndClient: (client) ->
     projectNameValue = @$el.find('[data-model="Project"][data-attribute="name"]').val()
-    unless (project = _.first StaffPlan.projects.where(name: projectNameValue, client_id: client.get('id')))?
+    project = StaffPlan.projects.detect (project) ->
+      ( project.get("name") is projectNameValue ) and ( project.get("client_id") is client.get('id') )
+    unless project?
       StaffPlan.addProjectByNameAndClient projectNameValue, client, (project, response) =>
         @_save project
     else

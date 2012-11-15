@@ -9,20 +9,16 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
         
   render: ->
     @$el.empty()
-    yearsAndWeeks = _.reduce @user.view.getYearsAndWeeks(), (memo, dateMeta) ->
-      memo[dateMeta.year] ||= []
-      memo[dateMeta.year].push dateMeta.cweek
-      memo
-    , {}, @
     
-    workWeeks = @collection.filter (workWeek) =>
-      yearsAndWeeks[workWeek.get('year')] != undefined && _.include(yearsAndWeeks[workWeek.get('year')], workWeek.get('cweek'))
-    
+    weeks = @collection.filter (week) =>
+      _.include(@user.view.getYearsAndWeeks(), week.get("beginning_of_week"))
+   
+    templateData = _.map weeks, (week) ->
+      week.formatForTemplate()
+
     @$el.append StaffPlan.Templates.StaffPlans.work_week_row
-      visibleWorkWeeks: workWeeks.map (workWeek) -> _.extend workWeek.attributes,
-        cid: workWeek.cid
-        hasPassedOrIsCurrent: workWeek.hasPassedOrIsCurrent()
-    
+      visibleWorkWeeks: templateData
+
     @rowFiller = @$el.find('.row-filler').hide()
     
     @
