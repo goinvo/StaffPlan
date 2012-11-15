@@ -53,6 +53,9 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         @aggregate timestamp
 
   render: ->
+    data = @getData()
+    busiestWeek = _.max data, (week) ->
+      week.total
     @$el.empty()
     svg = d3.select(@el)
       .attr('width', @chartWidth)
@@ -60,9 +63,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
     # Scale all the heights so that we don't get overflow on the y-axis
     @heightScale = d3.scale.linear()
-      .domain([0, @maxHeight])
-      .range([0, @height - 20])
-    
+      .domain([0, busiestWeek['total']])
+      .rangeRound([0, @height - 20])
     # The SVG itself contains a g to group all the elements
     # We might need that in the future if we want to apply transformations
     # to all bars
@@ -72,7 +74,6 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
-    data = @getData()
 
     groups = weeks.selectAll(".bar")
       .data(data)
@@ -115,7 +116,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     @
 
   redrawBar: (options) ->
-    window.heightScale = @heightScale
+    busiestWeek = _.max options, (week) ->
+      week.total
     svg = d3.select('svg g.weeks')
     # Find the <g> that groups the two <rect> elements used for the total and the proposed hours
     # and assign the new data to it
@@ -144,6 +146,11 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
   redrawChart: ->
     data = @getData()
+    busiestWeek = _.max data, (week) ->
+      week.total
+    @heightScale = d3.scale.linear()
+      .domain([0, busiestWeek['total']])
+      .rangeRound([0, @height - 20])
     svg = d3.select(@el)
     groups = svg.selectAll("g.week").data(data)
         .attr("data-timestamp", (d) -> d.beginning_of_week)
