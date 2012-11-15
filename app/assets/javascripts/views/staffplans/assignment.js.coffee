@@ -16,8 +16,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     @$el.data('cid', @cid)
     
     @model.bind 'change:id', => @render()
-    @assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
-      assignment: @
+    
     @assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
       assignment: @
     @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
@@ -38,6 +37,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     if @model.isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
         showClientInput: @model.client.isNew()
+        
     else
       @$el.html StaffPlan.Templates.StaffPlans.assignment_show
         showAddProject: @index == 0
@@ -48,13 +48,15 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
       @ensureWorkWeekRange()
       
+      @assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
+        assignment: @
+        
       # We should set the views' element to the following HTML elements instead
       # That way you just render() every view and it does the same thing automatically
       @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
       @$el.find( 'div.work-weeks' )
         .append(@workWeeksView.render().el)
       @$el.append(@assignmentTotalsView.render().el)
-    
     @
   
   events:

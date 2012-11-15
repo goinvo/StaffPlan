@@ -94,7 +94,7 @@ _templates =
           <button class="btn btn-mini"><i class="icon-cog"></i></button>
           <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a class='add-project return-false'><i class='icon-plus-sign'></i>Add Project</a></li>
+            <li><a class='add-project'><i class='icon-plus-sign'></i>Add Project</a></li>
             <li class="divider"></li>
             <li><a href="#" class='destroy-all-assignments return-false'><i class='icon-check'></i> Delete All Assignments</a></li>
             <li class="divider"></li>

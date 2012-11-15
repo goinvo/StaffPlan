@@ -34,7 +34,10 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
   events:
     "click a.add-project": "onAddProjectClick"
   
-  onAddProjectClick: ->
+  onAddProjectClick: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+    
     @assignments.add
       user_id: @user.get('id')
       client_id: @model.get('id')

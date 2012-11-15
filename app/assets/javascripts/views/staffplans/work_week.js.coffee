@@ -15,7 +15,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
    
     templateData = _.map weeks, (week) ->
       week.formatForTemplate()
-
+    
     @$el.append StaffPlan.Templates.StaffPlans.work_week_row
       visibleWorkWeeks: templateData
 
@@ -24,13 +24,13 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     @
   
   events:
-    "focus  input[data-work-week-input][data-attribute='estimated_hours']": "showRowFiller"
-    "blur   input[data-work-week-input][data-attribute='estimated_hours']": "hideRowFiller"
-    "keyup  input[data-work-week-input][data-attribute='estimated_hours']": "queueEstimatedUpdateOrCreate"
-    "keyup  input[data-work-week-input][data-attribute='actual_hours']":    "queueActualUpdateOrCreate"
-    "change input[data-work-week-input][data-attribute='estimated_hours']": "queueEstimatedUpdateOrCreate"
-    "change input[data-work-week-input][data-attribute='actual_hours']":    "queueActualUpdateOrCreate"
-    "click  .row-filler": "fillNextRows"
+    "focus  input[data-work-week-input][data-attribute='estimated_hours']"  : "showRowFiller"
+    "blur   input[data-work-week-input][data-attribute='estimated_hours']"  : "hideRowFiller"
+    "keyup  input[data-work-week-input][data-attribute='estimated_hours']"  : "queueEstimatedUpdateOrCreate"
+    "keyup  input[data-work-week-input][data-attribute='actual_hours']"     : "queueActualUpdateOrCreate"
+    "change input[data-work-week-input][data-attribute='estimated_hours']"  : "queueEstimatedUpdateOrCreate"
+    "change input[data-work-week-input][data-attribute='actual_hours']"     : "queueActualUpdateOrCreate"
+    "click  .row-filler"                                                    : "fillNextRows"
   
   queueEstimatedUpdateOrCreate: (event) ->
     $currentTarget = $( event.currentTarget )

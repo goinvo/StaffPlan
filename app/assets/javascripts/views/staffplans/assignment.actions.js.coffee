@@ -10,7 +10,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
         @render()
       
     @assignment.model.work_weeks.bind 'change', (ww) =>
-      # debugger
+      # debugger  
       @render()
     
   render: ->
