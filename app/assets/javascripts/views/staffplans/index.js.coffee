@@ -16,6 +16,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
               <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
             </ul>
           </div>
+          <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
         </div>
       </div>
       <div class="row-fluid date-paginator"> 
@@ -35,7 +36,14 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   events:
     "click div.date-paginator a.pagination": "paginate"
     "click ul.dropdown-menu.sort-users li a": "sortUsers"
+    "click button.btn-primary[data-filter]": "toggleFilter"
  
+  toggleFilter: (event) ->
+    filter = localStorage.getItem("staffplanFilter")
+    models = if filter is "inactive" then StaffPlan.users.active() else StaffPlan.users.inactive()
+    localStorage.setItem("staffplanFilter", if filter is "active" then "inactive" else "active")
+    @users.reset models
+
   sortUsers: (event) ->
     event.stopPropagation()
     event.preventDefault()
@@ -64,41 +72,40 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       count: @numberOfBars
 
   initialize: ->
-    @users = @options.users
+    localStorage.setItem("staffplanFilter", "active")
+    @users = new StaffPlan.Collections.Users @options.users.active()
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
     @users.bind "reset", (event) =>
       @render()
-    
+   
+
       
     StaffPlan.Dispatcher.on "membership:disable", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save
-        disabled: true
+        disabled: not user.membership.get("disabled")
       , success: (model, response) =>
           $(message.subview.el).slideUp 400, "linear", () ->
             $(@).remove()
-          console.log "Successfully disabled user #{StaffPlan.users.get(message.userId).get('last_name')}"
       , error: (model, response) ->
           alert "FAIL"
-      
       
     StaffPlan.Dispatcher.on "membership:archive", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save
-        archived: true
+        archived: not user.membership.get("archived")
       , success: (model, response) =>
           $(message.subview.el).slideUp 400, "linear", () ->
             $(@).remove()
-          console.log "Successfully archived user #{StaffPlan.users.get(message.userId).get('last_name')}"
       , error: (model, response) ->
           alert "FAIL"
+
   render: ->
     @$el.empty()
     fragment = document.createDocumentFragment()
     @$el.append Handlebars.compile @templates.pagination
-    
-    _.each (@users.select (user) -> not user.membership.get("archived")), (user) =>
+    @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
         startDate: @startDate.valueOf()
