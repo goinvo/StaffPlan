@@ -71,6 +71,15 @@ ul {
 //\\//\\//\\//\\//\\
 //     Header     \\
 //\\//\\//\\//\\//\\
+
+body > div.current-week-highlighter {
+  z-index: -400;
+  background-color: #FCFFFC;
+  width: 35px;
+  height: 2000px;
+  position: fixed;
+}
+
 body > header {
   margin: 0;
   padding: 6px 0;
