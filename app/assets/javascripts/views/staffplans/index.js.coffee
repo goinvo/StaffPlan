@@ -70,10 +70,8 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     m = moment()
     timestamp = m.utc().startOf("day").subtract("days", m.day() - 1).valueOf()
     if (timestamp >= @startDate.valueOf()) and (timestamp <= (@startDate.valueOf() + (@numberOfBars - 1) * 7 * 86400 * 1000))
-      console.log "SHOW"
       $('.current-week-highlighter').show()
     else
-      console.log "HIDE"
       $('.current-week-highlighter').hide()
     StaffPlan.Dispatcher.trigger "date:changed",
       begin: @startDate.valueOf()
