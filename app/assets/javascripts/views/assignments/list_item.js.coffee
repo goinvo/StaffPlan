@@ -1,8 +1,8 @@
 class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
-  className: "user-list-item row-fluid"
+  className: "user-list-item list-item"
   templates:
     userItem: '''
-      <div class="user-info span2">
+      <div class="user-info fixed-180">
         <a href="/users/{{user.id}}">
           <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
           <span class='name'>
@@ -10,7 +10,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
           </span>
         </a>
       </div>
-      <div class="user-hour-inputs span10">
+      <div class="user-hour-inputs flex">
       </div>
     '''
 

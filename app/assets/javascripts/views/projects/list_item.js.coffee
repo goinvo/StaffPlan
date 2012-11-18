@@ -1,5 +1,5 @@
 class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
-  className: "row-fluid project-list-item"
+  className: "row-fluid project-list-item list-item"
   templates:
     projectListItem: '''
     <div class='project-info span2'>

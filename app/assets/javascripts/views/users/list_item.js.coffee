@@ -1,7 +1,7 @@
 class window.StaffPlan.Views.Users.ListItem extends Backbone.View
   templates:
     userListItem: '''
-    <li class="user-list-item" data-user-id="{{user.id}}">
+    <li class="user-list-item list-item" data-user-id="{{user.id}}">
       <div class='user-info'>
         <a href="/users/{{user.id}}">
           <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />

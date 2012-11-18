@@ -1,5 +1,5 @@
 class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
-  className: "row-fluid staffplan-list-item"
+  className: "row-fluid staffplan-list-item list-item"
   initialize: ->
     @startDate = @options.startDate
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem

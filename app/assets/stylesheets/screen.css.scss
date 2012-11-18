@@ -81,12 +81,17 @@ body > div.current-week-highlighter {
   position: fixed;
 }
 
+// Nav sprites
+$icons-spacing: 20px;
+@import "icons/*.png";
+
 body > header {
   margin: 0;
   padding: 6px 0;
   line-height: 24px;
   border-bottom: 1px solid #cccccc;
   @include box-shadow(0 1px 0 white);
+  
   .inner {
     position: relative;
     margin: 0 auto;
@@ -94,11 +99,26 @@ body > header {
     width: 100%;
     @include box-sizing(border-box);
   }
+  
   ul {
     display: inline;
     margin: 0;
     padding: 0;
     list-style-type: none;
+    
+    li#nav-my-staff-plan a {
+      @include icons-sprite(chart);
+    }
+    li#nav-all-staff a {
+      @include icons-sprite(people);
+    }
+    li#nav-clients a {
+      @include icons-sprite(factory);
+    }
+    li#nav-projects a {
+      @include icons-sprite(cube);
+    }
+    
     li {
       display: inline-block;
       margin-left: 5px;
@@ -121,43 +141,6 @@ body > header {
   }
 }
 
-// Nav sprites
-$icons-spacing: 20px;
-
-@import "icons/*.png";
-
-body > header {
-  ul {
-    li#nav-my-staff-plan a {
-      @include icons-sprite(chart);
-    }
-    li#nav-all-staff a {
-      @include icons-sprite(people);
-    }
-    li#nav-clients a {
-      @include icons-sprite(factory);
-    }
-    li#nav-projects a {
-      @include icons-sprite(cube);
-    }
-  }
-}
-
-body#staffplans {
-  section.main {
-    .project-list {
-      .headers {
-        .client-name span {
-          @include icons-sprite(factory-flat);
-        }
-        .project-name span {
-          @include icons-sprite(cube-flat);
-        }
-      }
-    }
-  }
-}
-
 //\\//\\//\\//\\//\\
 //      Main      \\
 //\\//\\//\\//\\//\\
@@ -173,16 +156,19 @@ section.main {
     padding-right: 0;
     padding-left: 0;
   }
+  
   section {
     > header {
       padding-top: 30px;
       margin-bottom: 10px;
+      
       h2 {
         display: inline-block;
         margin-right: 25px;
         line-height: 35px;
         font-size: 18px;
       }
+      
       > a {
         display: inline-block;
         padding: 6px;
@@ -204,37 +190,32 @@ section.main {
 
 section.main {
   margin: 0 auto;
+  
   .content {
     padding: 10px;
     min-height: 400px;
-}
-div.date-paginator, div.project-list-item, div.staffplan-list-item {
-  margin-top: 32px;
-  margin-left: 25px; // Align with ul.slick
-}
+  }
+  
+  div.date-paginator, div.list-item {
+    margin-top: 32px;
+    margin-left: 25px; // Align with ul.slick
+  }
 
-div.date-paginator #date-target {
-  div.date-range {
-    div.month-names {
-      span.month-name {
-        display: inline-block;
-        width: 35px;
-        margin-right: 2px;
-        height: 25px;
-        text-align: center
-        }
-      }
-      div.week-numbers {
-        span.week-number {
-          display: inline-block;
-          width: 35px;
-          margin-right: 2px;
-          height: 25px;
-          text-align: center
-        }
-      }
-    }
-  }  
+  span.month-name {
+    display: inline-block;
+    width: 35px;
+    margin-right: 2px;
+    height: 25px;
+    text-align: center
+  }
+  
+  span.week-number {
+    display: inline-block;
+    width: 35px;
+    margin-right: 2px;
+    height: 25px;
+    text-align: center
+  }
 }
 
 .client-name {
@@ -257,14 +238,12 @@ body#clients.show {
   
 section.main {
 
-  .project-list-item, .user-list-item, .staffplan-list-item {
-    section.work-weeks input, div.row-label {
-      display: inline-block;
-      width: 35px;
-      margin-right: 2px;
-      text-align: center;
-      height: 25px
-    }
+  section.work-weeks input, div.row-label {
+    display: inline-block;
+    width: 35px;
+    margin-right: 2px;
+    text-align: center;
+    height: 25px
   }
 
   div.project-show {
@@ -275,13 +254,8 @@ section.main {
 
 
 
-  //section {
-  div.project-header.row-fluid {
-    div.chart-container {
-      svg.user-chart {
-        margin-left: 40px;
-      }  
-    } 
+  svg.user-chart {
+    margin-left: 40px;
   }
   ul.slick {
     list-style-type: none;
@@ -314,7 +288,6 @@ section.main {
             text-decoration: none;
           }
         }
-        //@include inline-bullets;
       }
       &:hover {
         background-color: #f7f7f7;
@@ -340,7 +313,6 @@ section.main {
       list-style-type: none;
       li {
         margin: 5px 0;
-        // padding: 5px 0
         img {
           margin-right: 5px;
           padding: 1px;
@@ -350,25 +322,6 @@ section.main {
           background-color: white;
           vertical-align: text-bottom;
         }
-      }
-    }
-  }
-  //}
-}
-  
-body#staffplans.index, body#users.index {
-  section.main {
-    div.actions {
-      padding-left: 40px
-    }
-  }
-}
-#projects {
-  ul {
-    li {
-      .client-name {
-        padding-right: 5px;
-        font-weight: bold;
       }
     }
   }
@@ -455,84 +408,84 @@ footer {
   &.padded {
     padding: 8px 15px;
   }
+}
   
-  .grid-row-element {
-    white-space: nowrap;
-    position: relative;
+.grid-row-element {
+  white-space: nowrap;
+  position: relative;
     
-    &.client-name-and-project-name {
-      padding-right: 10px;
-    }
+  &.client-name-and-project-name {
+    padding-right: 10px;
+  }
     
-    .assignment-totals {
-      height: 35px;
-      padding-top: 5px;
-    }
+  .assignment-totals {
+    height: 35px;
+    padding-top: 5px;
+  }
     
-    &.padding-top-left {
-      padding: 5px 0 0 5px;
-    }
+  &.padding-top-left {
+    padding: 5px 0 0 5px;
+  }
     
-    &.fixed-60 {
-      width: 60px;
-    }
+  &.fixed-60 {
+    width: 60px;
+  }
     
-    &.fixed-180 {
-      width: 180px;
-    }
+  &.fixed-180 {
+    width: 180px;
+  }
     
-    &.fixed-360 {
-      width: 360px;
-    }
+  &.fixed-360 {
+    width: 360px;
+  }
     
-    &.flex {
-      @include box-flex(1);
-    }
+  &.flex {
+    @include box-flex(1);
+  }
     
-    .box {
-      @include display-box;
-    }
+  .box {
+    @include display-box;
+  }
     
-    &.fixed-80 {
-      background-color: blue;
-      width: 80px;
-    }
+  &.fixed-80 {
+    background-color: blue;
+    width: 80px;
+  }
     
-    .show-first-row {
-      display: none;
+  .show-first-row {
+    display: none;
       
-      &:first-child {
-        display: initial;
-      }
-    }
-    
-    .cweeks-and-years {
-      div {
-        display: inline-block;
-        width: 35px;
-        height: 15px;
-        margin: 0 5px 0 0;
-        padding: 0;
-        text-align: center;
-      }
+    &:first-child {
+      display: initial;
     }
   }
-  
-  input.estimated-actual, .row-label {
-    display: inline-block;
-    width: 35px;
-    margin-right: 2px;
-    text-align: center;
-    height: 25px;
     
-    &[type="number"] {
+  .cweeks-and-years {
+    div {
+      display: inline-block;
+      width: 35px;
+      height: 15px;
+      margin: 0 5px 0 0;
       padding: 0;
+      text-align: center;
     }
   }
+}
   
-  .row-label {
-    color: #9F9F9F;
+input.estimated-actual, .row-label {
+  display: inline-block;
+  width: 35px;
+  margin-right: 2px;
+  text-align: center;
+  height: 25px;
+    
+  &[type="number"] {
+    padding: 0;
   }
+}
+  
+.row-label {
+  color: #9F9F9F;
 }
 
 .assignment-row {
