@@ -1,13 +1,13 @@
 class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
-  className: "row-fluid project-list-item list-item"
+  className: "project-list-item list-item"
   templates:
     projectListItem: '''
-    <div class='project-info span2'>
+    <div class='project-info fixed-180'>
       <a href="/projects/{{project.id}}">
         {{project.name}}
       </a>
     </div>
-    <div class="chart-container span10"> 
+    <div class="chart-container flex"> 
       <svg class="user-chart"></svg>
     </div>
     '''

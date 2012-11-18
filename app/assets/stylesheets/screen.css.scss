@@ -91,6 +91,8 @@ body > header {
   line-height: 24px;
   border-bottom: 1px solid #cccccc;
   @include box-shadow(0 1px 0 white);
+  top: 0px;
+  width: 100%;
   
   .inner {
     position: relative;
@@ -152,11 +154,6 @@ section.main {
   
   @include box-sizing(border-box);
   
-  .content {
-    padding-right: 0;
-    padding-left: 0;
-  }
-  
   section {
     > header {
       padding-top: 30px;
@@ -191,12 +188,7 @@ section.main {
 section.main {
   margin: 0 auto;
   
-  .content {
-    padding: 10px;
-    min-height: 400px;
-  }
-  
-  div.date-paginator, div.list-item {
+  div.list-item {
     margin-top: 32px;
     margin-left: 25px; // Align with ul.slick
   }
@@ -245,18 +237,7 @@ section.main {
     text-align: center;
     height: 25px
   }
-
-  div.project-show {
-    div.row-fluid.date-paginator {
-      margin: 40px
-    }
-  }
-
-
-
-  svg.user-chart {
-    margin-left: 40px;
-  }
+  
   ul.slick {
     list-style-type: none;
     &.no-margin {
@@ -386,6 +367,73 @@ footer {
   }
 }
 
+.list {
+  .list-item, .date-paginator {
+    > * {
+      display: inline-block;
+    }
+  }
+}
+
+.position-fixed {
+  position: fixed;
+  z-index: 1000;
+  background-color: #EEE;
+}
+
+.fixed-60 {
+  width: 60px;
+}
+
+.fixed-80 {
+  width: 80px;
+}
+    
+.fixed-180 {
+  width: 180px;
+}
+    
+.fixed-360 {
+  width: 360px;
+}
+    
+.flex {
+  @include box-flex(1);
+}
+    
+.box {
+  @include display-box;
+}
+
+.padding-top-120 {
+  padding-top: 120px;
+}
+
+.date-paginator {
+  top: 38px;
+  padding-top: 20px;
+  width: 96.6%;
+  margin-left: 25px;
+  
+  .next, .previous {
+    position: absolute;
+    width: 35px;
+    height: 17px;
+    text-indent: -9999px;
+    top: 40px;
+  }
+  
+  .next {
+    right: 90px;
+    @include arrows-sprite(forward);
+  }
+  
+  .previous {
+    left: 150px;
+    @include arrows-sprite(back);
+  }
+}
+
 .grid-row {
   @include display-box;
   @include box-orient("horizontal");
@@ -409,7 +457,7 @@ footer {
     padding: 8px 15px;
   }
 }
-  
+
 .grid-row-element {
   white-space: nowrap;
   position: relative;
@@ -425,31 +473,6 @@ footer {
     
   &.padding-top-left {
     padding: 5px 0 0 5px;
-  }
-    
-  &.fixed-60 {
-    width: 60px;
-  }
-    
-  &.fixed-180 {
-    width: 180px;
-  }
-    
-  &.fixed-360 {
-    width: 360px;
-  }
-    
-  &.flex {
-    @include box-flex(1);
-  }
-    
-  .box {
-    @include display-box;
-  }
-    
-  &.fixed-80 {
-    background-color: blue;
-    width: 80px;
   }
     
   .show-first-row {
