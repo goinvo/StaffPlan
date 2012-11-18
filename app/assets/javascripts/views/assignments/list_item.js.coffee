@@ -17,6 +17,8 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   updateWorkWeeksView: (begin) ->
     @workWeeksView.collection = @model.work_weeks.between(begin, begin + @numberOfBars * 7 * 86400 * 1000)
     @workWeeksView.render()
+  
+  
 
   initialize: ->
     @startDate = @options.start.valueOf()
@@ -31,6 +33,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       collection: @model.work_weeks
       start: @startDate
       count: @numberOfBars
-    @$el.find("div.user-hour-inputs").html @workWeeksView.render().el
+    @renderChildInto @workWeeksView, @$el.find "div.user-hour-inputs"
+
     @
   

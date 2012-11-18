@@ -26,6 +26,10 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
       @count = message.count
       @render()
       
+  leave: ->
+    @unbind()
+    @remove()
+
   events:
     "focus  input[data-work-week-input][data-attribute='estimated_hours']": "showRowFiller"
     "blur   input[data-work-week-input][data-attribute='estimated_hours']": "hideRowFiller"
@@ -66,6 +70,7 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
       success: (lol, foo, bar, baz) =>
         #console.log('success')
         if event.type is "change"
+          console.log "work week updated!!!!"
           StaffPlan.Dispatcher.trigger "week:updated",
             timestamp: element.data("timestamp")
       error: (wat, another, argument, here) ->

@@ -48,21 +48,25 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     "click a[data-action=delete]": "deleteAssignment"
 
   paginate: (event) ->
+    # Prevent default behavior 
     event.preventDefault()
     event.stopPropagation()
+    # Move the date from which we'll be showing information
     if $(event.target).data('action') is "previous"
       @startDate.subtract('weeks', @numberOfBars)
     else
       @startDate.add('weeks', @numberOfBars)
+    # Finally, notify all the children views that the date has changed
     StaffPlan.Dispatcher.trigger "date:changed"
       begin: @startDate.valueOf()
       count: @numberOfBars
 
+  # Delete modal used to destroy an assignment and make sure the user understands the consequences
   deleteAssignment: ->
 
     event.preventDefault()
     event.stopPropagation()
-    # TODO: Need that stupid closest because the source of the event can be the i used by
+    # TODO: Need that stupid closest because the source of the event can be the <i> tag used by
     # Bootstrap for the button icon. Might be a better way
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
     assignment = user.getAassignments().detect (assignment) =>
@@ -72,11 +76,13 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       collection: user.getAssignments()
       parentView: @
 
-    @$el.append deleteView.render().el
+    @appendChild deleteView
+
     $('#delete_modal').modal
       show: true
       keyboard: true
       backdrop: 'static'
+
 
   addUserToProject: (event) ->
     event.preventDefault()
@@ -91,11 +97,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     , error: (model, response) ->
         alert "SOMETHING WENT WRONG"
     @render()
+  
   render: ->
     @$el.empty()
 
-    fragment = document.createDocumentFragment()
-    
     # HEADER
     @$el.append @headerTemplate
       name: @model.get "name"
@@ -103,16 +108,14 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
-    @projectChartView = new StaffPlan.Views.WeeklyAggregates
-      # FIXME: Hardwired value in here for now
-      maxHeight: 100
+    projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
       count: @numberOfBars
       model: @model
       el: @$el.find("svg.user-chart")
+      height: 120
       width: chartContainerWidth
-    
-    @projectChartView.render()
+    @renderChildInto projectChartView, @$el.find "div.chart-container.span10"
     
 
     # THE USERS AND THEIR INPUTS
@@ -122,20 +125,16 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         parent: @model
         start: @startDate
         numberOfBars: @numberOfBars
-      fragment.appendChild view.render().el
-      true
-    @$el.append $(fragment)
+      @appendChild view
 
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-    @$el.find("#date-target").html dateRangeView.render().el
+    @renderChildInto dateRangeView, @$el.find "#date-target"
 
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()
       @$el.append @addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
-    @$el.appendTo "section.main"
-
     @

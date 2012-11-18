@@ -1,6 +1,5 @@
 class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
-  
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
   aggregate: (timestamp) ->
     weeks = _.compact _.flatten @assignments.map (assignment) ->
@@ -23,15 +22,26 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       cssClass: "estimates"
       beginning_of_week: aggregate.beginning_of_week
 
+
+  leave: ->
+    @off()
+    @remove()
+
+  # We need to retrieve the aggregates for the given date range
+  getData: ->
+      # date = moment().utc()
+      range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
+      _.map range, (timestamp) =>
+        @aggregate timestamp
+
   initialize: ->
     @assignments = @model.getAssignments()
     @begin = @options.begin.valueOf()
     @count = @options.count
-    @height = 75 || @options.height
-    @barWidth = 35 || @options.barWidth
-    
+    @height = @options.height or 75
+    @barWidth = @options.barWidth or 35
     @chartWidth = @count * 40
-
+    
     @maxHeight = @options.maxHeight
 
     StaffPlan.Dispatcher.on "date:changed", (message) =>
@@ -40,22 +50,13 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       @redrawChart()
 
     StaffPlan.Dispatcher.on "week:updated", (message) =>
-      @redrawBar @aggregate(message.timestamp)
-
-  leave: ->
-    @off()
-    @remove()
-  # We need to retrieve the aggregates for the given date range
-  getData: ->
-      # date = moment().utc()
-      range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
-      _.map range, (timestamp) =>
-        @aggregate timestamp
+      @redrawChart()
 
   render: ->
     data = @getData()
     busiestWeek = _.max data, (week) ->
       week.total
+    @maxTotal = busiestWeek.total
     @$el.empty()
     svg = d3.select(@el)
       .attr('width', @chartWidth)
@@ -63,7 +64,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
     # Scale all the heights so that we don't get overflow on the y-axis
     @heightScale = d3.scale.linear()
-      .domain([0, busiestWeek['total']])
+      .domain([0, @maxTotal])
       .rangeRound([0, @height - 20])
     # The SVG itself contains a g to group all the elements
     # We might need that in the future if we want to apply transformations
@@ -115,41 +116,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       .remove()
     @
 
-  redrawBar: (options) ->
-    busiestWeek = _.max options, (week) ->
-      week.total
-    svg = d3.select('svg g.weeks')
-    # Find the <g> that groups the two <rect> elements used for the total and the proposed hours
-    # and assign the new data to it
-    formattedData = [
-      { value: options.total, cssClass: "estimates" },
-      { value: options.proposed, cssClass: "estimates proposed" }
-    ]
-    svg.selectAll("g.week[data-timestamp=\"#{options.beginning_of_week}\"] rect").data(formattedData)
-      .transition()
-      .delay(500)
-      .ease("linear")
-      .attr("data-value", (d) -> d.value)
-      .attr "y", (d) =>
-        @height - @heightScale(d.value)
-      .attr "height", (d) =>
-        @heightScale(d.value)
-    # Update the text label as well with the new total value
-    svg.select("g.weeks [data-timestamp=\"#{options.beginning_of_week}\"] text").data([options.total])
-      .transition()
-      .delay(500)
-      .ease("linear")
-      .attr 'y', (d) =>
-        @height - @heightScale(d) - (if d is 0 then 0 else 10)
-      .text (d) ->
-        d + ""
-
   redrawChart: ->
     data = @getData()
     busiestWeek = _.max data, (week) ->
       week.total
     @heightScale = d3.scale.linear()
-      .domain([0, busiestWeek['total']])
+      .domain([0, busiestWeek.total])
       .rangeRound([0, @height - 20])
     svg = d3.select(@el)
     groups = svg.selectAll("g.week").data(data)

@@ -19,6 +19,10 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
       @collection = _.range(message.begin, message.begin + message.count * 7 * 86400 * 1000, 7 * 86400 * 1000)
       @render()
 
+  leave: ->
+    @unbind()
+    @remove()
+
   render: ->
     data = _.map @collection, (timestamp) ->
       m = moment(timestamp)

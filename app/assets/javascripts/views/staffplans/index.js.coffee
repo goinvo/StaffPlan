@@ -67,12 +67,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       @startDate.subtract('weeks', @numberOfBars)
     else
       @startDate.add('weeks', @numberOfBars)
-    m = moment()
-    timestamp = m.utc().startOf("day").subtract("days", m.day() - 1).valueOf()
-    if (timestamp >= @startDate.valueOf()) and (timestamp <= (@startDate.valueOf() + (@numberOfBars - 1) * 7 * 86400 * 1000))
-      $('.current-week-highlighter').show()
-    else
-      $('.current-week-highlighter').hide()
     StaffPlan.Dispatcher.trigger "date:changed",
       begin: @startDate.valueOf()
       count: @numberOfBars
@@ -107,13 +101,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       , error: (model, response) ->
           alert "FAIL"
 
-  highlightCurrentWeek: ->
-    m = moment()
-    timestamp = m.utc().startOf("day").subtract("days", m.day() - 1).valueOf()
-    highlighter = $('<div class="current-week-highlighter">').css
-      top: @$el.find("#date-target").offset().top
-      left: $('svg').first().offset().left
-    $('body').append(highlighter)
   render: ->
     @$el.empty()
     fragment = document.createDocumentFragment()
@@ -134,5 +121,4 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @$el.find("#date-target").html dateRangeView.render().el
     m = moment()
     timestamp = m.utc().startOf("day").subtract("days", m.day() - 1).valueOf()
-    @highlightCurrentWeek()
     @
