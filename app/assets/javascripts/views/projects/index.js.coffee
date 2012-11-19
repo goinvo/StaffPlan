@@ -5,10 +5,22 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
     @collection.bind "remove", () =>
       @render()
+    @addProjectTemplate = Handlebars.compile @templates.actions.addProject
+    @headerTemplate = Handlebars.compile @templates.header
 
-  leave: ->
-    @off()
-    @remove()
+
+    @on "date:changed", (message) =>
+      if message.action is "previous"
+        @startDate.subtract('weeks', @numberOfBars)
+      else
+        @startDate.add('weeks', @numberOfBars)
+      # We must use Backbone.Support's conventions of appendChild and renderChildInto
+      # so that the @children array of children views is available here
+      @children.each (child) =>
+        child.trigger "date:changed"
+          begin: @startDate
+          count: @numberOfBars
+
   templates:
     header: '''
       <div class="row-fluid date-paginator"> 
@@ -31,18 +43,6 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         '''
   events:
     "click div.controls a[data-action=delete]": "deleteProject"
-    "click div.date-paginator a.pagination": "paginate"
-
-  paginate: (event) ->
-    event.preventDefault()
-    event.stopPropagation()
-    if $(event.target).data('action') is "previous"
-      @startDate.subtract('weeks', @numberOfBars)
-    else
-      @startDate.add('weeks', @numberOfBars)
-    StaffPlan.Dispatcher.trigger "date:changed"
-      begin: @startDate.valueOf()
-      count: @numberOfBars
 
   deleteProject: ->
     event.preventDefault()
@@ -58,24 +58,19 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       backdrop: 'static'
 
   render: ->
-    fragment = document.createDocumentFragment()
-    @$el.empty()
-    
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
-    @$el.append Handlebars.compile @templates.header
+    @$el.html @headerTemplate
+
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem
         model: project
         start: @startDate
-      fragment.appendChild view.render().el
-    @$el.append $(fragment)
+      @appendChild view
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     
-    @$el.find("#date-target").html dateRangeView.render().el
-    @$el.append Handlebars.compile @templates.actions.addProject
-    @$el.appendTo 'section.main'
-    
+    @renderChildInto dateRangeView, @$el.find("#date-target")
+    @$el.append @addProjectTemplate
     @

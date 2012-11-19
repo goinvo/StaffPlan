@@ -2,6 +2,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
   className: "date-range"
   templates:
     dates: '''
+      <a href="#" class="pagination previous" data-action=previous>&lt;</a>
       <div class="week-numbers">
         {{#each weeks}}
           <span class="week-number">{{this}}</span>
@@ -12,12 +13,25 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
           <span class="month-name">{{this}}</span> 
         {{/each}}
       </div>
+      <a href="#" class="pagination next" data-action=next>&gt;</a>
     '''
   initialize: ->
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
+
+    @on "date:changed", (message) ->
       @collection = _.range(message.begin, message.begin + message.count * 7 * 86400 * 1000, 7 * 86400 * 1000)
       @render()
+
+  events:
+    "click a.pagination": "paginate"
+
+  paginate: (event) ->
+    event.preventDefault()
+    event.stopPropagation()
+
+    @parent.trigger "date:changed",
+      action: $(event.target).data('action')
+
 
   leave: ->
     @unbind()

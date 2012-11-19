@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
+class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
   className: "row-fluid project-list-item"
   templates:
     projectListItem: '''
@@ -17,11 +17,13 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     @model.on "change", (event) =>
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
+    @on "date:changed", (message) ->
+      @projectChartView.trigger "date:changed", message
     
-    @$el.html @projectListItemTemplate
-      project: @model.toJSON()
 
   render: ->
+    @$el.html @projectListItemTemplate
+      project: @model.toJSON()
     @$el.find("svg.user-chart").empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
@@ -33,6 +35,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
       begin: @startDate
       count: @numberOfBars
       el: @$el.find("svg.user-chart")
-    @projectChartView.render()
+    @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
+
 
     @

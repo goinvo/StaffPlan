@@ -21,7 +21,7 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     @start = @options.start
     @count = @options.count
     
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
+    @on "date:changed", (message) =>
       @start = message.begin
       @count = message.count
       @render()
@@ -68,11 +68,10 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
 
     workWeek.save attributes,
       success: (lol, foo, bar, baz) =>
-        #console.log('success')
         if event.type is "change"
-          console.log "work week updated!!!!"
-          StaffPlan.Dispatcher.trigger "week:updated",
-            timestamp: element.data("timestamp")
+          # We need to trigger the event on the show view so that 
+          # it's relayed to the weekly aggregates view
+          @parent.parent.trigger "week:updated",
       error: (wat, another, argument, here) ->
         alert('fail')
   showRowFiller: (event) ->
