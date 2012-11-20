@@ -1,9 +1,9 @@
 class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
-  
+  className: "list padding-top-120"
   templates:
     pagination: '''
-      <div class="row">
-        <div class="span2">
+      <div class="position-fixed date-paginator"> 
+        <div class="fixed-180">
           <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
                 Sort By
@@ -17,14 +17,10 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
             </ul>
           </div>
           <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
+          <a href="#" class="return-false previous pagination" data-action=previous>Previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>Next</a>
         </div>
-      </div>
-      <div class="row-fluid date-paginator"> 
-        <div class="span2">
-          <a href="#" class="pagination" data-action=previous>Previous</a>
-          <a href="#" class="pagination" data-action=next>Next</a>
-        </div>
-        <div id="date-target" class="span10">
+        <div id="date-target" class="flex">
         </div>
       </div>
     '''

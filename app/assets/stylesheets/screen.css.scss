@@ -369,6 +369,10 @@ footer {
 
 .list {
   .list-item, .date-paginator {
+    .client-name {
+      font-weight: bold;
+    }
+    
     > * {
       display: inline-block;
     }
@@ -413,7 +417,7 @@ footer {
   top: 38px;
   padding-top: 20px;
   width: 96.6%;
-  margin-left: 25px;
+  padding-left: 25px;
   
   .next, .previous {
     position: absolute;
@@ -429,7 +433,7 @@ footer {
   }
   
   .previous {
-    left: 150px;
+    left: 180px;
     @include arrows-sprite(back);
   }
 }

@@ -3,6 +3,9 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
   templates:
     projectListItem: '''
     <div class='project-info fixed-180'>
+      <a class="client-name" href="/clients/{{client.id}}">
+        {{client.name}}
+      </a>
       <a href="/projects/{{project.id}}">
         {{project.name}}
       </a>
@@ -20,6 +23,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Backbone.View
     
     @$el.html @projectListItemTemplate
       project: @model.toJSON()
+      client: StaffPlan.clients.get(@model.get('client_id')).toJSON()
 
   render: ->
     @$el.find("svg.user-chart").empty()
