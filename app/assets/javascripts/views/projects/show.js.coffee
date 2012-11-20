@@ -42,6 +42,9 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
 
+    @debouncedRender = _.debounce(@render, 500)
+    $(window).bind "resize", (event) =>
+      @debouncedRender()
     @on "date:changed", (message) =>
       if message.action is "previous"
         @startDate.subtract('weeks', @numberOfBars)

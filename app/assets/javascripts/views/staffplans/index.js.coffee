@@ -31,7 +31,8 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     "click div.date-paginator a.pagination": "paginate"
     "click ul.dropdown-menu.sort-users li a": "sortUsers"
     "click button.btn-primary[data-filter]": "toggleFilter"
- 
+  
+  
   toggleFilter: (event) ->
     filter = localStorage.getItem("staffplanFilter")
     models = if filter is "inactive" then StaffPlan.users.active() else StaffPlan.users.inactive()
@@ -59,6 +60,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     event.stopPropagation()
 
   initialize: ->
+    @debouncedRender = _.debounce(@render, 500)
+    $(window).bind "resize", (event) =>
+      @debouncedRender()
     localStorage.setItem("staffplanFilter", "active")
     @users = new StaffPlan.Collections.Users @options.users.active()
     m = moment()
@@ -66,7 +70,8 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     
     @users.bind "reset", (event) =>
       @render()
-    
+
+     
     # Event bindings
     @on "date:changed", (message) =>
       if message.action is "previous"
@@ -97,7 +102,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
             $(@).remove()
       , error: (model, response) ->
           alert "FAIL"
-
   render: ->
     @$el.html Handlebars.compile @templates.pagination
     @users.each (user) =>

@@ -8,6 +8,9 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @addProjectTemplate = Handlebars.compile @templates.actions.addProject
     @headerTemplate = Handlebars.compile @templates.header
 
+    @debouncedRender = _.debounce(@render, 500)
+    $(window).bind "resize", (event) =>
+      @debouncedRender()
 
     @on "date:changed", (message) =>
       if message.action is "previous"
