@@ -59,25 +59,28 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-    if $(event.target).data('action') is "previous"
-      @startDate.subtract('weeks', @numberOfBars)
-    else
-      @startDate.add('weeks', @numberOfBars)
-    StaffPlan.Dispatcher.trigger "date:changed",
-      begin: @startDate.valueOf()
-      count: @numberOfBars
 
   initialize: ->
     localStorage.setItem("staffplanFilter", "active")
     @users = new StaffPlan.Collections.Users @options.users.active()
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
+    
     @users.bind "reset", (event) =>
       @render()
-   
-
-      
-    StaffPlan.Dispatcher.on "membership:disable", (message) =>
+    
+    # Event bindings
+    @on "date:changed", (message) =>
+      if message.action is "previous"
+        @startDate.subtract('weeks', @numberOfBars)
+      else
+        @startDate.add('weeks', @numberOfBars)
+      @children.each (child) =>
+        child.trigger "date:changed"
+          begin: @startDate
+          count: @numberOfBars
+    
+    @on "membership:disable", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save
         disabled: not user.membership.get("disabled")
@@ -87,7 +90,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       , error: (model, response) ->
           alert "FAIL"
       
-    StaffPlan.Dispatcher.on "membership:archive", (message) =>
+    @on "membership:archive", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save
         archived: not user.membership.get("archived")
@@ -98,23 +101,22 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
           alert "FAIL"
 
   render: ->
-    @$el.empty()
-    fragment = document.createDocumentFragment()
-    @$el.append Handlebars.compile @templates.pagination
+    @$el.html Handlebars.compile @templates.pagination
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
+        parent: @
         startDate: @startDate.valueOf()
-      fragment.appendChild view.render().el
-    @$el.append $(fragment)
+      @appendChild view
     @$el.append Handlebars.compile @templates.addStaff
-    @$el.appendTo('section.main')
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
+    
+    
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-    @$el.find("#date-target").html dateRangeView.render().el
-    m = moment()
-    timestamp = m.utc().startOf("day").subtract("days", m.day() - 1).valueOf()
+    @renderChildInto dateRangeView, @$el.find("#date-target")
+
+
     @

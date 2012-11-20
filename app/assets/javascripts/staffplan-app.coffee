@@ -14,7 +14,6 @@ window.StaffPlan =
       WorkWeeks: {}
     Clients: {}
   Routers: {}
-  Dispatcher: _.extend {}, Backbone.Events
   initialize: (data) ->
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects

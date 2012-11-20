@@ -3,6 +3,10 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   initialize: ->
     @startDate = @options.startDate
     @staffplanListItemTemplate = Handlebars.compile @templates.staffplanListItem
+    @parent = @options.parent
+    # In this case we simply relay the message to the relevant child view
+    @on "date:changed", (message) ->
+      @projectChartView.trigger "date:changed", message
 
   templates:
     staffplanListItem: '''
@@ -42,7 +46,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     event.stopPropagation()
     event.preventDefault()
     target = $(event.target)
-    StaffPlan.Dispatcher.trigger "membership:#{target.data('action')}",
+    @parent.trigger "membership:#{target.data('action')}",
       userId: @model.id
       subview: @
   
@@ -59,7 +63,6 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       begin: @startDate
       el: @$el.find("svg.user-chart")
       count: @numberOfBars
-
-    @projectChartView.render()
+    @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
 
     @

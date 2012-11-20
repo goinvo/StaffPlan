@@ -41,25 +41,22 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @headerTemplate = Handlebars.compile(@templates.header)
     @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
+
+    @on "date:changed", (message) =>
+      if message.action is "previous"
+        @startDate.subtract('weeks', @numberOfBars)
+      else
+        @startDate.add('weeks', @numberOfBars)
+      @children.each (child) =>
+        child.trigger "date:changed",
+          begin: @startDate
+          count: @numberOfBars
+    @on "week:updated", (message) =>
+      @projectChartView.trigger "week:updated"
     
   events: ->
-    "click div.date-paginator a.pagination": "paginate"
     "click a[data-action=add-user]": "addUserToProject"
     "click a[data-action=delete]": "deleteAssignment"
-
-  paginate: (event) ->
-    # Prevent default behavior 
-    event.preventDefault()
-    event.stopPropagation()
-    # Move the date from which we'll be showing information
-    if $(event.target).data('action') is "previous"
-      @startDate.subtract('weeks', @numberOfBars)
-    else
-      @startDate.add('weeks', @numberOfBars)
-    # Finally, notify all the children views that the date has changed
-    StaffPlan.Dispatcher.trigger "date:changed"
-      begin: @startDate.valueOf()
-      count: @numberOfBars
 
   # Delete modal used to destroy an assignment and make sure the user understands the consequences
   deleteAssignment: ->
@@ -108,21 +105,22 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
 
-    projectChartView = new StaffPlan.Views.WeeklyAggregates
+    @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
       count: @numberOfBars
       model: @model
+      parent: @
       el: @$el.find("svg.user-chart")
       height: 120
       width: chartContainerWidth
-    @renderChildInto projectChartView, @$el.find "div.chart-container.span10"
+    @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
     
 
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>
       view = new StaffPlan.Views.Assignments.ListItem
         model: assignment
-        parent: @model
+        parent: @
         start: @startDate
         numberOfBars: @numberOfBars
       @appendChild view
@@ -130,6 +128,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      parent: @
     @renderChildInto dateRangeView, @$el.find "#date-target"
 
     # If there are users not assigned to this project in the current company, show them here

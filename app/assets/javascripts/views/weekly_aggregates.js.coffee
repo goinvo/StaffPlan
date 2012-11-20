@@ -44,12 +44,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     
     @maxHeight = @options.maxHeight
 
-    StaffPlan.Dispatcher.on "date:changed", (message) =>
+    @on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
       @redrawChart()
 
-    StaffPlan.Dispatcher.on "week:updated", (message) =>
+    @on "week:updated", (message) =>
       @redrawChart()
 
   render: ->
