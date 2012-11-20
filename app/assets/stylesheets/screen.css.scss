@@ -376,6 +376,10 @@ footer {
     > * {
       display: inline-block;
     }
+    
+    .ellipsis {
+      @include ellipsis;
+    }
   }
 }
 
@@ -411,6 +415,30 @@ footer {
 
 .padding-top-120 {
   padding-top: 120px;
+}
+
+.padding-top-40 {
+  padding-top: 40px;
+}
+
+.padding-top-30 {
+  padding-top: 30px !important;
+}
+
+.padding-top-177 {
+  padding-top: 177px;
+}
+
+.top-38 {
+  top: 38px;
+}
+
+.width-100-percent {
+  width: 100%;
+}
+
+.top-130 {
+  top: 130px;
 }
 
 .date-paginator {

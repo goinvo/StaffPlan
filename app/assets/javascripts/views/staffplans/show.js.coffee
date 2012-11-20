@@ -1,5 +1,5 @@
 class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shared.DateDrivenView
-  className: "staffplan"
+  className: "staffplan padding-top-177"
   tagName: "div"
   
   events:

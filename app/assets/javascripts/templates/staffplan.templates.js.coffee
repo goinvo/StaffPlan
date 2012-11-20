@@ -29,7 +29,7 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
 _templates =
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded">
+    <div id="user-select" class="grid-row user-info padded position-fixed top-38 padding-top-30 width-100-percent">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
@@ -44,7 +44,7 @@ _templates =
       </div>
       <div class="grid-row-element"></div>
     </div>
-    <div class='header grid-row padded'>
+    <div class='header grid-row padded top-130 position-fixed width-100-percent'>
       <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='return-false add-client'><i class='icon-plus-sign'></i></a></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
       <div class="grid-row-element flex date-range-target" id="interval-width-target"></div>

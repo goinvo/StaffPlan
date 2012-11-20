@@ -1,14 +1,15 @@
 class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   id: "clients"
+  className: "padding-top-40"
   templates:
     clientInfo: '''
     <h2 class="lead">
-      List of clients for company <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a>
+      <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a> &rarr; Clients
     </h2> 
-    <ul class="slick unstyled">
+    <ul class="list slick unstyled">
       {{#each clients}}
-        <li data-client-id="{{this.id}}">
-          <div class='client-info'>
+        <li class='list-item' data-client-id="{{this.id}}">
+          <div class='client-name client-info'>
             <a href="/clients/{{this.id}}">
               {{this.name}}
             </a>
@@ -23,6 +24,9 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
               Delete
             </a>
           </div>
+          <div class='client-projects ellipsis flex'>
+            {{{client_projects this.projects}}}
+          </div>
         </li>
       {{/each}}
     </ul>
@@ -33,17 +37,26 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     '''
   
   initialize: ->
+    Handlebars.registerHelper 'client_projects', (projects) ->
+      _.map(projects, (project_name, project_id) ->
+        "<a href='/projects/#{project_id}'>#{project_name}</a>"
+      ).join(", ")
+      
     @clientInfoTemplate = Handlebars.compile(@templates.clientInfo)
-    
     @populateElement()
-    
     @collection.bind 'change:id', => @render()
-    
     @render()
   
   populateElement: ->
     @$el.html @clientInfoTemplate
-      clients: @collection.map (client) -> client.attributes
+      clients: @collection.map (client) ->
+        _.extend client.attributes,
+          projects: StaffPlan.projects.where(
+            client_id: client.id
+          ).reduce((hash, project) ->
+            hash[project.get('id')] = project.get('name')
+            hash
+          , {})
       currentCompany: @options.currentCompany
   
   events: ->
