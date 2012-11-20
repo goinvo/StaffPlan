@@ -1,4 +1,5 @@
 class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
+  className: "list padding-top-120"
   
   initialize: ->
     m = moment()
@@ -23,21 +24,25 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         child.trigger "date:changed"
           begin: @startDate
           count: @numberOfBars
-
+  
+  leave: ->
+    @off()
+    @remove()
+  
   templates:
     header: '''
-      <div class="row-fluid date-paginator"> 
-        <div class="span2">
-          <a href="#" class="pagination" data-action=previous>Previous</a>
-          <a href="#" class="pagination" data-action=next>Next</a>
+      <div class="position-fixed date-paginator"> 
+        <div class="fixed-180">
+          <a href="#" class="return-false previous pagination" data-action=previous>Previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>Next</a>
         </div>
-        <div id="date-target" class="span10">
+        <div id="date-target" class="flex">
         </div>
       </div>
       '''
     actions:
       addProject: '''
-        <div class="row-fluid actions">
+        <div class="actions">
           <a href="/projects/new" class="btn btn-primary" data-action="new">
             <i class="icon-list icon-white"></i>
             Add project

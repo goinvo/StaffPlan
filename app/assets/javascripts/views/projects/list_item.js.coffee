@@ -1,13 +1,16 @@
 class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
-  className: "row-fluid project-list-item"
+  className: "project-list-item list-item"
   templates:
     projectListItem: '''
-    <div class='project-info span2'>
+    <div class='project-info fixed-180'>
+      <a class="client-name" href="/clients/{{client.id}}">
+        {{client.name}}
+      </a>
       <a href="/projects/{{project.id}}">
         {{project.name}}
       </a>
     </div>
-    <div class="chart-container span10"> 
+    <div class="chart-container flex"> 
       <svg class="user-chart"></svg>
     </div>
     '''
@@ -24,6 +27,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
   render: ->
     @$el.html @projectListItemTemplate
       project: @model.toJSON()
+      client: StaffPlan.clients.get(@model.get('client_id')).toJSON()
     @$el.find("svg.user-chart").empty()
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
