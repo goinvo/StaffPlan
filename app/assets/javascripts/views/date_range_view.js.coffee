@@ -1,4 +1,4 @@
-class StaffPlan.Views.DateRangeView extends Backbone.View 
+class StaffPlan.Views.DateRangeView extends Backbone.View
   className: "date-range"
   templates:
     dates: '''

@@ -417,6 +417,24 @@ footer {
   padding-top: 120px;
 }
 
+.padding-top-240 {
+  padding-top: 240px;
+}
+.chart-wrapper {
+  display: block;
+  padding-left: 25px;
+  top: 120px;
+  box-shadow: -2px 4px 8px #BBB
+}
+.chart-wrapper > div {
+  display: inline-block;
+}
+.margin-left-40 {
+  margin-left: 40px;
+}
+.margin-left-84 {
+  margin-left: 84px;
+}
 .padding-top-40 {
   padding-top: 40px;
 }

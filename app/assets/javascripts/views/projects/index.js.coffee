@@ -1,6 +1,27 @@
 class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   className: "list padding-top-120"
   
+  templates:
+    header: '''
+      <div class="position-fixed date-paginator"> 
+        <div class="fixed-180">
+          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>next</a>
+        </div>
+        <div id="date-target" class="flex">
+        </div>
+      </div>
+      '''
+    actions:
+      addProject: '''
+        <div class="actions">
+          <a href="/projects/new" class="btn btn-primary" data-action="new">
+            <i class="icon-list icon-white"></i>
+            Add project
+          </a>
+        </div>
+        '''
+
   initialize: ->
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
@@ -29,26 +50,6 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @off()
     @remove()
   
-  templates:
-    header: '''
-      <div class="position-fixed date-paginator"> 
-        <div class="fixed-180">
-          <a href="#" class="return-false previous pagination" data-action=previous>Previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>Next</a>
-        </div>
-        <div id="date-target" class="flex">
-        </div>
-      </div>
-      '''
-    actions:
-      addProject: '''
-        <div class="actions">
-          <a href="/projects/new" class="btn btn-primary" data-action="new">
-            <i class="icon-list icon-white"></i>
-            Add project
-          </a>
-        </div>
-        '''
   events:
     "click div.controls a[data-action=delete]": "deleteProject"
 

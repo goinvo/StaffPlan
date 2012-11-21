@@ -1,23 +1,18 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
-  className: "project-show"
+  className: "list padding-top-240"
   templates:
     header: '''
-      <div class="project-header row-fluid">
-        <div class="project-info span2">
-          {{name}}
+      <div class="position-fixed date-paginator"> 
+        <div class="fixed-180">
+          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
-        <div class="chart-container span10">
-          <svg class="user-chart">
-          </svg>
+        <div id="date-target" class="flex margin-left-40">
         </div>
       </div>
-      <div class="row-fluid date-paginator"> 
-        <div class="span2">
-          <a href="#" class="pagination" data-action=previous>Previous</a>
-          <a href="#" class="pagination" data-action=next>Next</a>
-        </div>
-        <div id="date-target" class="span10">
-        </div>
+      <div class="position-fixed chart-wrapper">
+        <div class="fixed-180">&nbsp;</div>
+        <div class="flex chart-container margin-left-40"><svg class="user-chart"></svg></div>
       </div>
     '''
     mainContent: '''
@@ -42,7 +37,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @mainContent = Handlebars.compile(@templates.mainContent)
     @addSomeone = Handlebars.compile(@templates.addSomeone)
 
-    @debouncedRender = _.debounce(@render, 500)
+    @debouncedRender = _.debounce(@render, 200)
     $(window).bind "resize", (event) =>
       @debouncedRender()
     @on "date:changed", (message) =>
@@ -116,7 +111,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       el: @$el.find("svg.user-chart")
       height: 120
       width: chartContainerWidth
-    @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
+    @renderChildInto @projectChartView, @$el.find "div.chart-container"
     
 
     # THE USERS AND THEIR INPUTS
