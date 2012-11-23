@@ -1,5 +1,4 @@
-# This view is used by both NEW and EDIT actions
-class window.StaffPlan.Views.Clients.New extends Support.CompositeView
+class window.StaffPlan.Views.Clients.New extends Backbone.View
   tagName: "form"
   className: "form-horizontal"
   templates:
@@ -44,11 +43,9 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
       clientActive: if @model.get("active") then "checked=\"checked\"" else ""
       clientIsNew: @model.isNew()
     
-    @render()
-
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
-    "click div.form-actions > button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
+    "click div.form-actions button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
     "click div.form-actions button[data-action=cancel]": (event) ->
       Backbone.history.navigate("/clients", true)
   
@@ -60,7 +57,7 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
     elem = @$el.find("input#client_active")
     elem.val((parseInt($(elem).val(), 10) + 1) % 2)
 
-  saveClient: (event) =>
+  saveClient: (event) ->
     event.preventDefault()
     event.stopPropagation()
     attributes = _.reduce $('[data-attribute]'), (memo, elem) ->

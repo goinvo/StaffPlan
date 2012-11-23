@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
+class window.StaffPlan.Views.Users.Edit extends Backbone.View
   tagName: "form"
   className: "form-horizontal"
   templates:
@@ -105,7 +105,7 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
     </div>
 
     <div class="form-actions">
-      <a href="/users" data-action="update" type="submit" class="btn btn-primary">Update user</a>
+      <a href="#" data-action="update" type="submit" class="btn btn-primary">Update user</a>
       <a href="/users" data-action="cancel" type="button" class="btn">Back to list of users</a>
     </div>
     '''
@@ -115,12 +115,9 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
       user: @model.attributes
       membership: @model.membership.attributes
 
-    @render()
-    
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"
-  
   refreshSalaryRelatedFields: (event) ->
     selected = $(event.currentTarget).val()
 
@@ -129,7 +126,9 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
     @$el.find('div#salary_information div.' + selected).find('input, select').show().prop('disabled', false)
     @$el.find('div#salary_information div.' + selected).show()
 
-  saveUser: =>
+  saveUser: ->
+    event.preventDefault()
+    event.stopPropagation()
     userAttributes = _.reduce $("div[data-model=user] input:not(:disabled)"), (memo, elem) ->
         memo[$(elem).data('attribute')] = $(elem).val()
         memo
@@ -146,7 +145,6 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
           memo[$(elem).data('attribute')] = $(elem).val()
         memo
       , {}
-
     @model.save userAttributes,
       success: (model, response) =>
         # We have a new user
@@ -154,6 +152,7 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
           success: (resource, response) ->
             # Successful save for the membership, let's embed it in the User model client-side
             model.membership.set resource
+            Backbone.history.navigate("/users", true)
           error: (model, response) ->
             console.log "ERROR :/ " + response
           , {wait: true}
@@ -163,15 +162,15 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
     
       
 
-    @model.membership = @model.membership.set membershipAttributes
+    # @model.membership = @model.membership.set membershipAttributes
     
-    @model.set userAttributes
+    # @model.set userAttributes
 
-    @model.save {},
-      success: (model, response) ->
-        Backbone.history.navigate("/staffplans", true)
-      error: (model, response) ->
-        alert "something went wrong"
+    # @model.save {},
+    #   success: (model, response) ->
+    #     Backbone.history.navigate("/staffplans", true)
+    #   error: (model, response) ->
+    #     alert "something went wrong"
   
   render: ->
     selected = @model.membership.get 'employment_status'

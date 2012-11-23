@@ -48,7 +48,11 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
 
   clientNew: ->
     client = new window.StaffPlan.Models.Client
-    clientNew = new window.StaffPlan.Views.Clients.New(router: @, model: client, collection: window.StaffPlan.clients)
+    clientNew = new window.StaffPlan.Views.Clients.New
+      router: @
+      model: client
+      collection: window.StaffPlan.clients
+
     @swap clientNew
   
   clientEdit: (clientId) ->
