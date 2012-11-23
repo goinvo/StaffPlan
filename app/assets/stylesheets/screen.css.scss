@@ -72,15 +72,6 @@ ul {
 //     Header     \\
 //\\//\\//\\//\\//\\
 
-body > div.current-week-highlighter {
-  z-index: -400;
-  background-color: #FCFFFC;
-  box-shadow: 5px 5px 5px #CCC;
-  width: 35px;
-  height: 2000px;
-  position: fixed;
-}
-
 // Nav sprites
 $icons-spacing: 20px;
 @import "icons/*.png";
@@ -424,7 +415,6 @@ footer {
   display: block;
   padding-left: 25px;
   top: 120px;
-  box-shadow: -2px 4px 8px #BBB
 }
 .chart-wrapper > div {
   display: inline-block;

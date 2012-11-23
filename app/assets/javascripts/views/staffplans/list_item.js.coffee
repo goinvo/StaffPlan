@@ -18,17 +18,18 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
           </span>
         </a>
         <div class="dropdown">
-          <button class="btn btn-mini"><i class="icon-cog"></i></button>
           <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
           <ul class="dropdown-menu">
             <li>
               <a href="#" data-action=disable>
+                <i class="icon-lock"></i>
                 Disable 
               </a>
             </li>
             <li class="divider"></li>
             <li>
               <a href="#" data-action=archive>
+                <i class="icon-folder-open"></i>
                 Archive  
               </a>
             </li>
