@@ -106,6 +106,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
           alert "FAIL"
   render: ->
     @$el.html Handlebars.compile @templates.pagination
+    buttonText = if localStorage.getItem("staffplanFilter") is "active"
+      "Show inactive"
+    else
+      "Show active"
+    @$el.find("button.btn-primary").text(buttonText)
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
