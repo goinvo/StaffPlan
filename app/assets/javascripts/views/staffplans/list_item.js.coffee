@@ -40,7 +40,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       </div>
     '''
   events:
-    "click div.user-info.span2 div.dropdown li a": "handleMembershipAction"
+    "click div.user-info.fixed-180 div.dropdown li a": "handleMembershipAction"
 
   handleMembershipAction: (event) ->
     event.stopPropagation()

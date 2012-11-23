@@ -5,7 +5,16 @@ class window.StaffPlan.Views.Shared.DateDrivenView extends Support.CompositeView
     
     setTimeout =>
       $( window ).bind 'resize', @onWindowResized
-    
+
+  leave: ->
+    @off()
+    @remove()
+
+  remove: ->
+    # This one looks like it has a tendency to linger, making sure the binding goes away
+    # when the router swaps the views
+    $( window ).unbind 'resize'
+    Backbone.View.prototype.remove.call @
   setWeekIntervalAndToDate: ->
     # find first project's work week list, measure the width of its months-and-weeks container
     $container = @$el.find '#interval-width-target'
