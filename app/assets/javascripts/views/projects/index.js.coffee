@@ -39,8 +39,6 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         @startDate.subtract('weeks', @numberOfBars)
       else
         @startDate.add('weeks', @numberOfBars)
-      # We must use Backbone.Support's conventions of appendChild and renderChildInto
-      # so that the @children array of children views is available here
       @children.each (child) =>
         child.trigger "date:changed"
           begin: @startDate

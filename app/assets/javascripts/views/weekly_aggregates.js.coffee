@@ -22,6 +22,9 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
       cssClass: "estimates"
       beginning_of_week: aggregate.beginning_of_week
 
+  isInViewport: ->
+    rect = @el.getBoundingClientRect()
+    rect.top >= 0 and rect.left >= 0 and rect.bottom <= window.innerHeight and rect.right <= window.innerWidth
 
   leave: ->
     @off()
@@ -41,13 +44,17 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
     @height = @options.height or 75
     @barWidth = @options.barWidth or 35
     @chartWidth = @count * 40
-    
+    redraw = _.bind @redrawChart, @
     @maxHeight = @options.maxHeight
 
     @on "date:changed", (message) =>
       @begin = message.begin
       @count = message.count
-      @redrawChart()
+      # All visible views have priority over the others
+      if @isInViewport()
+        @redrawChart()
+      else
+        _.delay redraw, 200
 
     @on "week:updated", (message) =>
       @redrawChart()
@@ -130,7 +137,7 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
       .data (d) ->
         [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
       .transition()
-      .delay(500)
+      .delay(200)
       .ease("linear")
       .attr("y", (d) => @height - @heightScale(d.value))
       .attr("height", (d) => @heightScale(d.value))

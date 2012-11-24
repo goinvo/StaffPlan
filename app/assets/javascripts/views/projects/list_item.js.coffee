@@ -20,6 +20,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
     @model.on "change", (event) =>
       @render()
     @projectListItemTemplate = Handlebars.compile @templates.projectListItem
+
     @on "date:changed", (message) ->
       @projectChartView.trigger "date:changed", message
     
