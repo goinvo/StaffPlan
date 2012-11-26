@@ -286,7 +286,7 @@ _templates =
 
 StaffPlan.Templates.Users =
   new:
-    newUser: Handlebars.compile _templates.new.newUser
+    newUser: Handlebars.compile _templates.new.userNew
   edit:
     userEdit: Handlebars.compile _templates.edit.userEdit
   show:

@@ -22,6 +22,7 @@ class RegistrationsController < ApplicationController
     end
     
     if @company.persisted?
+      RegistrationMailer.registration_notification(@user, @company).deliver
       @user.send_registration_confirmation
       render template: "registrations/email_sent"
     else
