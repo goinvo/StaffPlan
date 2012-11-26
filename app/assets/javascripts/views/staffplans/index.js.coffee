@@ -88,7 +88,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
         parent: @
         startDate: @startDate.valueOf()
       @appendChild view
-    @$el.append StaffPlan.Templates.Staffplans.index.addStaff
+    @$el.append StaffPlan.Templates.StaffPlans.index.addStaff
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2

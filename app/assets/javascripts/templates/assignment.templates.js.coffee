@@ -1,4 +1,4 @@
-_templates:
+_templates =
   userItem: '''
     <div class="user-info fixed-180">
       <a href="/users/{{user.id}}">
