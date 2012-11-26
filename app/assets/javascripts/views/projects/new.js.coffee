@@ -8,85 +8,6 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
     @clients = @options.clients
     @currentUser = @options.currentUser
      
-  templates:
-    projectNew: '''
-    <div data-model=client>
-    
-      <div class="control-group">
-        <label class="control-label" for="client-name">
-          Client
-        </label>
-        <div class="controls">
-          <select data-model=client data-attribute=id id="client-picker">
-            {{#clients}}
-              <option value="{{id}}">{{name}}</option>
-            {{/clients}}
-            <option class="new-client" value="newclient">New Client</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="control-group initially-hidden">
-        <label class="control-label" for="client-name">    
-          Client Name
-        </label>
-        <div class="controls">
-          <input data-model=client data-attribute=name id="client-name" type="text" placeholder="Client Name">
-        </div>
-      </div>
-
-    </div>
-    
-    <div data-model=project>
-
-      <div class="control-group">
-        <label class="control-label" for="project-name">    
-          Project Name
-        </label>
-        <div class="controls">
-          <input data-model=project data-attribute=name id="project-name" type="text" placeholder="Project Name">
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label class="control-label" for="project-active">Active</label>
-        <div class="controls">
-          <input data-model=project data-attribute=active id="project-active" type="checkbox">
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label class="control-label" for="project-proposed">Proposed</label>
-        <div class="controls">
-          <input data-model=project data-attribute=proposed id="project-proposed" type="checkbox">
-        </div>
-      </div>
-      
-      <div class="control-group">
-        <label class="control-label">
-          Payment Frequency
-        </label>
-        <radiogroup data-model=project data-attribute=payment_frequency>
-          <input data-model=project data-attribute=payment_frequency type="radio" checked="checked" value="monthly"> Monthly  
-          <input data-model=project data-attribute=payment_frequency type="radio" value="total"> Total
-        </radiogroup>
-      </div>
-        
-       <div class="control-group">
-         <label class="control-label" for="project-cost">Cost</label>
-         <div class="controls">
-           <input data-model=project data-attribute=cost id="project-cost" size="10" type="number">
-         </div>
-       </div>
-    
-    </div>
-    <div class="form-actions">
-      <a href="/projects" data-action="create" class="btn btn-primary">Create project</a>
-      <a href="/projects" data-action="cancel" class="btn">Back to list of projects</a>
-    </div>
-
-    '''
-  
   events: ->
     "change select#client-picker": "clientSelectionChanged"
     "click div.form-actions a[data-action=create]": "createUser"
@@ -161,7 +82,7 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
       
       
   render: ->
-    @$el.append Handlebars.compile(@templates.projectNew)
+    @$el.append StaffPlan.Templates.Projects.new
       clients: @clients.map (client) -> client.toJSON()
     @$el.find(".initially-hidden").hide()
     @$el.appendTo "section.main"

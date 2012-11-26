@@ -1,41 +1,9 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
   className: "list padding-top-240"
-  templates:
-    header: '''
-      <div class="position-fixed date-paginator"> 
-        <div class="fixed-180">
-          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>next</a>
-        </div>
-        <div id="date-target" class="flex margin-left-40">
-        </div>
-      </div>
-      <div class="position-fixed chart-wrapper">
-        <div class="fixed-180">&nbsp;</div>
-        <div class="flex chart-container margin-left-40"><svg class="user-chart"></svg></div>
-      </div>
-    '''
-    mainContent: '''
-    '''
-    addSomeone: '''
-      <select class="unassigned-users">
-        {{#unassignedUsers}}
-          <option value="{{id}}">{{first_name}} {{last_name}}</option>
-        {{/unassignedUsers}}
-      </select>
-      <a href="/assignments" class="btn btn-primary" data-action="add-user">
-        <i class="icon-list icon-white"></i>
-        Add user to project
-      </a>
-      '''
   initialize: ->
 
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
-
-    @headerTemplate = Handlebars.compile(@templates.header)
-    @mainContent = Handlebars.compile(@templates.mainContent)
-    @addSomeone = Handlebars.compile(@templates.addSomeone)
 
     @debouncedRender = _.debounce(@render, 200)
     $(window).bind "resize", (event) =>
@@ -97,7 +65,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @$el.empty()
 
     # HEADER
-    @$el.append @headerTemplate
+    @$el.append StaffPlan.Templates.Projects.show.header
       name: @model.get "name"
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
@@ -132,6 +100,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()
-      @$el.append @addSomeone
+      @$el.append StaffPlan.Templates.Projects.show.addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
     @

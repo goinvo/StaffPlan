@@ -1,32 +1,17 @@
 class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
   className: "project-list-item list-item"
-  templates:
-    projectListItem: '''
-    <div class='project-info fixed-180'>
-      <a class="client-name" href="/clients/{{client.id}}">
-        {{client.name}}
-      </a>
-      <a href="/projects/{{project.id}}">
-        {{project.name}}
-      </a>
-    </div>
-    <div class="chart-container flex"> 
-      <svg class="user-chart"></svg>
-    </div>
-    '''
 
   initialize: ->
     @startDate = @options.start
     @model.on "change", (event) =>
       @render()
-    @projectListItemTemplate = Handlebars.compile @templates.projectListItem
-
+    
     @on "date:changed", (message) ->
       @projectChartView.trigger "date:changed", message
     
 
   render: ->
-    @$el.html @projectListItemTemplate
+    @$el.html StaffPlan.Templates.Projects.index.listItem
       project: @model.toJSON()
       client: StaffPlan.clients.get(@model.get('client_id')).toJSON()
     @$el.find("svg.user-chart").empty()
