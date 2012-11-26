@@ -5,17 +5,7 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   initialize: ->
     @collection.bind "remove", () =>
       @render()
-  templates:
-    header: "<h3>List of users</h3>"
-    actions:
-      addUser: '''
-        <div class="actions">
-          <a href="/users/new" class="btn btn-primary" data-action="new">
-            <i class="icon-list icon-white"></i>
-            Add user
-          </a>
-        </div>
-        '''
+
   events:
     "click div.controls a[data-action=delete]": "deleteUser"
     "click div.controls a[data-action=edit]": "editUser"
@@ -43,13 +33,13 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
   
   render: ->
     @$el.empty()
-    @$el.append Handlebars.compile(@templates.header) 
+    @$el.append StaffPlan.Templates.Users.index.header
     @collection.each (user) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
         model: user
       @$el.append view.render().el
-    @$el.append Handlebars.compile(@templates.actions.addUser)
+    @$el.append StaffPlan.Templates.Users.index.actions.addUser
     @$el.appendTo 'section.main'
 
     @
