@@ -211,7 +211,6 @@ _templates =
       <a href="/projects" data-action="update" class="btn btn-primary">Update project</a>
       <a href="/projects" data-action="cancel" class="btn">Back to list of projects</a>
     </div>
-
     '''
 
 # DRY this up, since the structure of the _templates object and the resulting compiled templates object
