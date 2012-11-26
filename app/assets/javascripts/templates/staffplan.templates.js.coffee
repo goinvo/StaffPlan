@@ -27,6 +27,35 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
 
 
 _templates =
+  index:
+    pagination: '''
+      <div class="position-fixed date-paginator"> 
+        <div class="fixed-180">
+          <div class="btn-group">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                Sort By
+              <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu sort-users">
+              <li><a href="#" data-criterion=name data-order=asc>Name (ASC)</a></li>
+              <li><a href="#" data-criterion=name data-order=desc>Name (DESC)</a></li>
+              <li><a href="#" data-criterion=workload data-order=asc>Workload (ASC)</a></li>
+              <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
+            </ul>
+          </div>
+          <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
+          <a href="#" class="return-false previous pagination" data-action=previous>Previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>Next</a>
+        </div>
+        <div id="date-target" class="flex">
+        </div>
+      </div>
+    '''
+    addStaff: '''
+    <div class="actions">
+      <a class="btn btn-primary" href="/users/new">Add Staff</a>
+    </div>
+    '''
   show:
     frame: '''
     <div id="user-select" class="grid-row user-info padded position-fixed top-38 padding-top-30 width-100-percent">
@@ -122,7 +151,37 @@ _templates =
       <input type="button" class='btn btn-mini' data-trigger-save value="Save" />
     </div>
     '''
-    
+  listItem: '''
+    <div class='user-info fixed-180' data-user-id="{{user.id}}>
+      <a href="/staffplans/{{user.id}}">
+        <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
+        <span class='name'>
+          <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
+        </span>
+      </a>
+      <div class="dropdown">
+        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#" data-action=disable>
+              <i class="icon-lock"></i>
+              Disable 
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="#" data-action=archive>
+              <i class="icon-folder-open"></i>
+              Archive  
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="chart-container flex">
+      <svg class="user-chart"></svg>
+    </div>
+    '''
   work_week:
     row: '''
     <div class='row-filler'>
@@ -145,6 +204,10 @@ _templates =
     '''
 
 StaffPlan.Templates.StaffPlans = {
+  index:
+    addStaff: Handlebars.compile _templates.index.addStaff
+    pagination: Handlebars.compile _templates.index.pagination
+  listItem: Handlebars.compile _templates.listItem
   show_frame: Handlebars.compile _templates.show.frame
   show_workWeeksAndYears: Handlebars.compile _templates.show.workWeeksAndYears
   show_newClientAndProject: Handlebars.compile _templates.show.newClientAndProject

@@ -1,34 +1,5 @@
 class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   className: "list padding-top-120"
-  templates:
-    pagination: '''
-      <div class="position-fixed date-paginator"> 
-        <div class="fixed-180">
-          <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                Sort By
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu sort-users">
-              <li><a href="#" data-criterion=name data-order=asc>Name (ASC)</a></li>
-              <li><a href="#" data-criterion=name data-order=desc>Name (DESC)</a></li>
-              <li><a href="#" data-criterion=workload data-order=asc>Workload (ASC)</a></li>
-              <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
-            </ul>
-          </div>
-          <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
-          <a href="#" class="return-false previous pagination" data-action=previous>Previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>Next</a>
-        </div>
-        <div id="date-target" class="flex">
-        </div>
-      </div>
-    '''
-    addStaff: '''
-    <div class="actions">
-      <a class="btn btn-primary" href="/users/new">Add Staff</a>
-    </div>
-    '''
   events:
     "click div.date-paginator a.pagination": "paginate"
     "click ul.dropdown-menu.sort-users li a": "sortUsers"
@@ -105,7 +76,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       , error: (model, response) ->
           alert "FAIL"
   render: ->
-    @$el.html Handlebars.compile @templates.pagination
+    @$el.html StaffPlan.Templates.StaffPlans.index.pagination
     buttonText = if localStorage.getItem("staffplanFilter") is "active"
       "Show inactive"
     else
@@ -117,7 +88,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
         parent: @
         startDate: @startDate.valueOf()
       @appendChild view
-    @$el.append Handlebars.compile @templates.addStaff
+    @$el.append StaffPlan.Templates.Staffplans.index.addStaff
     
     chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     @numberOfBars = Math.round(chartContainerWidth / 40) - 2
