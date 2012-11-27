@@ -3,7 +3,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   initialize: ->
 
     m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
 
     @debouncedRender = _.debounce(@render, 200)
     $(window).bind "resize", (event) =>

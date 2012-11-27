@@ -39,7 +39,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     localStorage.setItem("staffplanFilter", "active")
     @users = new StaffPlan.Collections.Users @options.users.active()
     m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     @users.bind "reset", (event) =>
       @render()

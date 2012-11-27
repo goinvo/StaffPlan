@@ -3,7 +3,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   
   initialize: ->
     m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1)
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     @collection.bind "remove", () =>
       @render()
 

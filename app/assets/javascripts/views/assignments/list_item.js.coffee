@@ -7,7 +7,6 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   
   initialize: ->
     @startDate = @options.start.valueOf()
-    @userItemTemplate = Handlebars.compile @templates.userItem
     @numberOfBars = @options.numberOfBars
     @on "date:changed", (message) =>
       @workWeeksView.trigger "date:changed", message
