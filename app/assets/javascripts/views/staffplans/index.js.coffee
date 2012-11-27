@@ -65,7 +65,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       , error: (model, response) ->
           alert "FAIL"
     @on "year:changed", (message) =>
+      StaffPlan.assignments.each (assignment) ->
+        assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
+          moment(week.get("beginning_of_week")).year() is parseInt(message.year, 10)
       @render()
+
     @on "membership:archive", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save

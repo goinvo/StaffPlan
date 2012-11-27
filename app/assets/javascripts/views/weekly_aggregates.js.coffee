@@ -1,9 +1,9 @@
 class StaffPlan.Views.WeeklyAggregates extends Backbone.View 
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
-  aggregate: (timestamp) ->
+  aggregate: (timestamp, yearFilter) ->
     weeks = _.compact _.flatten @assignments.map (assignment) ->
-      assignment.getWorkWeeks().detect (week) ->
+      _.detect assignment.get("filteredWeeks"), (week) ->
         parseInt(week.get("beginning_of_week"), 10) is parseInt(timestamp, 10)
     aggregate = _.reduce weeks, (memo, week) ->
       memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
@@ -32,10 +32,10 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
 
   # We need to retrieve the aggregates for the given date range
   getData: ->
-      # date = moment().utc()
+      yearFilter = parseInt(localStorage.getItem("yearFilter"), 10)
       range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
       _.map range, (timestamp) =>
-        @aggregate timestamp
+        @aggregate timestamp, yearFilter
 
   initialize: ->
     @assignments = @model.getAssignments()
