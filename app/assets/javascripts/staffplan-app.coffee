@@ -14,7 +14,6 @@ window.StaffPlan =
       WorkWeeks: {}
     Clients: {}
   Routers: {}
-  Dispatcher: _.extend {}, Backbone.Events
   initialize: (data) ->
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
@@ -22,7 +21,11 @@ window.StaffPlan =
     @assignments = new StaffPlan.Collections.Assignments data.assignments
     @currentCompany = data.currentCompany
     @currentUser = data.currentUser
-
+    @relevantYears = _.uniq(_.flatten(StaffPlan.assignments.reduce (memo, assignment) ->
+                        memo.push _.uniq(assignment.work_weeks.map (week) -> moment(week.get("beginning_of_week")).year())
+                        memo
+                      , []))
+      
     new StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects
@@ -35,12 +38,8 @@ window.StaffPlan =
       event.preventDefault()
       href = $(event.currentTarget).attr('href').slice(1)
       Backbone.history.navigate(href, true)
-    $('body header select.year-filter').val(localStorage.getItem("yearFilter")).live 'change', (event) ->
-      year = $(event.target).val()
-      localStorage.setItem("yearFilter", $(event.target).val())
-      StaffPlan.Dispatcher.trigger "year:changed",
-        year: year
   
+    
   addClientByName: (name, callback) ->
     @clients.create
       name: name

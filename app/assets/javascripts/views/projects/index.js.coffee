@@ -11,6 +11,8 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     $(window).bind "resize", (event) =>
       @debouncedRender()
 
+    @on "year:changed", (message) =>
+      @render()
     @on "date:changed", (message) =>
       if message.action is "previous"
         @startDate.subtract('weeks', @numberOfBars)
@@ -20,8 +22,6 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         child.trigger "date:changed"
           begin: @startDate
           count: @numberOfBars
-    StaffPlan.Dispatcher.on "year:changed", (message) =>
-      @render()
   leave: ->
     @off()
     @remove()
@@ -48,6 +48,11 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
 
     @$el.html StaffPlan.Templates.Projects.index.header
 
+    if StaffPlan.relevantYears.length > 2
+      @yearFilter = new StaffPlan.Views.Shared.YearFilter
+        years: StaffPlan.relevantYears
+        parent: @
+      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem
         model: project

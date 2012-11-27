@@ -19,7 +19,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
           count: @numberOfBars
     @on "week:updated", (message) =>
       @projectChartView.trigger "week:updated"
-    StaffPlan.Dispatcher.on "year:changed", (message) =>
+    @on "year:changed", (message) =>
       @render()
     
   events: ->
@@ -83,6 +83,11 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       width: chartContainerWidth
     @renderChildInto @projectChartView, @$el.find "div.chart-container"
     
+    if StaffPlan.relevantYears.length > 2
+      @yearFilter = new StaffPlan.Views.Shared.YearFilter
+        years: StaffPlan.relevantYears
+        parent: @
+      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
 
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>

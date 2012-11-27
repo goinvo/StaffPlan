@@ -44,9 +44,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.bind "reset", (event) =>
       @render()
 
-    StaffPlan.Dispatcher.on "year:changed", (message) =>
-      @render()
-     
     # Event bindings
     @on "date:changed", (message) =>
       if message.action is "previous"
@@ -67,7 +64,8 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
             $(@).remove()
       , error: (model, response) ->
           alert "FAIL"
-      
+    @on "year:changed", (message) =>
+      @render()
     @on "membership:archive", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save
@@ -84,6 +82,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     else
       "Show active"
     @$el.find("button.btn-primary").text(buttonText)
+    if StaffPlan.relevantYears.length > 2
+      @yearFilter = new StaffPlan.Views.Shared.YearFilter
+        years: StaffPlan.relevantYears
+        parent: @
+      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
