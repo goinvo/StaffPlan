@@ -19,6 +19,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
           count: @numberOfBars
     @on "week:updated", (message) =>
       @projectChartView.trigger "week:updated"
+    StaffPlan.Dispatcher.on "year:changed", (message) =>
+      @render()
     
   events: ->
     "click a[data-action=add-user]": "addUserToProject"

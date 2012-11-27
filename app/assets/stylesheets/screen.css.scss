@@ -84,7 +84,12 @@ body > header {
   @include box-shadow(0 1px 0 white);
   top: 0px;
   width: 100%;
-  
+  select.year-filter {
+    height: 24px;
+    line-height: 24px;
+    margin-bottom: 0px;
+    width: auto
+  }
   .inner {
     position: relative;
     margin: 0 auto;

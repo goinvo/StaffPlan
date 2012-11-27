@@ -3,7 +3,7 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
   aggregate: (timestamp) ->
     weeks = _.compact _.flatten @assignments.map (assignment) ->
-      assignment.work_weeks.detect (week) ->
+      assignment.getWorkWeeks().detect (week) ->
         parseInt(week.get("beginning_of_week"), 10) is parseInt(timestamp, 10)
     aggregate = _.reduce weeks, (memo, week) ->
       memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)

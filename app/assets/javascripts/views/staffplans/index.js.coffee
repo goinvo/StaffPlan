@@ -44,6 +44,8 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.bind "reset", (event) =>
       @render()
 
+    StaffPlan.Dispatcher.on "year:changed", (message) =>
+      @render()
      
     # Event bindings
     @on "date:changed", (message) =>

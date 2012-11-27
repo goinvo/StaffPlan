@@ -20,7 +20,8 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
         child.trigger "date:changed"
           begin: @startDate
           count: @numberOfBars
-  
+    StaffPlan.Dispatcher.on "year:changed", (message) =>
+      @render()
   leave: ->
     @off()
     @remove()
