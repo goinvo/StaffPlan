@@ -45,17 +45,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.bind "reset", (event) =>
       @render()
 
-    # Event bindings
     @on "date:changed", (message) =>
-      if message.action is "previous"
-        @startDate.subtract('weeks', @numberOfBars)
-      else
-        @startDate.add('weeks', @numberOfBars)
-      @children.each (child) =>
-        child.trigger "date:changed"
-          begin: @startDate
-          count: @numberOfBars
-    
+      @dateChanged(message.action)
+
     @on "membership:disable", (message) =>
       user = @users.detect (user) -> user.id is message.userId
       user.membership.save

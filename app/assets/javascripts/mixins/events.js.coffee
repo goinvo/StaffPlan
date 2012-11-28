@@ -10,3 +10,13 @@ StaffPlan.Mixins.Events =
         assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
           moment(week.get("beginning_of_week")).year() is year 
     @render()
+
+  dateChanged: (action) ->
+    if action is "previous"
+      @startDate.subtract('weeks', @numberOfBars)
+    else
+      @startDate.add('weeks', @numberOfBars)
+    @children.each (child) =>
+      child.trigger "date:changed"
+        begin: @startDate
+        count: @numberOfBars

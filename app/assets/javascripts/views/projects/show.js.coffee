@@ -9,17 +9,13 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @debouncedRender = _.debounce(@render, 200)
     $(window).bind "resize", (event) =>
       @debouncedRender()
+
     @on "date:changed", (message) =>
-      if message.action is "previous"
-        @startDate.subtract('weeks', @numberOfBars)
-      else
-        @startDate.add('weeks', @numberOfBars)
-      @children.each (child) =>
-        child.trigger "date:changed",
-          begin: @startDate
-          count: @numberOfBars
+      @dateChanged(message.action)
+
     @on "week:updated", (message) =>
       @projectChartView.trigger "week:updated"
+
     @on "year:changed", (message) =>
       @yearChanged(parseInt(message.year, 10))
     

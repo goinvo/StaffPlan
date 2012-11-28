@@ -16,14 +16,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       @yearChanged(parseInt(message.year, 10))
     
     @on "date:changed", (message) =>
-      if message.action is "previous"
-        @startDate.subtract('weeks', @numberOfBars)
-      else
-        @startDate.add('weeks', @numberOfBars)
-      @children.each (child) =>
-        child.trigger "date:changed"
-          begin: @startDate
-          count: @numberOfBars
+      @dateChanged(message.action)
   leave: ->
     @off()
     @remove()
