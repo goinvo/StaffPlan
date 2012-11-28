@@ -2,15 +2,19 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
   aggregate: (timestamp, yearFilter) ->
+
     weeks = _.compact _.flatten @assignments.map (assignment) ->
-      _.detect assignment.get("filteredWeeks"), (week) ->
+      models = assignment.get("filteredWeeks") or assignment.work_weeks.models
+      _.detect models, (week) ->
         parseInt(week.get("beginning_of_week"), 10) is parseInt(timestamp, 10)
+
     aggregate = _.reduce weeks, (memo, week) ->
       memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
       memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
       memo['proposed'] += if week.get("proposed") then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
       memo
     , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: timestamp}
+
     if aggregate.actual_hours isnt 0
       total: aggregate.actual_hours
       proposed: 0

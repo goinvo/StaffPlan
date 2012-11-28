@@ -2,6 +2,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   className: "list padding-top-120"
   
   initialize: ->
+    _.extend @, StaffPlan.Mixins.Events
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     @collection.bind "remove", () =>
@@ -12,10 +13,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       @debouncedRender()
 
     @on "year:changed", (message) =>
-      StaffPlan.assignments.each (assignment) ->
-        assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
-          moment(week.get("beginning_of_week")).year() is parseInt(message.year, 10)
-      @render()
+      @yearChanged(parseInt(message.year, 10))
     
     @on "date:changed", (message) =>
       if message.action is "previous"

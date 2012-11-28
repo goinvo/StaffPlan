@@ -2,6 +2,8 @@ window.StaffPlan =
   Models: {}
   Collections: {}
   Templates: {}
+  Mixins:
+    Events: {}
   Views:
     Shared: {}
     StaffPlans:
@@ -25,7 +27,12 @@ window.StaffPlan =
                         memo.push _.uniq(assignment.work_weeks.map (week) -> moment(week.get("beginning_of_week")).year())
                         memo
                       , []))
-      
+    year = parseInt(localStorage.getItem("yearFilter"), 10)
+    if _.include(@relevantYears, year)
+      StaffPlan.assignments.each (assignment) ->
+        assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
+          moment(week.get("beginning_of_week")).year() is year
+
     new StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects

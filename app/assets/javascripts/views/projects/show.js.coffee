@@ -2,6 +2,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   className: "list padding-top-240"
   initialize: ->
 
+    _.extend @, StaffPlan.Mixins.Events
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
 
@@ -20,10 +21,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @on "week:updated", (message) =>
       @projectChartView.trigger "week:updated"
     @on "year:changed", (message) =>
-      StaffPlan.assignments.each (assignment) ->
-        assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
-          moment(week.get("beginning_of_week")).year() is parseInt(message.year, 10)
-      @render()
+      @yearChanged(parseInt(message.year, 10))
     
   events: ->
     "click a[data-action=add-user]": "addUserToProject"
