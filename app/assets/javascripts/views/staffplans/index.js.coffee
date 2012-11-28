@@ -1,52 +1,42 @@
 class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   className: "list padding-top-120"
+
+  # All event handlers are defined in app/assets/javascripts/mixins/events.js.coffee
   events:
-    "click div.date-paginator a.pagination": "paginate"
     "click ul.dropdown-menu.sort-users li a": "sortUsers"
     "click button.btn-primary[data-filter]": "toggleFilter"
-  
-  
-  toggleFilter: (event) ->
-    filter = localStorage.getItem("staffplanFilter")
-    models = if filter is "inactive" then StaffPlan.users.active() else StaffPlan.users.inactive()
-    localStorage.setItem("staffplanFilter", if filter is "active" then "inactive" else "active")
-    @users.reset models
-
-  sortUsers: (event) ->
-    event.stopPropagation()
-    event.preventDefault()
-    target = $(event.target)
-    [criterion, order] = [target.data('criterion'), target.data('order')]
-    sorted = switch criterion
-      when "workload"
-        @users.sortBy (user) -> user.workload()
-      when "name"
-        @users.sortBy (user) -> user.get("last_name")
-    @users.reset (if order is "asc" then sorted else sorted.reverse())
 
   leave: ->
     @off()
     @remove()
 
-  paginate: (event) ->
-    event.preventDefault()
-    event.stopPropagation()
-
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     _.extend @, StaffPlan.Mixins.Events.memberships
-
+    _.extend @, StaffPlan.Mixins.Events.users
+    
+    # Makes it so that the render() call can only be 
+    # called AT MOST once every 500ms during resize
     @debouncedRender = _.debounce(@render, 500)
     $(window).bind "resize", (event) =>
       @debouncedRender()
+    
+    # We show active users by default
+    # TODO: Maybe make it so that the set of users defined by the
+    # user's filter is shown by default instead
     localStorage.setItem("staffplanFilter", "active")
     @users = new StaffPlan.Collections.Users @options.users.active()
+
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
+    # When the collection of users changes, we render the view 
+    # again to reflect the change in the UI
     @users.bind "reset", (event) =>
       @render()
 
+
+    # All event handlers are defined in app/assets/javascript/mixins/events.js.coffee
     @on "date:changed", (message) =>
       @dateChanged(message.action)
 
@@ -58,16 +48,21 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
 
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.index.pagination
+    # FIXME: This is ugly
     buttonText = if localStorage.getItem("staffplanFilter") is "active"
       "Show inactive"
     else
       "Show active"
     @$el.find("button.btn-primary").text(buttonText)
+    
+    # We don't show the select control if the work weeks only span over ONE year
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+
+    # Show the collection of users with the associated information and charts 
     @users.each (user) =>
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
@@ -83,6 +78,5 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @renderChildInto dateRangeView, @$el.find("#date-target")
-
 
     @
