@@ -33,7 +33,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     event.stopPropagation()
 
   initialize: ->
-    _.extend @, StaffPlan.Mixins.Events
+    _.extend @, StaffPlan.Mixins.Events.weeks
+    _.extend @, StaffPlan.Mixins.Events.memberships
+
     @debouncedRender = _.debounce(@render, 500)
     $(window).bind "resize", (event) =>
       @debouncedRender()
@@ -48,28 +50,12 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @on "date:changed", (message) =>
       @dateChanged(message.action)
 
-    @on "membership:disable", (message) =>
-      user = @users.detect (user) -> user.id is message.userId
-      user.membership.save
-        disabled: not user.membership.get("disabled")
-      , success: (model, response) =>
-          $(message.subview.el).slideUp 400, "linear", () ->
-            $(@).remove()
-      , error: (model, response) ->
-          alert "FAIL"
-
+    @on "membership:toggle", (message) =>
+      @toggleMembership(message)
+    
     @on "year:changed", (message) =>
       @yearChanged(parseInt(message.year, 10))
 
-    @on "membership:archive", (message) =>
-      user = @users.detect (user) -> user.id is message.userId
-      user.membership.save
-        archived: not user.membership.get("archived")
-      , success: (model, response) =>
-          $(message.subview.el).slideUp 400, "linear", () ->
-            $(@).remove()
-      , error: (model, response) ->
-          alert "FAIL"
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.index.pagination
     buttonText = if localStorage.getItem("staffplanFilter") is "active"

@@ -2,7 +2,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
   className: "list padding-top-240"
   initialize: ->
 
-    _.extend @, StaffPlan.Mixins.Events
+    _.extend @, StaffPlan.Mixins.Events.weeks
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
 

@@ -14,8 +14,9 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     event.stopPropagation()
     event.preventDefault()
     target = $(event.target)
-    @parent.trigger "membership:#{target.data('action')}",
+    @parent.trigger "membership:toggle"
       userId: @model.id
+      action: target.data('action')
       subview: @
   
   render: ->
