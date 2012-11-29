@@ -576,6 +576,10 @@ input.estimated-actual, .row-label {
   @include row-filler;
 }
 
+.quick-jump {
+  margin-bottom: 0;
+}
+
 #flash {
   width: 100%;
   div {

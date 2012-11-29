@@ -32,9 +32,24 @@ $( document ).ready(function() {
     $( this ).closest( 'form' ).submit();
   });
   
-  $( 'a.return-false' ).live( 'click', function(event) {
+  $( 'a.chill-out').live('click', function(event) {
     event.stopPropagation();
     event.preventDefault();
     return false;
   });
+  
+  key('left, right', function(event) {
+    console.log("change page")
+    $(document.body).trigger('date:changed', {event: event})
+  });
+  
+  $('.header-typeahead').typeahead({
+      source: StaffPlan.typeAhead
+  })
+  
+  $('.quick-jump').on('submit', function(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    StaffPlan.onTypeAhead($(this));
+  })
 });

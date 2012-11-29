@@ -19,8 +19,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
   initialize: ->
     window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
     
-    key 'left, right', (event) => @changePage( event )
-    @bind 'date:changed', => @render()
+    $(document.body).on 'date:changed', => @render()
       
     @model = @options.user
     @model.view = @
