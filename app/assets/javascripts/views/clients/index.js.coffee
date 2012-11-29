@@ -1,17 +1,10 @@
-class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
+class window.StaffPlan.Views.Clients.Index extends Backbone.View
   id: "clients"
   className: "padding-top-40"
   
   initialize: ->
-    Handlebars.registerHelper 'client_projects', (projects) ->
-      _.map(projects, (project_name, project_id) ->
-        "<a href='/projects/#{project_id}'>#{project_name}</a>"
-      ).join(", ")
-      
-    @populateElement()
     @collection.bind 'change:id', => @render()
-    @render()
-  
+
   populateElement: ->
     @$el.html StaffPlan.Templates.Clients.index.clientInfo
       clients: @collection.map (client) ->
@@ -40,5 +33,15 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     @collection.remove(client)
     @$el.find('li[data-client-id=' + clientId + ']').remove()
     
+  leave: ->
+    @unbind()
+    @remove()
+
   render: ->
+    Handlebars.registerHelper 'client_projects', (projects) ->
+      _.map(projects, (project_name, project_id) ->
+        "<a href='/projects/#{project_id}'>#{project_name}</a>"
+      ).join(", ")
+      
+    @populateElement()
     @$el.appendTo('section.main')

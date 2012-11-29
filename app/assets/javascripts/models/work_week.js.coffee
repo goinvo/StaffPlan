@@ -16,6 +16,5 @@ class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
     hasPassedOrIsCurrent: !@inFuture()
     cid: @cid
 
-
   inFuture: ->
     @get("beginning_of_week") > moment().utc().valueOf()

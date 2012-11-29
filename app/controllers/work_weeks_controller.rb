@@ -4,7 +4,7 @@ class WorkWeeksController < ApplicationController
 
   def create
     @assignment = Assignment.where(id: params[:assignment_id]).first
-    @work_week = @assignment.work_weeks.build(params[:work_week])
+    @work_week = @assignment.work_weeks.build params[:work_week]
     if @work_week.save
       respond_with(@work_week, location: nil) and return
     else

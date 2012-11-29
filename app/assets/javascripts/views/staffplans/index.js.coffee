@@ -35,8 +35,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.bind "reset", (event) =>
       @render()
 
-
-    # All event handlers are defined in app/assets/javascript/mixins/events.js.coffee
     @on "date:changed", (message) =>
       @dateChanged(message.action)
 

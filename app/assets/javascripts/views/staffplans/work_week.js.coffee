@@ -43,6 +43,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
 
     @queueUpdateOrCreate event, cid,
       estimated_hours: $currentTarget.val()
+      beginning_of_week: $currentTarget.data('timestamp')
     
   queueActualUpdateOrCreate: (event) ->
     $currentTarget = $( event.currentTarget )
@@ -50,6 +51,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     
     @queueUpdateOrCreate event, cid,
       actual_hours: $currentTarget.val()
+      beginning_of_week: $currentTarget.data('timestamp')
       
   queueUpdateOrCreate: (event, cid, attributes) ->
     window.clearTimeout event.currentTarget.timeout
@@ -60,6 +62,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   updateOrCreateWorkWeek: (event, cid, attributes) ->
     event.currentTarget.timeout = null
     workWeek = @collection.getByCid cid
+    workWeek.unset "date"
     workWeek.save attributes,
       success: (lol, foo, bar, baz) ->
         console.log('success')

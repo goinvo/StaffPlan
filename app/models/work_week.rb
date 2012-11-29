@@ -3,7 +3,7 @@ class WorkWeek < ActiveRecord::Base
 
   has_paper_trail
   
-  attr_accessible :estimated_hours, :actual_hours, :cweek, :year
+  attr_accessible :estimated_hours, :actual_hours, :beginning_of_week 
   
   belongs_to :assignment
   delegate :user, to: :assignment
