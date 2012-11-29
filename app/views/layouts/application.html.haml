@@ -25,9 +25,6 @@
           %li#nav-clients= link_to(t('.clients'), clients_path)
           %li#nav-projects= link_to(t('.projects'), projects_path)
           %li#current-company= current_user.current_company_selector
-          %li#nav-year-selector
-            - a = WorkWeek.select(:year).uniq.map(&:year).compact.sort
-            = select_tag "year-filter", options_for_select([["Select year", 0]].push(*a.zip(a))), {:class => "year-filter"}
           %li
             %form.quick-jump
               %input{type: "text", class: "input search-query header-typeahead", placeholder: "Client or Project Name"}

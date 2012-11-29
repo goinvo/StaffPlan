@@ -47,13 +47,6 @@ window.StaffPlan =
       href = $(event.currentTarget).attr('href').slice(1)
       Backbone.history.navigate(href, true)
       
-    $('body header select.year-filter').val(localStorage.getItem("yearFilter")).live 'change', (event) ->
-      year = $(event.target).val()
-      localStorage.setItem("yearFilter", $(event.target).val())
-      StaffPlan.Dispatcher.trigger "year:changed",
-        year: year
-  
-    
   addClientByName: (name, callback) ->
     @clients.create
       name: name
