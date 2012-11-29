@@ -74,7 +74,7 @@ _templates =
       <div class="grid-row-element"></div>
     </div>
     <div class='header grid-row padded top-130 position-fixed width-100-percent'>
-      <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='return-false add-client'><i class='icon-plus-sign'></i></a></div>
+      <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='chill-out add-client'><i class='icon-plus-sign'></i></a></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
       <div class="grid-row-element flex date-range-target" id="interval-width-target"></div>
     </div>
@@ -125,9 +125,9 @@ _templates =
           <ul class="dropdown-menu">
             <li><a class='add-project'><i class='icon-plus-sign'></i>Add Project</a></li>
             <li class="divider"></li>
-            <li><a href="#" class='destroy-all-assignments return-false'><i class='icon-check'></i> Delete All Assignments</a></li>
+            <li><a href="#" class='destroy-all-assignments chill-out'><i class='icon-check'></i> Delete All Assignments</a></li>
             <li class="divider"></li>
-            <li><a href="#" class='acrhive-all-assignments return-false'><i class='icon-ok-sign'></i> Archive All Assignments</a></li>
+            <li><a href="#" class='acrhive-all-assignments chill-out'><i class='icon-ok-sign'></i> Archive All Assignments</a></li>
           </ul>
         </div>
         {{/if}}

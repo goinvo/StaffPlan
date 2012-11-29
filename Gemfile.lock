@@ -119,7 +119,6 @@ GEM
     json (1.7.5)
     launchy (2.1.2)
       addressable (~> 2.3)
-    libv8 (3.3.10.4)
     libwebsocket (0.1.5)
       addressable
     mail (2.4.4)
@@ -219,8 +218,6 @@ GEM
       rest-client (>= 1.4.0, < 1.7.0)
       sequel (~> 3.20.0)
       sinatra (~> 1.0.0)
-    therubyracer (0.10.2)
-      libv8 (~> 3.3.10)
     thin (1.4.1)
       daemons (>= 1.0.9)
       eventmachine (>= 0.12.6)
@@ -257,7 +254,6 @@ DEPENDENCIES
   cucumber-rails (= 1.2.1)
   database_cleaner
   draper
-  execjs
   factory_girl_rails
   faker
   haml
@@ -278,7 +274,6 @@ DEPENDENCIES
   sass-rails (~> 3.2)
   sqlite3
   taps
-  therubyracer
   thin
   uglifier (>= 1.0)
   webrat
