@@ -62,7 +62,7 @@ _templates =
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
-          <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
+          <a href="/users/{{user.id}}">{{user.full_name}}</a>
         </span>
       </div>
       <div id="user-chart" class="grid-row-element flex chart-totals-view">

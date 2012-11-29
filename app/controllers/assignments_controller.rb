@@ -33,7 +33,7 @@ class AssignmentsController < ApplicationController
   private
   
   def find_target_user
-    @target_user = current_user.current_company.users.find(params[:target_user_id])
+    @target_user = current_user.current_company.users.find params[:user_id]
   rescue
     render(status: 404)
   end
