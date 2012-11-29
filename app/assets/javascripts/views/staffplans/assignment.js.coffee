@@ -103,4 +103,4 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   _save: (project) =>
     @model.save
       project_id: project.get('id')
-      target_user_id: @user.get('id')
+      user_id: @user.get('id')
