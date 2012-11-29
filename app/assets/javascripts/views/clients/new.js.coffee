@@ -1,6 +1,5 @@
 class window.StaffPlan.Views.Clients.New extends Backbone.View
-  tagName: "form"
-  className: "form-horizontal"
+  className: "padding-top-40"
   
   initialize: ->
     @$el.html StaffPlan.Templates.Clients.new.newClient

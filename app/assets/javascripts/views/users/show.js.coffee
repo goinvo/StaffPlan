@@ -1,4 +1,5 @@
 class window.StaffPlan.Views.Users.Show extends Support.CompositeView
+  className: "padding-top-40"
   
   initialize: ->
     

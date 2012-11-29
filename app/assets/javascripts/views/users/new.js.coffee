@@ -1,6 +1,6 @@
 class window.StaffPlan.Views.Users.New extends Support.CompositeView
   tagName: "form"
-  className: "form-horizontal"
+  className: "form-horizontal padding-top-40"
   
   initialize: ->
 

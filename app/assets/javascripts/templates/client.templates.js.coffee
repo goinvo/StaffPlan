@@ -1,36 +1,38 @@
 _templates =
   new:
     newClient: '''
-      <div class="control-group">
-        <label class="control-label" for="client_name">Name</label>
-        <div class="controls">
-          <input id="client_name" data-attribute="name" size="30" type="text" value="{{clientName}}">
+      <form class="form-horizontal">
+        <div class="control-group">
+          <label class="control-label" for="client_name">Name</label>
+          <div class="controls">
+            <input id="client_name" data-attribute="name" size="30" type="text" value="{{clientName}}">
+          </div>
         </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label" for="client_description">Description</label>
-        <div class="controls">
-        <textarea cols="40" id="client_description" data-attribute="description" rows="20">{{clientDescription}}</textarea>
+        <div class="control-group">
+          <label class="control-label" for="client_description">Description</label>
+          <div class="controls">
+          <textarea cols="40" id="client_description" data-attribute="description" rows="20">{{clientDescription}}</textarea>
+          </div>
         </div>
-      </div>
-      <div class="control-group">
-        <div class="controls">
-          {{#if clientActive}}
-            <input checked="checked" id="client_active" data-attribute="active" type="checkbox" value="1">
+        <div class="control-group">
+          <div class="controls">
+            {{#if clientActive}}
+              <input checked="checked" id="client_active" data-attribute="active" type="checkbox" value="1">
+            {{else}}
+              <input id="client_active" data-attribute="active" type="checkbox" value="0">
+            {{/if}}
+            Active?
+          </div>
+        </div>
+        <div class="form-actions">
+          {{#if clientIsNew}}
+            <button data-action="save" type="submit" class="btn btn-primary">Save changes</button>
           {{else}}
-            <input id="client_active" data-attribute="active" type="checkbox" value="0">
+            <button data-action="update" type="submit" class="btn btn-primary">Update client</button>
           {{/if}}
-          Active?
+          <button data-action="cancel" type="button" class="btn">Back to list of clients</button>
         </div>
-      </div>
-      <div class="form-actions">
-        {{#if clientIsNew}}
-          <button data-action="save" type="submit" class="btn btn-primary">Save changes</button>
-        {{else}}
-          <button data-action="update" type="submit" class="btn btn-primary">Update client</button>
-        {{/if}}
-        <button data-action="cancel" type="button" class="btn">Back to list of clients</button>
-      </div>
+      </form>
     '''
   index:
     clientInfo: '''
