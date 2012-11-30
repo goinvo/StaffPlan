@@ -154,7 +154,7 @@ _templates =
   listItem: '''
     <div class='user-info fixed-180' data-user-id="{{user.id}}>
       <a href="/staffplans/{{user.id}}">
-        <img alt="A69309561cecae0e0210ace5f6a9a585" class="gravatar" src="{{user.gravatar}}" />
+        <img alt="{{user.full_name}}" class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>
