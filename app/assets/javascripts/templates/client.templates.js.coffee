@@ -1,3 +1,8 @@
+Handlebars.registerHelper 'client_projects', (projects) ->
+  _.map(projects, (project_name, project_id) ->
+    "<a href='/projects/#{project_id}'>#{project_name}</a>"
+  ).join(", ")
+
 _templates =
   new:
     newClient: '''
@@ -63,10 +68,10 @@ _templates =
         </li>
       {{/each}}
     </ul>
-    <button data-action="new" class="btn btn-primary">
+    <a href="/users/new" class="btn btn-primary">
       <i class="icon-white icon-list"></i>
       Add client
-    </button>
+    </a>
     '''
   show:
     clientInfo: '''
