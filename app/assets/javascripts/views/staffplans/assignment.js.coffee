@@ -45,8 +45,12 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     else
       @$el.html StaffPlan.Templates.StaffPlans.assignment_show
         showAddProject: @index == 0
-        clientName: if @index == 0 then @client().get('name') else ""
-        projectName: @project()?.get('name')
+        client:
+          name: if @index == 0 then @client().get('name') else ""
+          id: @client().get('id')
+        project:
+          name: @project()?.get('name')
+          id: @project()?.get('id')
         user_id: @user.id
         isDeletable: @isDeletable()
     

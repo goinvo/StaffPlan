@@ -117,7 +117,7 @@ _templates =
       """
     show: '''
       <div class="grid-row-element client-name-and-project-name fixed-180 sexy">
-        {{clientName}}
+        <a href="/clients/{{client.id}}">{{client.name}}</a>
         {{#if showAddProject}}
         <div class='btn-group pull-right'>
           <button class="btn btn-mini"><i class="icon-cog"></i></button>
@@ -133,7 +133,7 @@ _templates =
         {{/if}}
       </div>
       <div class="grid-row-element fixed-180 sexy client-name-and-project-name assignment-actions-target">
-        {{projectName}}
+        <a href="/projects/{{project.id}}">{{project.name}}</a>
       </div>
       <div class="grid-row-element flex work-weeks"></div>
     '''
