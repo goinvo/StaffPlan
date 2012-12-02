@@ -536,12 +536,16 @@ footer {
   &.padded {
     padding: 8px 15px;
   }
+  
+  &.assignment-row {
+    border-bottom: 2px dotted #eee;
+  }
 }
 
 .grid-row-element {
   white-space: nowrap;
   position: relative;
-    
+  
   &.client-name-and-project-name {
     padding-right: 10px;
   }

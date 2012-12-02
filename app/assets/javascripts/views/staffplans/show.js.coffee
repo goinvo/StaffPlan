@@ -22,6 +22,14 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
+    @debouncedRender = _.debounce =>
+      alert("resize disabled due to a webkit bug that makes all client/assignment rows invisible. reloading the page now.")
+      window.location.reload()
+      # @render
+    , 200
+    $(window).bind "resize", (event) =>
+      @debouncedRender()
+    
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "week:updated", (message) => @staffplanChartView.trigger "week:updated"
     @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
