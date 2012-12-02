@@ -58,25 +58,22 @@ _templates =
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded position-fixed top-38 padding-top-30 width-100-percent">
+    <div id="user-select" class="grid-row user-info padded position-fixed top-40 padding-top-30 width-100-percent">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
           <a href="/users/{{user.id}}">{{user.full_name}}</a>
         </span>
       </div>
-      <div id="user-chart" class="grid-row-element flex chart-totals-view">
-        <a class="previous flex" href="#" data-change-page='previous'>Previous</a>
-          <ul>
-          </ul>
-        <a class="next flex" href="#" data-change-page='next'>Next</a>
+      <div id="user-chart" class="grid-row-element chart-wrapper top-0">
+        <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
       </div>
-      <div class="grid-row-element"></div>
     </div>
-    <div class='header grid-row padded top-130 position-fixed width-100-percent'>
+
+    <div class='header grid-row padded top-200 position-fixed width-100-percent'>
       <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='chill-out add-client'><i class='icon-plus-sign'></i></a></div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
-      <div class="grid-row-element flex date-range-target" id="interval-width-target"></div>
+      <div class="grid-row-element flex date-range-target date-paginator" id="interval-width-target"></div>
     </div>
     '''
   

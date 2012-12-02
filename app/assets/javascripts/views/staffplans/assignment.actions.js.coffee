@@ -7,10 +7,10 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
     
     @assignment.model.bind 'change', (assignment) =>
       if assignment.changed.proposed? or assignment.changed.archived?
+        StaffPlan.router.currentView.trigger('week:updated')
         @render()
       
     @assignment.model.work_weeks.bind 'change', (ww) =>
-      # debugger  
       @render()
     
   render: ->

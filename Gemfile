@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.2.8'
 
-gem 'backbone-support'
+gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
 gem 'bitmask_attributes'
 gem 'cancan'

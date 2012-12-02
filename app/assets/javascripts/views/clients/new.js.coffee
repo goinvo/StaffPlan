@@ -34,7 +34,6 @@ class window.StaffPlan.Views.Clients.New extends Backbone.View
       @collection.add @model
     @model.save attributes,
       error: (model, response) =>
-        console.log response
         alert "Couldn't save the client to the server :/"
       success: (model, response) =>
         if isNew then @collection.add model

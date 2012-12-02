@@ -11,7 +11,7 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
     aggregate = _.reduce weeks, (memo, week) ->
       memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
       memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
-      memo['proposed'] += if week.get("proposed") then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
+      memo['proposed'] += if week.getAssignment().get("proposed") then (parseInt(week.get("estimated_hours"), 10) or 0) else 0
       memo
     , {estimated_hours: 0, actual_hours: 0, proposed: 0, beginning_of_week: timestamp}
 
@@ -36,10 +36,10 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
 
   # We need to retrieve the aggregates for the given date range
   getData: ->
-      yearFilter = parseInt(localStorage.getItem("yearFilter"), 10)
-      range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
-      _.map range, (timestamp) =>
-        @aggregate timestamp, yearFilter
+    yearFilter = parseInt(localStorage.getItem("yearFilter"), 10)
+    range = _.range(@begin, @begin + @count * WEEK_IN_MILLISECONDS, WEEK_IN_MILLISECONDS)
+    _.map range, (timestamp) =>
+      @aggregate timestamp, yearFilter
 
   initialize: ->
     @assignments = @model.getAssignments()
@@ -60,8 +60,7 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
       else
         _.delay redraw, 200
 
-    @on "week:updated", (message) =>
-      @redrawChart()
+    @on "week:updated", (message) => @redrawChart()
 
   render: ->
     data = @getData()

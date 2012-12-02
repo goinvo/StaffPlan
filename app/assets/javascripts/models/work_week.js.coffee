@@ -1,4 +1,6 @@
 class window.StaffPlan.Models.WorkWeek extends StaffPlan.Model
+  getAssignment: ->
+    @collection.parent
   
   pick: (attrs) ->
     _.reduce attrs, (memo, elem) =>

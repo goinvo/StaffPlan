@@ -52,13 +52,15 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     element = $(event.currentTarget)
 
     workWeek.save attributes,
-      success: (lol, foo, bar, baz) =>
+      success: =>
         if event.type is "change"
           # We need to trigger the event on the show view so that 
           # it's relayed to the weekly aggregates view
-          @parent.parent.trigger "week:updated",
-      error: (wat, another, argument, here) ->
-        alert('fail')
+          @parent.parent.trigger "week:updated"
+          
+      error: ->
+        alert('fail :-/')
+        
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
 

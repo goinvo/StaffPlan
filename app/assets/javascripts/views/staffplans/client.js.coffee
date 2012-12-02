@@ -1,20 +1,20 @@
-class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
   className: "client zebra"
   tagName: "section"
     
   initialize: ->
+    _.extend @, StaffPlan.Mixins.Events.weeks
     @model = @options.model
     @user = @options.user
+    @startDate = @options.startDate
     
+    @on "date:changed", (message) =>
+      @dateChanged(message.action)
+      
     @assignments = new window.StaffPlan.Collections.Assignments @options.assignments || [],
       parent: @
     
-    @assignments.map (assignment, index) => @addAssignmentView assignment, index
-    
-    @assignments.bind 'add', (assignment) =>
-      assignment.client = @model
-      @addAssignmentView assignment, @assignments.models.length - 1
-      @$el.append assignment.view.render().el
+    @assignments.bind 'add', (assignment) => @render()
     
     @assignments.add() if @model.isNew()
     
@@ -24,10 +24,17 @@ class window.StaffPlan.Views.StaffPlans.Client extends Backbone.View
       
     @$el.attr('data-client-id', if @model.get('id')? then @model.get('id') else "-1")
     
-    @$el.append @assignments.map (assignment) -> assignment.view.el
-    
   render: ->
-    @assignments.map (assignment) -> assignment.view.render()
+    @$el.empty()
+    
+    @assignments.map (assignment, index) =>
+      assignmentView = new window.StaffPlan.Views.StaffPlans.Assignment
+        model: assignment
+        client: @model
+        user: @user
+        index: index
+        startDate: @startDate
+      @appendChild assignmentView
     
     @
   

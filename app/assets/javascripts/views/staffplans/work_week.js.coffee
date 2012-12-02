@@ -3,9 +3,16 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
   tagName: "section"
       
   initialize: ->
+    _.extend @, StaffPlan.Mixins.Events.weeks
     @assignment = @options.parent
     @client = @options.client
     @user = @options.user
+    @startDate = @options.startDate
+    
+    @on "date:changed", (message) =>
+      @start = message.begin
+      @count = message.count
+      @render()
         
   leave: ->
     @unbind()
@@ -16,7 +23,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     
     weeks = @collection.filter (week) =>
       _.include(@user.view.getYearsAndWeeks(), week.get("beginning_of_week"))
-   
+      
     templateData = _.map weeks, (week) ->
       week.formatForTemplate()
     

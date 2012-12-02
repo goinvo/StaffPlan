@@ -1,47 +1,36 @@
-class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shared.DateDrivenView
-  className: "staffplan padding-top-177"
+class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
+  className: "staffplan padding-top-272"
   tagName: "div"
   
   events:
     "click a[data-change-page]": "changePage"
     "click a.add-client": "onAddClientClicked"
   
-  onAddClientClicked: (event) ->
+  onAddClientClicked: (event) =>
     event.preventDefault()
     event.stopPropagation()
     
-    @clients.add()
-    @$el.append @clients.last().view.render().el
+    clientView = new StaffPlan.Views.StaffPlans.Client
+      user: @model
+    @appendChild clientView
     
   gatherClientsByAssignments: ->
     _.uniq @model.getAssignments().pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
     
   initialize: ->
-    window.StaffPlan.Views.Shared.DateDrivenView.prototype.initialize.call(this)
+    _.extend @, StaffPlan.Mixins.Events.weeks
+    m = moment()
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
-    $(document.body).on 'date:changed', => @render()
-      
+    @on "date:changed", (message) => @dateChanged(message.action)
+    @on "week:updated", (message) => @staffplanChartView.trigger "week:updated"
+    @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
+    
     @model = @options.user
     @model.view = @
-    
-    # a local list of clients for whom this user is assigned projects
-    @clients = new StaffPlan.Collections.Clients
-    @clients.bind 'add', (client) => @addViewToClient client
-    @clients.reset @gatherClientsByAssignments()
-    @clients.map (client) => @addViewToClient client
-    
-    @$el.append StaffPlan.Templates.StaffPlans.show_frame
-      user: @model.attributes
-    
-    
-    @$el.append @clients.map (client) -> client.view.el
   
-  addViewToClient: (client) ->
-    client.view = new StaffPlan.Views.StaffPlans.Client
-      model: client
-      user: @model
-      assignments: @model.getAssignments().where
-        client_id: client.id
+  getYearsAndWeeks: ->
+    _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     
   changePage: (event) ->
     event.preventDefault()
@@ -50,33 +39,49 @@ class window.StaffPlan.Views.StaffPlans.Show extends window.StaffPlan.Views.Shar
     @dateChanged event
   
   render: ->
-    if @$el.closest('html').length == 0
-      # first render
-      @$el.appendTo('section.main')
-      @setWeekIntervalAndToDate()
-      @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
-        assignmentArray.push client.view.assignments.models
-        assignmentArray
-      , [], @)))
-      , "#user-chart", @$ ".chart-totals-view ul"
+    @$el.empty()
     
-    else
-      # re-render
-      @weekHourCounter.render @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
-        assignmentArray.push client.view.assignments.models
-        assignmentArray
-      , [], @)))
+    # staffplan layout
+    @$el.append StaffPlan.Templates.StaffPlans.show_frame
+      user: @model.attributes
     
-    @$el.find( '.date-range-target' ).html StaffPlan.Templates.StaffPlans.show_workWeeksAndYears
-      dates: @dateRangeMeta().dates
+    # calculate usable width for inputs
+    chartContainerWidth = $(document.body).width() - 510 # padding, margin and width of all other elements besides the flex
+    @numberOfBars = Math.round(chartContainerWidth / 39) - 2
     
-    @clients.map (client) -> client.view.render()
-
-    @weekHourCounter = new StaffPlan.Views.Shared.ChartTotalsView @dateRangeMeta().dates, _.uniq(_.flatten(@clients.reduce((assignmentArray, client, index, clients) ->
-      assignmentArray.push client.view.assignments.models
-      assignmentArray
-    , [], @)))
-    , "#user-chart", @$ ".chart-totals-view ul"
+    # render clients/assignments/inputs
+    @gatherClientsByAssignments().map (client) =>
+      clientView = new StaffPlan.Views.StaffPlans.Client
+        model: client
+        user: @model
+        assignments: @model.getAssignments().where
+          client_id: client.id
+        startDate: @startDate
+      @appendChild clientView
+    
+    # chart
+    @staffplanChartView = new StaffPlan.Views.WeeklyAggregates
+      begin: @startDate.valueOf()
+      count: @numberOfBars
+      model: @model
+      parent: @
+      el: @$el.find("svg.user-chart")
+      height: 120
+      width: chartContainerWidth
+    @renderChildInto @staffplanChartView, @$el.find "div.chart-container"
+    
+    # FY select
+    if StaffPlan.relevantYears.length > 2
+      @yearFilter = new StaffPlan.Views.Shared.YearFilter
+        years: StaffPlan.relevantYears
+        parent: @
+      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      
+    # dates and pagination
+    dateRangeView = new StaffPlan.Views.DateRangeView
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      parent: @
+    @renderChildInto dateRangeView, @$el.find "#interval-width-target"
     
     @
   

@@ -39,7 +39,6 @@ $( document ).ready(function() {
   });
   
   key('left, right', function(event) {
-    console.log("change page")
     $(document.body).trigger('date:changed', {event: event})
   });
   

@@ -7,6 +7,7 @@ class window.StaffPlan.Views.Users.Edit extends Backbone.View
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"
+    
   refreshSalaryRelatedFields: (event) ->
     selected = $(event.currentTarget).val()
 

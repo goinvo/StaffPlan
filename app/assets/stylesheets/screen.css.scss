@@ -327,6 +327,7 @@ footer {
   //margin-right: 25px;
   line-height: 35px;
   font-size: 18px;
+  
   img {
     margin-right: 5px;
     padding: 2px;
@@ -425,8 +426,14 @@ footer {
 .chart-wrapper > div {
   display: inline-block;
 }
+.margin-left-45 {
+  margin-left: 45px;
+}
 .margin-left-40 {
   margin-left: 40px;
+}
+.margin-left-35 {
+  margin-left: 35px;
 }
 .margin-left-84 {
   margin-left: 84px;
@@ -436,17 +443,24 @@ footer {
 }
 
 .padding-top-30 {
-  padding-top: 30px !important;
-}
-
+  padding-top: 30px !important; }
 .padding-top-177 {
-  padding-top: 177px;
+  padding-top: 177px; }
+.padding-top-258 {
+  padding-top: 258px; }
+.padding-top-290 {
+  padding-top: 290px; }
+.padding-top-272 {
+  padding-top: 272px; }
+.top-0 {
+  top: 0px; }
+.top-40 {
+  top: 40px;
 }
-
-.top-38 {
-  top: 38px;
-}
-
+.top-195 {
+  top: 195px !important; }
+.top-200 {
+  top: 200px; }
 .width-100-percent {
   width: 100%;
 }
@@ -460,6 +474,10 @@ footer {
   padding-top: 20px;
   width: 96.6%;
   padding-left: 25px;
+  
+  > * {
+    display: inline-block;
+  }
   
   .next, .previous {
     position: absolute;
@@ -478,6 +496,22 @@ footer {
     left: 180px;
     @include arrows-sprite(back);
   }
+}
+
+.staffplan .date-paginator {
+  top: initial;
+  padding-top: initial;
+  padding-left: initial;
+  width: 100%;
+  
+  .week-numbers, .month-names {
+    margin-left: 60px; }
+  .next {
+    top: 5px;
+    right: 60px; }
+  .previous {
+    left: 35px;
+    top: 5px; }
 }
 
 .grid-row {

@@ -17,6 +17,7 @@ window.StaffPlan =
     Clients: {}
   Routers: {}
   Dispatcher: _.extend {}, Backbone.Events
+  
   initialize: (data) ->
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
@@ -34,7 +35,7 @@ window.StaffPlan =
         assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
           moment(week.get("beginning_of_week")).year() is year
 
-    new StaffPlan.Routers.StaffPlan
+    @router = new StaffPlan.Routers.StaffPlan
       users: @users
       projects: @projects
       clients: @clients

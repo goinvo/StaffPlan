@@ -1,7 +1,6 @@
 class StaffPlan.Views.Projects.Show extends Support.CompositeView
   className: "list padding-top-240"
   initialize: ->
-
     _.extend @, StaffPlan.Mixins.Events.weeks
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
@@ -10,14 +9,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     $(window).bind "resize", (event) =>
       @debouncedRender()
 
-    @on "date:changed", (message) =>
-      @dateChanged(message.action)
-
-    @on "week:updated", (message) =>
-      @projectChartView.trigger "week:updated"
-
-    @on "year:changed", (message) =>
-      @yearChanged(parseInt(message.year, 10))
+    @on "date:changed", (message) => @dateChanged(message.action)
+    @on "week:updated", (message) => @projectChartView.trigger "week:updated"
+    @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
+    
     
   events: ->
     "click a[data-action=add-user]": "addUserToProject"
@@ -54,8 +49,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       project_id: @model.id
       user_id: targetUser.id
       proposed: false
-    , success: (model, response) =>
-        console.log "SUCCESS"
     , error: (model, response) ->
         alert "SOMETHING WENT WRONG"
     @render()

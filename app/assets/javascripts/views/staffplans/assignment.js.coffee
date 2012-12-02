@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
   className: "assignment-row grid-row padded"
   tagName: "div"
   
@@ -8,24 +8,21 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
   client: ->
     StaffPlan.clients.get( @project()?.get('client_id') )
     
-  leave: -> 
+  leave: ->
+    @model.off()
     @off()
     @remove()
 
   initialize: ->
+    _.extend @, StaffPlan.Mixins.Events.weeks
     @model = @options.model
     @user = @options.user
     @index = @options.index
+    @startDate = @options.startDate
     
-    @$el.data('cid', @cid)
-    
+    @on "date:changed", (message) => @dateChanged(message.action)
     @model.bind 'change:id', => @render()
-    
-    @assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
-      assignment: @
-    @workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
-      collection: @model.work_weeks
-      user: @user
+
 
   ensureWorkWeekRange: =>
     # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed so all inputs are rendered.
@@ -33,11 +30,13 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
       unless (@model.work_weeks.detect (week) -> timestamp is week.get("beginning_of_week"))
         @model.work_weeks.add
           beginning_of_week: timestamp
-
+    
   isDeletable: ->
     !@model.work_weeks.any (ww) -> ww.get('actual_hours')? && ww.get('actual_hours') > 0
     
   render: ->
+    @$el.empty().data('cid', @cid)
+    
     if @model.isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
         showClientInput: @model.client.isNew()
@@ -56,15 +55,20 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Backbone.View
     
       @ensureWorkWeekRange()
       
-      @assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
+      assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
         assignment: @
-        
-      # We should set the views' element to the following HTML elements instead
-      # That way you just render() every view and it does the same thing automatically
-      @$el.find( '.assignment-actions-target' ).append @assignmentActionsView.render().el
-      @$el.find( 'div.work-weeks' )
-        .append(@workWeeksView.render().el)
-      @$el.append(@assignmentTotalsView.render().el)
+      @appendChildTo assignmentActionsView, @$el.find('.assignment-actions-target')
+      
+      workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks
+        collection: @model.work_weeks
+        user: @user
+        startDate: @startDate
+      @appendChildTo workWeeksView, @$el.find('div.work-weeks')
+      
+      assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
+        assignment: @
+      @appendChild assignmentTotalsView
+      
     @
   
   events:

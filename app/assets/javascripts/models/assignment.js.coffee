@@ -1,5 +1,4 @@
 class window.StaffPlan.Models.Assignment extends StaffPlan.Model
-  NAME: "assignment"
   initialize: ->
     @work_weeks = new StaffPlan.Collections.WorkWeeks @get("work_weeks"),
       parent: @
