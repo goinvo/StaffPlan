@@ -85,10 +85,9 @@ window.StaffPlan =
     
     if client?
       projectName = typeAheadValue.substr(0, typeAheadValue.indexOf('{')).trim()
-      project = StaffPlan.projects.where(
-        client_id: client.get('id')
-        name: name
-      )[0]
+      project = client.getProjects().detect (project) ->
+        project.get('name') is projectName
+
       @clearTypeAhead()
       url = "/projects/#{project.get('id')}"
       
