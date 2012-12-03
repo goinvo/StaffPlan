@@ -75,7 +75,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
-        years: StaffPlan.relevantYears
+        years: StaffPlan.relevantYears.sort()
         parent: @
       @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
 

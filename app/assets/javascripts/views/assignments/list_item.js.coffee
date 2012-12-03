@@ -14,6 +14,12 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   render: ->
     @$el.html StaffPlan.Templates.Assignments.userItem
       user: StaffPlan.users.get(@model.get("user_id")).attributes
+
+    @actionsView = new window.StaffPlan.Views.StaffPlans.AssignmentActions
+      model: @model
+      parent: @
+    @renderChildInto @actionsView, @$el.find "div.user-info div.assignment-actions"
+
     @workWeeksView = new window.StaffPlan.Views.Projects.WorkWeeks
       collection: @model.work_weeks
       start: @startDate

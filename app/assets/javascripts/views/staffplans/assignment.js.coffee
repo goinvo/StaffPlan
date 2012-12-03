@@ -56,7 +56,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       @ensureWorkWeekRange()
       
       assignmentActionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
-        assignment: @
+        model: @model
+        parent: @
       @appendChildTo assignmentActionsView, @$el.find('.assignment-actions-target')
       
       workWeeksView = new window.StaffPlan.Views.StaffPlans.WorkWeeks

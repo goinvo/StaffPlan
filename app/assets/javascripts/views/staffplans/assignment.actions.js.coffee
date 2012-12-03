@@ -3,21 +3,20 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
   tagName: "div"
     
   initialize: ->
-    @assignment = @options.assignment
-    
-    @assignment.model.bind 'change', (assignment) =>
+    @model.bind 'change', (assignment) =>
       if assignment.changed.proposed? or assignment.changed.archived?
         StaffPlan.router.currentView.trigger('week:updated')
         @render()
       
-    @assignment.model.work_weeks.bind 'change', (ww) =>
+    @model.work_weeks.bind 'change', (ww) =>
       @render()
     
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
-      isDeletable: @assignment.isDeletable()
-      proposed: @assignment.model.get('proposed')
-      archived: @assignment.model.get('archived')
+      isDeletable: @model.work_weeks.all (week) ->
+        (parseInt(week.get("estimated_hours"), 10) is 0) and (parseInt(week.get("actual_hours"), 10) is 0)
+      proposed: @model.get('proposed')
+      archived: @model.get('archived')
     @
   
   leave: ->
@@ -33,19 +32,19 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
     event.stopPropagation()
     event.preventDefault()
     
-    @assignment.model.destroy()
-    @assignment.remove()
+    @model.destroy()
+    @parent.remove()
   
   onToggleProposedClicked: (event) ->
     event.stopPropagation()
     event.preventDefault()
     
-    @assignment.model.save
-      proposed: if @assignment.model.get('proposed') then 0 else 1
+    @model.save
+      proposed: if @model.get('proposed') then 0 else 1
   
   onToggleArchivedClicked: (event) ->
     event.stopPropagation()
     event.preventDefault()
     
-    @assignment.model.save
-      archived: if @assignment.model.get('archived') then 0 else 1
+    @model.save
+      archived: if @model.get('archived') then 0 else 1
