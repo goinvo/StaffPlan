@@ -8,6 +8,8 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
     @collection.bind "remove", () =>
       @render()
 
+    key "left, right", (event) =>
+      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
     @debouncedRender = _.debounce(@render, 500)
     $(window).bind "resize", (event) =>
       @debouncedRender()
@@ -38,8 +40,8 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       backdrop: 'static'
 
   render: ->
-    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
+
+    @numberOfBars = Math.round( ($('section.main').width() - 200) / 40 )
 
     @$el.html StaffPlan.Templates.Projects.index.header
 

@@ -16,6 +16,7 @@ $color-light: #9f9f9f;
 //     Default    \\
 //\\//\\//\\//\\//\\
 body {
+  overflow-x: hidden;
   margin: 0;
   padding: 0;
   background: #eeeeee;
@@ -185,6 +186,9 @@ section.main {
 section.main {
   margin: 0 auto;
   
+  div.list div.project-list-item {
+    width: 100%;
+  }
   div.list-item {
     margin-top: 32px;
     margin-left: 25px; // Align with ul.slick

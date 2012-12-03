@@ -35,6 +35,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @users.bind "reset", (event) =>
       @render()
 
+    key "left, right", (event) =>
+      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+
     @on "date:changed", (message) =>
       @dateChanged(message.action)
 
@@ -69,9 +72,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       @appendChild view
     @$el.append StaffPlan.Templates.StaffPlans.index.addStaff
     
-    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
-    
+    @numberOfBars = Math.round( ($('section.main').width() - 200) / 40 )
     
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)

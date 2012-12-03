@@ -22,6 +22,10 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
+    key "left, right", (event) =>
+      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+
+
     @debouncedRender = _.debounce =>
       # alert("resize disabled due to a webkit bug that makes all client/assignment rows invisible. reloading the page now.")
       # window.location.reload()
