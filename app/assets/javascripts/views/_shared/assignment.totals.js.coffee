@@ -3,11 +3,11 @@ class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Backbone.View
   tagName: "div"
     
   initialize: ->
-    @assignment = @options.assignment
-    @assignment.model.work_weeks.bind 'change', (ww) => @render()
+    @model.work_weeks.bind 'change', (ww) => 
+      @render()
     
   render: ->
-    hours = _.reduce(@assignment.model.work_weeks.models, (memo, ww) ->
+    hours = _.reduce(@model.work_weeks.models, (memo, ww) ->
       memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
       memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
       memo

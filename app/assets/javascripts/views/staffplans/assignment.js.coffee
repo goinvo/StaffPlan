@@ -67,7 +67,8 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       @appendChildTo workWeeksView, @$el.find('div.work-weeks')
       
       assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
-        assignment: @
+        model: @model
+        parent: @
       @appendChild assignmentTotalsView
       
     @

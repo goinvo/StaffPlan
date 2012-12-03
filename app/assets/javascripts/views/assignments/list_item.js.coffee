@@ -26,5 +26,11 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       count: @numberOfBars
     @renderChildInto @workWeeksView, @$el.find "div.user-hour-inputs"
 
+
+    @assignmentTotalsView = new StaffPlan.Views.StaffPlans.AssignmentTotals
+      model: @model
+      parent: @
+    @renderChildInto @assignmentTotalsView, @$el.find "div.totals.fixed-60"
+
     @
   

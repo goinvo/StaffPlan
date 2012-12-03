@@ -12,6 +12,8 @@ _templates =
     </div>
     <div class="user-hour-inputs flex">
     </div>
+    <div class="totals fixed-60">
+    </div>
   '''
 
 StaffPlan.Templates.Assignments =
