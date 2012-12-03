@@ -26,8 +26,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
 
     event.preventDefault()
     event.stopPropagation()
-    # TODO: Need that stupid closest because the source of the event can be the <i> tag used by
-    # Bootstrap for the button icon. Might be a better way
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
     assignment = user.getAassignments().detect (assignment) =>
       @model.id is assignment.get "project_id"
@@ -63,8 +61,13 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     @$el.append StaffPlan.Templates.Projects.show.header
       name: @model.get "name"
     
-    chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    @numberOfBars = Math.round(chartContainerWidth / 40) - 2
+    # Each line is a list-item with 25 pixels of left margin
+    # Each line has a 180 pixels-wide user information component and a 60px-wide 
+    # totals component.
+    # Since we have actuals and estimates, we also have a 
+    # 35 pixels-wide labels div before the inputs
+    # Adding 40ox of "buffer space" to the tally for security
+    @numberOfBars = Math.round ( ($('section.main').width() - 340) / 40 )
 
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
@@ -73,7 +76,6 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       parent: @
       el: @$el.find("svg.user-chart")
       height: 120
-      width: chartContainerWidth
     @renderChildInto @projectChartView, @$el.find "div.chart-container"
     
     if StaffPlan.relevantYears.length > 2
