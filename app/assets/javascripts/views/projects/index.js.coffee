@@ -10,6 +10,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
 
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+
     @debouncedRender = _.debounce(@render, 500)
     $(window).bind "resize", (event) =>
       @debouncedRender()

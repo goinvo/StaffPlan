@@ -2,6 +2,7 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
   className: "date-range"
   templates:
     dates: '''
+      <a href="#" class="pagination previous" data-action=previous>&lt;</a>
       <div class="week-numbers">
         {{#each weeks}}
           <span class="week-number">{{this}}</span>
@@ -12,6 +13,7 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
           <span class="month-name">{{this}}</span> 
         {{/each}}
       </div>
+      <a href="#" class="pagination next" data-action=next>&gt;</a>
     '''
   initialize: ->
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
