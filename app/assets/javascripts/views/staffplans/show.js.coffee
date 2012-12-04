@@ -51,7 +51,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
   
   calculateNumberOfBars: ->
     # calculate usable width for inputs
-    @chartContainerWidth = $(document.body).width() - 510 # padding, margin and width of all other elements besides the flex
+    @chartContainerWidth = $(document.body).width() - 520 # padding, margin and width of all other elements besides the flex
     @numberOfBars = Math.round(@chartContainerWidth / 39) - 2
   
   renderChart: ->
