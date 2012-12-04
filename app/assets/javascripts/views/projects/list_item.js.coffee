@@ -16,7 +16,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
       client: StaffPlan.clients.get(@model.get('client_id')).toJSON()
     @$el.find("svg.user-chart").empty()
     
-    @numberOfBars = Math.floor( ($('section.main').width() - 220) / 40 )
+    @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 60
@@ -26,5 +26,9 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
       el: @$el.find("svg.user-chart")
     @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
 
+    @projectTotalsView = new StaffPlan.Views.Projects.Totals
+      model: @model
+
+    @renderChildInto @projectTotalsView, @$el.find "div.totals.fixed-60"
 
     @

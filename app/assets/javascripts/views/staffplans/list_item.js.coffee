@@ -3,6 +3,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   initialize: ->
     @startDate = @options.startDate
     @parent = @options.parent
+
     # In this case we simply relay the message to the relevant child view
     @on "date:changed", (message) ->
       @projectChartView.trigger "date:changed", message
@@ -23,8 +24,6 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     @$el.html StaffPlan.Templates.StaffPlans.listItem
       user: @model.pick ["id", "gravatar", "full_name"]
       
-    # chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
-    # @numberOfBars = Math.round(chartContainerWidth / 40) - 2
     @numberOfBars = Math.floor (($('section.main').width() - 220) / 40)
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates

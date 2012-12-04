@@ -20,8 +20,12 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
     new StaffPlan.Collections.Assignments StaffPlan.assignments.select (assignment) =>
       assignment.get("project_id") is @id
 
-  getUsers: -> new StaffPlan.Collections.Users @getAssignments().map (assignment) -> 
+  getUsers: -> new StaffPlan.Collections.Users @getAssignments().map (assignment) ->
     assignment.get("user_id")
+
+  getWorkWeeks: ->
+    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.work_weeks.models
+    new StaffPlan.Collections.WorkWeeks projectWeeks
 
   getUnassignedUsers: ->
     userModels = StaffPlan.users.select (user) =>

@@ -41,7 +41,7 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
 
   render: ->
 
-    @numberOfBars = Math.floor( ($('section.main').width() - 220) / 40 )
+    @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
 
     @$el.html StaffPlan.Templates.Projects.index.header
 

@@ -1,18 +1,20 @@
-class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Backbone.View
+class window.StaffPlan.Views.Projects.Totals extends Backbone.View
   className: "grid-row-element fixed-60"
   tagName: "div"
     
   initialize: ->
-    @model.work_weeks.bind 'change', (ww) =>
-      @render()
+    @weeks = @model.getWorkWeeks()
     
   render: ->
-    hours = _.reduce(@model.work_weeks.models, (memo, ww) ->
+    hours = @weeks.reduce (memo, ww) ->
       memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
       memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
       memo
-    , {estimated: 0, actual: 0})
+    , {estimated: 0, actual: 0}
+    
     hours.delta = hours.estimated - hours.actual
+    
     @$el.html StaffPlan.Templates.StaffPlans.assignment_totals
       hours: hours
+    
     @
