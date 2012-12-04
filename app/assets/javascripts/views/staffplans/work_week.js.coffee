@@ -9,6 +9,9 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
     @user = @options.user
     @startDate = @options.startDate
     
+    @on "window:resized", =>
+      debugger;
+      @render()
     @on "date:changed", (message) =>
       @start = message.begin
       @count = message.count
