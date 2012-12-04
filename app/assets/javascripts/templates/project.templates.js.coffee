@@ -3,6 +3,8 @@ _templates =
     header: '''
       <div class="position-fixed date-paginator"> 
         <div class="fixed-180">
+          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
         <div id="date-target" class="flex margin-left-40">
         </div>
@@ -118,6 +120,8 @@ _templates =
     header: '''
       <div class="position-fixed date-paginator"> 
         <div class="fixed-180">
+          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
         <div id="date-target" class="flex">
         </div>

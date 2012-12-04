@@ -44,6 +44,9 @@ _templates =
             </ul>
           </div>
           <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
+          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
+          <a href="#" class="return-false next pagination" data-action=next>next</a>
+
         </div>
         <div id="date-target" class="flex">
         </div>
