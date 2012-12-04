@@ -20,8 +20,12 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @index = @options.index
     @startDate = @options.startDate
     
-    @on "date:changed", (message) => @dateChanged(message.action)
-    @on "window:resized", => @onWindowResized()
+    @on "date:changed", (message) =>
+      @ensureWorkWeekRange()
+      @dateChanged(message.action)
+    @on "window:resized", =>
+      @ensureWorkWeekRange()
+      @onWindowResized()
     @model.bind 'change:id', => @render()
 
 
