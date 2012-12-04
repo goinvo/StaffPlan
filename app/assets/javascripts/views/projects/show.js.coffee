@@ -67,7 +67,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # Since we have actuals and estimates, we also have a 
     # 35 pixels-wide labels div before the inputs
     # Adding 40ox of "buffer space" to the tally for security
-    @numberOfBars = Math.round ( ($('section.main').width() - 340) / 40 )
+    @numberOfBars = Math.floor ( ($('section.main').width() - 320) / 40 )
 
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()

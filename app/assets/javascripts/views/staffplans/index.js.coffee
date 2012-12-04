@@ -72,7 +72,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       @appendChild view
     @$el.append StaffPlan.Templates.StaffPlans.index.addStaff
     
-    @numberOfBars = Math.round( ($('section.main').width() - 200) / 40 )
+    @numberOfBars = Math.floor( ($('section.main').width() - 200) / 40 )
     
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)

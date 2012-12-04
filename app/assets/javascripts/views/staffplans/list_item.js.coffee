@@ -25,7 +25,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       
     # chartContainerWidth = Math.round(($("body").width() - 2 * 40) * 10 / 12)
     # @numberOfBars = Math.round(chartContainerWidth / 40) - 2
-    @numberOfBars = Math.round (($('section.main').width() - 200) / 40)
+    @numberOfBars = Math.floor (($('section.main').width() - 200) / 40)
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 100
