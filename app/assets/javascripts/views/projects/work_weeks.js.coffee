@@ -87,8 +87,9 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Backbone.View
     clearTimeout @_rowFillerTimer
     event.preventDefault()
     event.stopPropagation()
+    
     @_lastFocused.focus()
-    $(@_lastFocused).parent().nextAll().find('input[data-work-week-input]')
+    $(@_lastFocused).nextAll('input[data-work-week-input]')
       .val(@_lastFocused.value)
       .trigger('change')
 
