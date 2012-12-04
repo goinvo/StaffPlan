@@ -8,9 +8,9 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
     @user = @options.user
     @startDate = @options.startDate
     
-    @on "date:changed", (message) =>
-      @dateChanged(message.action)
-      
+    @on "date:changed", (message) => @dateChanged(message.action)
+    @on "window:resized", => @onWindowResized()
+    
     @assignments = new window.StaffPlan.Collections.Assignments @options.assignments || [],
       parent: @
     

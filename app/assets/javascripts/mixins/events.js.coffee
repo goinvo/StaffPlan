@@ -22,11 +22,16 @@ StaffPlan.Mixins.Events =
         @startDate.subtract('weeks', @numberOfBars)
       else
         @startDate.add('weeks', @numberOfBars)
+        
       @children.each (child) =>
         child.trigger "date:changed"
           begin: @startDate
           count: @numberOfBars
-
+    
+    onWindowResized: (action) ->
+      @children.each (child) ->
+        child.trigger "window:resized"
+        
   memberships:
 
     # Called when the user modifies the "disabled" or "archived" bit on a membership

@@ -25,14 +25,13 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
 
-
     @debouncedRender = _.debounce =>
-      # alert("resize disabled due to a webkit bug that makes all client/assignment rows invisible. reloading the page now.")
-      # window.location.reload()
-      @render
+      @calculateNumberOfBars()
+      @renderDatesAndPagination()
+      @renderChart()
+      @onWindowResized()
     , 200
-    $(window).bind "resize", (event) =>
-      @debouncedRender()
+    $(window).bind "resize", (event) => @debouncedRender()
     
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "week:updated", (message) => @staffplanChartView.trigger "week:updated"
@@ -50,17 +49,31 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     
     @dateChanged event
   
-  render: ->
-    @$el.empty()
-    
-    # staffplan layout
-    @$el.append StaffPlan.Templates.StaffPlans.show_frame
-      user: @model.attributes
-    
+  calculateNumberOfBars: ->
     # calculate usable width for inputs
-    chartContainerWidth = $(document.body).width() - 510 # padding, margin and width of all other elements besides the flex
-    @numberOfBars = Math.round(chartContainerWidth / 39) - 2
+    @chartContainerWidth = $(document.body).width() - 510 # padding, margin and width of all other elements besides the flex
+    @numberOfBars = Math.round(@chartContainerWidth / 39) - 2
+  
+  renderChart: ->
+    # chart
+    @staffplanChartView = new StaffPlan.Views.WeeklyAggregates
+      begin: @startDate.valueOf()
+      count: @numberOfBars
+      model: @model
+      parent: @
+      el: @$el.find("svg.user-chart")
+      height: 120
+      width: @chartContainerWidth
+    @renderChildInto @staffplanChartView, @$el.find "div.chart-container"
     
+  renderDatesAndPagination: ->
+    # dates and pagination
+    dateRangeView = new StaffPlan.Views.DateRangeView
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      parent: @
+    @renderChildInto dateRangeView, @$el.find "#interval-width-target"
+    
+  renderClientsAssignmentsWorkWeeks: ->
     # render clients/assignments/inputs
     @gatherClientsByAssignments().map (client) =>
       clientView = new StaffPlan.Views.StaffPlans.Client
@@ -70,30 +83,34 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
           client_id: client.id
         startDate: @startDate
       @appendChild clientView
-    
-    # chart
-    @staffplanChartView = new StaffPlan.Views.WeeklyAggregates
-      begin: @startDate.valueOf()
-      count: @numberOfBars
-      model: @model
-      parent: @
-      el: @$el.find("svg.user-chart")
-      height: 120
-      width: chartContainerWidth
-    @renderChildInto @staffplanChartView, @$el.find "div.chart-container"
-    
+      
+  renderStaffPlanFrame: ->
+    # staffplan layout
+    @$el.append StaffPlan.Templates.StaffPlans.show_frame
+      user: @model.attributes
+  
+  renderFYSelect: ->
     # FY select
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
-      
-    # dates and pagination
-    dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-      parent: @
-    @renderChildInto dateRangeView, @$el.find "#interval-width-target"
+  
+  render: ->
+    @$el.empty()
+    
+    @renderStaffPlanFrame()
+    
+    @calculateNumberOfBars()
+    
+    @renderClientsAssignmentsWorkWeeks()
+    
+    @renderDatesAndPagination()
+    
+    @renderChart()
+    
+    @renderFYSelect()
     
     @
   
