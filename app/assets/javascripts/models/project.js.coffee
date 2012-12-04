@@ -23,4 +23,8 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
   getUsers: -> new StaffPlan.Collections.Users @getAssignments().map (assignment) -> 
     assignment.get("user_id")
 
-  getUnassignedUsers: -> new StaffPlan.Collections.Users StaffPlan.users.without @getUsers()
+  getUnassignedUsers: ->
+    userModels = StaffPlan.users.select (user) =>
+      _.all user.getAssignments().map (assignment) =>
+        assignment.get('project_id') isnt @id
+    new StaffPlan.Collections.Users userModels
