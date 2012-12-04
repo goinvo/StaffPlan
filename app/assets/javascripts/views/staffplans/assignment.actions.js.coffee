@@ -13,8 +13,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
     
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
-      isDeletable: @model.work_weeks.all (week) ->
-        (parseInt(week.get("estimated_hours"), 10) is 0) and (parseInt(week.get("actual_hours"), 10) is 0)
+      isDeletable: @model.isDeletable()
       proposed: @model.get('proposed')
       archived: @model.get('archived')
     @
