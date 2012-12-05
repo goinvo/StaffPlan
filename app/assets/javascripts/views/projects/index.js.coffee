@@ -40,6 +40,9 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       keyboard: true
       backdrop: 'static'
 
+  leave: ->
+    $('body div.highlighter').remove()
+    Support.CompositeView.prototype.leave.call @
   render: ->
 
     @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
@@ -60,5 +63,19 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     
     @renderChildInto dateRangeView, @$el.find("#date-target")
+    
     @$el.append StaffPlan.Templates.Projects.index.actions.addProject
+
+    m = moment()
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
+    
+    _.delay () ->
+      currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
+      if currentWeek.length > 0
+        highlighterView = new StaffPlan.Views.Shared.Highlighter
+          offset: currentWeek.offset()
+          width: 35
+          height: 1000 # FIXME This value should be computed
+        $('body').append highlighterView.render().el
+    , 100
     @

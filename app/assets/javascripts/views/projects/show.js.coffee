@@ -54,6 +54,9 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         alert "SOMETHING WENT WRONG"
     @render()
   
+  leave: ->
+    $('body div.highlighter').remove()
+    Support.CompositeView.prototype.leave.call @
   render: ->
     @$el.empty()
 
@@ -104,4 +107,20 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     unless unassignedUsers.isEmpty()
       @$el.append StaffPlan.Templates.Projects.show.addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
+    
+    m = moment()
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
+    
+    _.delay () ->
+      currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
+      if currentWeek.length > 0
+        highlighterView = new StaffPlan.Views.Shared.Highlighter
+          offset: currentWeek.offset()
+          width: 35
+          zindex: -100
+          height: 1000 # FIXME This value should be computed
+        $('body').append highlighterView.render().el
+    , 100
+
+
     @

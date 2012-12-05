@@ -23,6 +23,22 @@ StaffPlan.Mixins.Events =
       else
         @startDate.add('weeks', @numberOfBars)
         
+      timestampRange = _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+      m = moment()
+      timestampAtBeginningOfCurrentWeek = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
+      if _.include timestampRange, timestampAtBeginningOfCurrentWeek # We need to highlight
+        _.delay () ->
+          currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfCurrentWeek.valueOf()}\"]")
+          if currentWeek.length > 0
+            highlighterView = new StaffPlan.Views.Shared.Highlighter
+              offset: currentWeek.offset()
+              width: 35
+              height: 1000 # FIXME This value should be computed
+            $('body').append highlighterView.render().el
+        , 100
+      else
+        $('body div.highlighter').remove()
+
       @children.each (child) =>
         child.trigger "date:changed"
           begin: @startDate

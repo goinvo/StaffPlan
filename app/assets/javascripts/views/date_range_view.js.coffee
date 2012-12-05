@@ -5,7 +5,7 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
       <a href="#" class="pagination previous" data-action=previous>&lt;</a>
       <div class="week-numbers">
         {{#each weeks}}
-          <span class="week-number">{{this}}</span>
+          <span class="week-number" data-timestamp={{this.timestamp}}>{{this.week}}</span>
         {{/each}}
       </div>
       <div class="month-names">
@@ -45,18 +45,27 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
         when 1
           month: m.format("MMM")
           week: "W" + weekNumber
+          timestamp: timestamp
         when 2
           if m.month() is 0
             month: "(#{m.year()})"
             week: "W" + weekNumber
+            timestamp: timestamp
           else
             month: ""
             week: "W" + weekNumber
+            timestamp: timestamp
         else
           month: "&nbsp;"
           week: "W" + weekNumber
+          timestamp: timestamp
     @$el.html @dateRangeTemplate
       months: _.map(data, (date) -> date['month'])
-      weeks: _.map(data, (date) -> date['week'])
-     
+      weeks: _.map data, (date) ->
+        week: date['week']
+        timestamp: data['timestamp']
+    m = moment()
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
+    currentWeek = @$el.find "span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek}\"]"
+
     @

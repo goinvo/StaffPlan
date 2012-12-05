@@ -47,6 +47,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     @on "year:changed", (message) =>
       @yearChanged(parseInt(message.year, 10))
 
+  leave: ->
+    $('body div.highlighter').remove()
+    Support.CompositeView.prototype.leave.call @
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.index.pagination
     # FIXME: This is ugly
@@ -77,5 +80,19 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @renderChildInto dateRangeView, @$el.find("#date-target")
-
+    
+    m = moment()
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
+    
+    # Ugly hack, the offset of the current week, if any, is only available after page load i.e. when 
+    # @$el has finally been inserted into the DOM
+    _.delay () ->
+      currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
+      if currentWeek.length > 0
+        highlighterView = new StaffPlan.Views.Shared.Highlighter
+          offset: currentWeek.offset()
+          width: 35
+          height: 1000 # FIXME This value should be computed
+        $('body').append highlighterView.render().el
+    , 100
     @

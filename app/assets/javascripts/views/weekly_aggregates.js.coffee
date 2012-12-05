@@ -124,6 +124,8 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
     
     rects.exit()
       .remove()
+
+
     @
 
   redrawChart: ->

@@ -112,8 +112,21 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     
     @renderFYSelect()
     
+    m = moment()
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
+    
+    _.delay () ->
+      currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
+      if currentWeek.length > 0
+        highlighterView = new StaffPlan.Views.Shared.Highlighter
+          offset: currentWeek.offset()
+          width: 35
+          height: 1000 # FIXME This value should be computed
+        $('body').append highlighterView.render().el
+    , 100
+
     @
   
   leave: ->
-    @off()
-    @remove()
+    $('body div.highlighter').remove()
+    Support.CompositeView.prototype.leave.call @
