@@ -91,27 +91,13 @@ _templates =
       """
     actions:
       """
-      <button class="btn btn-mini"><i class="icon-cog"></i></button>
-      <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-      <ul class="dropdown-menu">
+      <div class="btn-group">
         {{#if isDeletable}}
-          <li><a href="#" class='delete-assignment'><i class='icon-trash'></i> Delete</a></li>
-        {{else}}
-          <li><a href="#"><strike><i class='icon-trash'></i> Delete</strike></a></li>
+          <a href="#" class='btn delete-assignment' title="Click to delete this assignment. This is permanent."><i class='icon-trash'></i></a>
         {{/if}}
-        <li class="divider"></li>
-        {{#if archived}}
-        <li><a href="#" class="toggle-archived"><i class='icon-check'></i> Unarchive</a></li>
-        {{else}}
-        <li><a href="#" class="toggle-archived"><i class='icon-inbox'></i> Archive</a></li>
-        {{/if}}
-        <li class="divider"></li>
-        {{#if proposed}}
-          <li><a href="#" class='toggle-proposed'><i class='icon-ok-sign'></i> Make Actual</a></li>
-        {{else}}
-          <li><a href="#" class='toggle-proposed'><i class='icon-question-sign'></i> Make Proposed</a></li>
-        {{/if}}
-      </ul>
+        <a href="#" class="btn btn-mini {{#if archived}}btn-inverse {{/if}}toggle-archived" title="Click to {{#if archived}}un{{/if}}archive this assignment"><i class='{{#if archived}}icon-pause{{else}}icon-play{{/if}}{{#if archived}} icon-white{{/if}}'></i></a>
+        <a href="#" class='btn btn-mini {{#if proposed}}btn-inverse {{/if}}toggle-proposed' title="Make this assignment's hours {{#if proposed}}planned{{else}}proposed{{/if}}"><i class='icon-time{{#if proposed}} icon-white{{/if}}'></i></a>
+      </div>
       """
     show: '''
       <div class="grid-row-element client-name-and-project-name fixed-180 sexy">
