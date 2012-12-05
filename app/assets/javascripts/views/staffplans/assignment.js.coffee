@@ -6,7 +6,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     StaffPlan.projects.get( @model.get 'project_id' )
     
   client: ->
-    StaffPlan.clients.get( @project()?.get('client_id') )
+    StaffPlan.clients.get( @model.get('client_id') )
     
   leave: ->
     @model.off()
@@ -23,9 +23,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @on "date:changed", (message) =>
       @ensureWorkWeekRange()
       @dateChanged(message.action)
+      
     @on "window:resized", =>
       @ensureWorkWeekRange()
       @onWindowResized()
+      
     @model.bind 'change:id', => @render()
 
 
@@ -44,7 +46,13 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     
     if @model.isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
-        showClientInput: @model.client.isNew()
+        showClientInput: @client().isNew()
+      
+      setTimeout =>
+        $('html, body').stop().animate
+          scrollTop: (@$el.offset().top - 300)
+        , 1000, 'swing', =>
+          @$el.find('input.project-name-input').focus()
         
     else
       @$el.html StaffPlan.Templates.StaffPlans.assignment_show
