@@ -612,6 +612,8 @@ input.estimated-actual, .row-label {
   margin-right: 2px;
   text-align: center;
   height: 25px;
+  position: relative;
+  z-index: 20;
     
   &[type="number"] {
     padding: 0;

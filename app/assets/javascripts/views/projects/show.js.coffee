@@ -119,7 +119,8 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
           width: 35
           zindex: -100
           height: 1000 # FIXME This value should be computed
-        $('body').append highlighterView.render().el
+        if $('body div.highlighter').length is 0
+          $('body').append highlighterView.render().el
     , 100
 
 

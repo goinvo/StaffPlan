@@ -122,7 +122,9 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
           offset: currentWeek.offset()
           width: 35
           height: 1000 # FIXME This value should be computed
-        $('body').append highlighterView.render().el
+          zindex: 10
+        if $('body div.highlighter').length is 0
+          $('body').append highlighterView.render().el
     , 100
 
     @
