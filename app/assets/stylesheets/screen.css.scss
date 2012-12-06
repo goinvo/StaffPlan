@@ -484,6 +484,9 @@ footer {
 .top-40 {
   top: 40px;
 }
+.top-38 {
+  top: 38px;
+}
 .top-195 {
   top: 195px !important; }
 .top-200 {
@@ -668,3 +671,6 @@ input.estimated-actual, .row-label {
     }
   }
 }
+
+.btn-group > .btn-mini {
+  font-size: 14px; }

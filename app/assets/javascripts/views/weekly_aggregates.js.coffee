@@ -1,8 +1,9 @@
 class StaffPlan.Views.WeeklyAggregates extends Backbone.View 
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
+  
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
+  
   aggregate: (timestamp, yearFilter) ->
-
     weeks = _.compact _.flatten @assignments.map (assignment) ->
       models = assignment.get("filteredWeeks") or assignment.work_weeks.models
       _.detect models, (week) ->

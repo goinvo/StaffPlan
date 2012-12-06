@@ -59,7 +59,7 @@ _templates =
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded position-fixed top-40 padding-top-30 width-100-percent">
+    <div id="user-select" class="grid-row user-info padded position-fixed top-38 padding-top-30 width-100-percent">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
@@ -72,7 +72,12 @@ _templates =
     </div>
 
     <div class='header grid-row padded top-200 position-fixed width-100-percent'>
-      <div class='grid-row-element fixed-180 title'><span>Client</span><a href='#' class='chill-out add-client'><i class='icon-plus-sign'></i></a></div>
+      <div class='grid-row-element fixed-180 title'><span>Client</span>
+        <div class='btn-group pull-right'>
+          <a href='#' class='btn btn-mini chill-out add-client' title="Add a new client and assignment for {{user.full_name}}"><i class='icon-plus-sign'></i></a>
+        </div>
+        
+      </div>
       <div class='grid-row-element fixed-180 title'><span>Project</span></div>
       <div class="grid-row-element flex date-range-target date-paginator" id="interval-width-target"></div>
     </div>
@@ -91,42 +96,20 @@ _templates =
       """
     actions:
       """
-      <button class="btn btn-mini"><i class="icon-cog"></i></button>
-      <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-      <ul class="dropdown-menu">
+      <div class="btn-group">
         {{#if isDeletable}}
-          <li><a href="#" class='delete-assignment'><i class='icon-trash'></i> Delete</a></li>
-        {{else}}
-          <li><a href="#"><strike><i class='icon-trash'></i> Delete</strike></a></li>
+          <a href="#" class='btn btn-mini delete-assignment' title="Click to delete this assignment. This is permanent."><i class='icon-trash'></i></a>
         {{/if}}
-        <li class="divider"></li>
-        {{#if archived}}
-        <li><a href="#" class="toggle-archived"><i class='icon-check'></i> Unarchive</a></li>
-        {{else}}
-        <li><a href="#" class="toggle-archived"><i class='icon-inbox'></i> Archive</a></li>
-        {{/if}}
-        <li class="divider"></li>
-        {{#if proposed}}
-          <li><a href="#" class='toggle-proposed'><i class='icon-ok-sign'></i> Make Actual</a></li>
-        {{else}}
-          <li><a href="#" class='toggle-proposed'><i class='icon-question-sign'></i> Make Proposed</a></li>
-        {{/if}}
-      </ul>
+        <a href="#" class="btn btn-mini {{#if archived}}btn-inverse {{/if}}toggle-archived" title="Click to {{#if archived}}un{{/if}}archive this assignment"><i class='{{#if archived}}icon-pause{{else}}icon-play{{/if}}{{#if archived}} icon-white{{/if}}'></i></a>
+        <a href="#" class='btn btn-mini {{#if proposed}}btn-inverse {{/if}}toggle-proposed' title="Make this assignment's hours {{#if proposed}}planned{{else}}proposed{{/if}}"><i class='icon-time{{#if proposed}} icon-white{{/if}}'></i></a>
+      </div>
       """
     show: '''
       <div class="grid-row-element client-name-and-project-name fixed-180 sexy">
         <a href="/clients/{{client.id}}">{{client.name}}</a>
         {{#if showAddProject}}
         <div class='btn-group pull-right'>
-          <button class="btn btn-mini"><i class="icon-cog"></i></button>
-          <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-          <ul class="dropdown-menu">
-            <li><a class='add-project'><i class='icon-plus-sign'></i>Add Project</a></li>
-            <li class="divider"></li>
-            <li><a href="#" class='destroy-all-assignments chill-out'><i class='icon-check'></i> Delete All Assignments</a></li>
-            <li class="divider"></li>
-            <li><a href="#" class='acrhive-all-assignments chill-out'><i class='icon-ok-sign'></i> Archive All Assignments</a></li>
-          </ul>
+          <a class='add-project btn btn-mini' title="Click to add a new project assignment for {{client.name}}."><i class='icon-plus-sign'></i></a>
         </div>
         {{/if}}
       </div>
