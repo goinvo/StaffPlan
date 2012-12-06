@@ -5,12 +5,20 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
       <a href="#" class="pagination previous" data-action=previous>&lt;</a>
       <div class="week-numbers">
         {{#each weeks}}
-          <span class="week-number" data-timestamp={{this.timestamp}}>{{this.week}}</span>
+          {{#if this.highlight}}
+            <span class="week-number current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
+          {{else}}
+            <span class="week-number" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
+          {{/if}}
         {{/each}}
       </div>
       <div class="month-names">
         {{#each months}}
-          <span class="month-name">{{this}}</span> 
+          {{#if this.highlight}}
+            <span class="month-name current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.month}}</span> 
+          {{else}}
+            <span class="month-name" data-timestamp="{{this.timestamp}}">{{this.month}}</span> 
+          {{/if}}
         {{/each}}
       </div>
       <a href="#" class="pagination next" data-action=next>&gt;</a>
@@ -59,13 +67,19 @@ class StaffPlan.Views.DateRangeView extends Backbone.View
           month: "&nbsp;"
           week: "W" + weekNumber
           timestamp: timestamp
-    @$el.html @dateRangeTemplate
-      months: _.map(data, (date) -> date['month'])
-      weeks: _.map data, (date) ->
-        week: date['week']
-        timestamp: data['timestamp']
     m = moment()
-    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
-    currentWeek = @$el.find "span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek}\"]"
+    timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
+    months = data.map (d) ->
+      month: d.month
+      timestamp: d.timestamp
+      highlight: d.timestamp is timestampAtBeginningOfWeek
+    weeks = data.map (d) ->
+      week: d.week
+      timestamp: d.timestamp
+      highlight: d.timestamp is timestampAtBeginningOfWeek
+    @$el.html @dateRangeTemplate
+      months: months
+      weeks: weeks
+    # @$el.find("span[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]").addClass("current")
 
     @

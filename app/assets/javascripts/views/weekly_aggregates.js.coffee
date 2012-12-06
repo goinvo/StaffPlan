@@ -96,17 +96,23 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
 
     # The label for the bar (number of hours aggregated for a given week)
     labels = groups.selectAll("text").data (d) ->
-        [d.total]
+        [{total: d.total, timestamp: d.beginning_of_week}]
     
     labels.enter().append("text")
       .attr("text-anchor", "middle")
       .attr 'y', (d) =>
-        @height - @heightScale(d) - (if d is 0 then 0 else 10)
+        @height - @heightScale(d.total) - (if d.total is 0 then 0 else 10)
       .attr("font-family", "sans-serif")
       .attr("font-size", "11px")
-      .attr("fill", "black")
+      #.attr("fill", (d) ->  m = moment(); t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf(); if d.timestamp is t then "rgba(255, 0, 255, 0.8)" else "black")
+      .attr("class", (d) ->
+        m = moment()
+        t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
+        if d.timestamp is t
+          "current-week-highlight"
+      )
       .text (d) ->
-        d + ""
+        d.total + ""
     labels.exit()
       .remove()
 
@@ -150,11 +156,18 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
       .attr("class", (d) -> d.cssClass)
     groups.selectAll("text")
      .data (d) ->
-       [d.total]
+       [{total: d.total, timestamp: d.beginning_of_week}]
      .transition()
      .delay(200)
      .ease("linear")
      .attr 'y', (d) =>
-       @height - @heightScale(d) - (if d is 0 then 0 else 10)
+       @height - @heightScale(d.total) - (if d.total is 0 then 0 else 10)
+      .attr("class", (d) ->
+        m = moment()
+        t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
+        if d.timestamp is t
+          "current-week-highlight"
+      )
+     # .attr("fill", (d) ->  m = moment(); t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf(); if d.timestamp is t then "rgba(255, 0, 255, 0.8)" else "black")
      .text (d) ->
-       d + ""
+       d.total + ""

@@ -21,10 +21,8 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
 
   render: ->
     @$el.empty()
-    
     weeks = @collection.filter (week) =>
       _.include(@user.view.getYearsAndWeeks(), week.get("beginning_of_week"))
-      
     templateData = _.map weeks, (week) ->
       week.formatForTemplate()
     
