@@ -119,7 +119,9 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
       currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
       if currentWeek.length > 0
         highlighterView = new StaffPlan.Views.Shared.Highlighter
-          offset: currentWeek.offset()
+          offset:
+            left: currentWeek.offset().left
+            top: 38
           width: 35
           height: 1000 # FIXME This value should be computed
           zindex: 10
