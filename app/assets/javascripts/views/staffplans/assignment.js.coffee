@@ -45,14 +45,15 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @$el.empty().data('cid', @cid)
     
     if @model.isNew()
+      isNewClient = if @client()? @client().isNew() else true
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
-        showClientInput: @client().isNew()
+        showClientInput: isNewClient
       
       setTimeout =>
         $('html, body').stop().animate
           scrollTop: (@$el.offset().top - 300)
         , 1000, 'swing', =>
-          @$el.find('input.project-name-input').focus()
+          @$el.find("input.#{if isNewClient then "client" else "project"}-name-input").focus()
         
     else
       @$el.html StaffPlan.Templates.StaffPlans.assignment_show

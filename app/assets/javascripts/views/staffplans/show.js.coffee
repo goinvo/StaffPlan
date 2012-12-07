@@ -12,6 +12,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     
     clientView = new StaffPlan.Views.StaffPlans.Client
       user: @model
+      model: new StaffPlan.Models.Client()
+      
     @appendChild clientView
     
   gatherClientsByAssignments: ->
