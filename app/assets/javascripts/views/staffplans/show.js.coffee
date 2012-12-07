@@ -6,6 +6,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
     "click a[data-change-page]": "changePage"
     "click a.add-client": "onAddClientClicked"
     "change input[data-model=\"Client\"]": "updateProjectTypeAheadOptionList"
+    "blur input[data-model=\"Client\"]": "updateProjectTypeAheadOptionList"
   
   updateProjectTypeAheadOptionList: (event) ->
     clientName = $(event.target).val()
