@@ -9,6 +9,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
         @render()
       
     @model.work_weeks.bind 'change', (ww) =>
+      StaffPlan.router.currentView.trigger('week:updated')
       @render()
     
   render: ->
