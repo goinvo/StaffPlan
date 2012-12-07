@@ -19,7 +19,7 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
     @assignments.add() if @model.isNew()
     
     @assignments.bind 'change:id', (assignment) =>
-      @model.set('id', assignment.view.client().get('id')) if @model.isNew()
+      @model.set('id', assignment.client().get('id')) if @model.isNew()
       @$el.attr('data-client-id', @model.get('id'))
       
     @$el.attr('data-client-id', if @model.get('id')? then @model.get('id') else "-1")

@@ -110,7 +110,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       
     unless client?
       StaffPlan.addClientByName clientNameValue, (client, reponse) =>
+        @model.set
+          client_id: client.get('id')
+        , silent: true
         @addProjectByNameAndClient client
+        
     else
       @addProjectByNameAndClient client
     
