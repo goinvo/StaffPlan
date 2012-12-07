@@ -29,6 +29,7 @@ class StaffPlan.Model extends Backbone.Model
   #--------------------------------------------
   _addToStore: =>
     klass = @_getJsonRoot()
+    instance_store[klass] ||= {}
     instance_store[klass][@id]
     return
     
