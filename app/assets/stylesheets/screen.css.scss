@@ -558,6 +558,10 @@ footer {
     }
   }
   
+  &.flex {
+    min-height: 34px;
+    line-height: 34px;
+  }
   &.padded {
     padding: 8px 15px;
   }

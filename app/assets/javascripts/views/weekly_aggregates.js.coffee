@@ -121,6 +121,8 @@ class StaffPlan.Views.WeeklyAggregates extends Backbone.View
         [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
     rects.enter().append("rect")
         .attr("x", -@barWidth / 2)
+        .attr("rx", 4)
+        .attr("ry", 2)
         .attr("width", @barWidth)
         .attr "y", (d) =>
           @height - @heightScale(d.value)
