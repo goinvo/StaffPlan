@@ -110,15 +110,15 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       
     unless client?
       StaffPlan.addClientByName clientNameValue, (client, reponse) =>
-        @model.set
-          client_id: client.get('id')
-        , silent: true
         @addProjectByNameAndClient client
         
     else
       @addProjectByNameAndClient client
     
   addProjectByNameAndClient: (client) ->
+    @model.set
+      client_id: client.get('id')
+    , silent: true
     projectNameValue = @$el.find('[data-model="Project"][data-attribute="name"]').val()
     project = StaffPlan.projects.detect (project) ->
       ( project.get("name") is projectNameValue ) and ( project.get("client_id") is client.get('id') )
