@@ -38,9 +38,9 @@ $( document ).ready(function() {
     return false;
   });
   
-  key('left, right', function(event) {
-    $(document.body).trigger('date:changed', {event: event})
-  });
+  // key('left, right', function(event) {
+  //   $(document.body).trigger('date:changed', {event: event})
+  // });
   
   $('.header-typeahead').typeahead({
       source: StaffPlan.typeAhead
