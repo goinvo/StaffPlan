@@ -5,7 +5,17 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
   events:
     "click a[data-change-page]": "changePage"
     "click a.add-client": "onAddClientClicked"
+    "change input[data-model=\"Client\"]": "updateProjectTypeAheadOptionList"
   
+  updateProjectTypeAheadOptionList: (event) ->
+    clientName = $(event.target).val()
+    client = StaffPlan.clients.detect (client) ->
+      client.get('name') is clientName
+    if client?
+      @$el.find("input[data-model=\"Project\"]").typeahead
+        source: client.getProjects().pluck("name")
+        items: 12
+
   onAddClientClicked: (event) =>
     event.preventDefault()
     event.stopPropagation()
@@ -15,6 +25,12 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
       model: new StaffPlan.Models.Client()
       
     @appendChild clientView
+    @$el.find('input[data-model="Client"]').typeahead
+      source: StaffPlan.clients.pluck 'name'
+      items: 12
+    @$el.find('input[data-model="Project"]').typeahead
+      source: StaffPlan.projects.pluck 'name'
+      items: 12
     
   gatherClientsByAssignments: ->
     _.uniq @model.getAssignments().pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
