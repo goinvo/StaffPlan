@@ -7,7 +7,11 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     
     @bind "remove", () ->
       @destroy()
-
+  
+  getWorkWeeks: ->
+    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.work_weeks.models
+    new StaffPlan.Collections.WorkWeeks projectWeeks
+    
   # Proxy so that the aggregation is generic
   getAssignments: () ->
     new StaffPlan.Collections.Assignments StaffPlan.assignments.select (assignment) =>

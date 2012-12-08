@@ -26,7 +26,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
       el: @$el.find("svg.user-chart")
     @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
 
-    @projectTotalsView = new StaffPlan.Views.Projects.Totals
+    @projectTotalsView = new StaffPlan.Views.Shared.Totals
       model: @model
 
     @renderChildInto @projectTotalsView, @$el.find "div.totals.fixed-60"

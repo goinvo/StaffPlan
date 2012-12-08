@@ -52,11 +52,13 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
     Support.CompositeView.prototype.leave.call @
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.index.pagination
+    
     # FIXME: This is ugly
     buttonText = if localStorage.getItem("staffplanFilter") is "active"
       "Show inactive"
     else
       "Show active"
+      
     @$el.find("button.btn-primary").text(buttonText)
     
     # We don't show the select control if the work weeks only span over ONE year
@@ -75,30 +77,10 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
       @appendChild view
     @$el.append StaffPlan.Templates.StaffPlans.index.addStaff
     
-    @numberOfBars = Math.floor( ($('section.main').width() - 220) / 40 )
+    @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
     
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     @renderChildInto dateRangeView, @$el.find("#date-target")
     
-    # m = moment()
-    # timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
-    
-    # _.delay () ->
-    #   $("*[data-timestamp=\"#{timestampAtBeginningOfWeek}\"]").addClass("current-week-highlight")
-    # , 100
-    # Ugly hack, the offset of the current week, if any, is only available after page load i.e. when 
-    # @$el has finally been inserted into the DOM
-    # _.delay () ->
-    #   currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
-    #   if currentWeek.length > 0
-    #     highlighterView = new StaffPlan.Views.Shared.Highlighter
-    #       offset:
-    #         left: currentWeek.offset().left
-    #         top: 150 
-    #       width: 35
-    #       height: 1000 # FIXME This value should be computed
-    #     if $('body div.highlighter').length is 0
-    #       $('body').append highlighterView.render().el
-    # , 100
     @

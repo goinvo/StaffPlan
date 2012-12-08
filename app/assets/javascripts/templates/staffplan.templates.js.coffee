@@ -162,6 +162,7 @@ _templates =
     <div class="chart-container flex">
       <svg class="user-chart"></svg>
     </div>
+    <div class="totals fixed-60"></div>
     '''
   work_week:
     row: '''

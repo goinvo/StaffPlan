@@ -24,7 +24,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     @$el.html StaffPlan.Templates.StaffPlans.listItem
       user: @model.pick ["id", "gravatar", "full_name"]
       
-    @numberOfBars = Math.floor (($('section.main').width() - 220) / 40)
+    @numberOfBars = Math.floor (($('section.main').width() - 280) / 40)
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 100
@@ -33,5 +33,10 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       el: @$el.find("svg.user-chart")
       count: @numberOfBars
     @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
-
+    
+    @projectTotalsView = new StaffPlan.Views.Shared.Totals
+      model: @model
+      
+    @renderChildInto @projectTotalsView, @$el.find "div.totals.fixed-60"
+    
     @
