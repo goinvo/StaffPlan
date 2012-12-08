@@ -14,7 +14,7 @@ class StaffPlan.Views.Shared.YearFilter extends Backbone.View
 
   render: ->
     @$el.html StaffPlan.Templates.Shared.yearFilter
-      relevantYears: StaffPlan.relevantYears
+      relevantYears: StaffPlan.relevantYears.sort()
 
     @$el.find('select.year-filter').val(localStorage.getItem("yearFilter") or 0)
     @
