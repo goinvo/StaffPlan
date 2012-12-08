@@ -45,7 +45,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @$el.empty().data('cid', @cid)
     
     if @model.isNew()
-      isNewClient = if @client()? @client().isNew() else true
+      isNewClient = if @client() == undefined then true else @client().isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
         showClientInput: isNewClient
       
