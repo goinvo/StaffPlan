@@ -1,6 +1,6 @@
 _templates =
   show:
-    projectHeader: '''
+    header: '''
       <div class="position-fixed date-paginator"> 
         <div class="fixed-180">
           <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
