@@ -24,6 +24,7 @@ _templates =
         <i class="icon-list icon-white"></i>
         Add user to project
       </a>
+      <a href="/projects/{{projectId}}/edit" class="btn btn-primary">Edit project</a>
       '''
   new: '''
     <div data-model=client>

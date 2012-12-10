@@ -169,6 +169,7 @@ _templates =
       </div>
     </div>
     <a class="btn btn-primary" href="/users">Back to list of users</a>
+    <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit user</a>
     '''
   new:
     userNew: '''

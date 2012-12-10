@@ -102,7 +102,8 @@ _templates =
       </div>
     </div>
     <div class="actions">
-      <a class="btn btn-primary btn-large" href="/clients">Back to list of clients</a>
+      <a class="btn btn-primary" href="/clients">Back to list of clients</a>
+      <a class="btn btn-primary" href="/clients/{{client.id}}/edit">Edit client</a>
     </div>
     '''
     

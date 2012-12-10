@@ -108,5 +108,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     unless unassignedUsers.isEmpty()
       @$el.append StaffPlan.Templates.Projects.show.addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
+        projectId: @model.id
 
     @
