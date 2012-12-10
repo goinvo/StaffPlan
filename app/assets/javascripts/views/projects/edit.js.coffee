@@ -1,7 +1,7 @@
-class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
+class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
   
   tagName: "form"
-  className: "form-horizontal padding-top-40"
+  className: "form-horizontal short"
 
   initialize: ->
     @newClient = false
@@ -100,10 +100,10 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
           .find("[data-model=project][data-attribute=\"active\"]")
           .prop "checked", attrs["active"]
   render: ->
-    @$el.append StaffPlan.Templates.Projects.edit
+    super
+    @$el.find("section.main").html StaffPlan.Templates.Projects.edit
       clients: @clients.map (client) -> client.toJSON()
-    @$el.find(".initially-hidden").hide()
     @populateFields()
-    @$el.appendTo "section.main"
+    @$el.find(".initially-hidden").hide()
 
     @
