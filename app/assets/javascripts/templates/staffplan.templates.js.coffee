@@ -29,7 +29,7 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
 _templates =
   index:
     pagination: '''
-      <div class="position-fixed date-paginator"> 
+      <div class="date-paginator"> 
         <div class="fixed-180">
           <div class="btn-group">
             <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -59,7 +59,7 @@ _templates =
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded position-fixed top-38 padding-top-30 width-100-percent">
+    <div id="user-select" class="grid-row user-info padded">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
@@ -71,7 +71,7 @@ _templates =
       </div>
     </div>
 
-    <div class='header grid-row padded top-200 position-fixed width-100-percent'>
+    <div class='header grid-row padded'>
       <div class='grid-row-element fixed-180 title'><span>Client</span>
         <div class='btn-group pull-right'>
           <a href='#' class='btn btn-mini chill-out add-client' title="Add a new client and assignment for {{user.full_name}}"><i class='icon-plus-sign'></i></a>

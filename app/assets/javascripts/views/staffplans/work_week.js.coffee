@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Support.CompositeView
   className: "work-weeks"
   tagName: "section"
       

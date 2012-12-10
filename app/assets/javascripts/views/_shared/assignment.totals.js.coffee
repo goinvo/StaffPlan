@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Support.CompositeView
   className: "grid-row-element fixed-60"
   tagName: "div"
     

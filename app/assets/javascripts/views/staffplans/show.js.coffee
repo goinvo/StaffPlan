@@ -1,6 +1,5 @@
-class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
-  className: "staffplan padding-top-272"
-  tagName: "div"
+class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
+  className: "staffplan-show tall"
   
   events:
     "click a[data-change-page]": "changePage"
@@ -101,11 +100,11 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
         assignments: @model.getAssignments().where
           client_id: client.id
         startDate: @startDate
-      @appendChild clientView
+      @appendChildTo clientView, @$el.find "section.main"
       
   renderStaffPlanFrame: ->
     # staffplan layout
-    @$el.append StaffPlan.Templates.StaffPlans.show_frame
+    @$el.find('header').append StaffPlan.Templates.StaffPlans.show_frame
       user: @model.attributes
   
   renderFYSelect: ->
@@ -117,7 +116,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
       @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
   
   render: ->
-    @$el.empty()
+    super
     
     @renderStaffPlanFrame()
     

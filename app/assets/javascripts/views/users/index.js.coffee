@@ -1,9 +1,8 @@
-class window.StaffPlan.Views.Users.Index extends Support.CompositeView
-  tagName: 'ul'
-  className: 'user-list slick padding-top-40'
-  
+class window.StaffPlan.Views.Users.Index extends StaffPlan.View  
+  className: "short"
+    
   initialize: ->
-    @collection.bind "remove", () =>
+    @collection.bind "remove", =>
       @render()
 
   events:
@@ -24,22 +23,25 @@ class window.StaffPlan.Views.Users.Index extends Support.CompositeView
       show: true
       keyboard: true
       backdrop: 'static'
-
+  
   newUser: ->
 
   editUser: (userId) ->
 
   showUser: (userId) ->
-  
+    
   render: ->
-    @$el.empty()
-    @$el.append StaffPlan.Templates.Users.index.header
+    super
+    
+    @$el.find('header').append StaffPlan.Templates.Users.index.header
+    
+    @$el.find('section.main').append('<ul class="user-list slick short">')
     @collection.each (user) =>
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
         model: user
-      @$el.append view.render().el
-    @$el.append StaffPlan.Templates.Users.index.actions.addUser
-    @$el.appendTo 'section.main'
+      @$el.find('section.main ul').append view.render().el
+    
+    @$el.find('section.main ul').append StaffPlan.Templates.Users.index.actions.addUser
 
     @

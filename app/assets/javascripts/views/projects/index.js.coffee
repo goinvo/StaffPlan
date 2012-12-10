@@ -1,5 +1,5 @@
-class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
-  className: "list padding-top-120"
+class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
+  className: "list projects-index short"
   
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
@@ -43,27 +43,31 @@ class window.StaffPlan.Views.Projects.Index extends Support.CompositeView
   leave: ->
     $('body div.highlighter').remove()
     Support.CompositeView.prototype.leave.call @
+    
   render: ->
+    super
+    
+    @numberOfBars = Math.floor( ($('body').width() - 320) / 40 )
 
-    @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
-
-    @$el.html StaffPlan.Templates.Projects.index.header
+    @$el.find('header').append StaffPlan.Templates.Projects.index.header
 
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem
         model: project
         start: @startDate
-      @appendChild view
+      @appendChildTo view, @$el.find('section.main')
+      
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
     
     @renderChildInto dateRangeView, @$el.find("#date-target")
     
-    @$el.append StaffPlan.Templates.Projects.index.actions.addProject
+    @$el.find('section.main').append StaffPlan.Templates.Projects.index.actions.addProject
 
     @

@@ -1,4 +1,4 @@
-class StaffPlan.Views.Projects.Show extends Support.CompositeView
+class StaffPlan.Views.Projects.Show extends StaffPlan.View
   className: "list padding-top-240"
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
@@ -58,10 +58,10 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     $('body div.highlighter').remove()
     Support.CompositeView.prototype.leave.call @
   render: ->
-    @$el.empty()
+    super
 
     # HEADER
-    @$el.append StaffPlan.Templates.Projects.show.header
+    @$el.find('header').append StaffPlan.Templates.Projects.show.header
       name: @model.get "name"
     
     # Each line is a list-item with 25 pixels of left margin
@@ -70,7 +70,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     # Since we have actuals and estimates, we also have a 
     # 35 pixels-wide labels div before the inputs
     # Adding 40ox of "buffer space" to the tally for security
-    @numberOfBars = Math.floor ( ($('section.main').width() - 320) / 40 )
+    @numberOfBars = Math.floor ( ($('body').width() - 360) / 40 )
 
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
@@ -79,6 +79,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
       parent: @
       el: @$el.find("svg.user-chart")
       height: 120
+      
     @renderChildInto @projectChartView, @$el.find "div.chart-container"
     
     if StaffPlan.relevantYears.length > 2
@@ -94,7 +95,7 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
         parent: @
         start: @startDate
         numberOfBars: @numberOfBars
-      @appendChild view
+      @appendChildTo view, @$el.find('section.main')
 
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
@@ -107,27 +108,5 @@ class StaffPlan.Views.Projects.Show extends Support.CompositeView
     unless unassignedUsers.isEmpty()
       @$el.append StaffPlan.Templates.Projects.show.addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
-    
-    # m = moment()
-    # timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
-    
-    # _.delay () ->
-    #   $("*[data-timestamp=\"#{timestampAtBeginningOfWeek}\"]").addClass("current-week-highlight")
-    # , 100
-      
-      
-    #   currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
-    #   if currentWeek.length > 0
-    #     highlighterView = new StaffPlan.Views.Shared.Highlighter
-    #       offset:
-    #         left: currentWeek.offset().left
-    #         top: 38
-    #       width: 35
-    #       zindex: -100
-    #       height: 1000 # FIXME This value should be computed
-    #     if $('body div.highlighter').length is 0
-    #       $('body').append highlighterView.render().el
-    # , 100
-
 
     @

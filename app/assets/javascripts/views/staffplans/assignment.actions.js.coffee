@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Backbone.View
+class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.CompositeView
   className: "btn-group pull-right"
   tagName: "div"
     

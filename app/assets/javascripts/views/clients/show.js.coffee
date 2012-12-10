@@ -1,10 +1,9 @@
-class window.StaffPlan.Views.Clients.Show extends Support.CompositeView
-  className: "padding-top-40"
-  initialize: ->
-    @$el.html StaffPlan.Templates.Clients.show.clientInfo
+class window.StaffPlan.Views.Clients.Show extends StaffPlan.View
+  className: "short"
+  render: ->
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Clients.show.clientInfo
       client: @model.attributes
       projects: @model.get("projects")
-    @render()
- 
-  render: ->
-    @$el.appendTo('section.main')
+    @
