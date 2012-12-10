@@ -24,6 +24,7 @@ body {
   font-family: MyriadPro-Regular, "Myriad Pro Regular", MyriadPro, "Myriad Pro", Calibri, sans-serif;
   font-size: $font-size;
   line-height: $line-height;
+  
   a {
     @include transition(color 0.2s ease-out);
     color: #505050;
@@ -94,15 +95,28 @@ select.year-filter {
   width: auto
 }
 
-body > header {
+body header {
   margin: 0;
-  padding: 6px 0 4px 0;
+  padding: 0;
   line-height: 24px;
-  border-bottom: 1px solid #cccccc;
-  @include box-shadow(0 1px 0 white);
   top: 0px;
+  position: fixed;
   width: 100%;
+  background-color: #EEE;
+  z-index: 999;
+  
+  & > * {
+    margin: 0 20px;
+  }
+  
+  & > :last-child {
+    border-bottom: 1px solid #cccccc;
+    @include box-shadow(0px 1px 4px #ddd);
+  }
+  
   .inner {
+    border-bottom: 1px solid #cccccc;
+    @include box-shadow(0 1px 0 white);
     position: relative;
     margin: 0 auto;
     padding: 0 10px;
@@ -158,7 +172,7 @@ section.main {
   margin: 0;
   width: 100%;
   min-width: 100%;
-  padding: 10px 20px;
+  padding: 0px 20px 10px 20px;
   
   @include box-sizing(border-box);
   
@@ -193,38 +207,46 @@ section.main {
   }
 }
 
-section.main {
-  margin: 0 auto;
-  
-  .current-week-highlight {
-    color: rgba(50, 50, 50, 0.8);
-    fill: rgba(50, 50, 50, 0.8);
-    text-shadow: 1px 0px rgba(40, 40, 40, 0.8);
-  }
-  div.list div.project-list-item {
-    width: 100%;
-  }
-  div.list-item {
-    margin-top: 32px;
-    margin-left: 25px; // Align with ul.slick
-  }
+.tall section.main {
+  padding-top: 253px;
+}
 
-  span.month-name {
-    display: inline-block;
-    width: 35px;
-    margin-right: 2px;
-    height: 25px;
-    text-align: center;
-
-  }
+.short section.main {
+  padding-top: 100px;
+}
+ 
+.current-week-highlight {
+  color: rgba(50, 50, 50, 0.8);
+  fill: rgba(50, 50, 50, 0.8);
+  text-shadow: 1px 0px rgba(40, 40, 40, 0.8);
+}
+div.list div.project-list-item {
+  width: 100%;
+}
+div.list-item {
+  margin-top: 32px;
+  margin-left: 25px; // Align with ul.slick
   
-  span.week-number {
-    display: inline-block;
-    width: 35px;
-    margin-right: 2px;
-    height: 25px;
-    text-align: center;
+  & > * {
+    overflow: hidden;
   }
+}
+
+span.month-name {
+  display: inline-block;
+  width: 35px;
+  margin-right: 2px;
+  height: 25px;
+  text-align: center;
+
+}
+  
+span.week-number {
+  display: inline-block;
+  width: 35px;
+  margin-right: 2px;
+  height: 25px;
+  text-align: center;
 }
 
 .client-name {
@@ -431,19 +453,10 @@ footer {
   @include display-box;
 }
 
-.padding-top-120 {
-  padding-top: 120px;
-}
-
-.padding-top-240 {
-  padding-top: 240px;
-}
 .chart-wrapper {
   display: block;
   padding-left: 25px;
-  top: 120px;
   width: 100%;
-  position: fixed;
 }
 .chart-wrapper > div {
   display: inline-block;
@@ -460,44 +473,9 @@ footer {
 .margin-left-84 {
   margin-left: 84px;
 }
-.padding-top-40 {
-  padding-top: 40px;
-}
-
-.padding-top-30 {
-  padding-top: 30px !important; }
-.padding-top-177 {
-  padding-top: 177px; }
-.padding-top-258 {
-  padding-top: 258px; }
-.padding-top-290 {
-  padding-top: 290px; }
-.padding-top-272 {
-  padding-top: 272px; }
-.top-0 {
-  top: 0px; }
-.top-40 {
-  top: 40px;
-}
-.top-38 {
-  top: 38px;
-}
-.top-195 {
-  top: 195px !important; }
-.top-200 {
-  top: 200px; }
-.width-100-percent {
-  width: 100%;
-}
-
-.top-130 {
-  top: 130px;
-}
 
 .date-paginator {
-  top: 38px;
-  padding-top: 20px;
-  width: 96.6%;
+  width: 100%;
   padding-left: 25px;
   
   > * {
@@ -523,7 +501,7 @@ footer {
   }
 }
 
-.staffplan .date-paginator {
+.staffplan-show .date-paginator {
   top: initial;
   padding-top: initial;
   padding-left: initial;
@@ -533,7 +511,7 @@ footer {
     margin-left: 60px; }
   .next {
     top: 5px;
-    right: 60px; }
+    right: 20px; }
   .previous {
     left: 35px;
     top: 5px; }

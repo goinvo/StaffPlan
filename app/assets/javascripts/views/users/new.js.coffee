@@ -1,8 +1,6 @@
-class window.StaffPlan.Views.Users.New extends Support.CompositeView
+class window.StaffPlan.Views.Users.New extends StaffPlan.View
   tagName: "form"
-  className: "form-horizontal padding-top-40"
-  
-  initialize: ->
+  className: "form-horizontal short"
 
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
@@ -50,10 +48,13 @@ class window.StaffPlan.Views.Users.New extends Support.CompositeView
       , {wait: true}
 
   render: ->
-    @$el.html StaffPlan.Templates.Users.new.newUser
-    @$el.appendTo("section.main")
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Users.new.newUser
+    
     # Hides the appropriate fields so that we can handle the permissions information
     selected = $('select[data-attribute="employment_status"]').val()
     $("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
     $("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
 
+    @

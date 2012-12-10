@@ -5,6 +5,7 @@ window.StaffPlan =
   Mixins:
     Events: {}
   Views:
+    Layouts: {}
     Shared: {}
     StaffPlans:
       Client: {}

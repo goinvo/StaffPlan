@@ -13,34 +13,4 @@
     
     = csrf_meta_tags
     
-  %body
-  
-    = render(:partial => "shared/flash", locals: {flash: flash})
-    
-    %header.position-fixed
-      .inner
-        %ul
-          %li#nav-my-staff-plan= link_to(t('.my_staff_plan'), staffplan_path(current_user))
-          %li#nav-all-staff= link_to(t('.all_staff'), staffplans_path)
-          %li#nav-clients= link_to(t('.clients'), clients_path)
-          %li#nav-projects= link_to(t('.projects'), projects_path)
-          %li#current-company= current_user.current_company_selector
-          %li
-            %form.quick-jump
-              %input{type: "text", class: "input search-query header-typeahead", placeholder: "Client or Project Name"}
-        
-        .header-content
-          = yield(:header_content)
-         
-        .right
-          = mail_to("staffplan-feedback@goinvo.com", "Feedback", encode: "javascript", subject: "StaffPlan Feedback")
-          = link_to(t('.sign_out'), sign_out_path, {"data-bypass" => true})
-      
-    %section.main= yield
-      
-    %footer
-      = link_to('Github Repo', 'https://github.com/rescuedcode/StaffPlan', :target => "_blank")
-      = link_to('Involution Studios', 'http://goinvo.com', :target => "_blank")
-      
-      - if is_mobile_device?
-        = link_to("Mobile Site", "?mobile_view=true")
+  %body= yield

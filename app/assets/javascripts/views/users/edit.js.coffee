@@ -1,8 +1,6 @@
-class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
+class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
   tagName: "form"
-  className: "form-horizontal padding-top-40"
-
-  initialize: ->
+  className: "form-horizontal short"
 
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
@@ -51,9 +49,13 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
       , {wait: true}
     
   render: ->
-    @$el.html StaffPlan.Templates.Users.edit.userEdit
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
       user: @model.attributes
       membership: @model.membership.attributes
+    
+    # TODO: this should be part of the template
     selected = @model.membership.get 'employment_status'
     @$el.find("select#user_employment_status").val(selected)
     @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
@@ -68,5 +70,7 @@ class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
       when "contractor"
         _.each ["weekly_allocation", "rate", "payment_frequency"], (attr) =>
           @$el.find("#user_" + attr + "").val @model.membership.get(attr)
+          
     @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
-    @$el.appendTo("section.main")
+    
+    @

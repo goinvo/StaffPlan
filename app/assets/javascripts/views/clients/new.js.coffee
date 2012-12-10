@@ -1,13 +1,6 @@
-class window.StaffPlan.Views.Clients.New extends Support.CompositeView
-  className: "padding-top-40"
+class window.StaffPlan.Views.Clients.New extends StaffPlan.View
+  className: "short"
   
-  initialize: ->
-    @$el.html StaffPlan.Templates.Clients.new.newClient
-      clientDescription: @model.get("description") || ""
-      clientName: @model.get("name") || ""
-      clientActive: if @model.get("active") then "checked=\"checked\"" else ""
-      clientIsNew: @model.isNew()
-    
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
     "click div.form-actions button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
@@ -15,7 +8,15 @@ class window.StaffPlan.Views.Clients.New extends Support.CompositeView
       Backbone.history.navigate("/clients", true)
   
   render: ->
-    @$el.appendTo('section.main')
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Clients.new.newClient
+      clientDescription: @model.get("description") || ""
+      clientName: @model.get("name") || ""
+      clientActive: if @model.get("active") then "checked=\"checked\"" else ""
+      clientIsNew: @model.isNew()
+      
+    @
 
 
   updateCheckbox: ->

@@ -1,5 +1,5 @@
-class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
-  className: "list padding-top-120"
+class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
+  className: "list staffplan-index short"
 
   # All event handlers are defined in app/assets/javascripts/mixins/events.js.coffee
   events:
@@ -50,8 +50,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
   leave: ->
     $('body div.highlighter').remove()
     Support.CompositeView.prototype.leave.call @
+    
   render: ->
-    @$el.html StaffPlan.Templates.StaffPlans.index.pagination
+    super
+    
+    @$el.find('header').append StaffPlan.Templates.StaffPlans.index.pagination
     
     # FIXME: This is ugly
     buttonText = if localStorage.getItem("staffplanFilter") is "active"
@@ -74,10 +77,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends Support.CompositeView
         model: user
         parent: @
         startDate: @startDate.valueOf()
-      @appendChild view
-    @$el.append StaffPlan.Templates.StaffPlans.index.addStaff
+      @appendChildTo view, @$el.find('section.main')
+      
+    @$el.find('section.main').append StaffPlan.Templates.StaffPlans.index.addStaff
     
-    @numberOfBars = Math.floor( ($('section.main').width() - 280) / 40 )
+    @numberOfBars = Math.floor( ($('body').width() - 280) / 40 )
     
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)

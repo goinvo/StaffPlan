@@ -23,8 +23,8 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   render: ->
     @$el.html StaffPlan.Templates.StaffPlans.listItem
       user: @model.pick ["id", "gravatar", "full_name"]
-      
-    @numberOfBars = Math.floor (($('section.main').width() - 280) / 40)
+    
+    @numberOfBars = Math.floor (($('body').width() - 320) / 40)
     
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       maxHeight: 100

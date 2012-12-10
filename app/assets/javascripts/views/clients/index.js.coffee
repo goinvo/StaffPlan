@@ -1,6 +1,6 @@
-class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
+class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
   id: "clients"
-  className: "padding-top-40"
+  className: "clients-index short"
   
   initialize: ->
     @collection.bind 'change:id', => @render()
@@ -22,7 +22,9 @@ class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
     @$el.find('li[data-client-id=' + clientId + ']').remove()
     
   render: ->
-    @$el.html StaffPlan.Templates.Clients.index.clientInfo
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Clients.index.clientInfo
       clients: @collection.map (client) ->
         _.extend client.attributes,
           projects: client.getProjects().reduce((hash, project) ->

@@ -22,7 +22,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     @clients = data.clients
     @currentCompany = data.currentCompany
     @currentUser = data.currentUser
-    @el = $('section.main')
+    @el = $('body')
     window.router = @
   
   # Staff Plans

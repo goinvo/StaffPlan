@@ -214,8 +214,6 @@ _templates =
     </div>
     '''
 
-# DRY this up, since the structure of the _templates object and the resulting compiled templates object
-# is the same, we should be able to .reduce here
 StaffPlan.Templates.Projects =
   new: Handlebars.compile _templates.new
   edit: Handlebars.compile _templates.edit
