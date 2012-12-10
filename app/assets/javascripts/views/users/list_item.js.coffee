@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Users.ListItem extends Backbone.View
+class window.StaffPlan.Views.Users.ListItem extends Support.CompositeView
   initialize: ->
     @model.on "change", (event) =>
       @render()

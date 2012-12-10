@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Clients.Index extends Backbone.View
+class window.StaffPlan.Views.Clients.Index extends Support.CompositeView
   id: "clients"
   className: "padding-top-40"
   

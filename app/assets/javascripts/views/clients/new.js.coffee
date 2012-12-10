@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Clients.New extends Backbone.View
+class window.StaffPlan.Views.Clients.New extends Support.CompositeView
   className: "padding-top-40"
   
   initialize: ->

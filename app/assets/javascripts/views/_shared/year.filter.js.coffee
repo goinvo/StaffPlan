@@ -1,4 +1,4 @@
-class StaffPlan.Views.Shared.YearFilter extends Backbone.View
+class StaffPlan.Views.Shared.YearFilter extends Support.CompositeView
   initialize: ->
     @years = @options.years
     @parent = @options.parent

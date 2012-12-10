@@ -1,4 +1,4 @@
-class StaffPlan.Views.WeeklyAggregates extends Backbone.View 
+class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView 
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
   
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially

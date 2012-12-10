@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Users.Edit extends Backbone.View
+class window.StaffPlan.Views.Users.Edit extends Support.CompositeView
   tagName: "form"
   className: "form-horizontal padding-top-40"
 

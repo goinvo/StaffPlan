@@ -1,6 +1,6 @@
-class window.StaffPlan.Views.StaffPlans.Show extends Support.CompositeView
   className: "staffplan padding-top-272"
   tagName: "div"
+class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
   
   events:
     "click a[data-change-page]": "changePage"

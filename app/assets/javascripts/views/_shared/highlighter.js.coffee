@@ -1,4 +1,4 @@
-class StaffPlan.Views.Shared.Highlighter extends Backbone.View
+class StaffPlan.Views.Shared.Highlighter extends Support.CompositeView
   className: "highlighter"
 
   initialize: ->
