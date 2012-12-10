@@ -51,10 +51,9 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
     super
     
     @$el.find('section.main').html StaffPlan.Templates.Users.new.newUser
-    
     # Hides the appropriate fields so that we can handle the permissions information
-    selected = $('select[data-attribute="employment_status"]').val()
-    $("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
-    $("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
+    selected = @$el.find('select[data-attribute="employment_status"]').val()
+    @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
+    @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
 
     @

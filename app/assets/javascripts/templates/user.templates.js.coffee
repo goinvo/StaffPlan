@@ -200,7 +200,7 @@ _templates =
         <div class="control-group">
           <label class="control-label" for="user_employment_status">Employment status</label>
           <div class="controls">
-            <select id="user_employment_status" data-attribute=employment_status>
+            <select id="user_employment_status" data-attribute="employment_status">
               <option value="fte" selected="selected">Full-Time Employee</option>
               <option value="contractor">Contractor</option>
               <option value="intern">Intern</option>
