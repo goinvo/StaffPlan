@@ -68,7 +68,7 @@ _templates =
         </li>
       {{/each}}
     </ul>
-    <a href="/users/new" class="btn btn-primary">
+    <a href="/clients/new" class="btn btn-primary">
       <i class="icon-white icon-list"></i>
       Add client
     </a>
