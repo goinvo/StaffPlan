@@ -3,4 +3,4 @@ class StaffPlan.View extends Support.CompositeView
     @$el.empty()
     
     @$el.html StaffPlan.Templates.Layouts.application
-      currentUser: StaffPlan.currentUser.attributes
+      currentUserId: StaffPlan.currentUser.id

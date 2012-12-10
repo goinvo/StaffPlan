@@ -3,7 +3,7 @@ _t =
   <header>
     <div class='inner'>
       <ul>
-        <li id="nav-my-staff-plan"><a href="/staffplans/{{currentUser.id}}">My StaffPlan</a></li>
+        <li id="nav-my-staff-plan"><a href="/staffplans/{{currentUserId}}">My StaffPlan</a></li>
         <li id="nav-all-staff"><a href="/staffplans">All StaffPlans</a></li>
         <li id="nav-clients"><a href="/clients">Clients</a></li>
         <li id="nav-projects"><a href="/projects">Projects</a></li>
