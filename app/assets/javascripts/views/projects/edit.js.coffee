@@ -22,26 +22,18 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
           @updateProjectAndAssignment model.id, formValues
         error: (model, response) ->
     else
-      @updateProjectAndAssignment formValues.client.id, formValues
+      @updateProject formValues.client.id, formValues
 
-  updateProjectAndAssignment: (clientId, formValues) ->
+  updateProject: (clientId, formValues) ->
     # Each model should expose a whitelistedAttributes so that we only transmit what's needed
     projectAttributes = _.extend (_.pick formValues.project, ['name', 'active', 'payment_frequency', 'cost']),
       company_id: window.StaffPlan.currentCompany.id
       client_id: clientId
     @model.save projectAttributes,
-      success: (model, response) =>
-        # Each model should expose a whitelistedAttributes so that we only transmit what's needed
-        assignmentAttributes =
-          project_id: model.id
-          user_id: @currentUser.id
-          proposed: formValues.project.proposed
-        assignment = @currentUser.getAssignments().detect (a) =>
-          a.get('project_id') is @model.id
-        assignment.save assignmentAttributes,
-          success: (model, response) ->
-          error: (model, response) ->
+      success: (model, response) ->
+        console.log "Project successfully saved"
       error: (model, response) ->
+        alert "An error occurred while saving the project"
 
 
   clientSelectionChanged: (event) ->
@@ -83,11 +75,7 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
       
   populateFields: ->
     unless @model.isNew()
-      projectAssignment = StaffPlan.assignments.detect (a) =>
-        a.get('project_id') is @model.id and a.get('user_id') is StaffPlan.currentUser.id
-
-      attrs = _.extend @model.toJSON(),
-        proposed: projectAssignment?.get("proposed") or false
+      attrs = @model.toJSON()
       
       @$el
         .find("select[data-model=client][data-attribute=id]")
@@ -108,10 +96,9 @@ class window.StaffPlan.Views.Projects.Edit extends Support.CompositeView
         .find("input[type=radio][value=#{attrs.payment_frequency}]")
         .prop("checked", true)
       
-      _.each ["proposed", "active"], (prop) =>
         @$el
-          .find("[data-model=project][data-attribute=#{prop}]")
-          .prop "checked", attrs[prop]
+          .find("[data-model=project][data-attribute=\"active\"]")
+          .prop "checked", attrs["active"]
   render: ->
     @$el.append StaffPlan.Templates.Projects.edit
       clients: @clients.map (client) -> client.toJSON()

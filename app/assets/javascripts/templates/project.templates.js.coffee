@@ -184,19 +184,12 @@ _templates =
       </div>
       
       <div class="control-group">
-        <label class="control-label" for="project-proposed">Proposed</label>
-        <div class="controls">
-          <input data-model=project data-attribute=proposed id="project-proposed" type="checkbox">
-        </div>
-      </div>
-      
-      <div class="control-group">
         <label class="control-label">
           Payment Frequency
         </label>
-        <radiogroup data-model=project data-attribute=payment_frequency>
-          <input type="radio" checked="checked" value="monthly"> Monthly  
-          <input type="radio" value="total"> Total
+        <radiogroup data-model="project" data-attribute=payment_frequency>
+          <input data-model="project" data-attribute="payment_frequency" name="frequency" type="radio" checked="checked" value="monthly"> Monthly
+          <input data-model="project" data-attribute="payment_frequency" name="frequency" type="radio" value="total"> Total
         <radiogroup>
       </div>
         
