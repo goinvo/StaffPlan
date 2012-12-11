@@ -73,13 +73,6 @@ _templates =
       </div>
       
       <div class="control-group">
-        <label class="control-label" for="project-proposed">Proposed</label>
-        <div class="controls">
-          <input data-model=project data-attribute=proposed id="project-proposed" type="checkbox">
-        </div>
-      </div>
-      
-      <div class="control-group">
         <label class="control-label">
           Payment Frequency
         </label>

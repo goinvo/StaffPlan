@@ -1,7 +1,7 @@
-class window.StaffPlan.Views.Projects.New extends Support.CompositeView
+class window.StaffPlan.Views.Projects.New extends StaffPlan.View
   
   tagName: "form"
-  className: "form-horizontal padding-top-40"
+  className: "form-horizontal short"
 
   initialize: ->
     @newClient = false
@@ -19,27 +19,25 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
       # First create the client
       @clients.create { name: formValues.client.name },
         success: (model, response) =>
-          @createProjectAndAssignment model.id, formValues
+          @createProject model.id, formValues
         error: (model, response) ->
     else
-      @createProjectAndAssignment formValues.client.id, formValues
+      @createProject formValues.client.id, formValues
 
-  createProjectAndAssignment: (clientId, formValues) ->
+  createProject: (clientId, formValues) ->
     # Each model should expose a whitelistedAttributes so that we only transmit what's needed
     projectAttributes = _.extend (_.pick formValues.project, ['name', 'active', 'payment_frequency', 'cost']),
       company_id: window.StaffPlan.currentCompany.id
       client_id: clientId
     @collection.create projectAttributes,
-      success: (model, response) =>
-        # Each model should expose a whitelistedAttributes so that we only transmit what's needed
-        assignmentAttributes =
-          project_id: model.id
-          user_id: @currentUser.id
-          proposed: formValues.project.proposed
-        StaffPlan.assignments.create assignmentAttributes,
-          success: (model, response) ->
-          error: (model, response) ->
-      error: (model, response) ->
+      success: (model, response) ->
+      error: (model, response) =>
+        console.log response
+        if _.has(response, "errors")
+          _.each response.errors, (value, key) =>
+            controlGroup =  @$el.find("[data-attribute=\"#{key}\"]").closest('.control-group')
+            controlGroup.find('div.controls').append("<span class=\"validation-errors inline\">#{value}</span>") # Display the error
+            controlGroup.addClass("error")
 
 
   clientSelectionChanged: (event) ->
@@ -82,9 +80,9 @@ class window.StaffPlan.Views.Projects.New extends Support.CompositeView
       
       
   render: ->
-    @$el.append StaffPlan.Templates.Projects.new
+    super
+    @$el.find("section.main").append StaffPlan.Templates.Projects.new
       clients: @clients.map (client) -> client.toJSON()
     @$el.find(".initially-hidden").hide()
-    @$el.appendTo "section.main"
 
     @

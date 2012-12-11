@@ -7,9 +7,12 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
     if @collection? then "#{@collection.url()}#{id}" else "/projects#{id}"
     
   validate: (attributes) ->
-    if @get('name') == ''
-      return "Project name is required"
-  
+    ['name', 'cost'].reduce (errors, property) =>
+      if @get(property) == ''
+        errors['errors'][property] = "Project's #{property} cannot be left blank"
+      errors
+    , { "errors": {  } }
+
   dateRangeMeta: ->
     @view.dateRangeMeta()
   
