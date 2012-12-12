@@ -186,7 +186,9 @@ section.main {
   padding: 0px 20px 10px 20px;
   
   @include box-sizing(border-box);
-  
+  div.hidden {
+    display: none;
+  }   
   section {
     > header {
       padding-top: 30px;

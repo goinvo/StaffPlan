@@ -43,7 +43,7 @@ _templates =
         </div>
       </div>
       
-      <div class="control-group initially-hidden">
+      <div class="control-group hidden">
         <label class="control-label" for="client-name">    
           Client Name
         </label>
@@ -148,7 +148,7 @@ _templates =
         </div>
       </div>
       
-      <div class="control-group initially-hidden">
+      <div class="control-group hidden">
         <label class="control-label" for="client-name">    
           Client Name
         </label>

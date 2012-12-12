@@ -3,7 +3,8 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
   className: "form-horizontal short"
 
   initialize: ->
-    _.extend @, StaffPlans.Mixins.ValidationHandlers
+    _.extend @, StaffPlan.Mixins.ValidationHandlers
+
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"
@@ -49,15 +50,9 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
       error: (model, xhr, options) =>
         @errorHandler xhr.responseText, "user"
       , {wait: true}
-    
-  render: ->
-    super
-    
-    @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
-      user: @model.attributes
-      membership: @model.membership.attributes
-    
-    # TODO: this should be part of the template
+  
+  # FIXME: There should be something to do with this... What?
+  initMembershipAndSalaryRelatedFields: ->
     selected = @model.membership.get 'employment_status'
     @$el.find("select#user_employment_status").val(selected)
     @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
@@ -74,5 +69,14 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
           @$el.find("#user_" + attr + "").val @model.membership.get(attr)
           
     @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
+  
+  render: ->
+    super
+    
+    @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
+      user: @model.attributes
+      membership: @model.membership.attributes
+    
+    @initMembershipAndSalaryRelatedFields()
     
     @

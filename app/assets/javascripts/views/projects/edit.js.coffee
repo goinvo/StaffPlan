@@ -23,7 +23,8 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
       @clients.create { name: formValues.client.name },
         success: (model, response) =>
           @updateProjectAndAssignment model.id, formValues
-        error: (model, response) ->
+        error: (model, xhr, options) =>
+          @errorHandler xhr.responseText, "client"
     else
       @updateProject formValues.client.id, formValues
 
@@ -41,7 +42,7 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
   clientSelectionChanged: (event) ->
     newClientSelected = $(event.currentTarget).find("option:selected").hasClass "new-client"
     if @newClient isnt newClientSelected
-      @$el.find(".initially-hidden").fadeToggle "slow"
+      @$el.find(".hidden").fadeToggle "slow"
     @newClient = newClientSelected
 
   
@@ -98,14 +99,13 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
         .find("input[type=radio][value=#{attrs.payment_frequency}]")
         .prop("checked", true)
       
-        @$el
-          .find("[data-model=project][data-attribute=\"active\"]")
-          .prop "checked", attrs["active"]
+      @$el
+        .find("[data-model=project][data-attribute=\"active\"]")
+        .prop "checked", attrs["active"]
   render: ->
     super
     @$el.find("section.main").html StaffPlan.Templates.Projects.edit
       clients: @clients.map (client) -> client.toJSON()
     @populateFields()
-    @$el.find(".initially-hidden").hide()
 
     @

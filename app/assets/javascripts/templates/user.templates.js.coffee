@@ -244,18 +244,18 @@ _templates =
           </div>
         </div>
 
-        <div class="salary contractor">
+        <div class="salary contractor hidden">
           <div class="control-group">
             <label class="control-label" for="user_weekly_allocation">Weekly allocation</label>
             <div class="controls">
-              <input id="user_weekly_allocation" data-attribute=weekly_allocation size="30" type="number">
+              <input id="user_weekly_allocation" disabled=disabled data-attribute=weekly_allocation size="30" type="number">
             </div>
           </div>
             
           <div class="control-group">
             <label class="control-label" for="user_payment_frequency">Payment frequency</label>
             <div class="controls">
-              <select id="user_payment_frequency" data-attribute=payment_frequency>
+              <select id="user_payment_frequency" disabled=disabled data-attribute=payment_frequency>
                 <option value="hourly">hourly</option>
                 <option value="daily">daily</option>
                 <option value="weekly">weekly</option>
@@ -268,7 +268,7 @@ _templates =
           <div class="control-group">
             <label class="control-label" for="user_rate">Rate</label>
             <div class="controls">
-              <input id="user_rate" data-attribute=rate size="30" type="number"></div>
+              <input id="user_rate" data-attribute=rate disabled=disabled size="30" type="number"></div>
             </div>
           </div>
         </div>

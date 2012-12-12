@@ -40,7 +40,7 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
   clientSelectionChanged: (event) ->
     newClientSelected = $(event.currentTarget).find("option:selected").hasClass "new-client"
     if @newClient isnt newClientSelected
-      @$el.find(".initially-hidden").fadeToggle "slow"
+      @$el.find(".hidden").fadeToggle "slow"
     @newClient = newClientSelected
 
   
@@ -80,6 +80,5 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
     super
     @$el.find("section.main").append StaffPlan.Templates.Projects.new
       clients: @clients.map (client) -> client.toJSON()
-    @$el.find(".initially-hidden").hide()
 
     @

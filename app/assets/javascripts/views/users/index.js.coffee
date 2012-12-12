@@ -40,7 +40,7 @@ class window.StaffPlan.Views.Users.Index extends StaffPlan.View
       # For each element in the collection, create a subview
       view = new window.StaffPlan.Views.Users.ListItem
         model: user
-      @$el.find('section.main ul').append view.render().el
+      @appendChildTo view, @$el.find("section.main ul.slick")
     
     @$el.find('section.main ul').append StaffPlan.Templates.Users.index.actions.addUser
 

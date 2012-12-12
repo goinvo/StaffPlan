@@ -8,6 +8,7 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=create]": "createUser"
   
+  # When the Employment status changes, we need to hide/show the irrelevant/relevant fields
   refreshSalaryRelatedFields: (event) ->
     selected = $(event.currentTarget).val()
 
@@ -56,9 +57,5 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
     super
     
     @$el.find('section.main').html StaffPlan.Templates.Users.new.newUser
-    # Hides the appropriate fields so that we can handle the permissions information
-    selected = @$el.find('select[data-attribute="employment_status"]').val()
-    @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
-    @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
 
     @
