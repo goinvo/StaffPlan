@@ -4,6 +4,7 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
   className: "form-horizontal short"
 
   initialize: ->
+    _.extend @, StaffPlan.Mixins.ValidationHandlers
     @newClient = false
     @clients = @options.clients
     @currentUser = @options.currentUser
@@ -35,14 +36,7 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
       success: (model, response) ->
         Backbone.history.navigate("/projects", true)
       error: (model, xhr, options) =>
-        debugger
-        errors = JSON.parse xhr.responseText
-        projectDiv = @$el.find('div[data-model=project]')
-        _.each errors, (value, key) =>
-          group = projectDiv.find("[data-attribute=#{key}]").closest('div.control-group')
-          group.addClass("error")
-          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
-          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+        @errorHandler xhr.responseText, "project"
 
   clientSelectionChanged: (event) ->
     newClientSelected = $(event.currentTarget).find("option:selected").hasClass "new-client"

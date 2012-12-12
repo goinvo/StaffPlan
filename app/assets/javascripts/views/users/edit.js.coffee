@@ -2,6 +2,8 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
   tagName: "form"
   className: "form-horizontal short"
 
+  initialize: ->
+    _.extend @, StaffPlans.Mixins.ValidationHandlers
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"
@@ -42,22 +44,10 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
             model.membership.set resource
             Backbone.history.navigate("/users", true)
           error: (model, xhr, options) =>
-            errors = JSON.parse xhr.responseText
-            membershipDiv = @$el.find('div[data-model=membership]')
-            _.each errors, (value, key) =>
-              group = membershipDiv.find("[data-attribute=#{key}]").closest('div.control-group')
-              group.addClass("error")
-              errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
-              group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+            @errorHandler xhr, "membership"
           , {wait: true}
       error: (model, xhr, options) =>
-        errors = JSON.parse xhr.responseText
-        userDiv = @$el.find('div[data-model=user]')
-        _.each errors, (value, key) =>
-          group = userDiv.find("[data-attribute=#{key}]").closest('div.control-group')
-          group.addClass("error")
-          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
-          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+        @errorHandler xhr.responseText, "user"
       , {wait: true}
     
   render: ->

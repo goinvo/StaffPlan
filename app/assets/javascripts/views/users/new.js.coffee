@@ -2,6 +2,8 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
   tagName: "form"
   className: "form-horizontal short"
 
+  initialize: ->
+    _.extend @, StaffPlan.Mixins.ValidationHandlers
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=create]": "createUser"
@@ -22,7 +24,7 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
         memo
       , {}
     
-    membershipAttributes = _.reduce $("div[data-model=membership] input:not(:disabled)"), (memo, elem) ->
+    membershipAttributes = _.reduce $("div[data-model=membership] input:not(:disabled), select:not(:disabled)"), (memo, elem) ->
         if $(elem).data('attribute') is "permissions"
           if $(elem).prop('checked')
             if not memo['permissions']?
@@ -40,25 +42,14 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
           company_id: window.StaffPlan.currentCompany.id
         membership.save (_.extend membershipAttributes, {user_id: model.id}),
           success: (resource, response) ->
+            # Set the newly saved membership on the user
             model.membership.set resource
+            Backbone.history.navigate("/users", true)
           error: (model, xhr, options) =>
-            errors = JSON.parse xhr.responseText
-            membershipDiv = @$el.find('div[data-model=membership]')
-            _.each errors, (value, key) =>
-              group = membershipDiv.find("[data-attribute=#{key}]").closest('div.control-group')
-              group.addClass("error")
-              errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
-              group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+            @errorHandler(xhr.responseText, "membership")
           , {wait: true}
       error: (model, xhr, options) =>
-        # FIXME: That belongs in a mixin so that we can reuse this somewhere else
-        errors = JSON.parse xhr.responseText
-        userDiv = @$el.find('div[data-model=user]')
-        _.each errors, (value, key) =>
-          group = userDiv.find("[data-attribute=#{key}]").closest('div.control-group')
-          group.addClass("error")
-          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
-          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+        @errorHandler(xhr.responseText, "user")
       , {wait: true}
 
   render: ->

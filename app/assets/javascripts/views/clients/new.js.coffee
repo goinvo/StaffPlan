@@ -1,6 +1,8 @@
 class window.StaffPlan.Views.Clients.New extends StaffPlan.View
   className: "short"
   
+  initialize: ->
+    _.extend @, StaffPlan.Mixins.ValidationHandlers
   events: ->
     "click input#client_active[data-attribute=active]": "updateCheckbox"
     "click div.form-actions button[type=submit][data-action=save], button[type=submit][data-action=update]": "saveClient"
@@ -30,12 +32,17 @@ class window.StaffPlan.Views.Clients.New extends StaffPlan.View
                       memo[$(elem).attr('data-attribute')] = $(elem).val()
                       memo
                     , {}
+    debugger
     isNew = @model.isNew()
     if isNew
-      @collection.add @model
-    @model.save attributes,
-      error: (model, response) =>
-        alert "Couldn't save the client to the server :/"
-      success: (model, response) =>
-        if isNew then @collection.add model
-        Backbone.history.navigate(@collection.url(), true)
+      @collection.create attributes,
+        error: (model, xhr, options) =>
+          @errorHandler xhr.responseText, "client"
+        success: (model, response) =>
+          Backbone.history.navigate(@collection.url(), true)
+    else
+      @model.save attributes,
+        error: (model, xhr, options) =>
+          @errorHandler xhr.responseText, "client"
+        success: (model, response) =>
+          Backbone.history.navigate(@collection.url(), true)

@@ -7,6 +7,7 @@ _templates =
   new:
     newClient: '''
       <form class="form-horizontal">
+        <div data-model=client>
         <div class="control-group">
           <label class="control-label" for="client_name">Name</label>
           <div class="controls">
@@ -36,6 +37,7 @@ _templates =
             <button data-action="update" type="submit" class="btn btn-primary">Update client</button>
           {{/if}}
           <button data-action="cancel" type="button" class="btn">Back to list of clients</button>
+        </div>
         </div>
       </form>
     '''

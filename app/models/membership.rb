@@ -13,9 +13,6 @@ class Membership < ActiveRecord::Base
   bitmask :roles, :as => [:admin, :employee, :contractor, :financials], :null => false
   bitmask :permissions, :as => [:admin, :financials], :null => false
   
-  validates :salary, :numericality => true 
-  validates :full_time_equivalent, :numericality => true
-
   def permissions=(perms)
     unless perms.nil?
       perms.each do |perm|
