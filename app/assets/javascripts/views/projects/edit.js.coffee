@@ -14,6 +14,8 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
 
 
   updateUser: ->
+    event.preventDefault()
+    event.stopPropagation()
     formValues = @getFormValues("input, select")
     if @newClient
       # First create the client
@@ -31,10 +33,16 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
       client_id: clientId
     @model.save projectAttributes,
       success: (model, response) ->
-        console.log "Project successfully saved"
-      error: (model, response) ->
-        alert "An error occurred while saving the project"
-
+        Backbone.history.navigate("/projects", true)
+      error: (model, xhr, options) =>
+        debugger
+        errors = JSON.parse xhr.responseText
+        projectDiv = @$el.find('div[data-model=project]')
+        _.each errors, (value, key) =>
+          group = projectDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+          group.addClass("error")
+          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
 
   clientSelectionChanged: (event) ->
     newClientSelected = $(event.currentTarget).find("option:selected").hasClass "new-client"

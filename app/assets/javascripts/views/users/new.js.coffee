@@ -15,6 +15,8 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
     @$el.find('div#salary_information div.' + selected).show()
 
   createUser: =>
+    event.preventDefault()
+    event.stopPropagation()
     userAttributes = _.reduce $("div[data-model=user] input:not(:disabled)"), (memo, elem) ->
         memo[$(elem).data('attribute')] = $(elem).val()
         memo
@@ -32,19 +34,31 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
         memo
       , {}
     @collection.create userAttributes,
-      success: (model, response) ->
+      success: (model, response) =>
         # We have a new user
         membership = new window.StaffPlan.Models.Membership
           company_id: window.StaffPlan.currentCompany.id
         membership.save (_.extend membershipAttributes, {user_id: model.id}),
           success: (resource, response) ->
-            # Successful save for the membership, let's embed it in the User model client-side
             model.membership.set resource
-          error: (model, response) ->
-            console.log "ERROR :/ " + response
+          error: (model, xhr, options) =>
+            errors = JSON.parse xhr.responseText
+            membershipDiv = @$el.find('div[data-model=membership]')
+            _.each errors, (value, key) =>
+              group = membershipDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+              group.addClass("error")
+              errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+              group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
           , {wait: true}
-      error: (model, response) ->
-        alert "Could not save the user to the database. ERROR: " + response
+      error: (model, xhr, options) =>
+        # FIXME: That belongs in a mixin so that we can reuse this somewhere else
+        errors = JSON.parse xhr.responseText
+        userDiv = @$el.find('div[data-model=user]')
+        _.each errors, (value, key) =>
+          group = userDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+          group.addClass("error")
+          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
       , {wait: true}
 
   render: ->

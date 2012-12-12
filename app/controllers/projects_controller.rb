@@ -58,19 +58,6 @@ class ProjectsController < ApplicationController
         format.json { render :json => @project.errors, :status => :unprocessable_entity }
       end
     end
-    # client = Client.find_by_id(params[:client_id])
-    
-    # unless client.present?
-    #   render json: {status: :unprocessable_entity} and return
-    # end
-    
-    # @project = current_user.current_company.projects.build(params[:project].merge(client: client))
-
-    # if @project.save
-    #   respond_with @project and return
-    # else
-    #   render json: {status: :unprocessable_entity}
-    # end
   end
 
   def edit

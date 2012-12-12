@@ -25,7 +25,14 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
         memo[elem] = @get elem
       memo
     , {}
-
+  
+  validate: ->
+    errors = {}
+    _.each ['first_name', 'last_name', 'email'], (property) =>
+      if @get(property) is ""
+        errors[property] = ["User's #{property.split("_").join(" ")} cannot be left blank"]
+    if _.keys(errors).length > 0
+      return {responseText: JSON.stringify(errors)}
   # This function returns the number of estimated hours entered in the future by the user
   workload: ->
     weeks = @getAssignments().map (assignment) ->

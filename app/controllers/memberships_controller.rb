@@ -11,10 +11,10 @@ class MembershipsController < ApplicationController
 
   def update
     @membership = Membership.where(id: params[:id]).first
-    if @membership.update_attributes params[:membership]
+    if @membership.update_attributes params[:membership].slice(:employment_status, :salary, :full_time_equivalent, :rate, :payment_frequency, :weekly_allocation, :permissions)
       render :json => @membership, :status => :ok
     else
-      render :json => { :status => :unprocessable_entity }
+      render :json => @membership.errors, :status => :unprocessable_entity
     end
 
   end

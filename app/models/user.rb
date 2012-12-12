@@ -73,11 +73,12 @@ class User < ActiveRecord::Base
   # NOTE: https://github.com/rails/rails/pull/3887
   def save_unconfirmed_user
     self.valid?
-
+    
     if (self.errors.keys - [:password_digest]).empty?
       save(validate: false)
       true
     else
+      self.errors.delete(:password_digest)
       false
     end
   end

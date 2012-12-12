@@ -21,6 +21,7 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
         success: (model, response) =>
           @createProject model.id, formValues
         error: (model, response) ->
+          # How does one manage to not create a client :/
     else
       @createProject formValues.client.id, formValues
 
@@ -31,14 +32,16 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
       client_id: clientId
     @collection.create projectAttributes,
       success: (model, response) ->
-      error: (model, response) =>
-        console.log response
-        if _.has(response, "errors")
-          _.each response.errors, (value, key) =>
-            controlGroup =  @$el.find("[data-attribute=\"#{key}\"]").closest('.control-group')
-            controlGroup.find('div.controls').append("<span class=\"validation-errors inline\">#{value}</span>") # Display the error
-            controlGroup.addClass("error")
-
+        Backbone.history.navigate("/projects", true)
+      error: (model, xhr, options) =>
+        errors = JSON.parse xhr.responseText
+        projectDiv = @$el.find('div[data-model=project]')
+        _.each errors, (value, key) =>
+          group = projectDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+          group.addClass("error")
+          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
+        
 
   clientSelectionChanged: (event) ->
     newClientSelected = $(event.currentTarget).find("option:selected").hasClass "new-client"

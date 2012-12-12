@@ -5,13 +5,20 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
   url: ->
     id = if @id? then "/#{@id}" else ""
     if @collection? then "#{@collection.url()}#{id}" else "/projects#{id}"
-    
-  validate: (attributes) ->
-    ['name', 'cost'].reduce (errors, property) =>
-      if @get(property) == ''
-        errors['errors'][property] = "Project's #{property} cannot be left blank"
-      errors
-    , { "errors": {  } }
+  
+  validate: ->
+    errors = {}
+    _.each ['name', 'cost'], (property) =>
+      if @get(property) is ""
+        errors[property] = ["Project's #{property} cannot be left blank"]
+    client = StaffPlan.clients.get(@get("client_id"))
+    if @isNew() and _.include(client.getProjects().pluck("name"), @get("name"))
+      existingProject = client.getProjects().detect (project) =>
+        project.get("name") is @get("name")
+      errors['name'] ?= []
+      errors['name'].push "A project with that name already exists for that client (<a href=\"/projects/#{existingProject.id}/edit\">Edit that project instead?</a>)"
+    if _.keys(errors).length > 0
+      return {responseText: JSON.stringify(errors)}
 
   dateRangeMeta: ->
     @view.dateRangeMeta()

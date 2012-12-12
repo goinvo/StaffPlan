@@ -41,11 +41,23 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
             # Successful save for the membership, let's embed it in the User model client-side
             model.membership.set resource
             Backbone.history.navigate("/users", true)
-          error: (model, response) ->
-            console.log "ERROR :/ " + response
+          error: (model, xhr, options) =>
+            errors = JSON.parse xhr.responseText
+            membershipDiv = @$el.find('div[data-model=membership]')
+            _.each errors, (value, key) =>
+              group = membershipDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+              group.addClass("error")
+              errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+              group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
           , {wait: true}
-      error: (model, response) ->
-        alert "Could not save the user to the database. ERROR: " + response
+      error: (model, xhr, options) =>
+        errors = JSON.parse xhr.responseText
+        userDiv = @$el.find('div[data-model=user]')
+        _.each errors, (value, key) =>
+          group = userDiv.find("[data-attribute=#{key}]").closest('div.control-group')
+          group.addClass("error")
+          errorList = "<ul>" + (_.map value, (error) -> "<li>#{error}</li>") + "</ul>"
+          group.find("div.controls").append("<span class=\"validation-errors\">#{errorList}</span>")
       , {wait: true}
     
   render: ->

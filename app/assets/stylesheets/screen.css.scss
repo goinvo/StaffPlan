@@ -82,7 +82,14 @@ ul {
 form.form-horizontal span.validation-errors {
   color: #B94A48;
   font-weight: bold;
-  text-decoration: italic
+  text-decoration: italic;
+  ul {
+    margin-left: 0px;
+    li {
+      margin-left: 4px;
+      list-style-type: none;
+    }
+  }
 }
 //\\//\\//\\//\\//\\
 //     Header     \\
