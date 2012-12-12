@@ -8,8 +8,11 @@ class window.StaffPlan.Models.Client extends StaffPlan.Model
 
   validate: ->
     errors = {}
-    if _.include StaffPlan.clients.pluck("name"), @get("name")
-      errors['name'] = ["Client name has already been taken"]
+    if @get("name") is ""
+      errors['name'] = ["name cannot be left blank"]
+    else
+      if _.include StaffPlan.clients.pluck("name"), @get("name")
+        errors['name'] = ["name has already been taken"]
     if _.keys(errors).length > 0
       return {responseText: JSON.stringify(errors)}
 

@@ -30,7 +30,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     errors = {}
     _.each ['first_name', 'last_name', 'email'], (property) =>
       if @get(property) is ""
-        errors[property] = ["User's #{property.split("_").join(" ")} cannot be left blank"]
+        errors[property] = ["#{property.split("_").join(" ")} cannot be left blank"]
     if _.keys(errors).length > 0
       return {responseText: JSON.stringify(errors)}
   # This function returns the number of estimated hours entered in the future by the user
