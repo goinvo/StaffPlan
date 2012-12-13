@@ -26,6 +26,35 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
       memo
     , {}
   
+  # Feeds all the necessary information to the template used by users/edit
+  getMembershipInformation: ->
+    status = _.reduce {"fte": "Full-Time Equivalent", "contractor": "Contractor", "intern": "Intern"}, (memo, value, key) =>
+        memo.push
+          name: key
+          capitalizedName: value
+          selected: @membership.get('employment_status') is key
+        memo
+      , []
+    status = _.reduce ['contractor', 'fte'], (memo, prop) =>
+      memo[prop] = @membership.get('employment_status') is prop
+      memo
+    , status
+    salary = _.pick @membership.toJSON().membership, ["salary", "full_time_equivalent", "weekly_allocation", "rate"]
+    salary['payment_frequency'] = _.reduce ['hourly', 'daily', 'weekly', 'monthly', 'yearly'], (memo, frequency) =>
+        memo.push
+          name: frequency
+          capitalizedName: frequency.charAt(0).toUpperCase() + frequency.slice(1)
+          selectedFrequency: @membership.get("payment_frequency") is frequency
+        memo
+      , []
+    _.reduce ["admin", "financials"], (permissionInfo, permission) =>
+      permissionInfo['permissions'].push
+        name: permission
+        userHasPermission: _.include @membership.get('permissions'), permission
+        capitalizedName: permission.charAt(0).toUpperCase() + permission.slice(1)
+      permissionInfo
+    , { status: status, permissions: [], salary: salary }
+
   validate: ->
     errors = {}
     _.each ['first_name', 'last_name', 'email'], (property) =>

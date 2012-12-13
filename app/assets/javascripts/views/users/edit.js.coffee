@@ -4,18 +4,15 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
 
   initialize: ->
     _.extend @, StaffPlan.Mixins.ValidationHandlers
+    @model.membership.on "change:employment_status", (event) =>
+      @render()
 
   events: ->
     "change select[data-attribute=employment_status]": "refreshSalaryRelatedFields"
     "click div.form-actions a[data-action=update]": "saveUser"
     
-  refreshSalaryRelatedFields: (event) ->
-    selected = $(event.currentTarget).val()
-
-    @$el.find('div#salary_information div.salary').hide()
-    @$el.find('div#salary_information').find('input, select').prop('disabled', true)
-    @$el.find('div#salary_information div.' + selected).find('input, select').show().prop('disabled', false)
-    @$el.find('div#salary_information div.' + selected).show()
+  refreshSalaryRelatedFields: ->
+    @model.membership.set "employment_status", $(event.target).val()
 
   saveUser: ->
     event.preventDefault()
@@ -51,32 +48,11 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
         @errorHandler xhr.responseText, "user"
       , {wait: true}
   
-  # FIXME: There should be something to do with this... What?
-  initMembershipAndSalaryRelatedFields: ->
-    selected = @model.membership.get 'employment_status'
-    @$el.find("select#user_employment_status").val(selected)
-    @$el.find("div#salary_information div.salary").hide().find('input, select').prop('disabled', true)
-
-    _.each (@model.membership.get 'permissions'), (perm) =>
-      @$el.find("div#permissions input#user_permissions_" + perm + "[type=checkbox]").prop("checked", true)
-
-    switch selected
-      when "fte"
-        _.each ["salary", "full_time_equivalent"], (attr) =>
-          @$el.find("#user_" + attr + "").val @model.membership.get(attr)
-      when "contractor"
-        _.each ["weekly_allocation", "rate", "payment_frequency"], (attr) =>
-          @$el.find("#user_" + attr + "").val @model.membership.get(attr)
-          
-    @$el.find("div#salary_information div." + selected + "").show().find('input, select').prop('disabled', false)
-  
   render: ->
     super
-    
+
     @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
       user: @model.attributes
-      membership: @model.membership.attributes
-    
-    @initMembershipAndSalaryRelatedFields()
+      membershipInfo: @model.getMembershipInformation()
     
     @

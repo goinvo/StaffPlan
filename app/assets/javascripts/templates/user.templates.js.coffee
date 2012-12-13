@@ -38,7 +38,6 @@ _templates =
   edit:
     userEdit: '''
     <div data-model=user>
-      
       <div class="control-group">
         <label class="control-label" for="user_first_name">First name</label>
         <div class="controls">
@@ -59,6 +58,7 @@ _templates =
           <input id="user_email" data-attribute=email size="30" type="text" value="{{user.email}}">
         </div>
       </div>
+    </div>
 
     <div data-model=membership> 
       <div id="employment_status">
@@ -66,75 +66,71 @@ _templates =
           <label class="control-label" for="user_employment_status">Employment status</label>
           <div class="controls">
             <select id="user_employment_status" data-attribute=employment_status>
-              <option value="fte">Full-Time Employee</option>
-              <option value="contractor">Contractor</option>
-              <option value="intern">Intern</option>
+              {{#each membershipInfo.status}}
+                <option value="{{name}}" {{#if selected}}selected=selected{{/if}}>{{capitalizedName}}</option>
+              {{/each}}
             </select>
           </div>
         </div>
       </div>
       
       <div id="permissions">
-        <div class="control-group">
-          <label class="control-label checkbox" for="user_permissions_admin"></label>
-          <div class="controls">
-            <input id="user_permissions_admin" data-attribute=permissions type="checkbox" value="admin">Admin
+        {{#each membershipInfo.permissions}}
+          <div class="control-group">
+            <label class="control-label checkbox" for="user_permissions_{{name}}"></label>
+            <div class="controls">
+              <input data-attribute=permissions {{#if userHasPermission}}checked=checked{{/if}} type="checkbox" value="{{name}}">{{capitalizedName}}
+            </div>
           </div>
-        </div>
-        <div class="control-group">
-          <label class="control-label checkbox" for="user_permissions_financials"></label>
-          <div class="controls">
-            <input id="user_permissions_financials" data-attribute=permissions type="checkbox" value="financials">Financials
-          </div>
-        </div>
+        {{/each}}
       </div>
 
 
       <div id="salary_information">
+        {{#if membershipInfo.status.fte}}
         <div class="salary fte">
           <div class="control-group">
             <label class="control-label" for="user_salary">Salary</label>
             <div class="controls">
-              <input id="user_salary" data-attribute=salary size="30" type="number">
+              <input id="user_salary" data-attribute=salary size="30" type="number" value="{{membershipInfo.salary.salary}}">
             </div>
           </div>
           <div class="control-group">
             <label class="control-label" for="user_fte">Full-Time Equivalent</label>
             <div class="controls">
-              <input id="user_full_time_equivalent" data-attribute=full_time_equivalent size="30" type="number">
+              <input id="user_full_time_equivalent" data-attribute=full_time_equivalent size="30" type="number" value="{{membershipInfo.salary.full_time_equivalent}}">
             </div>
           </div>
         </div>
+        {{/if}}
         
-        <div class="salary contractor">
-          
-          <div class="control-group">
-            <label class="control-label" for="user_weekly_allocation">Weekly allocation</label>
-            <div class="controls">
-              <input id="user_weekly_allocation" data-attribute=weekly_allocation size="30" type="number">
+        {{#if membershipInfo.status.contractor}}
+          <div class="salary contractor">
+            <div class="control-group">
+              <label class="control-label" for="user_weekly_allocation">Weekly allocation</label>
+              <div class="controls">
+                <input id="user_weekly_allocation" data-attribute=weekly_allocation size="30" value="{{membershipInfo.salary.weekly_allocation}}" type="number">
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="user_payment_frequency">Payment frequency</label>
+              <div class="controls">
+                <select id="user_payment_frequency" data-attribute=payment_frequency>
+                  {{#each membershipInfo.salary.payment_frequency}}
+                    <option value="{{name}}" {{#if selectedFrequency}}selected=selected{{/if}}>{{capitalizedName}}</option>
+                  {{/each}}
+                </select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label" for="user_rate">Rate</label>
+              <div class="controls">
+                <input id="user_rate" data-attribute=rate size="30" value="{{membershipInfo.salary.rate}}" type="number">
+              </div>
             </div>
           </div>
+        {{/if}}
 
-          <div class="control-group">
-            <label class="control-label" for="user_payment_frequency">Payment frequency</label>
-            <div class="controls">
-              <select id="user_payment_frequency" data-attribute=payment_frequency>
-                <option value="hourly">hourly</option>
-                <option value="daily">daily</option>
-                <option value="weekly">weekly</option>
-                <option value="monthly">monthly</option>
-                <option value="yearly">yearly</option>
-              </select>
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="user_rate">Rate</label>
-            <div class="controls">  
-              <input id="user_rate" data-attribute=rate size="30" type="number"></div>
-            </div>
-          </div>
-
-        </div>
       </div>
     </div>
 
