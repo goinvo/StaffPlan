@@ -20,7 +20,8 @@ class window.StaffPlan.Views.Clients.New extends StaffPlan.View
       
     @
 
-
+  # Checkboxes don't transmit their values as expected 
+  # Making sure we're always sending something to the server regardless
   updateCheckbox: ->
     elem = @$el.find("input#client_active")
     elem.val((parseInt($(elem).val(), 10) + 1) % 2)
@@ -32,7 +33,6 @@ class window.StaffPlan.Views.Clients.New extends StaffPlan.View
                       memo[$(elem).attr('data-attribute')] = $(elem).val()
                       memo
                     , {}
-    debugger
     isNew = @model.isNew()
     if isNew
       @collection.create attributes,
