@@ -28,7 +28,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
   
   # Feeds all the necessary information to the template used by users/edit
   getMembershipInformation: ->
-    status = _.reduce {"fte": "Full-Time Equivalent", "contractor": "Contractor", "intern": "Intern"}, (memo, value, key) =>
+    status = _.reduce {"fte": "Full-Time Employee", "contractor": "Contractor", "intern": "Intern"}, (memo, value, key) =>
         memo.push
           name: key
           capitalizedName: value
