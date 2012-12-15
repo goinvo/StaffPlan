@@ -34,7 +34,7 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
     assignment.get("user_id")
 
   getWorkWeeks: ->
-    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.work_weeks.models
+    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.get("filteredWeeks") or assignment.work_weeks.models
     new StaffPlan.Collections.WorkWeeks projectWeeks
 
   getUnassignedUsers: ->

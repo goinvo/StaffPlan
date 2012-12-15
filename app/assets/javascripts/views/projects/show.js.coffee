@@ -1,5 +1,5 @@
 class StaffPlan.Views.Projects.Show extends StaffPlan.View
-  className: "list padding-top-240"
+  className: "list tall"
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     m = moment()
@@ -54,9 +54,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         alert "SOMETHING WENT WRONG"
     @render()
   
-  leave: ->
-    $('body div.highlighter').remove()
-    Support.CompositeView.prototype.leave.call @
   render: ->
     super
 
@@ -86,7 +83,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears.sort()
         parent: @
-      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      @$el.find('header .inner ul:first').append @yearFilter.render().el
 
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>

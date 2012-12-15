@@ -1,13 +1,16 @@
 class StaffPlan.Views.Shared.YearFilter extends Support.CompositeView
+  tagName: "li"
+  className: "year-filter"
+    
   initialize: ->
     @years = @options.years
     @parent = @options.parent
 
   events:
-    "change select.year-filter": "updateYearFilter"
+    "click a.filter": "updateYearFilter"
 
   updateYearFilter: (event) ->
-    year = $(event.target).val()
+    year = $(event.currentTarget).data().fy
     localStorage.setItem "yearFilter", year
     @parent.trigger "year:changed",
       year: year
@@ -15,6 +18,6 @@ class StaffPlan.Views.Shared.YearFilter extends Support.CompositeView
   render: ->
     @$el.html StaffPlan.Templates.Shared.yearFilter
       relevantYears: StaffPlan.relevantYears.sort()
-
-    @$el.find('select.year-filter').val(localStorage.getItem("yearFilter") or 0)
+      buttonText: "Showing: #{if localStorage.getItem("yearFilter") == "all" then "All Fiscal Years" else "FY #{localStorage.getItem("yearFilter")}"}"
+    
     @

@@ -111,7 +111,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
-      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      @$el.find('header .inner ul:first').append @yearFilter.render().el
   
   render: ->
     super
@@ -130,25 +130,6 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     
     m = moment()
     timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
-    
-    # _.delay () ->
-    #   $("*[data-timestamp=\"#{timestampAtBeginningOfWeek}\"]").addClass("current-week-highlight")
-    # , 100
-    #   currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]")
-    #   if currentWeek.length > 0
-    #     highlighterView = new StaffPlan.Views.Shared.Highlighter
-    #       offset:
-    #         left: currentWeek.offset().left
-    #         top: 38
-    #       width: 35
-    #       height: 1000 # FIXME This value should be computed
-    #       zindex: 10
-    #     if $('body div.highlighter').length is 0
-    #       $('body').append highlighterView.render().el
-    # , 100
 
     @
-  
-  leave: ->
-    $('body div.highlighter').remove()
-    Support.CompositeView.prototype.leave.call @
+

@@ -22,27 +22,6 @@ StaffPlan.Mixins.Events =
         @startDate.subtract('weeks', @numberOfBars)
       else
         @startDate.add('weeks', @numberOfBars)
-        
-      # m = moment()
-      # timestampAtBeginningOfCurrentWeek = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
-      # _.delay () ->
-      #   $("*[data-timestamp=\"#{timestampAtBeginningOfCurrentWeek}\"]").addClass("current-week-highlight")
-      # , 50
-      # timestampRange = _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-      # m = moment()
-      # timestampAtBeginningOfCurrentWeek = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
-      # if _.include timestampRange, timestampAtBeginningOfCurrentWeek # We need to highlight
-      #   _.delay () ->
-      #     currentWeek = $("span.week-number[data-timestamp=\"#{timestampAtBeginningOfCurrentWeek.valueOf()}\"]")
-      #     if currentWeek.length > 0
-      #       highlighterView = new StaffPlan.Views.Shared.Highlighter
-      #         offset: currentWeek.offset()
-      #         width: 35
-      #         height: 1000 # FIXME This value should be computed
-      #       $('body').append highlighterView.render().el
-      #   , 100
-      # else
-      #   $('body div.highlighter').remove()
 
       @children.each (child) =>
         child.trigger "date:changed"
@@ -79,14 +58,18 @@ StaffPlan.Mixins.Events =
 
     # Called when the user sorts the users by either workload or name on the staffplans page
     # ======================================================================================
-    sortUsers: (event) ->
-      event.stopPropagation()
-      event.preventDefault()
-      target = $(event.target)
-      [criterion, order] = [target.data('criterion'), target.data('order')]
-      sorted = switch criterion
-        when "workload"
-          @users.sortBy (user) -> user.workload()
-        when "name"
-          @users.sortBy (user) -> user.get("last_name")
-      @users.reset (if order is "asc" then sorted else sorted.reverse())
+    # sortUsers: (event) ->
+    #   event.stopPropagation()
+    #   event.preventDefault()
+    #   
+    #   target = $(event.target)
+    #   [criterion, order] = [target.data('criterion'), target.data('order')]
+    #   
+    #   debugger
+    #   
+    #   sorted = switch criterion
+    #     when "workload"
+    #       @users.sortBy (user) -> user.workload()
+    #     when "name"
+    #       @users.sortBy (user) -> user.get("last_name")
+    #   @users.reset (if order is "asc" then sorted else sorted.reverse())

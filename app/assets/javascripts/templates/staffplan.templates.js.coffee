@@ -26,29 +26,35 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
   , ""
 
 
+# <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+#     Sort By
+#   <span class="caret"></span>
+# </a>
+# <ul class="dropdown-menu sort-users">
+#   <li><a href="#" >Name (ASC)</a></li>
+#   <li><a href="#" data-criterion=name data-order=desc>Name (DESC)</a></li>
+#   <li><a href="#" data-criterion=workload data-order=asc>Workload (ASC)</a></li>
+#   <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
+# </ul>
+# <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
+
 _templates =
   index:
     pagination: '''
       <div class="date-paginator"> 
         <div class="fixed-180">
-          <div class="btn-group">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                Sort By
-              <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu sort-users">
-              <li><a href="#" data-criterion=name data-order=asc>Name (ASC)</a></li>
-              <li><a href="#" data-criterion=name data-order=desc>Name (DESC)</a></li>
-              <li><a href="#" data-criterion=workload data-order=asc>Workload (ASC)</a></li>
-              <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
-            </ul>
+          <div class="btn-toolbar">
+            <div class="btn-group">
+              <a class="btn btn-mini{{#unless byWorkload}} btn-inverse{{/unless}}" title="Sort by name" data-key="field" data-value="name" data-bypass><i class="icon-user{{#unless byWorkload}} icon-white{{/unless}}"></i></a>
+              <a class="btn btn-mini{{#if byWorkload}} btn-inverse{{/if}}" title="Sort by workload" data-key="field" data-value="workload" data-bypass><i class="icon-time{{#if byWorkload}} icon-white{{/if}}"></i></a>
+              <a class="btn btn-mini" title="Toggle sort order" data-key="order" data-value="{{#if sortASC}}desc{{else}}asc{{/if}}" data-bypass><i class="{{#if sortASC}}icon-chevron-up{{else}}icon-chevron-down{{/if}}"></i></a>
+            </div>
           </div>
-          <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
           <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
           <a href="#" class="return-false next pagination" data-action=next>next</a>
 
         </div>
-        <div id="date-target" class="flex">
+        <div id="date-target" class="flex margin-left-20">
         </div>
       </div>
     '''
@@ -140,24 +146,14 @@ _templates =
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>
       </a>
-      <div class="dropdown">
-        <button class="btn btn-mini dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          <li>
-            <a href="#" data-action=disable>
-              <i class="icon-lock"></i>
-              Disable 
-            </a>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a href="#" data-action=archive>
-              <i class="icon-folder-open"></i>
-              Archive  
-            </a>
-          </li>
-        </ul>
+      
+      <div class='btn-toolbar'>
+        <div class='btn-group'>
+          <a class='btn btn-mini' data-bypass data-action="disable"><i class="icon-ban-circle"></i></a>
+          <a class='btn btn-mini' data-bypass data-action="disable"><i class="icon-folder-open"></i></a>
+        </div>
       </div>
+    
     </div>
     <div class="chart-container flex">
       <svg class="user-chart"></svg>

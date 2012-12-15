@@ -1,11 +1,17 @@
 _templates =
   yearFilter: '''
-    <select class="year-filter">
-      <option value="0">Select year</option>
-      {{#each relevantYears}}
-        <option value="{{this}}">{{this}}</option>
-      {{/each}}
-    </select>
+    <div class="btn-group btn-mini">
+      <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" data-bypass href="#">
+        {{buttonText}}
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <li><a href="#" class="filter" data-bypass data-fy="all">All Years</a></li>
+        {{#each relevantYears}}
+          <li><a href="#" class="filter" data-bypass data-fy="{{this}}">FY {{this}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
   '''
 
 StaffPlan.Templates.Shared =

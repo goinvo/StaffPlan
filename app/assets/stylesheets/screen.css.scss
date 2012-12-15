@@ -45,16 +45,6 @@ body {
   }
 }
 
-div.highlighter {
-  background-color: rgba(255, 0, 255, 0.4);
-  z-index:1000; 
-  box-shadow: 2px 2px 4px #CCC;
-  width:35px; 
-  height: 1356px;
-  position: fixed;
-  border-radius: 4px 4px
-}
-
 svg.user-chart {
   rect {
     &.actuals {
@@ -106,73 +96,99 @@ select.year-filter {
   width: auto
 }
 
-body header {
-  margin: 0;
-  padding: 0;
-  line-height: 24px;
-  top: 0px;
-  position: fixed;
-  width: 100%;
-  background-color: #EEE;
-  z-index: 999;
-  
-  & > * {
-    margin: 0 20px;
+body {
+  .staffplan-show header {
+    width: 97.4%;
+    margin: 0px 20px;
   }
   
-  & > :last-child {
-    border-bottom: 1px solid #cccccc;
-    @include box-shadow(0px 1px 4px #ddd);
-  }
-  
-  .inner {
-    border-bottom: 1px solid #cccccc;
-    @include box-shadow(0 1px 0 white);
-    position: relative;
-    margin: 0 auto;
-    padding: 0 10px;
-    width: 100%;
-    @include box-sizing(border-box);
-  }
-  
-  ul {
-    display: inline;
+  header {
     margin: 0;
     padding: 0;
-    list-style-type: none;
+    line-height: 24px;
+    top: 0px;
+    position: fixed;
+    width: 100%;
+    background-color: #EEE;
+    z-index: 999;
+  
+    & > * {
+      padding: 0 20px;
+    }
+  
+    & > :last-child {
+      border-bottom: 1px solid #cccccc;
+      @include box-shadow(0px 1px 4px #ddd);
+    }
+  
+    .inner {
+      border-bottom: 1px solid #cccccc;
+      @include box-shadow(0 1px 0 white);
+      position: relative;
+      margin: 0 auto;
+      padding: 0 10px;
+      width: 100%;
+      @include box-sizing(border-box);
+      height: 35px;
+      line-height: 35px;
+    }
+  
+    ul {
+      display: inline;
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
     
-    li#nav-my-staff-plan a {
-      @include icons-sprite(chart);
-    }
-    li#nav-all-staff a {
-      @include icons-sprite(people);
-    }
-    li#nav-clients a {
-      @include icons-sprite(factory);
-    }
-    li#nav-projects a {
-      @include icons-sprite(cube);
-    }
-    
-    li {
-      display: inline-block;
-      margin-left: 5px;
-      & + li {
-        margin-left: 20px;
+      li#nav-my-staff-plan a {
+        @include icons-sprite(chart);
       }
-      a {
+      li#nav-all-staff a {
+        @include icons-sprite(people);
+      }
+      li#nav-clients a {
+        @include icons-sprite(factory);
+      }
+      li#nav-projects a {
+        @include icons-sprite(cube);
+      }
+    
+      li {
         display: inline-block;
-        padding-left: 16px + 6px;
-        height: 24px;
-        line-height: 24px;
+        margin-left: 5px;
+        & + li {
+          margin-left: 20px;
+        }
+        a {
+          display: inline-block;
+          padding-left: 16px + 6px;
+          height: 24px;
+          line-height: 24px;
+        }
+        
+        &.year-filter {
+          a {
+            line-height: 26px;
+          }
+          span.caret {
+            margin-top: 11px;
+          }
+          
+          ul {
+            z-index: 9999;
+            
+            li {
+              display: block;
+            }
+          }
+        }
       }
     }
-  }
-  .right {
-    position: absolute;
-    right: 15px;
-    bottom: 0;
-    @include inline-bullets;
+    .right {
+      position: absolute;
+      right: 15px;
+      bottom: 0;
+      @include inline-bullets;
+    }
   }
 }
 
@@ -221,7 +237,7 @@ section.main {
 }
 
 .tall section.main {
-  padding-top: 253px;
+  padding-top: 260px;
 }
 
 .short section.main {
@@ -480,6 +496,12 @@ footer {
 .margin-left-40 {
   margin-left: 40px;
 }
+.margin-left-60 {
+  margin-left: 60px;
+}
+.margin-left-20 {
+  margin-left: 20px;
+}
 .margin-left-35 {
   margin-left: 35px;
 }
@@ -489,6 +511,7 @@ footer {
 
 .date-paginator {
   width: 100%;
+  position: relative;
   padding-left: 25px;
   
   > * {
@@ -500,7 +523,7 @@ footer {
     width: 35px;
     height: 17px;
     text-indent: -9999px;
-    top: 40px;
+    top: 0px;
   }
   
   .next {
@@ -555,10 +578,6 @@ footer {
   }
   &.padded {
     padding: 8px 15px;
-  }
-  
-  &.assignment-row {
-    border-bottom: 2px dotted #eee;
   }
 }
 
@@ -664,3 +683,7 @@ input.estimated-actual, .row-label {
 
 .btn-group > .btn-mini {
   font-size: 14px; }
+
+.assignment-actions-target > a {
+  display: block;
+}

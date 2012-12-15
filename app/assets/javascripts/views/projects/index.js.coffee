@@ -40,10 +40,6 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
       keyboard: true
       backdrop: 'static'
 
-  leave: ->
-    $('body div.highlighter').remove()
-    Support.CompositeView.prototype.leave.call @
-    
   render: ->
     super
     
@@ -55,7 +51,7 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
-      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      @$el.find('header .inner ul:first').append @yearFilter.render().el
       
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem

@@ -9,7 +9,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
       @destroy()
   
   getWorkWeeks: ->
-    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.work_weeks.models
+    projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.get("filteredWeeks") or assignment.work_weeks.models
     new StaffPlan.Collections.WorkWeeks projectWeeks
     
   # Proxy so that the aggregation is generic

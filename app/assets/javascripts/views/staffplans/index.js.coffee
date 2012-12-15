@@ -3,7 +3,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
 
   # All event handlers are defined in app/assets/javascripts/mixins/events.js.coffee
   events:
-    "click ul.dropdown-menu.sort-users li a": "sortUsers"
+    "click .date-paginator .btn-group a": "sortUsers"
     "click button.btn-primary[data-filter]": "toggleFilter"
 
   leave: ->
@@ -14,6 +14,10 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     _.extend @, StaffPlan.Mixins.Events.weeks
     _.extend @, StaffPlan.Mixins.Events.memberships
     _.extend @, StaffPlan.Mixins.Events.users
+    
+    @sort =
+      field: "workload"
+      order: "asc"
     
     # Makes it so that the render() call can only be 
     # called AT MOST once every 500ms during resize
@@ -26,14 +30,14 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     # user's filter is shown by default instead
     localStorage.setItem("staffplanFilter", "active")
     @users = new StaffPlan.Collections.Users @options.users.active()
-
+    @users.reset @users.sortBy (user) -> user.workload()
+    
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     # When the collection of users changes, we render the view 
     # again to reflect the change in the UI
-    @users.bind "reset", (event) =>
-      @render()
+    @users.bind "reset", (event) => @render()
 
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
@@ -46,15 +50,23 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     
     @on "year:changed", (message) =>
       @yearChanged(parseInt(message.year, 10))
-
-  leave: ->
-    $('body div.highlighter').remove()
-    Support.CompositeView.prototype.leave.call @
-    
+  
+  renderUsers: ->
+    # Show the collection of users with the associated information and charts 
+    @users.each (user) =>
+      view = new StaffPlan.Views.StaffPlans.ListItem
+        model: user
+        parent: @
+        startDate: @startDate.valueOf()
+      @appendChildTo view, @$el.find('section.main')
+      
   render: ->
     super
     
+    # this @sort business obviously sucks. This should leverage the location.hash and hashchange.
     @$el.find('header').append StaffPlan.Templates.StaffPlans.index.pagination
+      sortASC: @sort.order == "asc"
+      byWorkload: @sort.field == "workload"
     
     # FIXME: This is ugly
     buttonText = if localStorage.getItem("staffplanFilter") is "active"
@@ -69,15 +81,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
-      @$el.find('div.date-paginator div.fixed-180').append @yearFilter.render().el
+      @$el.find('header .inner ul:first').append @yearFilter.render().el
 
-    # Show the collection of users with the associated information and charts 
-    @users.each (user) =>
-      view = new StaffPlan.Views.StaffPlans.ListItem
-        model: user
-        parent: @
-        startDate: @startDate.valueOf()
-      @appendChildTo view, @$el.find('section.main')
+    @renderUsers()
       
     @$el.find('section.main').append StaffPlan.Templates.StaffPlans.index.addStaff
     
@@ -88,3 +94,20 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @renderChildInto dateRangeView, @$el.find("#date-target")
     
     @
+  
+  sortUsers: (event) ->
+    event.stopPropagation()
+    event.preventDefault()
+    
+    $currentTarget = $(event.currentTarget)
+    key = $currentTarget.data().key
+    value = $currentTarget.data().value
+    @sort[ key ] = value
+    
+    sorted = switch @sort.field
+      when "workload"
+        @users.sortBy (user) -> user.workload()
+      when "name"
+        @users.sortBy (user) -> user.get("last_name")
+        
+    @users.reset (if @sort.order is "asc" then sorted else sorted.reverse())

@@ -1,17 +1,17 @@
 _templates =
   show:
     header: '''
-      <div class="position-fixed date-paginator"> 
+      <div class="chart-wrapper">
+        <div class="fixed-180">&nbsp;</div>
+        <div class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
+      </div>
+      <div class="date-paginator"> 
         <div class="fixed-180">
           <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
           <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
-        <div id="date-target" class="flex margin-left-40">
+        <div id="date-target" class="flex margin-left-60">
         </div>
-      </div>
-      <div class="position-fixed chart-wrapper">
-        <div class="fixed-180">&nbsp;</div>
-        <div class="flex chart-container margin-left-40"><svg class="user-chart"></svg></div>
       </div>
     '''
     addSomeone: '''
@@ -113,12 +113,12 @@ _templates =
     <div class="totals fixed-60"></div>
     '''
     header: '''
-      <div class="position-fixed date-paginator"> 
+      <div class="date-paginator"> 
         <div class="fixed-180">
           <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
           <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
-        <div id="date-target" class="flex">
+        <div id="date-target" class="flex margin-left-20">
         </div>
       </div>
       '''

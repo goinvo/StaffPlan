@@ -9,7 +9,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       @projectChartView.trigger "date:changed", message
 
   events:
-    "click div.user-info.fixed-180 div.dropdown li a": "handleMembershipAction"
+    "click .user-info .btn-group a": "handleMembershipAction"
 
   handleMembershipAction: (event) ->
     event.stopPropagation()
