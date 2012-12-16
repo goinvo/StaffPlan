@@ -40,7 +40,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @users.bind "reset", (event) => @render()
 
     key "left, right", (event) =>
-      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+      @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
     @on "date:changed", (message) =>
       @dateChanged(message.action)

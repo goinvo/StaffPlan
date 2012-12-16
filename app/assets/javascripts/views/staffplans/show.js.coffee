@@ -41,7 +41,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     key "left, right", (event) =>
-      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+      @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
     @debouncedRender = _.debounce =>
       @calculateNumberOfBars()

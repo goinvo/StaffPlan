@@ -9,7 +9,7 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
       @render()
 
     key "left, right", (event) =>
-      @dateChanged if event.keyIdentifier is "Left" then "previous" else "next"
+      @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
     @debouncedRender = _.debounce(@render, 500)
     $(window).bind "resize", (event) =>
