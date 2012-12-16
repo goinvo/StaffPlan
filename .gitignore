@@ -19,4 +19,5 @@ coverage
 .DS_Store
 
 config/database.yml
-
+.powenv
+public/assets/*
