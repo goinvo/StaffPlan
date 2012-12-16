@@ -122,9 +122,11 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     projectNameValue = @$el.find('[data-model="Project"][data-attribute="name"]').val()
     project = StaffPlan.projects.detect (project) ->
       ( project.get("name") is projectNameValue ) and ( project.get("client_id") is client.get('id') )
+      
     unless project?
       StaffPlan.addProjectByNameAndClient projectNameValue, client, (project, response) =>
         @_save project
+        
     else
       @_save project
   

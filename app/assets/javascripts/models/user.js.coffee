@@ -1,5 +1,4 @@
 class window.StaffPlan.Models.User extends StaffPlan.Model
-  NAME: "user"
   initialize: ->
     
     @membership = new StaffPlan.Models.Membership @get( "membership" ),

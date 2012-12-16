@@ -1,5 +1,4 @@
 class window.StaffPlan.Models.Project extends StaffPlan.Model
-  NAME: "project"
   initialize: ->
 
   url: ->
