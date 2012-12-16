@@ -5,4 +5,4 @@ class window.StaffPlan.Collections.Clients extends Backbone.Collection
     "/clients"
 
   comparator: (client) ->
-    client.get("name").toLowerCase()
+    client.get("name")?.toLowerCase()
