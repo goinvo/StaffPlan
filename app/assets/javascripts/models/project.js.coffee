@@ -7,15 +7,19 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
   
   validate: ->
     errors = {}
+    isSameProject = (@ == StaffPlan.projects.detect (project) => project.get('name') == @get('name'))
+    
     _.each ['name', 'cost'], (property) =>
-      if @get(property) is ""
+      if @changed[ property ]? && @get(property) is ""
         errors[property] = ["#{property} cannot be left blank"]
     client = StaffPlan.clients.get(@get("client_id"))
-    if @isNew() and _.include(client.getProjects().pluck("name"), @get("name"))
+    
+    if @changed.name? and @isNew() and _.include(client.getProjects().pluck("name"), @get("name"))
       existingProject = client.getProjects().detect (project) =>
         project.get("name") is @get("name")
       errors['name'] ?= []
       errors['name'].push "name already exists for that client (<a href=\"/projects/#{existingProject.id}/edit\">Edit that project instead?</a>)"
+      
     if _.keys(errors).length > 0
       return {responseText: JSON.stringify(errors)}
 

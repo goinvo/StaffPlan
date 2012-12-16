@@ -6,13 +6,16 @@ class window.StaffPlan.Models.Client extends StaffPlan.Model
     new StaffPlan.Collections.Projects StaffPlan.projects.select (project) =>
       project.get("client_id") is @id
 
-  validate: ->
+  validate: (attributes, collection) ->
     errors = {}
-    if @get("name") is ""
+    isSameClient = (@ == StaffPlan.clients.detect (client) => client.get('name') == @get('name'))
+      
+    if !isSameClient && @get("name") is ""
       errors['name'] = ["name cannot be left blank"]
     else
-      if _.include StaffPlan.clients.pluck("name"), @get("name")
+      if !isSameClient && _.include StaffPlan.clients.pluck("name"), @get("name")
         errors['name'] = ["name has already been taken"]
+        
     if _.keys(errors).length > 0
       return {responseText: JSON.stringify(errors)}
 

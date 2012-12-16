@@ -55,21 +55,3 @@ StaffPlan.Mixins.Events =
       models = if filter is "inactive" then StaffPlan.users.active() else StaffPlan.users.inactive()
       localStorage.setItem("staffplanFilter", if filter is "active" then "inactive" else "active")
       @users.reset models
-
-    # Called when the user sorts the users by either workload or name on the staffplans page
-    # ======================================================================================
-    # sortUsers: (event) ->
-    #   event.stopPropagation()
-    #   event.preventDefault()
-    #   
-    #   target = $(event.target)
-    #   [criterion, order] = [target.data('criterion'), target.data('order')]
-    #   
-    #   debugger
-    #   
-    #   sorted = switch criterion
-    #     when "workload"
-    #       @users.sortBy (user) -> user.workload()
-    #     when "name"
-    #       @users.sortBy (user) -> user.get("last_name")
-    #   @users.reset (if order is "asc" then sorted else sorted.reverse())
