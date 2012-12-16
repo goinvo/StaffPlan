@@ -166,6 +166,11 @@ body {
         }
         
         &.year-filter {
+          
+          li {
+            margin-left: 5px;
+          }
+          
           a {
             line-height: 26px;
           }
@@ -657,6 +662,11 @@ input.estimated-actual, .row-label {
 
 .quick-jump {
   margin-bottom: 0;
+  
+  ul li {
+    display: block;
+    margin-left: 5px;
+  }
 }
 
 #flash {

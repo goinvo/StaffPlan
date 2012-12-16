@@ -38,15 +38,15 @@ $( document ).ready(function() {
     return false;
   });
   
-  // key('left, right', function(event) {
-  //   $(document.body).trigger('date:changed', {event: event})
-  // });
+  $( document.body ).on( 'view:rendered', function() {
+    setTimeout(function() {
+      $('.header-typeahead').typeahead({
+        source: StaffPlan.typeAhead
+      });
+    }, 100);
+  });
   
-  $('.header-typeahead').typeahead({
-      source: StaffPlan.typeAhead
-  })
-  
-  $('.quick-jump').on('submit', function(event) {
+  $('.quick-jump').live('submit', function(event) {
     event.stopPropagation();
     event.preventDefault();
     StaffPlan.onTypeAhead($(this));
