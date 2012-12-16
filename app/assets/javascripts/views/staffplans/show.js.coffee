@@ -22,10 +22,12 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       user: @model
       model: new StaffPlan.Models.Client()
       
-    @appendChild clientView
+    @appendChildTo clientView, $('section.main')
+    
     @$el.find('input[data-model="Client"]').typeahead
       source: StaffPlan.clients.pluck 'name'
       items: 12
+    
     @$el.find('input[data-model="Project"]').typeahead
       source: StaffPlan.projects.pluck 'name'
       items: 12
