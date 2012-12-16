@@ -697,3 +697,9 @@ input.estimated-actual, .row-label {
 .assignment-actions-target > a {
   display: block;
 }
+
+// To counter the <br/> tag required to force Firefox to wrap display: -moz-box; flex divs.
+section.work-weeks .flex {
+  margin-bottom: -15px; }
+  
+@import 'firefox';

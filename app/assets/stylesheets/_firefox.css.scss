@@ -1,0 +1,28 @@
+@-moz-document url-prefix() {
+  header {
+    .user-info {
+      .chart-wrapper {
+        padding-left: 5px;
+      }
+    }
+    .header .date-paginator {
+      padding-left: 0px;
+    
+      .week-numbers {
+        margin-left: 40px;
+      }
+    }
+  }
+  span.week-number {
+    margin-right: 2.2px;
+  }
+  section.main section.work-weeks input, section.main div.row-label {
+    margin-right: 5px;
+  }
+  .grid-row {
+    width: 97.5%;
+  }
+  .staffplan-show .date-paginator .previous {
+    left: 10px;
+  }
+}

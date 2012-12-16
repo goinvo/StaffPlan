@@ -149,6 +149,7 @@ $arrows-spacing: 20px;
   border-top: none;
   background: white;
   text-align: center;
+  z-index: 999999;
 }
 
 @mixin formatted_flash {

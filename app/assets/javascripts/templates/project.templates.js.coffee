@@ -20,11 +20,8 @@ _templates =
           <option value="{{id}}">{{first_name}} {{last_name}}</option>
         {{/unassignedUsers}}
       </select>
-      <a href="/assignments" class="btn btn-primary" data-action="add-user">
-        <i class="icon-list icon-white"></i>
-        Add user to project
-      </a>
-      <a href="/projects/{{projectId}}/edit" class="btn btn-primary">Edit project</a>
+      <a href="/assignments" class="btn btn-mini" data-action="add-user"><i class="icon-plus"></i></a>
+      <a href="/projects/{{projectId}}/edit" class="btn btn-mini">Edit project</a>
       '''
   new: '''
     <div data-model=client>

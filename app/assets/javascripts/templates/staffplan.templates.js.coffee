@@ -25,19 +25,6 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
     html
   , ""
 
-
-# <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-#     Sort By
-#   <span class="caret"></span>
-# </a>
-# <ul class="dropdown-menu sort-users">
-#   <li><a href="#" >Name (ASC)</a></li>
-#   <li><a href="#" data-criterion=name data-order=desc>Name (DESC)</a></li>
-#   <li><a href="#" data-criterion=workload data-order=asc>Workload (ASC)</a></li>
-#   <li><a href="#" data-criterion=workload data-order=desc>Workload (DESC)</a></li>
-# </ul>
-# <button class="btn btn-primary" data-filter=inactive>Toggle active</button>
-
 _templates =
   index:
     pagination: '''
@@ -175,6 +162,7 @@ _templates =
         {{/if}}
       {{/each}}
     </div>
+    <br/>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
