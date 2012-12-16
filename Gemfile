@@ -21,11 +21,6 @@ gem 'sass-rails',        '~> 3.2'
 gem 'thin'
 gem 'will_paginate'
 
-if RUBY_PLATFORM =~ /linux/
-  gem 'execjs'
-  gem 'therubyracer'
-end
-
 group :assets do
   gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2'
