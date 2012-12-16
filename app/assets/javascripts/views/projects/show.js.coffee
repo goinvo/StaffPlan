@@ -103,7 +103,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     unless unassignedUsers.isEmpty()
-      @$el.append StaffPlan.Templates.Projects.show.addSomeone
+      @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
         unassignedUsers: unassignedUsers.map (u) -> u.attributes
         projectId: @model.id
 
