@@ -133,14 +133,6 @@ _templates =
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>
       </a>
-      
-      <div class='btn-toolbar'>
-        <div class='btn-group'>
-          <a class='btn btn-mini' data-bypass data-action="disable"><i class="icon-ban-circle"></i></a>
-          <a class='btn btn-mini' data-bypass data-action="disable"><i class="icon-folder-open"></i></a>
-        </div>
-      </div>
-    
     </div>
     <div class="chart-container flex">
       <svg class="user-chart"></svg>
