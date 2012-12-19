@@ -43,16 +43,24 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
 
 
   addUserToProject: (event) ->
+    debugger
     event.preventDefault()
     event.stopPropagation()
     targetUser = StaffPlan.users.get(@$el.find("select.unassigned-users").val())
-    StaffPlan.assignments.create
-      project_id: @model.id
-      user_id: targetUser.id
-      proposed: false
-    , error: (model, response) ->
-        alert "SOMETHING WENT WRONG"
-    @render()
+    unless targetUser?
+      StaffPlan.assignments.create
+        project_id: @model.id
+        proposed: false
+      , error: (model, xhr, options) ->
+          
+    else
+      StaffPlan.assignments.create
+        project_id: @model.id
+        user_id: targetUser.id
+        proposed: false
+      , error: (model, xhr, options) ->
+          alert "SOMETHING WENT WRONG"
+    # FIXME: Shouldn't have to call render() directly here (maybe an event on the assignments collection)
   
   render: ->
     super
@@ -102,9 +110,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
 
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
-    unless unassignedUsers.isEmpty()
-      @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
-        unassignedUsers: unassignedUsers.map (u) -> u.attributes
-        projectId: @model.id
-
+    @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
+      unassignedUsers: unassignedUsers.map (u) -> u.attributes
+      projectId: @model.id
     @
