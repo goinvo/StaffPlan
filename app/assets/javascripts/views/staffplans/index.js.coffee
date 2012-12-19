@@ -108,6 +108,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
       when "workload"
         @users.sortBy (user) -> user.workload()
       when "name"
-        @users.sortBy (user) -> user.get("last_name")
+        @users.sortBy (user) -> user.get("first_name")
         
     @users.reset (if @sort.order is "asc" then sorted else sorted.reverse())
