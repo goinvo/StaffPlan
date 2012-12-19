@@ -14,7 +14,7 @@ _t =
         </li>
       </ul>
       <div class='pull-right'>
-        <a href="mailto:staffplan-feedback@goinvo.com?subject=StaffPlan%20Feedback">Feedback</a>
+        <a data-bypass href="mailto:staffplan-feedback@goinvo.com?subject=StaffPlan%20Feedback">Feedback</a> |
         <a href="/sign_out" data-bypass>Sign Out</a>
       </div>
     </div>
