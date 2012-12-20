@@ -1,12 +1,15 @@
 class AssignmentsController < ApplicationController
   
-  before_filter :find_target_user, only: [:create]
+  respond_to :json, :html
   
-  respond_to :json
-
   def create
-    @assignment = @target_user.assignments.build(params[:assignment])
-    
+    if params[:assignment][:user_id].present?
+      @target_user = User.where(:id => params[:assignment][:user_id]).first 
+      @assignment = @target_user.assignments.build(params[:assignment])
+    else
+      @assignment = Project.where(:id => params[:assignment][:project_id]).first.assignments.build(params[:assignment])
+    end
+
     if @assignment.save
       respond_with @assignment and return
     else
@@ -17,7 +20,7 @@ class AssignmentsController < ApplicationController
   def update
     # The proposed and archived fields are the ONLY ones we can update
     @assignment = Assignment.where(:id => params[:id]).first
-    if @assignment.update_attributes params[:assignment].slice(:proposed, :archived)
+    if @assignment.update_attributes params[:assignment]
       respond_with @assignment and return
     else
       render :json => {:status => :unprocessable_entity }
@@ -32,9 +35,4 @@ class AssignmentsController < ApplicationController
   
   private
   
-  def find_target_user
-    @target_user = current_user.current_company.users.find params[:user_id]
-  rescue
-    render(status: 404)
-  end
 end
