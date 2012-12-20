@@ -96,7 +96,7 @@ _templates =
         <button href="#" class="btn btn-mini dropdown-toggle" data-toggle="dropdown" title="Click to re-assign this assignment"><i class="icon-user"></i><span class="caret"></span></button>
         <ul class="dropdown-menu">
           {{#each companyUsers}}
-            <li><a href="#" data-user-id="{{this.id}}" data-action=reassign>{{this.first_name}} {{this.last_name}}</a></li>
+            <li><a href="#" data-user-id="{{id}}" data-action=reassign>{{first_name}} {{last_name}}</a></li>
           {{/each}}
         </ul>
       </div>

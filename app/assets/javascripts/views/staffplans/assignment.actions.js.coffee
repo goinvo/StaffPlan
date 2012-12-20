@@ -3,7 +3,8 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
   tagName: "div"
     
   initialize: ->
-    @model.collection.bind "change", () => @render()
+    @model.bind "change:user_id", (assignment) =>
+      @parent.remove()
     @model.bind 'change', (assignment) =>
       if assignment.changed.proposed? or assignment.changed.archived?
         StaffPlan.router.currentView.trigger('week:updated')
@@ -35,9 +36,8 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
   onReassignClicked: (event) ->
     event.stopPropagation()
     event.preventDefault()
-    
     @model.save
-      user_id: $(event.target).data('user_id')
+      user_id: $(event.target).data('user-id')
 
   onDeleteAssignmentClicked: (event) ->
     event.stopPropagation()
