@@ -7,8 +7,6 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
       if assignment.changed.proposed? or assignment.changed.archived?
         StaffPlan.router.currentView.trigger('week:updated')
         @render()
-    @model.collection.bind "change:user_id", (event) ->
-      StaffPlan.router.currentView.render()
 
     @model.work_weeks.bind 'change', (ww) =>
       StaffPlan.router.currentView.trigger('week:updated')
@@ -21,6 +19,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
       id: user.get("id")
 
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
+      displayReassign: otherUsers.length > 0
       companyUsers: otherUsers
       isDeletable: @model.isDeletable()
       proposed: @model.get('proposed')
