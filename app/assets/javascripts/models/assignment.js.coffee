@@ -20,6 +20,10 @@ class window.StaffPlan.Models.Assignment extends StaffPlan.Model
       obj
     , {}
 
+  getUser: ->
+    StaffPlan.users.get @get("user_id")
+  getProject: ->
+    StaffPlan.projects.get @get("project_id")
 
   isDeletable: ->
     0 is @work_weeks.reduce (total, element) ->
