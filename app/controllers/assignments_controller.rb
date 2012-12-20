@@ -1,9 +1,10 @@
 class AssignmentsController < ApplicationController
   
   respond_to :json, :html
-
+  
   def create
     if params[:assignment][:user_id].present?
+      @target_user = User.where(:id => params[:assignment][:user_id]).first 
       @assignment = @target_user.assignments.build(params[:assignment])
     else
       @assignment = Project.where(:id => params[:assignment][:project_id]).first.assignments.build(params[:assignment])
@@ -34,9 +35,4 @@ class AssignmentsController < ApplicationController
   
   private
   
-  def find_target_user
-    @target_user = current_user.current_company.users.find params[:user_id]
-  rescue
-    render(status: 404)
-  end
 end
