@@ -15,9 +15,11 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
       @render()
     
   render: ->
-    companyUsers = StaffPlan.users.map (user) -> user.pick ["id", "first_name", "last_name"]
+    otherUsers = _.map (StaffPlan.users.reject (user) => user.get("id") is @model.get("user_id")), (user) ->
+      fullName: "#{user.get('first_name').charAt(0).toUpperCase()}. #{user.get('last_name')}"
+      id: user.get("id")
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
-      companyUsers: companyUsers
+      companyUsers: otherUsers
       isDeletable: @model.isDeletable()
       proposed: @model.get('proposed')
       archived: @model.get('archived')
@@ -31,13 +33,13 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
     "click a.delete-assignment" : "onDeleteAssignmentClicked"
     "click a.toggle-proposed"   : "onToggleProposedClicked"
     "click a.toggle-archived"   : "onToggleArchivedClicked"
-    "click a[data-action=reassign]": "onReassignClicked"
+    "change select[data-action=reassign]": "onReassignClicked"
   
   onReassignClicked: (event) ->
     event.stopPropagation()
     event.preventDefault()
-    @model.save
-      user_id: $(event.target).data('user-id')
+    @model.set "user_id", parseInt($(event.target).val(), 10)
+    @model.save()
 
   onDeleteAssignmentClicked: (event) ->
     event.stopPropagation()

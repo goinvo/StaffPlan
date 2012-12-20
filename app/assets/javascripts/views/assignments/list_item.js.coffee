@@ -23,7 +23,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
           gravatar: "https://secure.gravatar.com/avatar/ee56924c10943ba1af0e004b90f3a095"
           first_name: "TBD"
           last_name: ""
-    @actionsView = new window.StaffPlan.Views.StaffPlans.AssignmentActions
+    @actionsView = new StaffPlan.Views.StaffPlans.AssignmentActions
       model: @model
       parent: @
     @renderChildInto @actionsView, @$el.find "div.user-info div.assignment-actions"
