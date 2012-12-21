@@ -1,4 +1,3 @@
-- client_projects = @projects[client]
 %ul.client
-  %li.client-name= client
-  = render(partial: 'project', collection: client_projects)
+  %li.client-name= client_name
+  = render(partial: 'assignment', collection: assignments)
