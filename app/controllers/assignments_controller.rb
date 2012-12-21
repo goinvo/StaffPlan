@@ -9,7 +9,7 @@ class AssignmentsController < ApplicationController
       @assignment = Project.where(:id => params[:assignment][:project_id]).first.assignments.build(params[:assignment])
     end
 
-    if @assignment.save
+    if @assignment.save!
       respond_with @assignment and return
     else
       render :json => {:status => :unprocessable_entity }

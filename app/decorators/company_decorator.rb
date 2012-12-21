@@ -15,6 +15,7 @@ class CompanyDecorator < Draper::Base
   def assignments_as_json
     
     assignments = Assignment.includes(:work_weeks).where(
+      :user_id => self.users.map(&:id), 
       :project_id => self.projects.map(&:id)
     )
 

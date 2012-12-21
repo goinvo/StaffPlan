@@ -11,8 +11,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     @debouncedRender = _.debounce(@render, 100)
     $(window).bind "resize", (event) =>
       @debouncedRender()
-    
-    
+
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "week:updated", (message) => @projectChartView.trigger "week:updated"
     @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
@@ -44,6 +43,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
 
 
   addUserToProject: (event) ->
+    debugger
     event.preventDefault()
     event.stopPropagation()
     targetUser = StaffPlan.users.get(@$el.find("select.unassigned-users").val())
@@ -51,8 +51,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
       StaffPlan.assignments.create
         project_id: @model.id
         proposed: false
-      , success: (model, response) =>
-          @render()
       , error: (model, xhr, options) ->
           
     else
@@ -60,11 +58,9 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         project_id: @model.id
         user_id: targetUser.id
         proposed: false
-      , success: (model, response) =>
-          @render()
       , error: (model, xhr, options) ->
           alert "SOMETHING WENT WRONG"
-
+    # FIXME: Shouldn't have to call render() directly here (maybe an event on the assignments collection)
   
   render: ->
     super

@@ -13,16 +13,9 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       @workWeeksView.trigger "date:changed", message
   
   render: ->
-    if @model.get("user_id")?
-      @$el.html StaffPlan.Templates.Assignments.userItem
-        user: StaffPlan.users.get(@model.get("user_id")).attributes
-    else
-      @$el.html StaffPlan.Templates.Assignments.userItem
-        user:
-          id: 0
-          gravatar: "https://secure.gravatar.com/avatar/ee56924c10943ba1af0e004b90f3a095"
-          first_name: "TBD"
-          last_name: ""
+    @$el.html StaffPlan.Templates.Assignments.userItem
+      user: StaffPlan.users.get(@model.get("user_id")).attributes
+
     @actionsView = new window.StaffPlan.Views.StaffPlans.AssignmentActions
       model: @model
       parent: @
