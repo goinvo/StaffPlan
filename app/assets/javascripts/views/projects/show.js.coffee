@@ -52,7 +52,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         project_id: @model.id
         proposed: false
       , success: (model, response) =>
-          model.set "client_id", @model.get("client_id")
           @render()
       , error: (model, xhr, options) ->
           
@@ -62,7 +61,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         user_id: targetUser.id
         proposed: false
       , success: (model, response) =>
-          model.set "client_id", @model.get("client_id")
           @render()
       , error: (model, xhr, options) ->
           alert "SOMETHING WENT WRONG"

@@ -100,14 +100,12 @@ _templates =
         <a href="#" class="btn btn-mini {{#if archived}}btn-inverse {{/if}}toggle-archived" title="Click to {{#if archived}}un{{/if}}archive this assignment"><i class='{{#if archived}}icon-pause{{else}}icon-play{{/if}}{{#if archived}} icon-white{{/if}}'></i></a>
         <a href="#" class='btn btn-mini {{#if proposed}}btn-inverse {{/if}}toggle-proposed' title="Make this assignment's hours {{#if proposed}}planned{{else}}proposed{{/if}}"><i class='icon-time{{#if proposed}} icon-white{{/if}}'></i></a>
       </div>
-        {{#if displayReassign}}
-          <select data-action=reassign class="year-filter">
-            <option value="-1">Reassign to:</option>
-            {{#each companyUsers}}
-              <option value="{{id}}">{{fullName}}</option>
-            {{/each}}
-          </select>
-        {{/if}}
+        <select data-action=reassign class="year-filter">
+          <option value="-1">Reassign to:</option>
+          {{#each companyUsers}}
+            <option value="{{id}}">{{fullName}}</option>
+          {{/each}}
+        </select>
       """
     show: '''
       <div class="grid-row-element client-name-and-project-name fixed-180 sexy">

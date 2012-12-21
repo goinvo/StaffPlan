@@ -10,8 +10,6 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @numberOfBars = @options.numberOfBars
     @parent = @options.parent
 
-    @model.collection.on "change:user_id", (event) => @render()
-
     @on "date:changed", (message) =>
       @workWeeksView.trigger "date:changed", message
   
