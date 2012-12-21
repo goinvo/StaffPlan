@@ -27,6 +27,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
 
     @on "date:changed", (message) ->
+      localStorage.setItem "fromDate", message.begin
       @collection = _.range(message.begin, message.begin + message.count * 7 * 86400 * 1000, 7 * 86400 * 1000)
       @render()
 
@@ -36,7 +37,6 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
   paginate: (event) ->
     event.preventDefault()
     event.stopPropagation()
-
     @parent.trigger "date:changed",
       action: $(event.target).data('action')
 

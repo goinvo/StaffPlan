@@ -37,8 +37,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+
+    @startDate = moment(localStorage.getItem("fromDate")) or moment().utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"

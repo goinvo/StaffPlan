@@ -32,8 +32,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @users = new StaffPlan.Collections.Users @options.users.active()
     @users.reset @users.sortBy (user) -> user.workload()
     
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    @startDate = moment(localStorage.getItem("fromDate")) or moment().utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     # When the collection of users changes, we render the view 
     # again to reflect the change in the UI
