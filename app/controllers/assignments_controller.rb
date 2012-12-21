@@ -1,15 +1,13 @@
 class AssignmentsController < ApplicationController
   
-  respond_to :json, :html
+  before_filter :find_target_user, only: [:create]
+  
+  respond_to :json
 
   def create
-    if params[:assignment][:user_id].present?
-      @assignment = @target_user.assignments.build(params[:assignment])
-    else
-      @assignment = Project.where(:id => params[:assignment][:project_id]).first.assignments.build(params[:assignment])
-    end
-
-    if @assignment.save!
+    @assignment = @target_user.assignments.build(params[:assignment])
+    
+    if @assignment.save
       respond_with @assignment and return
     else
       render :json => {:status => :unprocessable_entity }

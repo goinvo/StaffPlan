@@ -93,18 +93,9 @@ _templates =
     actions:
       """
       <div class="btn-group">
-        <button href="#" class="btn btn-mini dropdown-toggle" data-toggle="dropdown" title="Click to re-assign this assignment"><i class="icon-user"></i><span class="caret"></span></button>
-        <ul class="dropdown-menu">
-          {{#each companyUsers}}
-            <li><a href="#" data-user-id="{{this.id}}" data-action=reassign>{{this.first_name}} {{this.last_name}}</a></li>
-          {{/each}}
-        </ul>
-      </div>
-      <div class="btn-group">
         {{#if isDeletable}}
           <a href="#" class='btn btn-mini delete-assignment' title="Click to delete this assignment. This is permanent."><i class='icon-trash'></i></a>
         {{/if}}
-
         <a href="#" class="btn btn-mini {{#if archived}}btn-inverse {{/if}}toggle-archived" title="Click to {{#if archived}}un{{/if}}archive this assignment"><i class='{{#if archived}}icon-pause{{else}}icon-play{{/if}}{{#if archived}} icon-white{{/if}}'></i></a>
         <a href="#" class='btn btn-mini {{#if proposed}}btn-inverse {{/if}}toggle-proposed' title="Make this assignment's hours {{#if proposed}}planned{{else}}proposed{{/if}}"><i class='icon-time{{#if proposed}} icon-white{{/if}}'></i></a>
       </div>

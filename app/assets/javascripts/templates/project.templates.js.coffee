@@ -16,7 +16,6 @@ _templates =
     '''
     addSomeone: '''
       <select class="unassigned-users">
-        <option value="-1">User to be determined</option>
         {{#unassignedUsers}}
           <option value="{{id}}">{{first_name}} {{last_name}}</option>
         {{/unassignedUsers}}
