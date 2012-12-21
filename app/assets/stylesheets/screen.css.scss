@@ -264,6 +264,10 @@ div.list-item {
   & > * {
     overflow: hidden;
   }
+
+  div.user-info {
+    overflow: visible;
+  }
 }
 
 span.month-name {
