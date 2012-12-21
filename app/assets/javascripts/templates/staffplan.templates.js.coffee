@@ -24,9 +24,6 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
     html += "<div>W#{Math.ceil(moment(date).date() / 7)}</div>"
     html
   , ""
-  
-Handlebars.registerHelper 'hours_delta', (total) ->
-  if total > 0 then "+#{total}" else "#{Math.abs(total)}"
 
 _templates =
   index:
@@ -88,7 +85,7 @@ _templates =
     totals:
       """
       <div class='estimated-hours assignment-totals'>{{hours.estimated}}</div>
-      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='pull-right'>&#916;{{hours_delta hours.delta}}</span></div>
+      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='pull-right'>&#916;{{hours.delta}}</span></div>
       """
     actions:
       """
