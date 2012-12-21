@@ -4,7 +4,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
     
   initialize: ->
     @model.bind "change:user_id", (assignment) =>
-      @parent.render()
+      @parent.remove()
     @model.bind 'change', (assignment) =>
       if assignment.changed.proposed? or assignment.changed.archived?
         StaffPlan.router.currentView.trigger('week:updated')
