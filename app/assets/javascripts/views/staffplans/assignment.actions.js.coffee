@@ -3,23 +3,21 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
   tagName: "div"
     
   initialize: ->
+    @model.bind "change:user_id", (assignment) =>
+      @parent.render()
     @model.bind 'change', (assignment) =>
       if assignment.changed.proposed? or assignment.changed.archived?
         StaffPlan.router.currentView.trigger('week:updated')
         @render()
-    @model.collection.bind "change:user_id", (event) ->
-      StaffPlan.router.currentView.render()
-
+      
     @model.work_weeks.bind 'change', (ww) =>
       StaffPlan.router.currentView.trigger('week:updated')
       @render()
     
   render: ->
-    # The users we can reassign hours to are only people not currently assigned to the project
-    otherUsers = @model.getProject().getUnassignedUsers().map (user) ->
+    otherUsers = _.map (StaffPlan.users.reject (user) => user.get("id") is @model.get("user_id")), (user) ->
       fullName: "#{user.get('first_name').charAt(0).toUpperCase()}. #{user.get('last_name')}"
       id: user.get("id")
-
     @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
       companyUsers: otherUsers
       isDeletable: @model.isDeletable()
