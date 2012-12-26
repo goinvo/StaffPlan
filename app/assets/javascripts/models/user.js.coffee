@@ -12,7 +12,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     new StaffPlan.Collections.WorkWeeks projectWeeks
     
   # Proxy so that the aggregation is generic
-  getAssignments: () ->
+  getAssignments: ->
     new StaffPlan.Collections.Assignments StaffPlan.assignments.select (assignment) =>
       assignment.get("user_id") is @id
   

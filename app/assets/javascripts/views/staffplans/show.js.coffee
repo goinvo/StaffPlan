@@ -33,7 +33,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       items: 12
     
   gatherClientsByAssignments: ->
-    _.uniq @model.getAssignments().pluck( 'client_id' ).map (clientId) -> StaffPlan.clients.get clientId
+    _.uniq @model.getAssignments().select((assignment) -> !assignment.get('archived')).map((assignment) -> assignment.get('client_id')).map (clientId) -> StaffPlan.clients.get clientId
     
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
@@ -49,6 +49,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       @renderChart()
       @onWindowResized()
     , 200
+    
     $(window).bind "resize", (event) => @debouncedRender()
     
     @on "date:changed", (message) => @dateChanged(message.action)
@@ -98,6 +99,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
         model: client
         user: @model
         assignments: @model.getAssignments().where
+          archived: false
           client_id: client.id
         startDate: @startDate
       @appendChildTo clientView, @$el.find "section.main"
