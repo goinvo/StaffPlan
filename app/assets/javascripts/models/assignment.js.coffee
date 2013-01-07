@@ -31,4 +31,4 @@ class window.StaffPlan.Models.Assignment extends StaffPlan.Model
       total
     , 0
   
-  reAssignable: -> !@isDeletable()
+  reAssignable: -> @isDeletable()
