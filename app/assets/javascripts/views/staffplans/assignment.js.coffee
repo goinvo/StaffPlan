@@ -28,11 +28,13 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       @ensureWorkWeekRange()
       @onWindowResized()
       
-    @model.bind 'change:id', => @render()
+    @model.bind 'change:id', (event) =>
+      @render()
     @model.bind 'change:archived', =>
-      @$el.slideUp 'fast', =>
-        @leave()
-        setTimeout => @parent.render()
+      unless @model.previous("archived") is undefined
+        @$el.slideUp 'fast', =>
+          @leave()
+          setTimeout => @parent.render()
 
   ensureWorkWeekRange: =>
     # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed so all inputs are rendered.
