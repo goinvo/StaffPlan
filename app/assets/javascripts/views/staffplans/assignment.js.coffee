@@ -51,7 +51,10 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       isNewClient = if @client() == undefined then true else @client().isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
         showClientInput: isNewClient
-      
+
+      @$el.find('input[data-model=Project]').typeahead
+        source: if isNewClient then StaffPlan.projects.pluck('name') else @client().getProjects().pluck('name')
+        items: 12
       setTimeout =>
         $('html, body').stop().animate
           scrollTop: (@$el.offset().top - 300)
