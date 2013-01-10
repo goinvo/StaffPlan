@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.8'
+gem 'rails', '3.2.11'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
@@ -14,7 +14,7 @@ gem 'haml-rails'
 gem 'heroku'
 gem 'jbuilder'
 gem 'mobile-fu'
-gem 'paper_trail',       '~> 2.5'
+gem 'paper_trail',       '~> 2.7'
 gem 'pg'
 gem 'rails-behaviors'
 gem 'sass-rails',        '~> 3.2'
