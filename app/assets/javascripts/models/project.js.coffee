@@ -40,8 +40,8 @@ class window.StaffPlan.Models.Project extends StaffPlan.Model
     projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.get("filteredWeeks") or assignment.work_weeks.models
     new StaffPlan.Collections.WorkWeeks projectWeeks
 
-  getUnassignedUsers: ->
+  getUnassignedUsers: (includeArchived=true) ->
     userModels = StaffPlan.users.select (user) =>
-      _.all user.getAssignments().map (assignment) =>
-        assignment.get('project_id') isnt @id
+      return false if !includeArchived && user.isArchived()
+      _.all user.getAssignments().map (assignment) => assignment.get('project_id') isnt @id
     new StaffPlan.Collections.Users userModels

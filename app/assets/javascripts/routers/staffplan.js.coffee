@@ -28,7 +28,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
   # Staff Plans
   staffplanShow: (userId) ->
     user = @users.get userId
-    alert 'no user with that ID found' if user.nil?
+    alert 'no user with that ID found' unless user?
     staffplanShow = new window.StaffPlan.Views.StaffPlans.Show(router: @, user: user)
     @swap staffplanShow
     
