@@ -16,6 +16,7 @@ _templates =
     '''
     addSomeone: '''
       <select class="unassigned-users">
+        <option value="-1">TBD</option>
         {{#unassignedUsers}}
           <option value="{{id}}">{{first_name}} {{last_name}}</option>
         {{/unassignedUsers}}
@@ -74,8 +75,8 @@ _templates =
           Payment Frequency
         </label>
         <radiogroup data-model=project data-attribute=payment_frequency>
-          <input data-model=project data-attribute=payment_frequency type="radio" checked="checked" value="monthly"> Monthly  
-          <input data-model=project data-attribute=payment_frequency type="radio" value="total"> Total
+          <input data-model=project data-attribute=payment_frequency type="radio" name="project_payment" checked="checked" value="monthly"> Monthly
+          <input data-model=project data-attribute=payment_frequency type="radio" name="project_payment" value="total"> Total
         </radiogroup>
       </div>
         

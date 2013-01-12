@@ -98,6 +98,20 @@ _templates =
         {{/if}}
         <a href="#" class="btn btn-mini {{#if archived}}btn-inverse {{/if}}toggle-archived" title="Click to {{#if archived}}un{{/if}}archive this assignment"><i class='icon-folder-close{{#if archived}} icon-white{{/if}}'></i></a>
         <a href="#" class='btn btn-mini {{#if proposed}}btn-inverse {{/if}}toggle-proposed' title="Make this assignment's hours {{#if proposed}}planned{{else}}proposed{{/if}}"><i class='icon-time{{#if proposed}} icon-white{{/if}}'></i></a>
+        {{#if displayReassign}}
+          <button class="btn btn-mini dropdown-toggle" title="Reassign to another user" data-toggle="dropdown">
+            <i class="icon-user"></i>
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" data-action=reassign>
+            <li><a href="#" data-user-id="">TBD</a></li>
+            {{#each companyUsers}}
+              <li>
+                <a href="#" data-user-id="{{id}}">{{fullName}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        {{/if}}
       </div>
       """
     show: '''

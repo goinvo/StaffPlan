@@ -264,6 +264,10 @@ div.list-item {
   & > * {
     overflow: hidden;
   }
+
+  div.user-info {
+    overflow: visible;
+  }
 }
 
 span.month-name {
@@ -481,6 +485,10 @@ footer {
     
 .flex {
   @include box-flex(1);
+}
+
+.user-hour-inputs {
+  min-height: 75px;
 }
     
 .box {
