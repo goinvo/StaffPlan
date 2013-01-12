@@ -30,8 +30,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       
     @model.bind 'change:id', (event) =>
       @render()
+      
     @model.bind 'change:archived', =>
-      unless @model.previous("archived") is undefined
+      if @model.get('archived')
         @$el.slideUp 'fast', =>
           @leave()
           setTimeout => @parent.render()
