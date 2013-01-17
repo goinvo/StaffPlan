@@ -31,9 +31,10 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @model.bind 'change:user_id', => @remove()
     @model.bind 'change:id', => @render()
     @model.bind 'change:archived', =>
-      @$el.slideUp 'fast', =>
-        @leave()
-        setTimeout => @parent.render()
+      if @model.get('archived')
+        @$el.slideUp 'fast', =>
+          @leave()
+          setTimeout => @parent.render()
 
   ensureWorkWeekRange: =>
     # pads this assignment's work weeks for the selected date range adding new WorKWeek objects where needed so all inputs are rendered.
@@ -52,7 +53,10 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
       isNewClient = if @client() == undefined then true else @client().isNew()
       @$el.html StaffPlan.Templates.StaffPlans.assignment_new
         showClientInput: isNewClient
-      
+
+      @$el.find('input[data-model=Project]').typeahead
+        source: if isNewClient then StaffPlan.projects.pluck('name') else @client().getProjects().pluck('name')
+        items: 12
       setTimeout =>
         $('html, body').stop().animate
           scrollTop: (@$el.offset().top - 300)
