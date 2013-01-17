@@ -27,10 +27,9 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @on "window:resized", =>
       @ensureWorkWeekRange()
       @onWindowResized()
-      
-    @model.bind 'change:id', (event) =>
-      @render()
-      
+    
+    @model.bind 'change:user_id', => @remove()
+    @model.bind 'change:id', => @render()
     @model.bind 'change:archived', =>
       if @model.get('archived')
         @$el.slideUp 'fast', =>

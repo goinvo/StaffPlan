@@ -7,6 +7,8 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     @bind "remove", () ->
       @destroy()
   
+  isArchived: -> @membership.get('archived')
+    
   getWorkWeeks: ->
     projectWeeks = _.flatten @getAssignments().map (assignment) -> assignment.get("filteredWeeks") or assignment.work_weeks.models
     new StaffPlan.Collections.WorkWeeks projectWeeks
