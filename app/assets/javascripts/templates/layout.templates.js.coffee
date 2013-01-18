@@ -21,9 +21,9 @@ _t =
   </header>
   <section class='main'></section>
   <footer>
-    <a href="https://github.com/rescuedcode/StaffPlan" target="_blank">Github Repo</a>
-    <a href="" target="_blank">Pivotal Tracker</a>
-    <a href="http://goinvo.com" target="_blank">created by Involution Studios</a>
+    <a data-bypass href="https://github.com/rescuedcode/StaffPlan" target="_blank">Github Repo</a>
+    <a data-bypass href="https://www.pivotaltracker.com/projects/663621" target="_blank">Pivotal Tracker</a>
+    <a data-bypass href="http://goinvo.com" target="_blank">created by Involution Studios</a>
   </footer>
   """
   
