@@ -338,7 +338,7 @@ section.main {
       }
       .controls {
         position: absolute;
-        right: -200px;
+        right: -210px;
         bottom: 12px;
         @include transition(right 0.2s ease-out);
         a {
