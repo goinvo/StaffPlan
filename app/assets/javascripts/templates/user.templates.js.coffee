@@ -79,12 +79,30 @@ _templates =
           <div class="control-group">
             <label class="control-label checkbox" for="user_permissions_{{name}}"></label>
             <div class="controls">
-              <input data-attribute=permissions {{#if userHasPermission}}checked=checked{{/if}} type="checkbox" value="{{name}}">{{capitalizedName}}
+              <input data-attribute=permissions {{#if userHasPermission}}checked=checked{{/if}} type="checkbox" value="{{name}}"> {{capitalizedName}}
             </div>
           </div>
         {{/each}}
       </div>
-
+      
+      <div id="permissions">
+        <div class="control-group">
+          <label class="control-label checkbox" for="user_archived"></label>
+          <div class="controls">
+            <input data-model="membership" data-attribute="archived" {{#if membershipInfo.archived}}checked=checked{{/if}} type="checkbox" value="archived">
+            Archived
+            <span class="help-block">Archiving a user enables them to access company data when they log in but removes them from most views.</span>
+          </div>
+        </div>
+        <div class="control-group">
+          <label class="control-label checkbox" for="user_disabled"></label>
+          <div class="controls">
+            <input data-model="membership" data-attribute="disabled" {{#if membershipInfo.disabled}}checked=checked{{/if}} type="checkbox" value="disabled">
+            Disabled
+            <span class="help-block">Disabling a user prohibits them from accessing any of your company's data when they log in.</span>
+          </div>
+        </div>
+      </div>
 
       <div id="salary_information">
         {{#if membershipInfo.status.fte}}
@@ -130,7 +148,6 @@ _templates =
             </div>
           </div>
         {{/if}}
-
       </div>
     </div>
 
