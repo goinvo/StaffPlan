@@ -142,3 +142,5 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @model.save
       project_id: project.get('id')
       user_id: @user.get('id')
+    , success: =>
+      StaffPlan.assignments.push( @model )
