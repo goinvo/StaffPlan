@@ -26,10 +26,12 @@ window.StaffPlan =
     @assignments = new StaffPlan.Collections.Assignments data.assignments
     @currentCompany = data.currentCompany
     @currentUser = data.currentUser
-    @relevantYears = _.uniq(_.flatten(StaffPlan.assignments.reduce (memo, assignment) ->
+    @relevantYears = _.reject( _.uniq(_.flatten(StaffPlan.assignments.reduce (memo, assignment) ->
                         memo.push _.uniq(assignment.work_weeks.map (week) -> moment(week.get("beginning_of_week")).year())
                         memo
-                      , []))
+                      , [])), (year) ->
+                        year == 1970 # lol don't ask
+                      )
     year = parseInt(localStorage.getItem("yearFilter"), 10)
     if _.include(@relevantYears, year)
       StaffPlan.assignments.each (assignment) ->

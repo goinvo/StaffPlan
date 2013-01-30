@@ -47,19 +47,13 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
   
   updateOrCreateWorkWeek: (event, cid, attributes) ->
     event.currentTarget.timeout = null
-    workWeek = @collection.getByCid cid
+    workWeek = @collection.get cid
 
     element = $(event.currentTarget)
-
+    
     workWeek.save attributes,
-      success: =>
-        if event.type is "change"
-          # We need to trigger the event on the show view so that 
-          # it's relayed to the weekly aggregates view
-          @parent.parent.trigger "week:updated"
-          
       error: ->
-        alert('fail :-/')
+        alert('Failed to save that hourly data. Try again?')
         
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
