@@ -48,6 +48,14 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
   updateOrCreateWorkWeek: (event, cid, attributes) ->
     event.currentTarget.timeout = null
     workWeek = @collection.get cid
+    if workWeek? and ((parseInt(attributes["estimated_hours"], 10) > 0) or (parseInt(attributes["actual_hours"], 10) > 0))
+      assignment = workWeek.collection.parent
+
+      assignment.save {archived: false},
+        success: (model, response, options) ->
+          console.log response
+      , error: (model, xhr, options) ->
+        alert "Failed to unarchive the assignment. Try again?"
 
     element = $(event.currentTarget)
     
