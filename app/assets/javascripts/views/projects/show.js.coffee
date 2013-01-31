@@ -2,8 +2,11 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
   className: "list tall"
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    if window.location.hash.length
+      @startDate = moment(parseInt(window.location.hash.slice(1).split("=")[1], 10))
+    else
+      m = moment()
+      @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
 
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"

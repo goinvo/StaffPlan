@@ -23,6 +23,8 @@ StaffPlan.Mixins.Events =
       else
         @startDate.add('weeks', @numberOfBars)
 
+      StaffPlan.router.navigate(Backbone.history.fragment.split("#")[0] + "#" + "from=#{@startDate.valueOf()}")
+
       @children.each (child) =>
         child.trigger "date:changed"
           begin: @startDate
