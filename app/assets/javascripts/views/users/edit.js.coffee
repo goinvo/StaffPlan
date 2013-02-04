@@ -22,6 +22,11 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
         memo
       , {}
     
+    preferencesAttributes = _.reduce $("div[data-model=user_preferences] input:not(:disabled), select:not(:disabled)"), (memo, elem) ->
+        memo[$(elem).data('attribute')] = if $(elem).prop("checked") then true else false
+        memo
+      , {}
+
     membershipAttributes = _.reduce $("div[data-model=membership] input:not(:disabled), select:not(:disabled)"), (memo, elem) ->
         if $(elem).data('attribute') is "permissions"
           if $(elem).prop('checked')
@@ -37,10 +42,13 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
       success: (model, response) =>
         # We have a new user
         @model.membership.save membershipAttributes,
-          success: (resource, response) ->
-            # Successful save for the membership, let's embed it in the User model client-side
+          success: (resource, response) =>
             model.membership.set resource
-            Backbone.history.navigate("/users", true)
+            @model.preferences.save preferencesAttributes,
+              success: (resource, response) ->
+                Backbone.history.navigate("/users", true)
+              error: (model, xhr, options) =>
+                @errorHandler xhr, "preferences"
           error: (model, xhr, options) =>
             @errorHandler xhr, "membership"
           , {wait: true}
@@ -53,6 +61,7 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
 
     @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
       user: @model.attributes
+      emailReminder: @model.get("preferences").email_reminder
       membershipInfo: @model.getMembershipInformation()
     
     @

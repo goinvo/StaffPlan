@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
       end
     end
   end
+  has_one :user_preferences, :dependent => :destroy
   has_many :projects, :through => :assignments
   has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true

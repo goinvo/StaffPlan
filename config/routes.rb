@@ -40,7 +40,7 @@ StaffPlan::Application.routes.draw do
     get :confirm, on: :collection
   end
   match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
-  
+  put "/users/:id/preferences" => "users/user_preferences#update", format: :json, :constraints => {:id => /\d+/} 
   get "/api/companies/:secret" => "api/companies#index", format: :json
 
   resources :sessions, :only => [:new, :create, :destroy]
