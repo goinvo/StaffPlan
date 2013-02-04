@@ -46,11 +46,20 @@ window.StaffPlan =
       currentUser: @currentUser
     $ -> Backbone.history.start(pushState: true)
     
+    @checkPresence()
+
+
     $('a:not([data-bypass])').live 'click', (event) =>
       event.preventDefault()
       href = $(event.currentTarget).attr('href').slice(1)
       Backbone.history.navigate(href, true)
-      
+  checkPresence: () ->
+    $.ajax
+      url: "/api/presence/ping"
+      dataType: "json"
+    .fail((jqXHR, textStatus, errorThrown) -> window.location.href = "/sessions/new")
+    .done((data, textStatus, jqXHR) -> _.delay(window.StaffPlan.checkPresence, 10000))
+
   addClientByName: (name, callback) ->
     @clients.create
       name: name
