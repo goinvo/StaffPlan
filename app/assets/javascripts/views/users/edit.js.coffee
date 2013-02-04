@@ -46,6 +46,7 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
             model.membership.set resource
             @model.preferences.save preferencesAttributes,
               success: (resource, response) ->
+                console.log resource
                 Backbone.history.navigate("/users", true)
               error: (model, xhr, options) =>
                 @errorHandler xhr, "preferences"
@@ -61,7 +62,7 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
 
     @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
       user: @model.attributes
-      emailReminder: @model.get("preferences").email_reminder
+      emailReminder: @model.preferences.get("email_reminder")
       membershipInfo: @model.getMembershipInformation()
     
     @

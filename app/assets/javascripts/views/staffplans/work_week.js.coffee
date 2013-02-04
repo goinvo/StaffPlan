@@ -72,7 +72,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Support.CompositeView
     workWeek.save attributes,
       error: ->
         # TODO: reset the UI's value and highlight the work week?
-        alert('Failed to save some hourly data. Try again?');
+        alert('Failed to save some hourly data. Try again?')
   
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
