@@ -3,8 +3,13 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
   
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    # FIXME: Only working version I know as of now
+    if window.location.hash.length
+      @startDate = moment(parseInt(window.location.hash.slice(1).split("=")[1], 10))
+    else
+      m = moment()
+      @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    
     @collection.bind "remove", () =>
       @render()
 
