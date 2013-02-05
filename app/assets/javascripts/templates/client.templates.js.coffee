@@ -43,6 +43,13 @@ _templates =
     '''
   index:
     clientInfo: '''
+    <div class="add-client position-fixed">
+      <a href="/clients/new" class="btn btn-primary">
+        <i class="icon-white icon-list"></i>
+        Add client
+      </a>
+    </div>
+
     <h2 class="lead">
       <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a> &rarr; Clients
     </h2> 
@@ -70,10 +77,6 @@ _templates =
         </li>
       {{/each}}
     </ul>
-    <a href="/clients/new" class="btn btn-primary">
-      <i class="icon-white icon-list"></i>
-      Add client
-    </a>
     '''
   show:
     clientInfo: '''
