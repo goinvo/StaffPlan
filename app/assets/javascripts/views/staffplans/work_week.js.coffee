@@ -67,13 +67,12 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Support.CompositeView
   
   updateOrCreateWorkWeek: (event, cid, attributes) ->
     event.currentTarget.timeout = null
-    workWeek = @collection.getByCid cid
+    workWeek = @collection.get cid
     workWeek.unset "date"
     workWeek.save attributes,
-      success: (lol, foo, bar, baz) ->
-        console.log('success')
-      error: (wat, another, argument, here) ->
-        alert('fail')
+      error: ->
+        # TODO: reset the UI's value and highlight the work week?
+        alert('Failed to save some hourly data. Try again?');
   
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer

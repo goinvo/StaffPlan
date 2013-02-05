@@ -16,7 +16,10 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
     
     @assignments.bind 'add', (assignment) => @render()
     
-    @assignments.add() if @model.isNew()
+    if @model.isNew()
+      @assignments.add()
+      @model.bind 'change:id', (client) =>
+        @parent.renderClientsAssignmentsWorkWeeks()
     
     @assignments.bind 'change:id', (assignment) =>
       @model.set('id', assignment.client().get('id')) if @model.isNew()
@@ -29,6 +32,8 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
       
         unless @assignments.any()
           @leave()
+      else
+        @render()
       
     @$el.attr('data-client-id', if @model.get('id')? then @model.get('id') else "-1")
     

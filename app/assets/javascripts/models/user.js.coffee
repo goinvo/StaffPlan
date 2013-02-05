@@ -54,7 +54,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
         userHasPermission: _.include @membership.get('permissions'), permission
         capitalizedName: permission.charAt(0).toUpperCase() + permission.slice(1)
       permissionInfo
-    , { status: status, permissions: [], salary: salary }
+    , { disabled: @membership.get('disabled'), archived: @membership.get('archived'), status: status, permissions: [], salary: salary }
 
   validate: ->
     errors = {}

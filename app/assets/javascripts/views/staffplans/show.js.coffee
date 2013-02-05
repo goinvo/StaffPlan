@@ -37,12 +37,19 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    if window.location.hash.length
+      @startDate = moment(parseInt(window.location.hash.slice(1).split("=")[1], 10))
+    else
+      m = moment()
+      @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
     
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
-
+    
+    StaffPlan.assignments.on "add", (assignment) =>
+      if assignment.get('user_id') == @model.get('id')
+        @renderClientsAssignmentsWorkWeeks()
+      
     @debouncedRender = _.debounce =>
       @calculateNumberOfBars()
       @renderDatesAndPagination()
@@ -93,6 +100,8 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     @renderChildInto dateRangeView, @$el.find "#interval-width-target"
     
   renderClientsAssignmentsWorkWeeks: ->
+    @$el.find("section.main").empty()
+    
     # render clients/assignments/inputs
     @gatherClientsByAssignments().map (client) =>
       clientView = new StaffPlan.Views.StaffPlans.Client

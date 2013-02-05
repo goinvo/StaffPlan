@@ -55,11 +55,11 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
     event.preventDefault()
     
     @model.save
-      proposed: if @model.get('proposed') then 0 else 1
+      proposed: not(@model.get("proposed"))
   
   onToggleArchivedClicked: (event) ->
     event.stopPropagation()
     event.preventDefault()
     
     @model.save
-      archived: if @model.get('archived') then 0 else 1
+      archived: not(@model.get('archived'))

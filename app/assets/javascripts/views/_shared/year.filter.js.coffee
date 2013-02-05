@@ -16,8 +16,9 @@ class StaffPlan.Views.Shared.YearFilter extends Support.CompositeView
       year: year
 
   render: ->
+    yearFilter = localStorage.getItem("yearFilter")
     @$el.html StaffPlan.Templates.Shared.yearFilter
       relevantYears: StaffPlan.relevantYears.sort()
-      buttonText: "Showing: #{if localStorage.getItem("yearFilter") == "all" then "All Fiscal Years" else "FY #{localStorage.getItem("yearFilter")}"}"
+      buttonText: "Showing: #{if(yearFilter == null || yearFilter == "all") then "All Fiscal Years" else "FY #{yearFilter}"}"
     
     @

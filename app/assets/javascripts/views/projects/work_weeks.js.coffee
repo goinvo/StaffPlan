@@ -47,19 +47,21 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
   
   updateOrCreateWorkWeek: (event, cid, attributes) ->
     event.currentTarget.timeout = null
-    workWeek = @collection.getByCid cid
+    workWeek = @collection.get cid
+    if workWeek? and ((parseInt(attributes["estimated_hours"], 10) > 0) or (parseInt(attributes["actual_hours"], 10) > 0))
+      assignment = workWeek.collection.parent
+
+      assignment.save {archived: false},
+        success: (model, response, options) ->
+          console.log response
+      , error: (model, xhr, options) ->
+        alert "Failed to unarchive the assignment. Try again?"
 
     element = $(event.currentTarget)
-
+    
     workWeek.save attributes,
-      success: =>
-        if event.type is "change"
-          # We need to trigger the event on the show view so that 
-          # it's relayed to the weekly aggregates view
-          @parent.parent.trigger "week:updated"
-          
       error: ->
-        alert('fail :-/')
+        alert('Failed to save that hourly data. Try again?')
         
   showRowFiller: (event) ->
     clearTimeout @_rowFillerTimer
