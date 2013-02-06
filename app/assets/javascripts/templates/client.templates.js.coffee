@@ -70,10 +70,6 @@ _templates =
         </li>
       {{/each}}
     </ul>
-    <a href="/clients/new" class="btn btn-primary">
-      <i class="icon-white icon-list"></i>
-      Add client
-    </a>
     '''
   show:
     clientInfo: '''
