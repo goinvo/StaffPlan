@@ -58,6 +58,7 @@ _templates =
     <div id="user-select" class="grid-row user-info padded">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
+        <br>
         <span class='name'>
           <a href="/users/{{user.id}}">{{user.full_name}}</a>
         </span>
@@ -146,6 +147,7 @@ _templates =
     <div class='user-info fixed-180' data-user-id="{{user.id}}>
       <a href="/staffplans/{{user.id}}">
         <img alt="{{user.full_name}}" class="gravatar" src="{{user.gravatar}}" />
+        <br>
         <span class='name'>
           <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
         </span>

@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   has_attached_file :avatar, {
     :styles => { :thumb => "70x70>" },
     :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
-    :url => "/system/:attachment/:id/:style/:filename"
+    :url => "/system/:attachment/:id/:style/:filename",
+    :default_url => :default_profile_picture
   }
 
   has_paper_trail
@@ -35,6 +36,9 @@ class User < ActiveRecord::Base
     self.save
   end
 
+  def default_profile_picture
+    "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+  end
 
   validates_presence_of :email, :first_name, :last_name
   validates_uniqueness_of :email
