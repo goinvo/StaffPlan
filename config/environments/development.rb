@@ -28,6 +28,9 @@ StaffPlan::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Path to the ImageMagick commands used by PaperClip for image manipulation
+  Paperclip.options[:command_path] = "/usr/local/bin/"
   
   config.after_initialize do |app|
     app.assets.logger = Logger.new('/dev/null')

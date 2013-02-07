@@ -48,6 +48,7 @@ GEM
     childprocess (0.3.5)
       ffi (~> 1.0, >= 1.0.6)
     chunky_png (1.2.6)
+    cocaine (0.4.2)
     coderay (1.0.7)
     coffee-filter (0.1.1)
       coffee-script (>= 2.2.0)
@@ -141,6 +142,12 @@ GEM
     paper_trail (2.7.0)
       activerecord (~> 3.0)
       railties (~> 3.0)
+    paperclip (3.4.0)
+      activemodel (>= 3.0.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      cocaine (~> 0.4.0)
+      mime-types
     pg (0.14.0)
     polyglot (0.3.3)
     pry (0.9.10)
@@ -268,6 +275,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   paper_trail (~> 2.7)
+  paperclip (~> 3.0)
   pg
   pry
   quiet_assets

@@ -150,7 +150,9 @@ _templates =
         {{/if}}
       </div>
     </div>
-
+    <div class="upload">
+	    <input type="file">
+    </p>
     <div class="form-actions">
       <a href="#" data-action="update" type="submit" class="btn btn-primary">Update user</a>
       <a href="/users" data-action="cancel" type="button" class="btn">Back to list of users</a>

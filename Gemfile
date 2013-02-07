@@ -21,6 +21,7 @@ gem 'sass-rails',        '~> 3.2'
 gem 'thin'
 gem 'will_paginate'
 gem 'newrelic_rpm'
+gem "paperclip", "~> 3.0"
 
 group :assets do
   gem 'compass-rails'

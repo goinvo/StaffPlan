@@ -2,7 +2,12 @@ class User < ActiveRecord::Base
 
   include StaffPlan::UserRoles
 
-  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :current_company_id
+  attr_accessible :first_name, :last_name, :email, :password, :password_confirmation, :current_company_id, :avatar
+  has_attached_file :avatar, {
+    :styles => { :thumb => "70x70>" },
+    :path => ":rails_root/public/system/:attachment/:id/:style/:filename",
+    :url => "/system/:attachment/:id/:style/:filename"
+  }
 
   has_paper_trail
   has_secure_password

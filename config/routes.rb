@@ -43,6 +43,8 @@ StaffPlan::Application.routes.draw do
   
   get "/api/companies/:secret" => "api/companies#index", format: :json
 
+  post "/users/:user_id/avatar" => "users/avatars#update", :constraints => {:user_id => /\d+/}
+
   resources :sessions, :only => [:new, :create, :destroy]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
