@@ -21,9 +21,10 @@ gem 'sass-rails',        '~> 3.2'
 gem 'thin'
 gem 'will_paginate'
 gem 'newrelic_rpm'
+gem 'compass'
+gem 'compass-rails'
 
 group :assets do
-  gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2'
   gem 'uglifier',     '>= 1.0'
 end
