@@ -252,6 +252,7 @@ DEPENDENCIES
   cancan
   coffee-filter
   coffee-rails (~> 3.2)
+  compass
   compass-rails
   cucumber-rails (= 1.2.1)
   database_cleaner
