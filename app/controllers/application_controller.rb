@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
 
   has_mobile_fu
+  
   before_filter :require_current_user, :require_current_company, :set_mobile_view
 
   protected 
@@ -34,7 +35,10 @@ class ApplicationController < ActionController::Base
   
   def require_current_user 
     unless current_user.present?
-      cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now} if request.get?
+      if request.get? && !request.xhr?
+        cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now}
+      end
+      
       redirect_to new_session_url
     end
   end

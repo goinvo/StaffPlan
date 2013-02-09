@@ -44,6 +44,7 @@ StaffPlan::Application.routes.draw do
   match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
   
   get "/api/companies/:secret" => "api/companies#index", format: :json
+  get "/api/presence/ping" => "api/presence#ping", format: :json
 
   resources :sessions, :only => [:new, :create, :destroy]
   
