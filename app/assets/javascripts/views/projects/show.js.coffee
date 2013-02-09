@@ -74,8 +74,11 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     super
 
     # HEADER
+    client = StaffPlan.clients.get( @model.get( "client_id" ) )
     @$el.find('header').append StaffPlan.Templates.Projects.show.header
       name: @model.get "name"
+      client_name: client.get "name"
+      client_id: client.get('id')
     
     # Each line is a list-item with 25 pixels of left margin
     # Each line has a 180 pixels-wide user information component and a 60px-wide 

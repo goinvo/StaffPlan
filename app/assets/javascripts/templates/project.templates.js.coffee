@@ -2,7 +2,7 @@ _templates =
   show:
     header: '''
       <div class="chart-wrapper">
-        <div class="fixed-180">&nbsp;</div>
+        <div class="fixed-180"><h4><a href="/clients/{{client_id}}">{{client_name}}</a>: {{name}}</h4></div>
         <div class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
       </div>
       <div class="date-paginator"> 
