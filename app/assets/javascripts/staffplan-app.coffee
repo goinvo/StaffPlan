@@ -58,7 +58,7 @@ window.StaffPlan =
       url: "/api/presence/ping"
       dataType: "json"
     .fail((jqXHR, textStatus, errorThrown) -> window.location.href = "/sessions/new")
-    .done((data, textStatus, jqXHR) -> _.delay(window.StaffPlan.checkPresence, 10000))
+    .done((data, textStatus, jqXHR) -> _.delay(window.StaffPlan.checkPresence, 600000))
 
   addClientByName: (name, callback) ->
     @clients.create
