@@ -1,0 +1,16 @@
+Hi #{@user.first_name}
+\
+According to our system, you didn't commit any hours for the past week.
+\
+You can take care of that at the following URL:
+\
+#{staffplan_url(id: @user.id)}
+\
+PS: If you don't want to receive reminders like this one in the future, browse 
+\
+#{edit_user_url(:id => @user.id)} and uncheck the corresponding option.
+\
+\
+Thank you, 
+The StaffPlan Team
+http://www.staffplan.com

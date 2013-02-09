@@ -46,12 +46,16 @@ class CompanyDecorator < Draper::Base
   
   def users_json
     Jbuilder.encode do |json|
-      company_memberships = Membership.includes(:user).where(
+      company_memberships = Membership.includes(:user, {:user => :user_preferences}).where(
         :company_id => model.id
       ) 
       json.array!(company_memberships) do |json, membership|
         user = membership.user.decorate
         json.(user, :id, :first_name, :last_name, :full_name, :email, :gravatar, :current_company_id)
+        preferences = user.user_preferences 
+        if preferences.present?
+          json.preferences preferences
+        end
         json.membership membership 
       end
     end

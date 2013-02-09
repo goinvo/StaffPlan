@@ -60,6 +60,15 @@ _templates =
       </div>
     </div>
 
+    <div data-model="user_preferences">
+      <div class="control-group">
+        <label class="control-label">User Preferences</label>
+        <div class="controls">
+          <input data-attribute=email_reminder {{#if emailReminder}}checked=checked{{/if}} type="checkbox"> If active, user will receive email reminders when he doesn't commit hours as expected
+        </div>
+      </div>
+    </div>
+
     <div data-model=membership> 
       <div id="employment_status">
         <div class="control-group">
