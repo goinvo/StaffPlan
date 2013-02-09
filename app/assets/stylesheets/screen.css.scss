@@ -98,8 +98,11 @@ select.year-filter {
 
 body {
   .staffplan-show header {
-    width: 97.4%;
-    margin: 0px 20px;
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+    padding: 0px 20px 0px 20px;
+    @include box-sizing(border-box);
   }
   
   header {
