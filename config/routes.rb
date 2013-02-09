@@ -6,6 +6,7 @@ StaffPlan::Application.routes.draw do
   # Users
   resources :users do
     resources :projects, :only => [:update, :create, :destroy], :controller => "users/projects"
+    resource :preferences, only: [:update], controller: "users/user_preferences"
   end
   
   # Projects
@@ -39,6 +40,7 @@ StaffPlan::Application.routes.draw do
     post :complete, on: :collection
     get :confirm, on: :collection
   end
+  
   match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
   
   get "/api/companies/:secret" => "api/companies#index", format: :json

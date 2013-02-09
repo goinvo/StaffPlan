@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
       end
     end
   end
+  has_one :user_preferences, :dependent => :destroy
   has_many :projects, :through => :assignments
   has_many :memberships, :dependent => :destroy
   has_many :companies, :through => :memberships, :uniq => true
@@ -69,6 +70,13 @@ class User < ActiveRecord::Base
     self.save 
     RegistrationMailer.password_reset(self).deliver
   end
+
+  # This email is sent when a user failed to commit actual hours 
+  # for the past week on his StaffPlan
+  def send_email_reminder
+    UserMailer.reminder(self).deliver 
+  end
+
 
   # NOTE: https://github.com/rails/rails/pull/3887
   def save_unconfirmed_user
