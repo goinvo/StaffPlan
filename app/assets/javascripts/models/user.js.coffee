@@ -4,6 +4,9 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     @membership = new StaffPlan.Models.Membership @get( "membership" ),
       parent: @
     
+    @preferences = new StaffPlan.Models.UserPreferences @get( "preferences" ),
+      parent: @
+
     @bind "remove", () ->
       @destroy()
   
@@ -27,6 +30,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
       memo
     , {}
   
+
   # Feeds all the necessary information to the template used by users/edit
   getMembershipInformation: ->
     status = _.reduce {"fte": "Full-Time Equivalent", "contractor": "Contractor", "intern": "Intern"}, (memo, value, key) =>

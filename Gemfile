@@ -22,9 +22,10 @@ gem 'thin'
 gem 'will_paginate'
 gem 'newrelic_rpm'
 gem "paperclip", "~> 3.0"
+gem 'compass'
+gem 'compass-rails'
 
 group :assets do
-  gem 'compass-rails'
   gem 'coffee-rails', '~> 3.2'
   gem 'uglifier',     '>= 1.0'
 end

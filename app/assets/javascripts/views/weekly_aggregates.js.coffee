@@ -5,7 +5,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
   
   aggregate: (timestamp, yearFilter) ->
     weeks = _.compact _.flatten @model.getAssignments().map (assignment) ->
-      models = (if ((localStorage.getItem("yearFilter") != "all") || (localStorage.getItem("yearFilter") == null)) then assignment.get("filteredWeeks") else assignment.work_weeks.models)
+      models = (if ((localStorage.getItem("yearFilter") == "all") || (localStorage.getItem("yearFilter") == null)) then assignment.work_weeks.models else assignment.get("filteredWeeks"))
       _.detect models, (week) ->
         parseInt(week.get('beginning_of_week'), 10) is parseInt(timestamp, 10)
     
