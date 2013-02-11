@@ -116,7 +116,7 @@ GEM
       activesupport (>= 3.0.0)
       blankslate (>= 2.1.2.4)
     journey (1.0.4)
-    json (1.7.6)
+    json (1.7.7)
     launchy (2.1.2)
       addressable (~> 2.3)
     libwebsocket (0.1.5)
@@ -263,6 +263,7 @@ DEPENDENCIES
   haml-rails
   heroku
   jbuilder
+  json (~> 1.7)
   memcache-client
   mobile-fu
   mocha
