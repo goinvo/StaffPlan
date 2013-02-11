@@ -9,7 +9,7 @@ class UserDecorator < Draper::Base
   include Haml::Helpers
 
   def gravatar
-    "https://secure.gravatar.com/avatar/#{Digest::MD5.hexdigest(email.downcase)}"
+    user.avatar.url(:thumb)
   end
 
   def self_as_json

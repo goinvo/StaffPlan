@@ -37,6 +37,15 @@ _templates =
     '''
   edit:
     userEdit: '''
+    <div class="control-group">
+      <div class="controls upload">
+        <img class="gravatar" src="{{user.gravatar}}" />
+        <p style="padding-top:16px">
+          <a class="btn btn-info" href="#" data-action="add-file-chooser">Change avatar</a>
+        </p>
+      </div>
+    </div>
+    </div>
     <div data-model=user>
       <div class="control-group">
         <label class="control-label" for="user_first_name">First name</label>
@@ -159,7 +168,6 @@ _templates =
         {{/if}}
       </div>
     </div>
-
     <div class="form-actions">
       <a href="#" data-action="update" type="submit" class="btn btn-primary">Update user</a>
       <a href="/users" data-action="cancel" type="button" class="btn">Back to list of users</a>
