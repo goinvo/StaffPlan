@@ -96,6 +96,14 @@ class UserDecorator < Draper::Base
       end
     end
   end
+
+  def companies_as_json
+    Jbuilder.encode do |json|
+      json.array! user.companies do |json, company|
+        json.(company, :id, :name)
+      end
+    end
+  end
   
   def current_company_selector
     init_haml_helpers

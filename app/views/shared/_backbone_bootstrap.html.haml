@@ -2,6 +2,7 @@
   :erb
     { 
     "users": <%= current_user.current_company.users_json %>, 
+    "userCompanies": <%= current_user.decorate.companies_as_json %>,
     "clients": <%= current_user.current_company.clients_as_json %>, 
     "assignments": <%= current_user.current_company.assignments_as_json %>,
     "currentCompany": <%= current_user.current_company.self_as_json %>, 

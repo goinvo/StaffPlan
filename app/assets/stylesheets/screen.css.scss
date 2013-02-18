@@ -168,6 +168,28 @@ body {
           line-height: 24px;
         }
         
+        &.company-switcher {
+          
+          li {
+            margin-left: 5px;
+          }
+          
+          a {
+            line-height: 26px;
+          }
+          span.caret {
+            margin-top: 11px;
+          }
+          
+          ul {
+            z-index: 9999;
+            
+            li {
+              display: block;
+            }
+          }
+        }
+
         &.year-filter {
           
           li {

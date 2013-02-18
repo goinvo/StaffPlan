@@ -22,6 +22,7 @@ window.StaffPlan =
   initialize: (data) ->
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
+    @userCompanies = data.userCompanies
     @clients = new StaffPlan.Collections.Clients data.clients
     @assignments = new StaffPlan.Collections.Assignments data.assignments
     @currentCompany = data.currentCompany

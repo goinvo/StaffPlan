@@ -104,6 +104,9 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         years: StaffPlan.relevantYears.sort()
         parent: @
       @$el.find('header .inner ul:first').append @yearFilter.render().el
+    if StaffPlan.userCompanies.length > 1
+      @companySwitcher = new StaffPlan.Views.Shared.CompanySwitcher
+      @$el.find('header .inner ul:first').append @companySwitcher.render().el
 
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>

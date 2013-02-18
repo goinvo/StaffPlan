@@ -81,6 +81,7 @@ class window.StaffPlan.Models.User extends StaffPlan.Model
     first_name: @get("first_name")
     last_name: @get("last_name")
     email: @get("email")
+    current_company_id: @get("current_company_id")
 
   dateChanged: (event) ->
     event.preventDefault()
