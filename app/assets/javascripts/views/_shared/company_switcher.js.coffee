@@ -3,8 +3,6 @@ class StaffPlan.Views.Shared.CompanySwitcher extends Backbone.View
   className: "company-switcher"
     
   initialize: ->
-    @companies = @options.companies
-    @parent = @options.parent
 
   events:
     "click a.switcher": "changeCompany"
@@ -16,7 +14,7 @@ class StaffPlan.Views.Shared.CompanySwitcher extends Backbone.View
     user = StaffPlan.users.get StaffPlan.currentUser.id
     user.save {current_company_id: selectedCompanyId},
       success: (model, response, options) ->
-        window.location.reload(true)
+        window.location.href = "/staffplans/#{user.id}"
     , error: (model, xhr, options) ->
         alert "An error occurred while switching companies. Please try again." 
   render: ->

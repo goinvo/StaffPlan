@@ -57,9 +57,6 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('header .inner ul:first').append @yearFilter.render().el
-    if StaffPlan.userCompanies.length > 1
-      @companySwitcher = new StaffPlan.Views.Shared.CompanySwitcher
-      @$el.find('header .inner ul:first').append @companySwitcher.render().el
       
     @collection.each (project) =>
       view = new StaffPlan.Views.Projects.ListItem
