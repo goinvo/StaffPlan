@@ -52,7 +52,6 @@ class CompanyDecorator < Draper::Base
       json.array!(company_memberships) do |json, membership|
         user = membership.user.decorate
         json.(user, :id, :first_name, :last_name, :full_name, :email, :gravatar, :current_company_id)
-        json.companies company_memberships.map(&:company_id).uniq
         preferences = user.user_preferences 
         if preferences.present?
           json.preferences preferences
