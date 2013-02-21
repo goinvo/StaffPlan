@@ -37,128 +37,143 @@ _templates =
     '''
   edit:
     userEdit: '''
-    <div data-model=user>
-      <div class="control-group">
-        <label class="control-label" for="user_first_name">First name</label>
-        <div class="controls">
-          <input id="user_first_name" data-attribute=first_name size="30" type="text" value={{user.first_name}}>
-        </div>
-      </div>
-
-      <div class="control-group">
-        <label class="control-label" for="user_last_name">Last name</label>
-        <div class="controls">
-          <input id="user_last_name" data-attribute=last_name size="30" type="text" value={{user.last_name}}>
-        </div>
-     </div>
-
-      <div class="control-group">
-        <label class="control-label" for="user_email">Email</label>
-        <div class="controls">
-          <input id="user_email" data-attribute=email size="30" type="text" value="{{user.email}}">
-        </div>
-      </div>
-    </div>
-
-    <div data-model="user_preferences">
-      <div class="control-group">
-        <label class="control-label">User Preferences</label>
-        <div class="controls">
-          <input data-attribute=email_reminder {{#if emailReminder}}checked=checked{{/if}} type="checkbox"> If active, user will receive email reminders when he doesn't commit hours as expected
-        </div>
-      </div>
-    </div>
-
-    <div data-model=membership> 
-      <div id="employment_status">
+    <fieldset>
+      <legend>User Information</legend>
+      <div data-model=user>
         <div class="control-group">
-          <label class="control-label" for="user_employment_status">Employment status</label>
+          <label class="control-label" for="user_first_name">First name</label>
           <div class="controls">
-            <select id="user_employment_status" data-attribute=employment_status>
-              {{#each membershipInfo.status}}
-                <option value="{{name}}" {{#if selected}}selected=selected{{/if}}>{{capitalizedName}}</option>
-              {{/each}}
-            </select>
+            <input id="user_first_name" data-attribute=first_name size="30" type="text" value={{user.first_name}}>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label class="control-label" for="user_last_name">Last name</label>
+          <div class="controls">
+            <input id="user_last_name" data-attribute=last_name size="30" type="text" value={{user.last_name}}>
+          </div>
+       </div>
+
+        <div class="control-group">
+          <label class="control-label" for="user_email">Email</label>
+          <div class="controls">
+            <input id="user_email" data-attribute=email size="30" type="text" value="{{user.email}}">
           </div>
         </div>
       </div>
-      
-      <div id="permissions">
-        {{#each membershipInfo.permissions}}
-          <div class="control-group">
-            <label class="control-label checkbox" for="user_permissions_{{name}}"></label>
-            <div class="controls">
-              <input data-attribute=permissions {{#if userHasPermission}}checked=checked{{/if}} type="checkbox" value="{{name}}"> {{capitalizedName}}
-            </div>
-          </div>
-        {{/each}}
-      </div>
-      
-      <div id="permissions">
+    </fieldset>
+
+    <fieldset>
+      <legend>User Preferences</legend>
+      <div data-model="user_preferences">
         <div class="control-group">
-          <label class="control-label checkbox" for="user_archived"></label>
+          <label class="control-label">Email reminder</label>
           <div class="controls">
-            <input data-model="membership" data-attribute="archived" {{#if membershipInfo.archived}}checked=checked{{/if}} type="checkbox" value="archived">
-            Archived
-            <span class="help-block">Archiving a user enables them to access company data when they log in but removes them from most views.</span>
+            <input data-attribute=email_reminder {{#if emailReminder}}checked=checked{{/if}} type="checkbox"> If active, user will receive email reminders when he doesn't commit hours as expected
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label checkbox" for="user_disabled"></label>
+          <label class="control-label">Display dates</label>
           <div class="controls">
-            <input data-model="membership" data-attribute="disabled" {{#if membershipInfo.disabled}}checked=checked{{/if}} type="checkbox" value="disabled">
-            Disabled
-            <span class="help-block">Disabling a user prohibits them from accessing any of your company's data when they log in.</span>
+            <input data-attribute=display_dates {{#if displayDates}}checked=checked{{/if}} type="checkbox"> If active, the weeks on the different pages will be MM/DD instead of W1/W2...
           </div>
         </div>
       </div>
+    </fieldset>
 
-      <div id="salary_information">
-        {{#if membershipInfo.status.fte}}
-        <div class="salary fte">
+    <fieldset>
+      <legend>Employment-related Information</legend>
+      <div data-model=membership>
+        <div id="employment_status">
           <div class="control-group">
-            <label class="control-label" for="user_salary">Salary</label>
+            <label class="control-label" for="user_employment_status">Employment status</label>
             <div class="controls">
-              <input id="user_salary" data-attribute=salary size="30" type="number" value="{{membershipInfo.salary.salary}}">
-            </div>
-          </div>
-          <div class="control-group">
-            <label class="control-label" for="user_fte">Full-Time Equivalent</label>
-            <div class="controls">
-              <input id="user_full_time_equivalent" data-attribute=full_time_equivalent size="30" type="number" value="{{membershipInfo.salary.full_time_equivalent}}">
+              <select id="user_employment_status" data-attribute=employment_status>
+                {{#each membershipInfo.status}}
+                  <option value="{{name}}" {{#if selected}}selected=selected{{/if}}>{{capitalizedName}}</option>
+                {{/each}}
+              </select>
             </div>
           </div>
         </div>
-        {{/if}}
-        
-        {{#if membershipInfo.status.contractor}}
-          <div class="salary contractor">
+
+        <div id="permissions">
+          {{#each membershipInfo.permissions}}
             <div class="control-group">
-              <label class="control-label" for="user_weekly_allocation">Weekly allocation</label>
+              <label class="control-label checkbox" for="user_permissions_{{name}}"></label>
               <div class="controls">
-                <input id="user_weekly_allocation" data-attribute=weekly_allocation size="30" value="{{membershipInfo.salary.weekly_allocation}}" type="number">
+                <input data-attribute=permissions {{#if userHasPermission}}checked=checked{{/if}} type="checkbox" value="{{name}}"> {{capitalizedName}}
+              </div>
+            </div>
+          {{/each}}
+        </div>
+
+        <div id="permissions">
+          <div class="control-group">
+            <label class="control-label checkbox" for="user_archived"></label>
+            <div class="controls">
+              <input data-model="membership" data-attribute="archived" {{#if membershipInfo.archived}}checked=checked{{/if}} type="checkbox" value="archived">
+              Archived
+              <span class="help-block">Archiving a user enables them to access company data when they log in but removes them from most views.</span>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label checkbox" for="user_disabled"></label>
+            <div class="controls">
+              <input data-model="membership" data-attribute="disabled" {{#if membershipInfo.disabled}}checked=checked{{/if}} type="checkbox" value="disabled">
+              Disabled
+              <span class="help-block">Disabling a user prohibits them from accessing any of your company's data when they log in.</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="salary_information">
+          {{#if membershipInfo.status.fte}}
+          <div class="salary fte">
+            <div class="control-group">
+              <label class="control-label" for="user_salary">Salary</label>
+              <div class="controls">
+                <input id="user_salary" data-attribute=salary size="30" type="number" value="{{membershipInfo.salary.salary}}">
               </div>
             </div>
             <div class="control-group">
-              <label class="control-label" for="user_payment_frequency">Payment frequency</label>
+              <label class="control-label" for="user_fte">Full-Time Equivalent</label>
               <div class="controls">
-                <select id="user_payment_frequency" data-attribute=payment_frequency>
-                  {{#each membershipInfo.salary.payment_frequency}}
-                    <option value="{{name}}" {{#if selectedFrequency}}selected=selected{{/if}}>{{capitalizedName}}</option>
-                  {{/each}}
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label" for="user_rate">Rate</label>
-              <div class="controls">
-                <input id="user_rate" data-attribute=rate size="30" value="{{membershipInfo.salary.rate}}" type="number">
+                <input id="user_full_time_equivalent" data-attribute=full_time_equivalent size="30" type="number" value="{{membershipInfo.salary.full_time_equivalent}}">
               </div>
             </div>
           </div>
-        {{/if}}
+          {{/if}}
+
+          {{#if membershipInfo.status.contractor}}
+            <div class="salary contractor">
+              <div class="control-group">
+                <label class="control-label" for="user_weekly_allocation">Weekly allocation</label>
+                <div class="controls">
+                  <input id="user_weekly_allocation" data-attribute=weekly_allocation size="30" value="{{membershipInfo.salary.weekly_allocation}}" type="number">
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="user_payment_frequency">Payment frequency</label>
+                <div class="controls">
+                  <select id="user_payment_frequency" data-attribute=payment_frequency>
+                    {{#each membershipInfo.salary.payment_frequency}}
+                      <option value="{{name}}" {{#if selectedFrequency}}selected=selected{{/if}}>{{capitalizedName}}</option>
+                    {{/each}}
+                  </select>
+                </div>
+              </div>
+              <div class="control-group">
+                <label class="control-label" for="user_rate">Rate</label>
+                <div class="controls">
+                  <input id="user_rate" data-attribute=rate size="30" value="{{membershipInfo.salary.rate}}" type="number">
+                </div>
+              </div>
+            </div>
+          {{/if}}
+        </div>
       </div>
-    </div>
+    </fieldset>
 
     <div class="form-actions">
       <a href="#" data-action="update" type="submit" class="btn btn-primary">Update user</a>
@@ -231,8 +246,7 @@ _templates =
           </div>
         </div>
       </div>
-      
-      
+
       <div id="permissions">
         <div class="control-group">
           <label class="control-label" for="user_permissions_admin">Admin</label>

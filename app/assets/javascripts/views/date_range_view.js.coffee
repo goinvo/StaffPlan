@@ -46,26 +46,27 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     @remove()
 
   render: ->
+    displayDates = StaffPlan.users.get(StaffPlan.currentUser.id).preferences.get("display_dates")
     data = _.map @collection, (timestamp) ->
       m = moment(timestamp)
       weekNumber = Math.ceil(m.date() / 7)
       switch weekNumber
         when 1
           month: m.format("MMM")
-          week: "W" + weekNumber
+          week: if displayDates then m.format("M/D") else "W" + weekNumber
           timestamp: timestamp
         when 2
           if m.month() is 0
             month: "(#{m.year()})"
-            week: "W" + weekNumber
+            week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
           else
             month: ""
-            week: "W" + weekNumber
+            week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
         else
           month: "&nbsp;"
-          week: "W" + weekNumber
+          week: if displayDates then m.format("M/D") else "W" + weekNumber
           timestamp: timestamp
     m = moment()
     timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
