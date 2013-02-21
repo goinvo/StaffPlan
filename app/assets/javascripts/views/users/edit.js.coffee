@@ -46,7 +46,6 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
             model.membership.set resource
             @model.preferences.save preferencesAttributes,
               success: (resource, response) ->
-                console.log resource
                 Backbone.history.navigate("/users", true)
               error: (model, xhr, options) =>
                 @errorHandler xhr, "preferences"
