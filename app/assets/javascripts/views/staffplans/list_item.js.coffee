@@ -30,6 +30,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
       maxHeight: 100
       model: @model
       begin: @startDate
+      scaleChart: true
       el: @$el.find("svg.user-chart")
       count: @numberOfBars
     @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
