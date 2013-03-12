@@ -100,12 +100,12 @@ ActiveRecord::Schema.define(:version => 20130221193221) do
   create_table "work_weeks", :force => true do |t|
     t.integer  "estimated_hours"
     t.integer  "actual_hours"
-    t.integer  "cweek"
-    t.integer  "year"
+    t.integer  "cweek",             :limit => 2
+    t.integer  "year",              :limit => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "assignment_id"
-    t.decimal  "beginning_of_week", :precision => 15, :scale => 0
+    t.decimal  "beginning_of_week",              :precision => 15, :scale => 0
   end
 
 end

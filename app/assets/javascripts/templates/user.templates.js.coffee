@@ -67,15 +67,21 @@ _templates =
       <legend>User Preferences</legend>
       <div data-model="user_preferences">
         <div class="control-group">
-          <label class="control-label">Email reminder</label>
           <div class="controls">
-            <input data-attribute=email_reminder {{#if emailReminder}}checked=checked{{/if}} type="checkbox"> If active, user will receive email reminders when he doesn't commit hours as expected
+            <label>
+              <input id="email_reminder" data-attribute="email_reminder" {{#if emailReminder}}checked=checked{{/if}} type="checkbox" name="email_reminder">
+              Email reminder
+            </label>
+            <span class='help-block'>If active, user will receive email reminders when she/he doesn't commit hours as expected</span>
           </div>
         </div>
         <div class="control-group">
-          <label class="control-label">Display dates</label>
           <div class="controls">
-            <input data-attribute=display_dates {{#if displayDates}}checked=checked{{/if}} type="checkbox"> If active, the weeks on the different pages will be MM/DD instead of W1/W2...
+            <label>
+              <input id="display_dates" data-attribute="display_dates" {{#if displayDates}}checked=checked{{/if}} type="checkbox">
+              Display dates
+            </label>
+            <span class='help-block'>If active, the weeks on the different pages will be MM/DD instead of W1/W2</span>
           </div>
         </div>
       </div>

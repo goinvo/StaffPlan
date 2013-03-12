@@ -31,12 +31,16 @@ class User < ActiveRecord::Base
     self.save
   end
 
-
   validates_presence_of :email, :first_name, :last_name
   validates_uniqueness_of :email
-  validates_format_of :email,       :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
+  validates_format_of :email, :with => /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\Z/
   
+  before_validation :initialize_user_preferences
   after_validation :handle_empty_password_digest
+  
+  def initialize_user_preferences
+    self.build_user_preferences if self.user_preferences.nil?
+  end
   
   def handle_empty_password_digest
     if self.password_digest.blank? &&
