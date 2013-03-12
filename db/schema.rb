@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130204034907) do
+ActiveRecord::Schema.define(:version => 20130221193221) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "user_id"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(:version => 20130204034907) do
     t.string   "name"
     t.text     "description"
     t.boolean  "active",      :default => true
-    t.datetime "created_at",                    :null => false
-    t.datetime "updated_at",                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
   end
 
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(:version => 20130204034907) do
     t.integer  "client_id"
     t.string   "name"
     t.boolean  "active",                                           :default => true
-    t.datetime "created_at",                                                            :null => false
-    t.datetime "updated_at",                                                            :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "company_id"
     t.boolean  "proposed",                                         :default => false,   :null => false
     t.decimal  "cost",              :precision => 12, :scale => 2, :default => 0.0,     :null => false
@@ -70,15 +70,16 @@ ActiveRecord::Schema.define(:version => 20130204034907) do
   create_table "user_preferences", :force => true do |t|
     t.boolean  "email_reminder"
     t.integer  "user_id"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
+    t.boolean  "display_dates",  :default => false, :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "email"
     t.string   "password_digest"
-    t.datetime "created_at",         :null => false
-    t.datetime "updated_at",         :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "current_company_id"
     t.string   "registration_token"
     t.string   "first_name"
@@ -101,8 +102,8 @@ ActiveRecord::Schema.define(:version => 20130204034907) do
     t.integer  "actual_hours"
     t.integer  "cweek",             :limit => 2
     t.integer  "year",              :limit => 2
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.integer  "assignment_id"
     t.decimal  "beginning_of_week",              :precision => 15, :scale => 0
   end

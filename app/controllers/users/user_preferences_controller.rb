@@ -19,7 +19,7 @@ class Users::UserPreferencesController < ApplicationController
   private
 
   def whitelist_attributes(parameters)
-    parameters.slice(:email_reminder)
+    parameters.slice(:email_reminder, :display_dates)
   end
 
 end
