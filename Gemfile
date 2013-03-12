@@ -4,6 +4,7 @@ gem 'rails', '3.2.11'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
+gem 'json', '~> 1.7'
 gem 'bitmask_attributes'
 gem 'cancan'
 gem 'coffee-filter'
