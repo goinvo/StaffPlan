@@ -39,9 +39,10 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
     @collection.create userAttributes,
       success: (model, response) =>
         # We have a new user
-        membership = new window.StaffPlan.Models.Membership
+        membership = new window.StaffPlan.Models.Membership {user_id: model.id, company_id: window.StaffPlan.currentCompany.id},
           company_id: window.StaffPlan.currentCompany.id
-        membership.save (_.extend membershipAttributes, {user_id: model.id}),
+          parent: model
+        membership.save membershipAttributes,
           success: (resource, response) ->
             # Set the newly saved membership on the user
             model.membership.set resource
