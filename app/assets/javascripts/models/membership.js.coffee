@@ -1,6 +1,7 @@
 class window.StaffPlan.Models.Membership extends StaffPlan.Model
-  initialize: (options) ->
+  initialize: (attributes, options={}) ->
     @companyId = options.company_id
+    @parent = options.parent
   
   url: ->
     mid = if @id then "/#{@id}" else ""
@@ -10,6 +11,8 @@ class window.StaffPlan.Models.Membership extends StaffPlan.Model
     membership:
       # Permissions
       permissions: @get("permissions") or []
+      user_id: @get("user_id")
+
       # Archived / Disabled
       archived: @get("archived") or false
       disabled: @get("disabled") or false
