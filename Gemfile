@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.11'
+gem 'rails', '3.2.13'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
