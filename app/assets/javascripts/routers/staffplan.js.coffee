@@ -70,10 +70,8 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     @swap userShow
 
   userNew: ->
-    user = new window.StaffPlan.Models.User
     userNew = new window.StaffPlan.Views.Users.New
       router: @
-      model: user
       collection: window.StaffPlan.users
     @swap userNew
  
