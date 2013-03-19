@@ -35,7 +35,10 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
             else
               memo['permissions'].push $(elem).val()
         else
-          memo[$(elem).data('attribute')] = $(elem).val()
+          if $(elem).attr("type") is "checkbox"
+            memo[$(elem).data('attribute')] = $(elem).prop("checked")
+          else
+            memo[$(elem).data('attribute')] = $(elem).val()
         memo
       , {}
     @model.save userAttributes,
