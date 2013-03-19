@@ -13,6 +13,24 @@ _templates =
       </ul>
     </div>
   '''
+  companySwitcher: '''
+    <div class="btn-group btn-mini">
+      <a class="btn btn-mini dropdown-toggle" data-toggle="dropdown" data-bypass href="#">
+        {{currentCompanyName}}
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        {{#each companies}}
+          <li>
+            <a href="#" data-company-id="{{id}}" class="switcher" data-bypass>
+              {{name}}
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  '''
 
 StaffPlan.Templates.Shared =
   yearFilter: Handlebars.compile _templates.yearFilter
+  companySwitcher: Handlebars.compile _templates.companySwitcher
