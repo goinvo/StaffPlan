@@ -23,6 +23,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
       model: @model
       begin: @startDate
       count: @numberOfBars
+      scaleChart: true
       el: @$el.find("svg.user-chart")
       
     @renderChildInto @projectChartView, @$el.find "div.chart-container.span10"
