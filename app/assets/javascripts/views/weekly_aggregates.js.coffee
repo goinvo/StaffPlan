@@ -43,6 +43,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       @aggregate timestamp, yearFilter
 
   initialize: ->
+    @scaleChart = @options.scaleChart
     @begin = @options.begin.valueOf()
     @count = @options.count
     @height = @options.height or 75
@@ -67,21 +68,32 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     busiestWeek = _.max data, (week) ->
       week.total
     @maxTotal = busiestWeek.total
+    @relativeHeight = if @maxTotal > 40 then (@maxTotal * 1.375 + 20) else @height
     @$el.empty()
     svg = d3.select(@el)
       .attr('width', @chartWidth)
-      .attr('height', @height)
+      .attr('height', if @scaleChart then @relativeHeight else @height)
 
     # Scale all the heights so that we don't get overflow on the y-axis
-    @heightScale = d3.scale.linear()
-      .domain([0, @maxTotal])
-      .rangeRound([0, @height - 20])
+    if @scaleChart
+      @heightScale = d3.scale.linear()
+        .domain([0, Math.max(@maxTotal, 40)])
+        .rangeRound([0, Math.max(@maxTotal * 1.375, 55)])
+    else
+      @heightScale = d3.scale.linear()
+        .domain([0, @maxTotal])
+        .rangeRound([0, @height - 20])
     # The SVG itself contains a g to group all the elements
     # We might need that in the future if we want to apply transformations
     # to all bars
-    weeks = svg.append("g")
-      .attr("class", "weeks")
-      .attr("transform", "translate(17.5, 0)")
+    if @scaleChart
+      weeks = svg.append("g")
+        .attr("class", "weeks")
+        .attr("transform", "translate(17.5, #{if @maxTotal > 40 then @maxTotal * 1.375 - 55 else 0})")
+    else
+      weeks = svg.append("g")
+        .attr("class", "weeks")
+        .attr("transform", "translate(17.5, 0)")
     
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
@@ -139,10 +151,21 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     data = @getData()
     busiestWeek = _.max data, (week) ->
       week.total
-    @heightScale = d3.scale.linear()
-      .domain([0, busiestWeek.total])
-      .rangeRound([0, @height - 20])
-    svg = d3.select(@el)
+    @relativeHeight = if busiestWeek.total > 40 then (busiestWeek.total * 1.375 + 20) else @height
+    if @scaleChart
+      svg = d3.select(@el)
+        .attr('width', @chartWidth)
+        .attr('height', @relativeHeight)
+      @heightScale = d3.scale.linear()
+        .domain([0, Math.max(busiestWeek.total, 40)])
+        .rangeRound([0, Math.max(busiestWeek.total * 1.375, 55)])
+      svg.select("g.weeks")
+        .attr("transform", "translate(17.5, #{if busiestWeek.total > 40 then busiestWeek.total * 1.375 - 55 else 0})")
+    else
+      svg = d3.select(@el)
+      @heightScale = d3.scale.linear()
+        .domain([0, busiestWeek.total])
+        .rangeRound([0, @height - 20])
     groups = svg.selectAll("g.week").data(data)
         .attr("data-timestamp", (d) -> d.beginning_of_week)
     groups.selectAll("rect")
