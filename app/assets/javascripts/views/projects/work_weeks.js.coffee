@@ -5,9 +5,8 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
   initialize: ->
     @start = @options.start
     @count = @options.count
-    
     @on "date:changed", (message) =>
-      @start = message.begin
+      @start = message.begin.valueOf()
       @count = message.count
       @render()
       
@@ -28,7 +27,6 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
 
     $currentTarget = $( event.currentTarget )
     cid = $currentTarget.data 'cid'
-
     @queueUpdateOrCreate event, cid,
       estimated_hours: $currentTarget.val()
     
@@ -50,15 +48,13 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
     workWeek = @collection.get cid
     if workWeek? and ((parseInt(attributes["estimated_hours"], 10) > 0) or (parseInt(attributes["actual_hours"], 10) > 0))
       assignment = workWeek.collection.parent
+      if assignment.get("archived")
+        assignment.save {archived: false},
+          success: (model, response, options) ->
+            console.log response
+        , error: (model, xhr, options) ->
+          alert "Failed to unarchive the assignment. Try again?"
 
-      assignment.save {archived: false},
-        success: (model, response, options) ->
-          console.log response
-      , error: (model, xhr, options) ->
-        alert "Failed to unarchive the assignment. Try again?"
-
-    element = $(event.currentTarget)
-    
     workWeek.save attributes,
       error: ->
         alert('Failed to save that hourly data. Try again?')
@@ -101,7 +97,6 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
 
   render: ->
     @$el.empty()
-
     range = _.range(@start, @start + @count * 7 * 86400 * 1000, 7 * 86400 * 1000)
     _.each range, (timestamp) =>
       unless (@collection.detect (week) -> week.get("beginning_of_week") is timestamp)?
