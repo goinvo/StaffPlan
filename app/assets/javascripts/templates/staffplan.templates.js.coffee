@@ -55,7 +55,7 @@ _templates =
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded">
+    <div id="user-select" class="grid-row user-info">
       <div class="grid-row-element fixed-360">
         <img class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
@@ -68,7 +68,7 @@ _templates =
     </div>
 
     <div class='header grid-row padded'>
-      <div class='grid-row-element fixed-180 title'><span>Client</span>
+      <div class='grid-row-element fixed-180 client-name-and-project-name title'><span>Client</span>
         <div class='btn-group pull-right'>
           <a href='#' class='btn btn-mini chill-out add-client' title="Add a new client and assignment for {{user.full_name}}"><i class='icon-plus-sign'></i></a>
         </div>

@@ -88,7 +88,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       model: @model
       parent: @
       el: @$el.find("svg.user-chart")
-      height: 120
+      height: 75 + 8
       width: @chartContainerWidth
     @renderChildInto @staffplanChartView, @$el.find "div.chart-container"
     

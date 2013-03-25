@@ -1,14 +1,15 @@
-class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView 
+class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
+
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
-  
+
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
-  
+
   aggregate: (timestamp, yearFilter) ->
     weeks = _.compact _.flatten @model.getAssignments().map (assignment) ->
       models = (if ((localStorage.getItem("yearFilter") == "all") || (localStorage.getItem("yearFilter") == null)) then assignment.work_weeks.models else assignment.get("filteredWeeks"))
       _.detect models, (week) ->
         parseInt(week.get('beginning_of_week'), 10) is parseInt(timestamp, 10)
-    
+
     aggregate = _.reduce weeks, (memo, week) ->
       memo['estimated_hours'] += (parseInt(week.get("estimated_hours"), 10) or 0)
       memo['actual_hours'] += (parseInt(week.get("actual_hours"), 10) or 0)
@@ -94,7 +95,7 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       weeks = svg.append("g")
         .attr("class", "weeks")
         .attr("transform", "translate(17.5, 0)")
-    
+
     # Each bar is actually contained in a g itself
     # That g also contains the number of hours for the bar as text
 
@@ -108,14 +109,13 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     # The label for the bar (number of hours aggregated for a given week)
     labels = groups.selectAll("text").data (d) ->
         [{total: d.total, timestamp: d.beginning_of_week}]
-    
+
     labels.enter().append("text")
       .attr("text-anchor", "middle")
       .attr 'y', (d) =>
         @height - @heightScale(d.total) - (if d.total is 0 then 0 else 10)
       .attr("font-family", "sans-serif")
       .attr("font-size", "11px")
-      #.attr("fill", (d) ->  m = moment(); t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf(); if d.timestamp is t then "rgba(255, 0, 255, 0.8)" else "black")
       .attr("class", (d) ->
         m = moment()
         t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf()
@@ -130,18 +130,12 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
     # The bars themselves, data is split up between two objects so that each bar has its own set of data
     rects = groups.selectAll("rect").data (d) ->
         [{value: Math.max(d.total, 0), cssClass: d.cssClass}, {value: Math.max(d.proposed, 0), cssClass: "#{d.cssClass} proposed"}]
-    rects.enter().append("rect")
-        .attr("x", -@barWidth / 2)
-        .attr("rx", 4)
-        .attr("ry", 2)
-        .attr("width", @barWidth)
-        .attr "y", (d) =>
-          @height - @heightScale(d.value)
-        .attr "height", (d) =>
-          @heightScale(d.value)
-        .attr "class", (d) ->
-          d.cssClass
-    
+    rects.enter().append("path")
+      .attr "d", (d) =>
+        roundRect(-@barWidth / 2, @height - @heightScale(d.value), @barWidth, @heightScale(d.value), 2, 2, 0, 0)
+      .attr "class", (d) ->
+        d.cssClass
+
     rects.exit()
       .remove()
 
@@ -191,6 +185,22 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
         if d.timestamp is t
           "current-week-highlight"
       )
-     # .attr("fill", (d) ->  m = moment(); t = m.utc().startOf('day').subtract('days', m.day() - 1).valueOf(); if d.timestamp is t then "rgba(255, 0, 255, 0.8)" else "black")
      .text (d) ->
        d.total + ""
+
+
+#-----------------------------------------------------------------------------
+# Utility Functions
+#-----------------------------------------------------------------------------
+
+p = (x, y) ->
+  "#{x} #{y} "
+
+roundRect = (x, y, width, height, tl = 0, tr = 0, br = 0, bl = 0) ->
+  "M" + p(x + tl, y) +
+  "L" + p(x + width - tr, y) + "Q" + p(x + width, y) + p(x + width, y + tr) +
+  "L" + p(x + width, y + height - br) + "Q" + p(x + width, y + height) + p(x + width - br, y + height) +
+  "L" + p(x + bl, y + height) + "Q" + p(x, y + height) + p(x, y + height - bl) +
+  "L" + p(x, y + tl) + "Q" + p(x, y) + p(x + tl, y) +
+  "Z"
+

@@ -94,7 +94,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
       model: @model
       parent: @
       el: @$el.find("svg.user-chart")
-      height: 120
+      height: 75 + 8
       
     @on "week:updated", (message) => @projectChartView.trigger "week:updated"
     @renderChildInto @projectChartView, @$el.find "div.chart-container"
