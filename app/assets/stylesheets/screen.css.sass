@@ -6,16 +6,19 @@
 //\\//\\//\\//\\//\\
 
 $font-size: 13px
-// $line-height: 1.5 * $font-size
 $line-height: 24px
 $color: #424242
 $color-light: #9f9f9f
 
 @import mixins
 
+
 //\\//\\//\\//\\//\\
 //     Default    \\
 //\\//\\//\\//\\//\\
+html, body, body > div
+  height: 100%
+
 body
   overflow-x: hidden
   margin:  0
@@ -32,6 +35,7 @@ body
     +transition(color 0.2s ease-out)
     color: #505050
     text-decoration: none
+
     &:link
       text-decoration: none
     &:visited
@@ -55,8 +59,10 @@ form.form-horizontal span.validation-errors
   color: #B94A48
   font-weight: bold
   text-decoration: italic
+
   ul
     margin-left: 0px
+
     li
       margin-left: 4px
       list-style-type: none
@@ -211,13 +217,28 @@ body
 
 
 //\\//\\//\\//\\//\\
+//    Wrapper     \\
+//\\//\\//\\//\\//\\
+#wrap
+  min-height: 100%
+  height: auto !important
+  height: 100%
+  margin: 0 auto -40px
+
+  #push
+    height: 40px
+
+
+//\\//\\//\\//\\//\\
 //      Main      \\
 //\\//\\//\\//\\//\\
 section.main
-  margin:  0
-  padding: 0 0 10px
+  position:  relative
+  margin:    0
+  padding:   0 0 10px
   width:     100%
   min-width: 100%
+  height:    100%
   +box-sizing(border-box)
 
   div.hidden
@@ -364,13 +385,43 @@ section.main
           background-color: white
           vertical-align: text-bottom
 
+
 //\\//\\//\\//\\//\\
 //     Footer     \\
 //\\//\\//\\//\\//\\
 footer
-  padding: 15px 0
-  text-align: center
-  +inline-bullets
+  height:      40px
+  line-height: 40px
+  +box-sizing(border-box)
+
+  background-color: #343435
+  color: #AFB0B2
+
+  a
+    &:link
+      color: #A5A5A8
+    &:visited
+      color: #A5A5A8
+    &:hover
+      color: lighten(#505050, 20%)
+    &:active
+      color: #A5A5A8
+
+  ul
+    margin:  0
+    padding: 0
+
+    list-style-type: none
+
+    li
+      display: inline
+      line-height: inherit
+
+      a
+        display: block
+        float:   left
+        padding: 0 20px
+
 
 //\\//\\//\\//\\//\\
 //     Misc.      \\
@@ -391,7 +442,6 @@ footer
   .name
     font-size: 24px
     font-weight: 600
-    // letter-spacing: -1px
     text-shadow: 0 1px 1px hsla(0, 0%, 0%, .6)
 
   span.last-updated
@@ -619,3 +669,4 @@ section.work-weeks .flex
   margin-bottom: -15px
 
 @import firefox
+
