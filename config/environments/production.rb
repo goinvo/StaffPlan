@@ -15,7 +15,7 @@ StaffPlan::Application.configure do
   config.assets.compress = false
   
   # Set the mailer options needed to send emails
-  config.action_mailer.default_url_options = {host: "staffplan.com"}
+  config.action_mailer.default_url_options = {host: "www.staffplan.com"}
 
   # Fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = true
