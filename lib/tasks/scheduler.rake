@@ -10,7 +10,8 @@ task :send_reminders => :environment do
                 joins(:work_weeks).
                 select("user_id").
                 where("work_weeks.beginning_of_week = ?", @timestamp - 7 * 86400 * 1000).
-                where("actual_hours IS NULL").
+                where("actual_hours IS NULL OR actual_hours = ?", 0).
+                where("estimated_hours IS NOT NULL AND estimated_hours > ?", 0).
                 map { |assignment| User.where(:id => assignment.user_id).first }.
                 uniq
 
