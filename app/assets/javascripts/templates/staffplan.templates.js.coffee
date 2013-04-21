@@ -40,30 +40,29 @@ _templates =
               <a class="btn btn-mini" title="Toggle sort order" data-key="order" data-value="{{#if sortASC}}desc{{else}}asc{{/if}}" data-bypass><i class="{{#if sortASC}}icon-chevron-up{{else}}icon-chevron-down{{/if}}"></i></a>
             </div>
           </div>
-          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>next</a>
-
         </div>
-        <div id="date-target" class="flex margin-left-20">
+        <div id="date-target" class="flex">
         </div>
       </div>
     '''
     addStaff: '''
-    <div class="actions">
-      <a class="btn btn-primary" href="/users/new">Add Staff</a>
+    <div class="actions well">
+      <a class="btn btn-primary" href="/users/new"><i class="icon-plus icon-white" /> Add Staff</a>
     </div>
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info">
-      <div class="grid-row-element fixed-360">
-        <img class="gravatar" src="{{user.gravatar}}" />
-        <span class='name'>
-          <a href="/users/{{user.id}}">{{user.full_name}}</a>
-        </span>
-      </div>
-      <div id="user-chart" class="grid-row-element chart-wrapper top-0">
-        <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
+    <div class="lower">
+      <div id="user-select" class="grid-row user-info">
+        <div class="grid-row-element fixed-360">
+          <img class="gravatar" src="{{user.gravatar}}" />
+          <span class='name'>
+            <a href="/users/{{user.id}}">{{user.full_name}}</a>
+          </span>
+        </div>
+        <div id="user-chart" class="grid-row-element chart-wrapper top-0">
+          <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
+        </div>
       </div>
     </div>
 
@@ -143,7 +142,7 @@ _templates =
     </div>
     '''
   listItem: '''
-    <div class='user-info fixed-180' data-user-id="{{user.id}}>
+    <div class='user-info fixed-180 medium' data-user-id="{{user.id}}>
       <a href="/staffplans/{{user.id}}">
         <img alt="{{user.full_name}}" class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>

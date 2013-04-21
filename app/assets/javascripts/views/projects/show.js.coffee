@@ -1,5 +1,9 @@
 class StaffPlan.Views.Projects.Show extends StaffPlan.View
-  className: "list tall"
+
+  attributes:
+    id: "projects-show"
+    class: "tall"
+
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     if window.location.hash.length
@@ -73,6 +77,9 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
   render: ->
     super
 
+    @$main ||= @$el.find('section.main')
+    @$main.append $list = jQuery('<div class="list" />')
+
     # HEADER
     client = StaffPlan.clients.get( @model.get( "client_id" ) )
     @$el.find('header').append StaffPlan.Templates.Projects.show.header
@@ -112,7 +119,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         parent: @
         start: @startDate
         numberOfBars: @numberOfBars
-      @appendChildTo view, @$el.find('section.main')
+      @appendChildTo view, $list
 
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView

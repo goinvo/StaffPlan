@@ -1,6 +1,7 @@
-//\\//\\//\\//\\//\\
-//     Forms      \\
-//\\//\\//\\//\\//\\
+//-----------------------------------------------------------------------------
+// Forms
+//-----------------------------------------------------------------------------
+
 form
   .input
     position: relative
@@ -57,3 +58,29 @@ input[type=submit], .button-minimal
   &:hover
     border-color: #aaaaaa
     text-decoration: none
+
+/* ------------------------------ Type Ahead ------------------------------
+.typeahead
+  padding:    0
+  width:      100%
+  background: transparent
+
+  > li
+    display: inline
+    margin:  0 !important
+    padding: 0 !important
+
+    &:first-child
+      > a
+        +border-top-radius(3px)
+
+    &:last-child
+      > a
+        +border-bottom-radius(3px)
+
+    > a
+      display:          block
+      padding:          3px 20px
+      background-color: #FFF
+      user-select:      none
+

@@ -2,7 +2,7 @@ _t =
   application: """
   <div id="wrap">
     <header>
-      <div class='inner'>
+      <div class="inner">
         <nav>
           <ul>
             <li id="nav-my-staff-plan"><a href="/staffplans/{{currentUserId}}">My StaffPlan</a></li>
@@ -11,10 +11,10 @@ _t =
             <li id="nav-projects"><a href="/projects">Projects</a></li>
           </ul>
         </nav>
-        <div class='pull-right'>
+        <div class="pull-right">
           <ul>
             <li>
-              <form class='quick-jump'>
+              <form class="quick-jump">
                 <input type="text" class="input search-query header-typeahead" placeholder="" />
               </form>
             </li>
@@ -24,8 +24,8 @@ _t =
         </div>
       </div>
     </header>
-    <section class='main'></section>
-    <div id='push'></div>
+    <section class="main"></section>
+    <div id="push"></div>
   </div>
   <footer>
     <ul>
@@ -35,6 +35,7 @@ _t =
     </ul>
   </footer>
   """
-  
+
 StaffPlan.Templates.Layouts =
   application: Handlebars.compile _t.application
+

@@ -1,19 +1,20 @@
 _templates =
   show:
     header: '''
-      <div class="chart-wrapper">
-        <div class="fixed-180">
-          Client: <strong><a href="/clients/{{client_id}}">{{client_name}}</a></strong><br/>
-          Project: <strong>{{name}}</strong>
+      <div class="lower">
+        <div class="grid-row">
+          <div class="fixed-180">
+            Client: <strong><a href="/clients/{{client_id}}">{{client_name}}</a></strong><br/>
+            Project: <strong>{{name}}</strong>
+          </div>
+          <div id="user-chart" class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
         </div>
-        <div class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
       </div>
-      <div class="date-paginator"> 
-        <div class="fixed-180">
-          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>next</a>
-        </div>
-        <div id="date-target" class="flex margin-left-60">
+      <div class="header grid-row padded">
+        <div class="fixed-180"></div>
+        <div class="date-paginator">
+          <div id="date-target" class="flex margin-left-60">
+          </div>
         </div>
       </div>
     '''
@@ -29,7 +30,7 @@ _templates =
       '''
   new: '''
     <div data-model=client>
-    
+
       <div class="control-group">
         <label class="control-label" for="client-name">
           Client
@@ -43,9 +44,9 @@ _templates =
           </select>
         </div>
       </div>
-      
+
       <div class="control-group hidden">
-        <label class="control-label" for="client-name">    
+        <label class="control-label" for="client-name">
           Client Name
         </label>
         <div class="controls">
@@ -54,25 +55,25 @@ _templates =
       </div>
 
     </div>
-    
+
     <div data-model=project>
 
       <div class="control-group">
-        <label class="control-label" for="project-name">    
+        <label class="control-label" for="project-name">
           Project Name
         </label>
         <div class="controls">
           <input data-model=project data-attribute=name id="project-name" type="text" placeholder="Project Name">
         </div>
       </div>
-      
+
       <div class="control-group">
         <label class="control-label" for="project-active">Active</label>
         <div class="controls">
           <input data-model=project data-attribute=active id="project-active" type="checkbox">
         </div>
       </div>
-      
+
       <div class="control-group">
         <label class="control-label">
           Payment Frequency
@@ -82,18 +83,18 @@ _templates =
           <input data-model=project data-attribute=payment_frequency type="radio" name="project_payment" value="total"> Total
         </radiogroup>
       </div>
-        
+
        <div class="control-group">
          <label class="control-label" for="project-cost">Cost</label>
          <div class="controls">
            <input data-model=project data-attribute=cost id="project-cost" size="10" type="number">
          </div>
        </div>
-    
+
     </div>
     <div class="form-actions">
-      <a href="/projects" data-action="create" class="btn btn-primary">Create project</a>
-      <a href="/projects" data-action="cancel" class="btn">Back to list of projects</a>
+      <a href="/projects" data-action="create" class="btn btn-primary">Create Project</a>
+      <a href="/projects" data-action="cancel" class="btn">Back to Projects</a>
     </div>
 
     '''
@@ -108,33 +109,30 @@ _templates =
         {{project.name}}
       </a>
     </div>
-    <div class="chart-container flex"> 
+    <div class="chart-container flex">
       <svg class="user-chart"></svg>
     </div>
     <div class="totals fixed-60"></div>
     '''
     header: '''
-      <div class="date-paginator"> 
+      <div class="date-paginator">
         <div class="fixed-180">
           <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
           <a href="#" class="return-false next pagination" data-action=next>next</a>
         </div>
-        <div id="date-target" class="flex margin-left-20">
+        <div id="date-target" class="flex">
         </div>
       </div>
       '''
     actions:
       addProject: '''
-        <div class="actions">
-          <a href="/projects/new" class="btn btn-primary" data-action="new">
-            <i class="icon-list icon-white"></i>
-            Add project
-          </a>
+        <div class="actions well">
+          <a href="/projects/new" class="btn btn-primary" data-action="new"><i class="icon-plus icon-white" /> Add Project</a>
         </div>
         '''
   edit: '''
     <div data-model=client>
-    
+
       <div class="control-group">
         <label class="control-label" for="client-name">
           Client
@@ -148,9 +146,9 @@ _templates =
           </select>
         </div>
       </div>
-      
+
       <div class="control-group hidden">
-        <label class="control-label" for="client-name">    
+        <label class="control-label" for="client-name">
           Client Name
         </label>
         <div class="controls">
@@ -159,25 +157,25 @@ _templates =
       </div>
 
     </div>
-    
+
     <div data-model=project>
 
       <div class="control-group">
-        <label class="control-label" for="project-name">    
+        <label class="control-label" for="project-name">
           Project Name
         </label>
         <div class="controls">
           <input data-model=project data-attribute=name id="project-name" type="text" placeholder="Project Name">
         </div>
       </div>
-      
+
       <div class="control-group">
         <label class="control-label" for="project-active">Active</label>
         <div class="controls">
           <input data-model=project data-attribute=active id="project-active" type="checkbox">
         </div>
       </div>
-      
+
       <div class="control-group">
         <label class="control-label">
           Payment Frequency
@@ -187,18 +185,18 @@ _templates =
           <input data-model="project" data-attribute="payment_frequency" name="frequency" type="radio" value="total"> Total
         <radiogroup>
       </div>
-        
+
        <div class="control-group">
          <label class="control-label" for="project-cost">Cost</label>
          <div class="controls">
            <input data-model=project data-attribute=cost id="project-cost" size="10" type="number">
          </div>
        </div>
-    
+
     </div>
     <div class="form-actions">
-      <a href="/projects" data-action="update" class="btn btn-primary">Update project</a>
-      <a href="/projects" data-action="cancel" class="btn">Back to list of projects</a>
+      <a href="/projects" data-action="update" class="btn btn-primary">Update Project</a>
+      <a href="/projects" data-action="cancel" class="btn">Back to Projects</a>
     </div>
     '''
 

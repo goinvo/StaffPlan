@@ -1,21 +1,24 @@
 @import compass/css3
 @import compass/utilities/general/float
 
-//\\//\\//\\//\\//\\
-//      Init      \\
-//\\//\\//\\//\\//\\
 
-$font-size: 13px
-$line-height: 24px
-$color: #424242
-$color-light: #9f9f9f
+//-----------------------------------------------------------------------------
+// Init
+//-----------------------------------------------------------------------------
+
+$font-size:     13px
+$line-height:   24px
+$color:         #424242
+$color-light:   #9F9F9F
+$color-current: #E1B200
 
 @import mixins
 
 
-//\\//\\//\\//\\//\\
-//     Default    \\
-//\\//\\//\\//\\//\\
+//-----------------------------------------------------------------------------
+// Base
+//-----------------------------------------------------------------------------
+
 html, body, body > div
   height: 100%
 
@@ -68,9 +71,24 @@ form.form-horizontal span.validation-errors
       list-style-type: none
 
 
-//\\//\\//\\//\\//\\
-//   User Chart   \\
-//\\//\\//\\//\\//\\
+//-----------------------------------------------------------------------------
+// Wrapper
+//-----------------------------------------------------------------------------
+
+#wrap
+  min-height: 100%
+  height: auto !important
+  height: 100%
+  margin: 0 auto -40px
+
+  #push
+    height: 40px
+
+
+//-----------------------------------------------------------------------------
+// User Chart
+//-----------------------------------------------------------------------------
+
 #user-chart
   line-height: 0
 
@@ -87,9 +105,9 @@ svg.user-chart
       fill: #7eba8d
 
 
-//\\//\\//\\//\\//\\
-//     Header     \\
-//\\//\\//\\//\\//\\
+//-----------------------------------------------------------------------------
+// Header
+//-----------------------------------------------------------------------------
 
 select.year-filter
   height: 24px
@@ -128,17 +146,10 @@ body
       &:active
         color: #A5A5A8
 
-    & > *
-      padding: 0 20px
-
-    & > :last-child
-      border-bottom: 1px solid #CCCCCC
-      +box-shadow(0px 1px 4px #DDDDDD)
-
     .inner
-      position: relative
-      margin:  0 auto
-      padding: 0 10px
+      position:    relative
+      margin:      0 auto
+      padding:     0 10px
       width:       100%
       height:      40px
       line-height: 40px
@@ -151,35 +162,39 @@ body
         position: relative
 
         .search-query
-          position: relative
+          position:         relative
+          padding-left:     25px
           background-color: #414243
-          border-color: #2D2D2E
+          border-color:     #2D2D2E
+          color:            #292929
 
           // Faux bootstrap icon
           &::after
-            content: ""
-            display: block
+            content:  ""
+            display:  block
             position: absolute
-            top:    0
-            bottom: 0
-            left:   0
-            width:  16px
-            height: 16px
+            top:      5px
+            left:     5px
+            width:    16px
+            height:   16px
 
             background:
-              color: red
-              image: image-url("glyphicons-halflings.png")
+              color:    transparent
+              image:    image-url("glyphicons-halflings.png")
               position: -48px 0px
-              repeat: no-repeat
+              repeat:   no-repeat
+
+    .lower
+      padding: 8px 8px 0
 
     ul
-      display: inline
-      margin: 0
-      padding: 0
+      display:         inline
+      margin:          0
+      padding:         0
       list-style-type: none
 
       li
-        display: inline-block
+        display:     inline-block
         margin-left: 5px
 
         & + li
@@ -216,22 +231,10 @@ body
       +inline-bullets
 
 
-//\\//\\//\\//\\//\\
-//    Wrapper     \\
-//\\//\\//\\//\\//\\
-#wrap
-  min-height: 100%
-  height: auto !important
-  height: 100%
-  margin: 0 auto -40px
+//-----------------------------------------------------------------------------
+// Main
+//-----------------------------------------------------------------------------
 
-  #push
-    height: 40px
-
-
-//\\//\\//\\//\\//\\
-//      Main      \\
-//\\//\\//\\//\\//\\
 section.main
   position:  relative
   margin:    0
@@ -270,6 +273,12 @@ section.main
       padding: 10px 0 5px
       font-size: 16px
 
+  /* ------------------------------ Main Well, Bottom (Contains Buttons) ------------------------------
+  .well
+    margin: 24px auto
+    width:  400px
+    text-align: center
+
 .tall section.main
   padding-top: 198px
 
@@ -277,21 +286,7 @@ section.main
   padding-top: 100px
 
 .current-week-highlight
-  color: rgba(50, 50, 50, 0.8)
-  fill: rgba(50, 50, 50, 0.8)
-  text-shadow: 1px 0px rgba(40, 40, 40, 0.8)
-
-div.list div.project-list-item
-  width: 100%
-
-div.list-item
-  margin-top: 32px
-  margin-left: 25px
-  // Align with ul.slick
-  & > *
-    overflow: hidden
-  div.user-info
-    overflow: visible
+  color: $color-current
 
 span.month-name
   display: inline-block
@@ -363,8 +358,7 @@ section.main
         background-color: #f7f7f7
         .controls
           right: 15px
-    div.actions
-      padding: 16px
+
   .info
     .active
       padding-left: 16px + 6px
@@ -386,9 +380,10 @@ section.main
           vertical-align: text-bottom
 
 
-//\\//\\//\\//\\//\\
-//     Footer     \\
-//\\//\\//\\//\\//\\
+//-----------------------------------------------------------------------------
+// Footer
+//-----------------------------------------------------------------------------
+
 footer
   height:      40px
   line-height: 40px
@@ -423,12 +418,9 @@ footer
         padding: 0 20px
 
 
-//\\//\\//\\//\\//\\
-//     Misc.      \\
-//\\//\\//\\//\\//\\
-.clear
-  clear: both
-  float: none
+//-----------------------------------------------------------------------------
+// User Info
+//-----------------------------------------------------------------------------
 
 .user-info
   img
@@ -443,6 +435,7 @@ footer
     font-size: 24px
     font-weight: 600
     text-shadow: 0 1px 1px hsla(0, 0%, 0%, .6)
+    +ellipsis
 
   span.last-updated
     font-size: 12px
@@ -450,14 +443,150 @@ footer
   .email
     color: $color-light
 
+  // Small
   &.small
     font-size: $font-size
+
+    .name
+      font-size: inherit
+      font-weight: 400
 
     img
       width: 16px
 
+  // Medium
+  &.medium
+    font-size: $font-size
+
+    .name
+      font-size: inherit
+      font-weight: 400
+
+    img
+      width: 32px
+
+
+//-----------------------------------------------------------------------------
+// List View
+//-----------------------------------------------------------------------------
+
+.list
+  padding-left:  8px
+  padding-right: 8px
+
+  .list-item, .date-paginator
+
+    .client-name
+      font-weight: bold
+
+    > *
+      display: inline-block
+
+    .ellipsis
+      +ellipsis
+
+
+//-----------------------------------------------------------------------------
+// Grid Row
+//-----------------------------------------------------------------------------
+
+.grid-row
+  +display-box
+  +box-orient("horizontal")
+
+  &.header
+    padding:          6px 15px
+    border:           1px solid #e0e0e0
+    border-right:     none
+    border-left:      none
+    color:            $color
+    background-color: #f7f7f7
+
+    .title span
+      display: inline-block
+      height:  24px
+
+  &.flex
+    min-height: 34px
+
+  &.padded
+    padding: 8px
+
+  // Grid Row Element
+  .grid-row-element
+    white-space: nowrap
+    position:    relative
+
+    &.client-name-and-project-name
+      padding-right: 10px
+
+    .assignment-totals
+      height:      35px
+      padding-top: 5px
+
+    &.padding-top-left
+      padding: 5px 0 0 5px
+
+    .show-first-row
+      display: none
+      &:first-child
+        display: initial
+
+    .cweeks-and-years
+      div
+        display:    inline-block
+        width:      35px
+        height:     15px
+        margin:     0 5px 0 0
+        padding:    0
+        text-align: center
+
+input.estimated-actual, .row-label
+  display: inline-block
+  width: 35px
+  margin-right: 2px
+  text-align: center
+  height: 25px
+  position: relative
+  z-index: 20
+
+  &[type="number"]
+    padding: 0
+
+.row-label
+  color: #9F9F9F
+
+.assignment-row
+  min-height: 75px
+
+.client
+  &.zebra
+    &[data-client-id]:nth-child(2n+1)
+      border:           1px solid #e0e0e0
+      border-right:     none
+      border-left:      none
+      background-color: #f7f7f7
+
+.row-filler
+  +row-filler
+
+.quick-jump
+  margin-bottom: 0
+
+  ul li
+    display:     block
+    margin-left: 5px
+
+
+//-----------------------------------------------------------------------------
+// Miscellaneous
+//-----------------------------------------------------------------------------
+
+.clear
+  clear: both
+  float: none
+
 #user-select
-  @extend .padded
   padding-bottom: 0 !important
 
   +next-and-previous
@@ -466,15 +595,6 @@ footer
     +week-hour-counter
     ul
       display: inline-block
-
-.list
-  .list-item, .date-paginator
-    .client-name
-      font-weight: bold
-    > *
-      display: inline-block
-    .ellipsis
-      +ellipsis
 
 .position-fixed
   position: fixed
@@ -510,136 +630,45 @@ footer
 .chart-wrapper > div
   display: inline-block
 
-.margin-left-45
-  margin-left: 45px
-
-.margin-left-40
-  margin-left: 40px
-
+// TODO: Remove this
 .margin-left-60
   margin-left: 60px
 
-.margin-left-20
-  margin-left: 20px
-
+// TODO: Remove this
 .margin-left-35
   margin-left: 35px
 
-.margin-left-84
-  margin-left: 84px
+/* ------------------------------ Staffplan Index: interval-width-target ------------------------------
+#interval-width-target
+  margin-left: 50px
 
+/* ------------------------------ Date Paginator ------------------------------
 .date-paginator
-  width: 100%
-  position: relative
-  padding-left: 25px
+  width:        100%
+  position:     relative
+
   > *
     display: inline-block
+
+  .date-range
+    position: relative
+
   .next, .previous
-    position: absolute
-    width: 35px
-    height: 17px
+    position:    absolute
+    width:       15px
+    height:      17px
     text-indent: -9999px
-    top: 0px
+    top:         0px
+
   .next
-    right: 90px
+    right: -20px
     +arrows-sprite(forward)
+
   .previous
-    left: 180px
+    left: -20px
     +arrows-sprite(back)
 
-.staffplan-show .date-paginator
-  top: initial
-  padding-top: initial
-  padding-left: initial
-  width: 100%
-  .week-numbers, .month-names
-    margin-left: 50px
-  .next
-    top: 0
-    right: 30px
-  .previous
-    left: 25px
-    top: 0
-
-.grid-row
-  +display-box
-  +box-orient("horizontal")
-
-  &.header
-    padding: 6px 15px
-    border: 1px solid #e0e0e0
-    border-right: none
-    border-left: none
-    color: $color
-    background-color: #f7f7f7
-
-    .title span
-      display: inline-block
-      height: 24px
-
-  &.flex
-    min-height: 34px
-
-  &.padded
-    padding: 8px
-
-.grid-row-element
-  white-space: nowrap
-  position: relative
-  &.client-name-and-project-name
-    padding-right: 10px
-  .assignment-totals
-    height: 35px
-    padding-top: 5px
-  &.padding-top-left
-    padding: 5px 0 0 5px
-  .show-first-row
-    display: none
-    &:first-child
-      display: initial
-  .cweeks-and-years
-    div
-      display: inline-block
-      width: 35px
-      height: 15px
-      margin: 0 5px 0 0
-      padding: 0
-      text-align: center
-
-input.estimated-actual, .row-label
-  display: inline-block
-  width: 35px
-  margin-right: 2px
-  text-align: center
-  height: 25px
-  position: relative
-  z-index: 20
-  &[type="number"]
-    padding: 0
-
-.row-label
-  color: #9F9F9F
-
-.assignment-row
-  min-height: 75px
-
-.client
-  &.zebra
-    &[data-client-id]:nth-child(2n+1)
-      border: 1px solid #e0e0e0
-      border-right: none
-      border-left: none
-      background-color: #f7f7f7
-
-.row-filler
-  +row-filler
-
-.quick-jump
-  margin-bottom: 0
-  ul li
-    display: block
-    margin-left: 5px
-
+/* ------------------------------ Flash Notice ------------------------------
 #flash
   width: 100%
   div
@@ -658,12 +687,14 @@ input.estimated-actual, .row-label
       border-right: none
       background-color: #86b88a
 
+/* ------------------------------ Buttons ------------------------------
 .btn-group > .btn-mini
   font-size: 14px
 
 .assignment-actions-target > a
   display: block
 
+/* ------------------------------ Firefox Fixes ------------------------------
 // To counter the <br/> tag required to force Firefox to wrap display: -moz-box; flex divs.
 section.work-weeks .flex
   margin-bottom: -15px
