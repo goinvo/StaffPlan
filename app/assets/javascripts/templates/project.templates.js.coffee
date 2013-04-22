@@ -28,9 +28,9 @@ _templates =
       <a href="/assignments" class="btn btn-mini" data-action="add-user"><i class="icon-plus"></i></a>
       <a href="/projects/{{projectId}}/edit" class="btn btn-mini">Edit project</a>
       '''
+
   new: '''
     <div data-model=client>
-
       <div class="control-group">
         <label class="control-label" for="client-name">
           Client
@@ -53,11 +53,9 @@ _templates =
           <input data-model=client data-attribute=name id="client-name" type="text" placeholder="Client Name">
         </div>
       </div>
-
     </div>
 
     <div data-model=project>
-
       <div class="control-group">
         <label class="control-label" for="project-name">
           Project Name
@@ -90,29 +88,28 @@ _templates =
            <input data-model=project data-attribute=cost id="project-cost" size="10" type="number">
          </div>
        </div>
-
     </div>
+
     <div class="form-actions">
       <a href="/projects" data-action="create" class="btn btn-primary">Create Project</a>
       <a href="/projects" data-action="cancel" class="btn">Back to Projects</a>
     </div>
-
     '''
 
   index:
     listItem: '''
-    <div class='project-info fixed-180'>
-      <a class="client-name" href="/clients/{{client.id}}">
-        {{client.name}}
-      </a>
-      <a href="/projects/{{project.id}}">
-        {{project.name}}
-      </a>
-    </div>
-    <div class="chart-container flex">
-      <svg class="user-chart"></svg>
-    </div>
-    <div class="totals fixed-60"></div>
+      <div class='project-info fixed-180'>
+        <a class="client-name" href="/clients/{{client.id}}">
+          {{client.name}}
+        </a>
+        <a href="/projects/{{project.id}}">
+          {{project.name}}
+        </a>
+      </div>
+      <div class="chart-container flex">
+        <svg class="user-chart"></svg>
+      </div>
+      <div class="totals fixed-60"></div>
     '''
     header: '''
       <div class="date-paginator">

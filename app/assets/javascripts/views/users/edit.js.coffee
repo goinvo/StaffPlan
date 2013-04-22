@@ -1,6 +1,10 @@
 class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
+
+  attributes:
+    id:    "users-new"
+    class: "form-horizontal extra-short"
+  
   tagName: "form"
-  className: "form-horizontal short"
 
   initialize: ->
     _.extend @, StaffPlan.Mixins.ValidationHandlers

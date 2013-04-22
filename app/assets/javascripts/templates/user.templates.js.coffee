@@ -211,8 +211,10 @@ _templates =
         {{/each}}
       </div>
     </div>
-    <a class="btn btn-primary" href="/users">Back to list of users</a>
-    <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit user</a>
+    <div class="form-actions">
+      <a class="btn btn-primary" href="/users">Back to list of users</a>
+      <a class="btn btn-primary" href="/users/{{user.id}}/edit">Edit user</a>
+    </div>
     '''
   new:
     userNew: '''

@@ -1,7 +1,9 @@
 class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
-  id: "clients"
-  className: "clients-index short"
-  
+
+  attributes:
+    id:    "clients-index"
+    class: "extra-short"
+
   initialize: ->
     @collection.bind 'change:id', => @render()
 
@@ -20,11 +22,13 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
     client.destroy()
     @collection.remove(client)
     @$el.find('li[data-client-id=' + clientId + ']').remove()
-    
+
   render: ->
     super
-    
-    @$el.find('section.main').html StaffPlan.Templates.Clients.index.clientInfo
+
+    @$main ||= @$el.find('section.main')
+
+    @$main.html StaffPlan.Templates.Clients.index.clientInfo
       clients: @collection.map (client) ->
         _.extend client.attributes,
           projects: client.getProjects().reduce((hash, project) ->
@@ -32,4 +36,7 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
             hash
           , {})
       currentCompany: @options.currentCompany
+
+    @$main.append StaffPlan.Templates.Clients.index.actions.addClient
+
     @

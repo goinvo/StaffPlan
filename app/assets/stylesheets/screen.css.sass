@@ -19,7 +19,7 @@ $color-current: #E1B200
 // Base
 //-----------------------------------------------------------------------------
 
-html, body, body > div
+html, body, body > div, body > form
   height: 100%
 
 body
@@ -285,6 +285,9 @@ section.main
 .short section.main
   padding-top: 100px
 
+.extra-short section.main
+  padding-top: 40px
+
 .current-week-highlight
   color: $color-current
 
@@ -307,20 +310,6 @@ span.week-number
 
 .project-name
   width: 150px
-
-body#clients.show
-  section.main
-    div.content
-      div.client-info
-        margin-bottom: 16px
-
-div#clients.clients-index.short
-  div.add-client.position-fixed
-    background-color: #EEE
-    width: 100%
-    z-index: 1000
-    top: 35px
-    padding: 35px 0
 
 section.main
   section.work-weeks input, div.row-label

@@ -43,41 +43,41 @@ _templates =
     '''
   index:
     clientInfo: '''
-    <div class="add-client position-fixed">
-      <a href="/clients/new" class="btn btn-primary">
-        <i class="icon-white icon-list"></i>
-        Add client
-      </a>
-    </div>
+      <h2 class="lead">
+        <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a> &rarr; Clients
+      </h2>
 
-    <h2 class="lead">
-      <a href="/companies/{{currentCompany.id}}">{{currentCompany.name}}</a> &rarr; Clients
-    </h2> 
-    <ul class="list slick unstyled">
-      {{#each clients}}
-        <li class='list-item' data-client-id="{{this.id}}">
-          <div class='client-name client-info'>
-            <a href="/clients/{{this.id}}">
-              {{this.name}}
-            </a>
-          </div>
-          <div class="controls"> 
-            <a class="btn btn-info btn-small" href="/clients/{{this.id}}/edit">
-              <i class="icon-white icon-edit"></i>
-              Edit
-            </a>
-            <a class="btn btn-danger btn-small" href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
-              <i class="icon-white icon-trash"></i>
-              Delete
-            </a>
-          </div>
-          <div class='client-projects ellipsis flex'>
-            {{{client_projects this.projects}}}
-          </div>
-        </li>
-      {{/each}}
-    </ul>
+      <ul class="list slick unstyled">
+        {{#each clients}}
+          <li class='list-item' data-client-id="{{this.id}}">
+            <div class='client-name client-info'>
+              <a href="/clients/{{this.id}}">
+                {{this.name}}
+              </a>
+            </div>
+            <div class="controls">
+              <a class="btn btn-info btn-small" href="/clients/{{this.id}}/edit">
+                <i class="icon-white icon-edit"></i>
+                Edit
+              </a>
+              <a class="btn btn-danger btn-small" href="/clients/{{this.id}}" data-action="delete" data-client-id="{{this.id}}">
+                <i class="icon-white icon-trash"></i>
+                Delete
+              </a>
+            </div>
+            <div class='client-projects ellipsis flex'>
+              {{{client_projects this.projects}}}
+            </div>
+          </li>
+        {{/each}}
+      </ul>
     '''
+    actions:
+      addClient: '''
+        <div class="actions well">
+          <a href="/clients/new" class="btn btn-primary" data-action="new"><i class="icon-plus icon-white" /> Add Client</a>
+        </div>
+      '''
   show:
     clientInfo: '''
     <div class="client-info">
@@ -91,10 +91,10 @@ _templates =
       </div>
       <div class="client-active">
         <h3>Status</h3>
-        This client is 
+        This client is
         {{#if client.active}}
-          active 
-        {{else}} 
+          active
+        {{else}}
           inactive
         {{/if}}
       </div>
@@ -106,18 +106,22 @@ _templates =
         {{/each}}
       </div>
     </div>
-    <div class="actions">
+    <div class="form-actions">
       <a class="btn btn-primary" href="/clients">Back to list of clients</a>
       <a class="btn btn-primary" href="/clients/{{client.id}}/edit">Edit client</a>
     </div>
     '''
-    
 
 
 StaffPlan.Templates.Clients =
   index:
     clientInfo: Handlebars.compile _templates.index.clientInfo
+    actions:
+      addClient: Handlebars.compile _templates.index.actions.addClient
+
   show:
     clientInfo: Handlebars.compile _templates.show.clientInfo
+
   new:
     newClient: Handlebars.compile _templates.new.newClient
+
