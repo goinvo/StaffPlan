@@ -87,7 +87,7 @@ _templates =
     totals:
       """
       <div class='estimated-hours assignment-totals'>{{hours.estimated}}</div>
-      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='pull-right'>&#916;{{hours_delta hours.delta}}</span></div>
+      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='hours-delta'>&#916;{{hours_delta hours.delta}}</span></div>
       """
     actions:
       """
@@ -125,7 +125,7 @@ _templates =
       <div class="grid-row-element fixed-180 sexy client-name-and-project-name assignment-actions-target">
         <a href="/projects/{{project.id}}">{{project.name}}</a>
       </div>
-      <div class="grid-row-element flex work-weeks"></div>
+      <div class="grid-row-element flex work-weeks-container"></div>
     '''
     
     new: '''
@@ -170,7 +170,6 @@ _templates =
         {{/if}}
       {{/each}}
     </div>
-    <br/>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}

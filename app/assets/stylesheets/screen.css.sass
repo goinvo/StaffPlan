@@ -185,7 +185,8 @@ body
               repeat:   no-repeat
 
     .lower
-      padding: 8px 8px 0
+      padding:     8px 8px 0
+      line-height: 0
 
     ul
       display:         inline
@@ -312,6 +313,9 @@ span.week-number
   width: 150px
 
 section.main
+  section.work-weeks
+    display: inline
+
   section.work-weeks input, div.row-label
     display: inline-block
     width: 35px
@@ -497,21 +501,23 @@ footer
 
   &.flex
     min-height: 34px
+    display: block
 
   &.padded
+    width:   100%
     padding: 8px
 
   // Grid Row Element
   .grid-row-element
-    white-space: nowrap
     position:    relative
 
     &.client-name-and-project-name
       padding-right: 10px
 
     .assignment-totals
+      +box-sizing(border-box)
       height:      35px
-      padding-top: 5px
+      padding-top: 3px
 
     &.padding-top-left
       padding: 5px 0 0 5px
@@ -682,11 +688,4 @@ input.estimated-actual, .row-label
 
 .assignment-actions-target > a
   display: block
-
-/* ------------------------------ Firefox Fixes ------------------------------
-// To counter the <br/> tag required to force Firefox to wrap display: -moz-box; flex divs.
-section.work-weeks .flex
-  margin-bottom: -15px
-
-@import firefox
 
