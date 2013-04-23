@@ -1,5 +1,8 @@
 class window.StaffPlan.Views.Clients.New extends StaffPlan.View
-  className: "short"
+
+  attributes:
+    id:    "clients-new"
+    class: "extra-short"
   
   initialize: ->
     _.extend @, StaffPlan.Mixins.ValidationHandlers

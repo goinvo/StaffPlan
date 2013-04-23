@@ -1,0 +1,86 @@
+//-----------------------------------------------------------------------------
+// Forms
+//-----------------------------------------------------------------------------
+
+form
+  .input
+    position: relative
+    padding: 12px 15px
+    overflow: hidden
+    +transition(background-color 0.2s ease-out)
+
+    & + .input
+      border-top: 1px solid #e0e0e0
+
+    label
+      display: inline-block
+      min-width: 15%
+      text-transform: capitalize
+
+    &.new-client
+      margin-left: 16px
+
+  .actions
+    padding-top: 15px
+
+  .user-activation
+    label.info
+      margin-left: 16px
+      font-size: 8pt
+      font-style: italic
+
+input[type=text]
+  +appearance(none)
+
+input[type=text], input[type=number]
+  border: 1px solid #e0e0e0
+  height: 25px
+  +transition(all 0.2s ease-out)
+  +box-sizing(border-box)
+
+  &:focus
+    border-color: darken(#e0e0e0, 20%)
+    outline: none
+
+input[type=submit], .button-minimal
+  +appearance(none)
+  display: inline-block
+  padding: 6px
+  border: solid #cccccc 1px
+  background: transparent
+  color: #424242
+  font: inherit
+  cursor: pointer
+  +border-radius(3px)
+  +box-shadow(0 1px 0 white)
+  +transition(all 0.2s ease-out)
+
+  &:hover
+    border-color: #aaaaaa
+    text-decoration: none
+
+/* ------------------------------ Type Ahead ------------------------------
+.typeahead
+  padding:    0
+  width:      100%
+  background: transparent
+
+  > li
+    display: inline
+    margin:  0 !important
+    padding: 0 !important
+
+    &:first-child
+      > a
+        +border-top-radius(3px)
+
+    &:last-child
+      > a
+        +border-bottom-radius(3px)
+
+    > a
+      display:          block
+      padding:          3px 20px
+      background-color: #FFF
+      user-select:      none
+

@@ -40,35 +40,34 @@ _templates =
               <a class="btn btn-mini" title="Toggle sort order" data-key="order" data-value="{{#if sortASC}}desc{{else}}asc{{/if}}" data-bypass><i class="{{#if sortASC}}icon-chevron-up{{else}}icon-chevron-down{{/if}}"></i></a>
             </div>
           </div>
-          <a href="#" class="return-false previous pagination" data-action=previous>previous</a>
-          <a href="#" class="return-false next pagination" data-action=next>next</a>
-
         </div>
-        <div id="date-target" class="flex margin-left-20">
+        <div id="date-target" class="flex">
         </div>
       </div>
     '''
     addStaff: '''
-    <div class="actions">
-      <a class="btn btn-primary" href="/users/new">Add Staff</a>
+    <div class="actions well">
+      <a class="btn btn-primary" href="/users/new"><i class="icon-plus icon-white" /> Add Staff</a>
     </div>
     '''
   show:
     frame: '''
-    <div id="user-select" class="grid-row user-info padded">
-      <div class="grid-row-element fixed-360">
-        <img class="gravatar" src="{{user.gravatar}}" />
-        <span class='name'>
-          <a href="/users/{{user.id}}">{{user.full_name}}</a>
-        </span>
-      </div>
-      <div id="user-chart" class="grid-row-element chart-wrapper top-0">
-        <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
+    <div class="lower">
+      <div id="user-select" class="grid-row user-info">
+        <div class="grid-row-element fixed-360">
+          <img class="gravatar" src="{{user.gravatar}}" />
+          <span class='name'>
+            <a href="/users/{{user.id}}">{{user.full_name}}</a>
+          </span>
+        </div>
+        <div id="user-chart" class="grid-row-element chart-wrapper top-0">
+          <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
+        </div>
       </div>
     </div>
 
     <div class='header grid-row padded'>
-      <div class='grid-row-element fixed-180 title'><span>Client</span>
+      <div class='grid-row-element fixed-180 client-name-and-project-name title'><span>Client</span>
         <div class='btn-group pull-right'>
           <a href='#' class='btn btn-mini chill-out add-client' title="Add a new client and assignment for {{user.full_name}}"><i class='icon-plus-sign'></i></a>
         </div>
@@ -88,7 +87,7 @@ _templates =
     totals:
       """
       <div class='estimated-hours assignment-totals'>{{hours.estimated}}</div>
-      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='pull-right'>&#916;{{hours_delta hours.delta}}</span></div>
+      <div class='actual-hours assignment-totals'>{{hours.actual}} <span class='hours-delta'>&#916;{{hours_delta hours.delta}}</span></div>
       """
     actions:
       """
@@ -126,7 +125,7 @@ _templates =
       <div class="grid-row-element fixed-180 sexy client-name-and-project-name assignment-actions-target">
         <a href="/projects/{{project.id}}">{{project.name}}</a>
       </div>
-      <div class="grid-row-element flex work-weeks"></div>
+      <div class="grid-row-element flex work-weeks-container"></div>
     '''
     
     new: '''
@@ -143,7 +142,7 @@ _templates =
     </div>
     '''
   listItem: '''
-    <div class='user-info fixed-180' data-user-id="{{user.id}}>
+    <div class='user-info fixed-180 medium' data-user-id="{{user.id}}>
       <a href="/staffplans/{{user.id}}">
         <img alt="{{user.full_name}}" class="gravatar" src="{{user.gravatar}}" />
         <span class='name'>
@@ -171,7 +170,6 @@ _templates =
         {{/if}}
       {{/each}}
     </div>
-    <br/>
     <div class="grid-row flex">
       <div class='row-label'>Actual</div>
       {{#each visibleWorkWeeks}}
