@@ -1,5 +1,8 @@
 class window.StaffPlan.Views.Users.Show extends StaffPlan.View
-  className: "short"
+
+  attributes:
+    id:    "users-new"
+    class: "extra-short"
   
   render: ->
     super

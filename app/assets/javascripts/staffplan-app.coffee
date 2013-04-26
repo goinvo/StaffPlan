@@ -18,7 +18,7 @@ window.StaffPlan =
     Clients: {}
   Routers: {}
   Dispatcher: _.extend {}, Backbone.Events
-  
+
   initialize: (data) ->
     @users = new StaffPlan.Collections.Users data.users
     @projects = new StaffPlan.Collections.Projects data.projects
@@ -46,7 +46,7 @@ window.StaffPlan =
       currentCompany: @currentCompany
       currentUser: @currentUser
     $ -> Backbone.history.start(pushState: true)
-    
+
     @checkPresence()
 
 
@@ -66,14 +66,14 @@ window.StaffPlan =
       name: name
     ,
       success: callback
-      
+
   addProjectByNameAndClient: (name, client, callback) ->
     @projects.create
       name: name
       client_id: client.get('id')
     ,
       success: callback
-  
+
   typeAhead: (query, callback) ->
     list = StaffPlan.clients.reduce (array, client) ->
       array.push client.get('name')
@@ -81,21 +81,21 @@ window.StaffPlan =
         "#{project.get('name')} {#{client.get('name')}}"
       _.flatten array
     , []
-    
+
     list.push StaffPlan.users.pluck('full_name')
     _.flatten list
-  
+
   clearTypeAhead: ->
     $('.quick-jump').find('input').val('')
-    
+
   onTypeAhead: ($form) ->
     typeAheadValue = $form.find('input').val().trim()
-    
+
     if (match = typeAheadValue.match(/\{(.*)\}/i))?
       clientName = match.pop()
       client = _.detect @clients.models, (client) ->
-        client.get('name') == clientName 
-    
+        client.get('name') == clientName
+
     if client?
       projectName = typeAheadValue.substr(0, typeAheadValue.indexOf('{')).trim()
       project = client.getProjects().detect (project) ->
@@ -103,13 +103,13 @@ window.StaffPlan =
 
       @clearTypeAhead()
       url = "/projects/#{project.get('id')}"
-      
+
     else if (client = StaffPlan.clients.detect (client) -> client.get('name') == typeAheadValue)?
       @clearTypeAhead()
       url = "/clients/#{client.get('id')}"
-      
+
     else if (user = StaffPlan.users.detect (user) -> user.get('full_name') == typeAheadValue)?
       @clearTypeAhead()
       url = "/staffplans/#{user.get('id')}"
-    
+
     Backbone.history.navigate(url, true) if url?

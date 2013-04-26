@@ -40,7 +40,6 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     @parent.trigger "date:changed",
       action: $(event.target).data('action')
 
-
   leave: ->
     @unbind()
     @remove()
@@ -61,7 +60,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
             week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
           else
-            month: ""
+            month: "&nbsp;"
             week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
         else
@@ -81,6 +80,5 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     @$el.html @dateRangeTemplate
       months: months
       weeks: weeks
-    # @$el.find("span[data-timestamp=\"#{timestampAtBeginningOfWeek.valueOf()}\"]").addClass("current")
 
     @
