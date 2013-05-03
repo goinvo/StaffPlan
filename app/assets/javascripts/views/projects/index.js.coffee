@@ -19,9 +19,13 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
-    @debouncedRender = _.debounce(@render, 500)
-    $(window).bind "resize", (event) =>
-      @debouncedRender()
+    @debouncedRender = _.debounce =>
+      @calculateNumberOfBars()
+      @renderDates()
+      @children.each (view) -> view.render()
+    , 200
+    
+    $(window).bind "resize", (event) => @render()
 
     @on "year:changed", (message) =>
       @yearChanged(parseInt(message.year, 10))
@@ -47,38 +51,55 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
       show: true
       keyboard: true
       backdrop: 'static'
-
-  render: ->
-    super
-
-    @$header ||= @$el.find('header')
-    @$header.append $lower = jQuery('<div class="lower" />')
-
-    @$main ||= @$el.find('section.main')
-    @$main.append $list = jQuery('<div class="list" />')
-
+      
+  calculateNumberOfBars: ->
     @numberOfBars = Math.floor( ($('body').width() - 320) / 40 )
-
-    $lower.append StaffPlan.Templates.Projects.index.header
-
+  
+  renderProjects: ->
+    @collection.each (project) =>
+      view = new StaffPlan.Views.Projects.ListItem
+        model: project
+        start: @startDate
+      @appendChildTo view, @$list
+  
+  renderFYSelect: ->
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
       @$header.find('.inner ul:first').append @yearFilter.render().el
-
-    @collection.each (project) =>
-      view = new StaffPlan.Views.Projects.ListItem
-        model: project
-        start: @startDate
-      @appendChildTo view, $list
-
+  
+  renderDates: ->
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
 
     @renderChildInto dateRangeView, @$el.find("#date-target")
+    
+  render: ->
+    if @rendered
+      @debouncedRender()
+    else
+      super
 
-    @$main.append StaffPlan.Templates.Projects.index.actions.addProject
+      @$header ||= @$el.find('header')
+      @$header.append $lower = jQuery('<div class="lower" />')
 
+      @$main ||= @$el.find('section.main')
+      @$main.append @$list = jQuery('<div class="list" />')
+
+      $lower.append StaffPlan.Templates.Projects.index.header
+
+      @renderFYSelect()
+    
+      @calculateNumberOfBars()
+    
+      @renderProjects()
+
+      @renderDates()
+
+      @$main.append StaffPlan.Templates.Projects.index.actions.addProject
+    
+      @rendered = true
+    
     @
 

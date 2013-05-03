@@ -24,9 +24,13 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
 
     # Makes it so that the render() call can only be
     # called AT MOST once every 500ms during resize
-    @debouncedRender = _.debounce(@render, 500)
-    $(window).bind "resize", (event) =>
-      @debouncedRender()
+    @debouncedRender = _.debounce =>
+      @calculateNumberOfBars()
+      @children.each (view) -> view.render()
+      @renderDates()
+    , 200
+    
+    $(window).bind "resize", (event) => @render()
 
     # We show active users by default
     # TODO: Maybe make it so that the set of users defined by the
@@ -45,15 +49,13 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
-    @on "date:changed", (message) =>
-      @dateChanged(message.action)
-
-    @on "membership:toggle", (message) =>
-      @toggleMembership(message)
-
-    @on "year:changed", (message) =>
-      @yearChanged(parseInt(message.year, 10))
-
+    @on "date:changed", (message) => @dateChanged(message.action)
+    @on "membership:toggle", (message) => @toggleMembership(message)
+    @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
+  
+  calculateNumberOfBars: ->
+    @numberOfBars = Math.floor( ($('body').width() - 280) / 40 )
+  
   renderUsers: ->
     # Show the collection of users with the associated information and charts
     $list = @$main.find(".list")
@@ -64,45 +66,56 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
         parent: @
         startDate: @startDate.valueOf()
       @appendChildTo view, $list
-
-  render: ->
-    super
-
-    @$main ||= @$el.find("section.main")
-    @$main.append("<div class='list' />")
-
-    # this @sort business obviously sucks. This should leverage the location.hash and hashchange.
-    $lower = jQuery('<div class="lower" />')
-    @$el.find('header').append $lower
-    $lower.append StaffPlan.Templates.StaffPlans.index.pagination
-      sortASC: @sort.order == "asc"
-      byWorkload: @sort.field == "workload"
-
-    # FIXME: This is ugly
-    buttonText = if localStorage.getItem("staffplanFilter") is "active"
-      "Show inactive"
-    else
-      "Show active"
-
-    @$el.find("button.btn-primary").text(buttonText)
-
+  
+  renderDates: ->
+    dateRangeView = new StaffPlan.Views.DateRangeView
+      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
+    @renderChildInto dateRangeView, @$el.find("#date-target")
+  
+  renderFYSelect: ->
     # We don't show the select control if the work weeks only span over ONE year
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('header .inner ul:first').append @yearFilter.render().el
+    
+  render: ->
+    if @rendered
+      @debouncedRender()
+    else
+      super
 
-    @renderUsers()
+      @$main ||= @$el.find("section.main")
+      @$main.append("<div class='list' />")
 
-    @$main.append StaffPlan.Templates.StaffPlans.index.addStaff
+      # this @sort business obviously sucks. This should leverage the location.hash and hashchange.
+      $lower = jQuery('<div class="lower" />')
+      @$el.find('header').append $lower
+      $lower.append StaffPlan.Templates.StaffPlans.index.pagination
+        sortASC: @sort.order == "asc"
+        byWorkload: @sort.field == "workload"
 
-    @numberOfBars = Math.floor( ($('body').width() - 280) / 40 )
+      # FIXME: This is ugly
+      buttonText = if localStorage.getItem("staffplanFilter") is "active"
+        "Show inactive"
+      else
+        "Show active"
 
-    dateRangeView = new StaffPlan.Views.DateRangeView
-      collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-    @renderChildInto dateRangeView, @$el.find("#date-target")
+      @$el.find("button.btn-primary").text(buttonText)
 
+      @calculateNumberOfBars()
+    
+      @renderFYSelect()
+    
+      @renderUsers()
+
+      @$main.append StaffPlan.Templates.StaffPlans.index.addStaff
+
+      @renderDates()
+      
+      @rendered = true
+      
     @
 
   sortUsers: (event) ->

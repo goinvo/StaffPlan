@@ -15,9 +15,14 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
 
-    @debouncedRender = _.debounce(@render, 100)
-    $(window).bind "resize", (event) =>
-      @debouncedRender()
+    @debouncedRender = _.debounce =>
+      @calculateNumberOfBars()
+      @renderChart()
+      @renderDates()
+      @children.each (view) -> view.render()
+    , 200
+    
+    $(window).bind "resize", (event) => @render()
 
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "week:updated", (message) => @projectChartView.trigger "week:updated"
@@ -30,7 +35,6 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
 
   # Delete modal used to destroy an assignment and make sure the user understands the consequences
   deleteAssignment: ->
-
     event.preventDefault()
     event.stopPropagation()
     user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
@@ -71,22 +75,16 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
           model.set "client_id", @model.get("client_id")
           @render()
       , error: (model, xhr, options) ->
-          alert "SOMETHING WENT WRONG"
+          alert "Error, please try again."
     
-
-  render: ->
-    super
-
-    @$main ||= @$el.find('section.main')
-    @$main.append $list = jQuery('<div class="list" />')
-
-    # HEADER
+  renderHeader: ->
     client = StaffPlan.clients.get( @model.get( "client_id" ) )
     @$el.find('header').append StaffPlan.Templates.Projects.show.header
       name: @model.get "name"
       client_name: client.get "name"
       client_id: client.get('id')
-    
+  
+  calculateNumberOfBars: ->
     # Each line is a list-item with 25 pixels of left margin
     # Each line has a 180 pixels-wide user information component and a 60px-wide 
     # totals component.
@@ -94,7 +92,8 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     # 35 pixels-wide labels div before the inputs
     # Adding 40ox of "buffer space" to the tally for security
     @numberOfBars = Math.floor ( ($('body').width() - 360) / 40 )
-
+    
+  renderChart: ->
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
       count: @numberOfBars
@@ -102,16 +101,17 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
       parent: @
       el: @$el.find("svg.user-chart")
       height: 75 + 8
-      
-    @on "week:updated", (message) => @projectChartView.trigger "week:updated"
-    @renderChildInto @projectChartView, @$el.find "div.chart-container"
     
+    @renderChildInto @projectChartView, @$el.find "div.chart-container"
+  
+  renderFYSelect: ->
     if StaffPlan.relevantYears.length > 2
       @yearFilter = new StaffPlan.Views.Shared.YearFilter
         years: StaffPlan.relevantYears.sort()
         parent: @
       @$el.find('header .inner ul:first').append @yearFilter.render().el
-
+  
+  renderAssignments: ->
     # THE USERS AND THEIR INPUTS
     @model.getAssignments().each (assignment) =>
       view = new StaffPlan.Views.Assignments.ListItem
@@ -119,18 +119,47 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         parent: @
         start: @startDate
         numberOfBars: @numberOfBars
-      @appendChildTo view, $list
-
+      
+      @appendChildTo view, @$list
+  
+  renderDates: ->
     # DATE PAGINATOR
     dateRangeView = new StaffPlan.Views.DateRangeView
       collection: _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
       parent: @
     @renderChildInto dateRangeView, @$el.find "#date-target"
-
+  
+  renderUnassignedUsers: ->
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers()
     @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
       unassignedUsers: unassignedUsers.map (u) -> u.attributes
       projectId: @model.id
+  
+  render: ->
+    if @rendered
+      @debouncedRender()
+    else
+      super
+
+      @$main ||= @$el.find('section.main')
+      @$main.append @$list = jQuery('<div class="list" />')
+    
+      # HEADER
+      @renderHeader()
+    
+      @calculateNumberOfBars()
+    
+      @renderChart()
+    
+      @renderFYSelect()
+
+      @renderAssignments()
+
+      @renderDates()
+
+      @renderUnassignedUsers()
+      
+      @rendered = true
     
     @

@@ -9,7 +9,6 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @parent = @options.parent
     @model.collection.on "change:user_id", (event) => @render()
     @startDate = @options.start.valueOf()
-    @numberOfBars = @options.numberOfBars
 
     @on "date:changed", (message) =>
       @workWeeksView.trigger "date:changed", message
@@ -34,7 +33,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @workWeeksView = new window.StaffPlan.Views.Projects.WorkWeeks
       collection: @model.work_weeks
       start: @startDate
-      count: @numberOfBars
+      count: @parent.numberOfBars
     @renderChildInto @workWeeksView, @$el.find "div.user-hour-inputs"
 
 
