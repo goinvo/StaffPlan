@@ -63,9 +63,10 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         proposed: false
       , success: (model, response) =>
           model.set "client_id", @model.get("client_id")
-          @render()
-      , error: (model, xhr, options) ->
+          @appendAssignmentView model
           
+      , error: (model, xhr, options) ->
+          alert "Error adding that user."
     else
       StaffPlan.assignments.create
         project_id: @model.id
@@ -73,9 +74,10 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         proposed: false
       , success: (model, response) =>
           model.set "client_id", @model.get("client_id")
-          @render()
+          @appendAssignmentView model
+          
       , error: (model, xhr, options) ->
-          alert "Error, please try again."
+          alert "Error adding TBD user."
     
   renderHeader: ->
     client = StaffPlan.clients.get( @model.get( "client_id" ) )
@@ -92,7 +94,16 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     # 35 pixels-wide labels div before the inputs
     # Adding 40ox of "buffer space" to the tally for security
     @numberOfBars = Math.floor ( ($('body').width() - 360) / 40 )
+  
+  appendAssignmentView: (assignment) ->
+    view = new StaffPlan.Views.Assignments.ListItem
+      model: assignment
+      parent: @
+      start: @startDate
+      numberOfBars: @numberOfBars
     
+    @appendChildTo view, @$list
+  
   renderChart: ->
     @projectChartView = new StaffPlan.Views.WeeklyAggregates
       begin: @startDate.valueOf()
@@ -113,14 +124,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
   
   renderAssignments: ->
     # THE USERS AND THEIR INPUTS
-    @model.getAssignments().each (assignment) =>
-      view = new StaffPlan.Views.Assignments.ListItem
-        model: assignment
-        parent: @
-        start: @startDate
-        numberOfBars: @numberOfBars
-      
-      @appendChildTo view, @$list
+    @model.getAssignments().each (assignment) => @appendAssignmentView assignment
   
   renderDates: ->
     # DATE PAGINATOR
