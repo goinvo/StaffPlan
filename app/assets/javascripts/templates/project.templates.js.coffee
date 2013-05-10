@@ -3,9 +3,9 @@ _templates =
     header: '''
       <div class="lower">
         <div class="grid-row">
-          <div class="fixed-180">
-            Client: <strong><a href="/clients/{{client_id}}">{{client_name}}</a></strong><br/>
-            Project: <strong>{{name}}</strong>
+          <div class="fixed-180 project-labels">
+            <p>Client: <strong><a href="/clients/{{client_id}}">{{client_name}}</a></strong></p>
+            <p>Project: <strong>{{name}}</strong></p>
           </div>
           <div id="user-chart" class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
         </div>
