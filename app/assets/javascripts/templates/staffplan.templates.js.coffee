@@ -27,18 +27,20 @@ Handlebars.registerHelper 'staffplans_show_calendarWeeks', (dates) ->
   
 Handlebars.registerHelper 'hours_delta', (total) ->
   if total > 0 then "+#{total}" else "#{Math.abs(total)}"
-
+  
 _templates =
   index:
+    sortButtonGroup: '''
+      <div class="btn-group">
+        <a class="btn btn-mini{{#unless byWorkload}} btn-inverse{{/unless}}" title="Sort by name" data-key="field" data-value="name" data-bypass><i class="icon-user{{#unless byWorkload}} icon-white{{/unless}}"></i></a>
+        <a class="btn btn-mini{{#if byWorkload}} btn-inverse{{/if}}" title="Sort by workload" data-key="field" data-value="workload" data-bypass><i class="icon-time{{#if byWorkload}} icon-white{{/if}}"></i></a>
+        <a class="btn btn-mini" title="Toggle sort order" data-key="order" data-value="{{#if sortASC}}desc{{else}}asc{{/if}}" data-bypass><i class="{{#if sortASC}}icon-chevron-up{{else}}icon-chevron-down{{/if}}"></i></a>
+      </div>
+    '''
     pagination: '''
       <div class="date-paginator"> 
         <div class="fixed-180">
           <div class="btn-toolbar">
-            <div class="btn-group">
-              <a class="btn btn-mini{{#unless byWorkload}} btn-inverse{{/unless}}" title="Sort by name" data-key="field" data-value="name" data-bypass><i class="icon-user{{#unless byWorkload}} icon-white{{/unless}}"></i></a>
-              <a class="btn btn-mini{{#if byWorkload}} btn-inverse{{/if}}" title="Sort by workload" data-key="field" data-value="workload" data-bypass><i class="icon-time{{#if byWorkload}} icon-white{{/if}}"></i></a>
-              <a class="btn btn-mini" title="Toggle sort order" data-key="order" data-value="{{#if sortASC}}desc{{else}}asc{{/if}}" data-bypass><i class="{{#if sortASC}}icon-chevron-up{{else}}icon-chevron-down{{/if}}"></i></a>
-            </div>
           </div>
         </div>
         <div id="date-target" class="flex">
@@ -186,6 +188,7 @@ _templates =
 
 StaffPlan.Templates.StaffPlans = {
   index:
+    sortButtonGroup: Handlebars.compile _templates.index.sortButtonGroup
     addStaff: Handlebars.compile _templates.index.addStaff
     pagination: Handlebars.compile _templates.index.pagination
   listItem: Handlebars.compile _templates.listItem

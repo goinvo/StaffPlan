@@ -42,9 +42,17 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     m = moment()
     @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
 
-    # When the collection of users changes, we render the view
-    # again to reflect the change in the UI
-    @users.bind "reset", (event) => @render()
+    # When the collection of users changes fix their order in @children and re-insert
+    @users.bind "reset", (event) =>
+      @children.each (view) -> view.el.remove()
+      $list = @$main.find(".list")
+      @users.each (model) =>
+        @children.detect((childView) =>
+          childView.model == model
+        ).$el.appendTo($list)
+      
+      @renderSortStuff()
+      
 
     key "left, right", (event) =>
       @dateChanged if event.keyIdentifier.toLowerCase() is "left" then "previous" else "next"
@@ -79,7 +87,18 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
         years: StaffPlan.relevantYears
         parent: @
       @$el.find('header .inner ul:first').append @yearFilter.render().el
+  
+  renderSortStuff: ->
+    # this @sort business obviously sucks. This should leverage the location.hash and hashchange.
+    unless @rendered
+      $lower = jQuery('<div class="lower" />')
+      @$el.find('header').append $lower
+      $lower.append StaffPlan.Templates.StaffPlans.index.pagination
     
+    @$el.find('.lower .btn-toolbar').html StaffPlan.Templates.StaffPlans.index.sortButtonGroup
+        sortASC: @sort.order == "asc"
+        byWorkload: @sort.field == "workload"
+      
   render: ->
     if @rendered
       @debouncedRender()
@@ -89,12 +108,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
       @$main ||= @$el.find("section.main")
       @$main.append("<div class='list' />")
 
-      # this @sort business obviously sucks. This should leverage the location.hash and hashchange.
-      $lower = jQuery('<div class="lower" />')
-      @$el.find('header').append $lower
-      $lower.append StaffPlan.Templates.StaffPlans.index.pagination
-        sortASC: @sort.order == "asc"
-        byWorkload: @sort.field == "workload"
+      @renderSortStuff()
 
       # FIXME: This is ugly
       buttonText = if localStorage.getItem("staffplanFilter") is "active"
