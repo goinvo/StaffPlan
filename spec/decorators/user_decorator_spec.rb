@@ -49,7 +49,6 @@ describe UserDecorator do
   #     end
 
   #     @decorator = UserDecorator.new(@user)
-  #     binding.pry
   #     snippet = Nokogiri::HTML(@decorator.chart_for_date_range(@date_range))
   #     snippet.css('li').each do |li|
   #       week = li.attributes['data-week'].value.to_i

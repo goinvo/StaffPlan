@@ -1,7 +1,14 @@
 class MembershipsController < ApplicationController
 
   def create
-    @membership = Membership.new(params[:membership])
+    membership_params = params[:membership]
+    
+    unless params[:membership].has_key?(:company_id)
+      membership_params.merge!(company_id: params[:company_id])
+    end
+    
+    @membership = Membership.new(membership_params)
+    
     if @membership.save
       render :json => @membership, :status => :ok
     else
