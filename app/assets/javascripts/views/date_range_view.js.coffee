@@ -1,5 +1,8 @@
 class StaffPlan.Views.DateRangeView extends Support.CompositeView
-  className: "date-range"
+
+  attributes:
+    class: "date-range"
+
   templates:
     dates: '''
       <a href="#" class="pagination previous" data-action=previous>&lt;</a>
@@ -23,6 +26,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
       </div>
       <a href="#" class="pagination next" data-action=next>&gt;</a>
     '''
+
   initialize: ->
     @dateRangeTemplate = Handlebars.compile(@templates.dates)
 
