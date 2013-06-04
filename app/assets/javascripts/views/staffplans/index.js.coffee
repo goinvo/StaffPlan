@@ -52,6 +52,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
         ).$el.appendTo($list)
       
       @renderSortStuff()
+      @renderDates()
       
 
     key "left, right", (event) =>
