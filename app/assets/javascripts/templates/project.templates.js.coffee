@@ -7,13 +7,13 @@ _templates =
             <p>Client: <strong><a href="/clients/{{client_id}}">{{client_name}}</a></strong></p>
             <p>Project: <strong>{{name}}</strong></p>
           </div>
-          <div id="user-chart" class="flex chart-container margin-left-60"><svg class="user-chart"></svg></div>
+          <div id="user-chart" class="flex chart-container margin-left-37"><svg class="user-chart"></svg></div>
         </div>
       </div>
       <div class="header grid-row padded">
         <div class="fixed-180"></div>
         <div class="date-paginator">
-          <div id="date-target" class="flex margin-left-60">
+          <div id="date-target" class="flex margin-left-40">
           </div>
         </div>
       </div>
