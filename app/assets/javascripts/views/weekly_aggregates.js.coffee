@@ -19,8 +19,8 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
       if @isInViewport()
         @render()
       else
-        _.delay @render, 200
-
+        _.delay _.bind(@render, @), 200
+    
     @on "week:updated", @render
 
   # TODO: Stuff this in workers or use slices or do something less dumb than doing it serially
