@@ -26,11 +26,11 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     # called AT MOST once every 500ms during resize
     @debouncedRender = _.debounce =>
       @calculateNumberOfBars()
-      @children.each (view) -> view.render()
+      @onWindowResized()
       @renderDates()
     , 200
     
-    $(window).bind "resize", (event) => @render()
+    $(window).bind "resize", (event) => @debouncedRender()
 
     # We show active users by default
     # TODO: Maybe make it so that the set of users defined by the
@@ -39,8 +39,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @users = new StaffPlan.Collections.Users @options.users.active()
     @users.reset @users.sortBy (user) -> user.workload()
 
-    m = moment()
-    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+    @setStartDate()
 
     # When the collection of users changes fix their order in @children and re-insert
     @users.bind "reset", (event) =>
@@ -62,6 +61,13 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @on "membership:toggle", (message) => @toggleMembership(message)
     @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
   
+  setStartDate: ->
+    m = moment()
+    # if window.location.hash.match(/from/)?
+    #   @startDate = moment(parseInt(window.location.hash.slice(1).split("=")[1], 10))
+    # else
+    @startDate = m.utc().startOf('day').subtract('days', m.day() - 1).subtract('weeks', 1)
+  
   calculateNumberOfBars: ->
     @numberOfBars = Math.floor( ($('body').width() - 280) / 40 )
   
@@ -73,7 +79,6 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
       view = new StaffPlan.Views.StaffPlans.ListItem
         model: user
         parent: @
-        startDate: @startDate.valueOf()
       @appendChildTo view, $list
   
   renderDates: ->
