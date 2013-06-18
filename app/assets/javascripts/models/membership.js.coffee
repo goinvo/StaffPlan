@@ -5,7 +5,7 @@ class window.StaffPlan.Models.Membership extends StaffPlan.Model
   
   url: ->
     mid = if @id then "/#{@id}" else ""
-    "/companies/#{@companyId}/memberships#{mid}"
+    "/companies/#{@get('company_id') || @companyId}/memberships#{mid}"
 
   toJSON: ->
     membership:
