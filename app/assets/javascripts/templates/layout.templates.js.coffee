@@ -30,7 +30,7 @@ _t =
   <footer>
     <ul>
       <li><a data-bypass href="https://github.com/rescuedcode/StaffPlan" target="_blank">Open Source</a></li>
-      <li><a data-bypass href="https://www.pivotaltracker.com/projects/663621" target="_blank">Tracker</a></li>
+      <li><a data-bypass href="https://github.com/rescuedcode/StaffPlan/issues" target="_blank">Issue Tracker</a></li>
       <li class="pull-right"><a data-bypass href="http://goinvo.com" target="_blank">by Involution Studios</a></li>
     </ul>
   </footer>
