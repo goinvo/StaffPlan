@@ -147,6 +147,11 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.8)
       slop (~> 3.3.1)
+    pry-nav (0.2.3)
+      pry (~> 0.9.10)
+    pry-remote (0.1.7)
+      pry (~> 0.9)
+      slop (~> 3.0)
     quiet_assets (1.0.1)
       railties (~> 3.1)
     rack (1.4.5)
@@ -272,6 +277,8 @@ DEPENDENCIES
   paper_trail (~> 2.7)
   pg
   pry
+  pry-nav
+  pry-remote
   quiet_assets
   rails (= 3.2.13)
   rails-behaviors

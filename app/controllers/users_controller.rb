@@ -49,9 +49,17 @@ class UsersController < ApplicationController
       if @user.update_attributes(params[:user])
         format.html { redirect_to @user, :notice => "Successfully updated user" }
         format.json { render :json => @user, :status => :accepted }
-      else  
-        format.html { render action: "edit" }
-        format.json { render :json => @user.errors, :status => :unprocessable_entity }
+      else
+        if @user.errors.empty?
+          @user.assign_attributes(params[:user])
+          @user.save(validate: false)
+          
+          format.html { redirect_to @user, :notice => "Successfully updated user" }
+          format.json { render :json => @user, :status => :accepted }
+        else
+          format.html { render action: "edit" }
+          format.json { render :json => @user.errors, :status => :unprocessable_entity }
+        end
       end
     end
   end

@@ -32,19 +32,20 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
       , {}
 
     membershipAttributes = _.reduce $("div[data-model=membership] input:not(:disabled), select:not(:disabled)"), (memo, elem) ->
-        if $(elem).data('attribute') is "permissions"
-          if $(elem).prop('checked')
-            if not memo['permissions']?
-              memo['permissions'] = [$(elem).val()]
-            else
-              memo['permissions'].push $(elem).val()
-        else
-          if $(elem).attr("type") is "checkbox"
-            memo[$(elem).data('attribute')] = $(elem).prop("checked")
+      if $(elem).data('attribute') is "permissions"
+        if $(elem).prop('checked')
+          if not memo['permissions']?
+            memo['permissions'] = [$(elem).val()]
           else
-            memo[$(elem).data('attribute')] = $(elem).val()
-        memo
-      , {}
+            memo['permissions'].push $(elem).val()
+      else
+        if $(elem).attr("type") is "checkbox"
+          memo[$(elem).data('attribute')] = $(elem).prop("checked")
+        else
+          memo[$(elem).data('attribute')] = $(elem).val()
+      memo
+    , {}
+    
     @model.save userAttributes,
       success: (model, response) =>
         # We have a new user

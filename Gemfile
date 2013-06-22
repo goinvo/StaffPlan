@@ -33,6 +33,8 @@ end
 group :development do
   gem 'awesome_print', require: 'ap'
   gem 'pry'
+  gem 'pry-nav'
+  gem 'pry-remote',                               require: 'pry-remote'
   gem 'quiet_assets'
   gem 'sqlite3'
   gem 'taps'
@@ -45,6 +47,8 @@ group :test do
   gem 'mocha'
   gem 'nokogiri'
   gem 'pry'
+  gem 'pry-nav'
+  gem 'pry-remote',                               require: 'pry-remote'
   gem 'rspec-rails',       '2.8.1'
   gem 'webrat'
 end
