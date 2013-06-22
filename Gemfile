@@ -24,6 +24,7 @@ gem 'will_paginate'
 gem 'newrelic_rpm'
 gem 'compass'
 gem 'compass-rails'
+gem 'git'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2'

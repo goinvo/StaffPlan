@@ -59,7 +59,14 @@ window.StaffPlan =
       url: "/api/presence/ping"
       dataType: "json"
     .fail((jqXHR, textStatus, errorThrown) -> window.location.href = "/sessions/new")
-    .done((data, textStatus, jqXHR) -> _.delay(window.StaffPlan.checkPresence, 600000))
+    .done((data, textStatus, jqXHR) ->
+      unless window.StaffPlan.sha?
+        window.StaffPlan.sha = data.sha
+        
+      else if window.StaffPlan.sha != data.sha && confirm("StaffPlan has been updated, please refresh this page to get the latest and greatest. Reload now?")
+        window.location.reload()
+      
+      _.delay(window.StaffPlan.checkPresence, 600000))
 
   addClientByName: (name, callback) ->
     @clients.create
