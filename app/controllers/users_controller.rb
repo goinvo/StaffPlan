@@ -36,7 +36,7 @@ class UsersController < ApplicationController
         RegistrationMailer.add_staff_notification(@user, Company.find(current_user.current_company_id)).deliver
         @user.send_invitation(current_user)
         format.html { redirect_to @user, notice: "Invitation successfully sent to #{@user.full_name}" }
-        format.json { render :json => @user.attributes.merge({:gravatar => UserDecorator.decorate(@user).gravatar}), status: :created}
+        format.json { render :json => @user.attributes.merge({full_name: @user.full_name, gravatar: UserDecorator.decorate(@user).gravatar}), status: :created}
       else
         format.html { render action: "new" }
         format.json { render json: @user.errors, status: :unprocessable_entity }
