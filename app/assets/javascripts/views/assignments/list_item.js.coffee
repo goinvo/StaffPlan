@@ -14,7 +14,7 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
       @workWeeksView.trigger "date:changed", message
   
   render: ->
-    if @model.get("user_id")?
+    if _.isNumber @model.get("user_id")
       @$el.html StaffPlan.Templates.Assignments.userItem
         user: StaffPlan.users.get(@model.get("user_id")).attributes
     else
