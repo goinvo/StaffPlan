@@ -38,7 +38,6 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
       , {}
     @collection.create userAttributes,
       success: (model, response) =>
-        # We have a new user
         membership = new window.StaffPlan.Models.Membership {user_id: model.id, company_id: window.StaffPlan.currentCompany.id},
           company_id: window.StaffPlan.currentCompany.id
           parent: model
@@ -51,6 +50,7 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
             @errorHandler(xhr.responseText, "membership")
           , {wait: true}
       error: (model, xhr, options) =>
+        options.collection.remove model
         @errorHandler(xhr.responseText, "user")
       , {wait: true}
 
