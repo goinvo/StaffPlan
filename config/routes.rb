@@ -1,7 +1,6 @@
 StaffPlan::Application.routes.draw do
   
   get "sign_out" => "sessions#destroy", :as => "sign_out"
-  get "sign_in" => "sessions#new", :as => "sign_in"
   
   # Users
   resources :users do
@@ -46,9 +45,9 @@ StaffPlan::Application.routes.draw do
   get "/api/companies/:secret" => "api/companies#index", format: :json
   get "/api/presence/ping" => "api/presence#ping", format: :json
 
-  resources :sessions, :only => [:new, :create, :destroy]
+  resources :sessions, :only => [ :create, :destroy]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
-  root :to => 'staffplans#my_staffplan'
+  root :to => 'sessions#new'
 end

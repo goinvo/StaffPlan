@@ -3,6 +3,11 @@ class SessionsController < ApplicationController
   skip_before_filter :require_current_user, :require_current_company, :except => [:destroy]
   
   def new
+    if !current_user
+      render :layout => 'application'
+    else
+      redirect_to my_staffplan_url
+    end
   end
 
   def create
@@ -13,11 +18,11 @@ class SessionsController < ApplicationController
       if cookies[:original_request].present?
         redirect_to url_for Marshal.load(cookies.delete(:original_request))
       else
-        redirect_to root_url, notice: t(:hello)
+        redirect_to my_staffplan_url, notice: t(:hello)
       end
     else
       flash.alert = t(:invalid_password_or_email)
-      redirect_to new_session_url
+      redirect_to root_url
     end
   end
 

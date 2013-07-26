@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
         cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now}
       end
       
-      redirect_to new_session_url
+      redirect_to root_url
     end
   end
 

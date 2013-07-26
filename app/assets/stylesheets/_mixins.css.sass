@@ -131,3 +131,9 @@ $arrows-spacing: 20px
     ul
       padding-left: 10px
       list-style: circle
+      
+=calc($property, $expression)
+  #{$property}: -moz-calc(#{$expression})
+  #{$property}: -o-calc(#{$expression})
+  #{$property}: -webkit-calc(#{$expression})
+  #{$property}: calc(#{$expression})
