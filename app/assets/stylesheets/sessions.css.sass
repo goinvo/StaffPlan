@@ -64,6 +64,9 @@ header
       input[type="email"],
       input[type="password"]
         +transition( all 300ms ease )
+        +input-placeholder  
+          color: #464646
+          
         margin: 0px 0 0 0
         height: 20px
         padding: 4px 10px
@@ -78,15 +81,47 @@ header
           color: lighten( #464646, 15% )
           background: rgba(0,0,0,0.53)   
           box-shadow: inset 0px 0px 2px rgba(0,0,0,0.55), 0px 0px 1px rgba(255,255,255,0.11)       
-          
-    
-
+        
 .overview-wrapper 
   +clearfix
-  +calc( height, "100% - 40px" )
+  +calc( min-height, "100% - 80px" )
   width: 960px
   margin: 0px auto
+  padding: 40px 0 0 0
   background: rgba(255,255,255,0.75)
   box-shadow: 0px 0px 2px rgba(0,0,0,0.5)      
+  
+  .detailed,
+  .brief
+    +float-left
+    +calc( min-height, "100% - 20px")
+    position: relative
+    padding: 20px 0 0 0
+    .inner 
+      padding: 0 20px
+      
+  .detailed
+    width: 600px
+    
+    &:before,
+    &:after
+      +background-image(linear-gradient(45deg, color-stops( transparent 0%, transparent 40%, rgba(0,0,0,0.1) 41%, rgba(0,0,0,0.1) 60%, transparent 61%, transparent 100% )))
+      content: ''
+      display: block
+      position: absolute
+      right: -5px
+      top: 0px
+      width: 5px
+      height: 100%
+      background-size: 5px 5px
+      background-repeat: repeat-y
+    &:before
+      +background-image(linear-gradient(-45deg, color-stops( transparent 0%, transparent 40%, rgba(0,0,0,0.1) 41%, rgba(0,0,0,0.1) 60%, transparent 61%, transparent 100% )))
+  
+  .brief
+    width: 260px
+  
+  
+  
       
     

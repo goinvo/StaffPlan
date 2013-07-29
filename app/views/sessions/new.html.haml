@@ -15,18 +15,22 @@
         .input-wrap 
           %p login:
         .input-wrap
-          = email_field_tag :email, params[:email], { value: 'email' }
+          = email_field_tag :email, params[:email], { placeholder: "email address" }
         .input-wrap
-          = password_field_tag :password, params[:password]
+          = password_field_tag :password, params[:password], { placeholder: "password" }
         .input-wrap
           = submit_tag "sign in"
         
-  
 .overview-wrapper 
-  .inner
-    .detailed
-    
-    .brief
+  .detailed
+    .inner
+      %h1 What is Staffplan?
+      = t('sessions.new.registration_overview_html')
+              
+  .brief
+    .inner
+        
+  
   
 %footer
   %ul
