@@ -27,6 +27,15 @@ StaffPlan::Application.routes.draw do
     resources :memberships, :only => [:create, :update, :destroy]
   end
 
+  # API ROUTING
+  scope "/api" do
+    resources :companies, controller: "api/companies", only: [:show, :index]  
+    resource :presence, controller: "api/presence", only: [ ] do
+      get 'ping'
+    end
+  end
+
+
   # The staff plan is the compound of hours and involvement in projects 
   # by a given user for a given client and a given company
   resources :staffplans, :only => [:show, :index] do
@@ -42,10 +51,7 @@ StaffPlan::Application.routes.draw do
   
   match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
   
-  get "/api/companies/:secret" => "api/companies#index", format: :json
-  get "/api/presence/ping" => "api/presence#ping", format: :json
-
-  resources :sessions, :only => [ :create, :destroy]
+  resources :sessions, :only => [ :new, :create, :destroy]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
