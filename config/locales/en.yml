@@ -2,6 +2,7 @@
 # See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
+  
   controllers:
     staffplans:
       couldnt_find_user: Sorry, we couldn't find what you were looking for.
@@ -45,9 +46,16 @@ en:
       email: Email Address
       password: Password
       registration_text: Want to create your own Staffplan? No worries, 
-      registration_link: create one now!
+      registration_link: sign up today!
       password_reset: Lost your password?
-  
+      registration_overview_html: 
+        "<p>Staffplan is a powerful resource allocation tool that lets you plan and monitor hours logged on a per-employee and per-project basis. With Staffplan, you will have access to these awesome tools:</p>
+        <ol>
+          <li>Project Management</li>
+          <li>By-the-hour planning</li>
+          <li></li>
+        </ol>"
+        
   staffplans:
     mustache:
       staffplan:

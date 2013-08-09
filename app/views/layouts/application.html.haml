@@ -8,6 +8,8 @@
     %title= t('.staffplan')
     
     = stylesheet_link_tag "application", :media => 'screen, projection'
+    = yield(:styles)
+    
     = javascript_include_tag "application"
     = yield(:javascript)
     
