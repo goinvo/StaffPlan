@@ -29,10 +29,17 @@ StaffPlan::Application.routes.draw do
 
   # API ROUTING
   scope "/api" do
-    resources :companies, controller: "api/companies", only: [:show, :index]  
+    
+    resources :companies, controller: "api/companies", only: [:show, :index]  do
+      member do
+        get 'stats'
+      end
+    end
+    
     resource :presence, controller: "api/presence", only: [ ] do
       get 'ping'
     end
+    
   end
 
 
