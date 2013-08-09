@@ -4,7 +4,7 @@ class Api::CompaniesController < ApplicationController
   respond_to :json
   
   def show
-    render :json => @company.decorate
+    render :json => @company.decorate.self_as_json
   end
   
   def index
