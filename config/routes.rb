@@ -36,6 +36,12 @@ StaffPlan::Application.routes.draw do
       end
     end
     
+    resources :users, controller: "api/users", only: [:show, :index] do
+      member do
+        get 'stats'
+      end
+    end
+    
     resource :presence, controller: "api/presence", only: [ ] do
       get 'ping'
     end
