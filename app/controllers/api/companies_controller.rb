@@ -8,7 +8,13 @@ class Api::CompaniesController < ApplicationController
   end
   
   def index
-    render :json => Company.all
+    @companies = Company.all
+    render :json => Jbuilder.encode { |json| 
+      json.array! @companies do |json,company|
+        json.name company.name
+        json.id company.id
+      end
+    }
   end
   
   def stats
