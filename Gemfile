@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby "1.9.3"
+ruby "2.0.0"
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.15'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
@@ -9,7 +9,7 @@ gem 'json', '~> 1.7'
 gem 'bitmask_attributes'
 gem 'cancan'
 gem 'coffee-filter'
-gem 'draper'
+gem 'draper',             '0.18.0'
 gem 'faker'
 gem 'haml'
 gem 'haml-rails'
