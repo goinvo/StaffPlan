@@ -5,14 +5,12 @@
 // the compiled file.
 //
 
-//= require modernizr
 //= require jquery
-//= require jquery-ujs
 //= require moment
 //= require d3.v2
 //= require bootstrap
 
-//= require underscore
+//= require lodash
 //= require backbone
 //= require backbone-support
 //= require handlebars
@@ -28,6 +26,12 @@
 //= require_tree ./routers
 
 $( document ).ready(function() {
+  var tokenValue = $("meta[name='csrf-token']").attr('content');
+
+  $.ajaxSetup({
+    headers: {'X-CSRF-Token': tokenValue}
+  });
+  
   $( 'select#user_current_company_id' ).live( 'change', function() {
     $( this ).closest( 'form' ).submit();
   });
