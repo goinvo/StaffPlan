@@ -3,19 +3,23 @@ class AssignmentsController < ApplicationController
   respond_to :json, :html
 
   def create
-    
     if params[:assignment][:user_id].present?
-      @target_user = User.where(:id => params[:assignment][:user_id]).first 
-      @assignment = @target_user.assignments.build(params[:assignment])
+      @target_user = User.where(:id => params[:assignment][:user_id]).first
+      
+      if @target_user.assignments.where(archived: true, project_id: params[:project_id]).any?
+        @assignment = @target_user.assignments.where(project_id: params[:project_id]).first
+        @assignment.assign_attributes(archived: false)
+      else
+        # brand new user/project assignment
+        @assignment = @target_user.assignments.build(params[:assignment])
+      end
     else
       @assignment = Project.where(:id => params[:assignment][:project_id]).first.assignments.build(params[:assignment])
     end
     
-    if @assignment.save
-      respond_with @assignment and return
-    else
-      render :json => {:status => :unprocessable_entity }
-    end
+    @assignment.save
+    
+    respond_with(@assignment)
   end
 
   def update
@@ -33,5 +37,4 @@ class AssignmentsController < ApplicationController
     @assignment.destroy
     render :json => { :status => :ok }  
   end
-  
 end
