@@ -2,9 +2,7 @@ class ProjectsController < ApplicationController
   
   respond_to :json
   
-  before_filter only: [:show, :edit, :update, :destroy] do |c|
-    c.find_target
-  end
+  before_filter :find_target, only: [:show, :edit, :update, :destroy]
   
   def show
   end
@@ -24,7 +22,6 @@ class ProjectsController < ApplicationController
 
   def destroy
     @project.destroy
-    respond_with(@project)
+    render(nothing: true)
   end
-
 end

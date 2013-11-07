@@ -32,6 +32,10 @@ group :assets do
   gem 'uglifier',     '>= 1.0'
 end
 
+group :development, :test do
+  gem 'rspec-rails', '~> 2.0'
+end
+
 group :development do
   gem 'awesome_print', require: 'ap'
   gem 'pry'
@@ -43,16 +47,12 @@ group :development do
 end
 
 group :test do 
-  gem 'cucumber-rails',    '1.2.1'
-  gem 'database_cleaner'
   gem 'factory_girl_rails'
-  gem 'mocha'
+  gem 'mocha',                                   require: false
   gem 'nokogiri'
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote',                               require: 'pry-remote'
-  gem 'rspec-rails',       '2.8.1'
-  gem 'webrat'
 end
 
 group :production do
