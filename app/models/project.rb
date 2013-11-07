@@ -10,7 +10,8 @@ class Project < ActiveRecord::Base
   has_many :assignments, :dependent => :destroy
   has_many :work_weeks, through: :assignments
   has_many :users, through: :assignments
-
+  
+  before_save :check_cost
   after_update :update_originator_timestamp
 
   validates_presence_of :name, :client
@@ -25,7 +26,7 @@ class Project < ActiveRecord::Base
   # DB column can't be null but incoming params may pass it. If the key's present
   # AR uses the value whatever it is, even if it's "". This doesn't trigger
   # the default value of 0.0 to be set. Ignore blank values.
-  def cost=(new_cost)
-    assign_attributes(cost: new_cost) unless new_cost.blank?
+  def check_cost
+    assign_attributes(cost: 0.0) if self.cost.blank?
   end
 end

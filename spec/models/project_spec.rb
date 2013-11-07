@@ -12,6 +12,7 @@ describe Project do
       project.valid?.should be_true
     end
   end
+  
   describe "after_update callback" do
     it "should update the updated_at timestamp for a user that modifies a project" do
       with_versioning do
@@ -34,6 +35,41 @@ describe Project do
         @target.update_attributes(name: Faker::Company.name)
         @bystander.reload.updated_at.should == bystander_time
       end
+    end
+  end
+  
+  describe "#check_cost" do
+    it "should do nothing if the cost is not nil" do
+      project = FactoryGirl.build(:project)
+      project.cost = cost = 100.0
+      
+      lambda {
+        project.save!
+      }.should_not raise_error
+      
+      project.cost.should eq(cost)
+    end
+    
+    it "should set cost to 0.0 if cost is nil" do
+      project = FactoryGirl.build(:project)
+      project.cost = nil
+      
+      lambda {
+        project.save!
+      }.should_not raise_error
+      
+      project.cost.should eq(0.0)
+    end
+    
+    it "should set cost to 0.0 if cost is an empty string" do
+      project = FactoryGirl.build(:project)
+      project.cost = ""
+      
+      lambda {
+        project.save!
+      }.should_not raise_error
+      
+      project.cost.should eq(0.0)
     end
   end
 end
