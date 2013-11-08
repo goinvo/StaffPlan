@@ -135,7 +135,8 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
   
   renderUnassignedUsers: ->
     # If there are users not assigned to this project in the current company, show them here
-    unassignedUsers = @model.getUnassignedUsers()
+    unassignedUsers = @model.getUnassignedUsers().select (user) ->
+      !user.get('membership').archived && !user.get('membership').disabled
     @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
       unassignedUsers: unassignedUsers.map (u) -> u.attributes
       projectId: @model.id
