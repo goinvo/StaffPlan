@@ -49,6 +49,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
     
     @model.destroy()
     @parent.remove()
+    StaffPlan.router.currentView.trigger('assignment:deleted')
   
   onToggleProposedClicked: (event) ->
     event.stopPropagation()

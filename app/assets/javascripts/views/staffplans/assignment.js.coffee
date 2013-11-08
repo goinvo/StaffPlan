@@ -98,11 +98,6 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
   events:
     "click input[type='button'][data-trigger-save]": "onSaveTriggered"
     "keydown input[type='text'][data-trigger-save]": "onSaveTriggeredByKeydown"
-    "click a.delete-assignment": "onDeleteAssignmentClicked"
-  
-  onDeleteAssignmentClicked: (event) ->
-    @model.destroy()
-    @remove()
   
   onSaveTriggeredByKeydown: (event) ->
     if event.keyCode == 13

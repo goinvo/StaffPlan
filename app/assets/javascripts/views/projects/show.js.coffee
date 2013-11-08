@@ -27,31 +27,10 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "week:updated", (message) => @projectChartView.trigger "week:updated"
     @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
-    
+    @on "assignment:deleted", (message) => @renderUnassignedUsers()
     
   events: ->
     "click a[data-action=add-user]": "addUserToProject"
-    "click a[data-action=delete]": "deleteAssignment"
-
-  # Delete modal used to destroy an assignment and make sure the user understands the consequences
-  deleteAssignment: ->
-    event.preventDefault()
-    event.stopPropagation()
-    user = StaffPlan.users.get($(event.target).closest('a[data-action=delete]').data('user-id'))
-    assignment = user.getAassignments().detect (assignment) =>
-      @model.id is assignment.get "project_id"
-    deleteView = new window.StaffPlan.Views.Shared.DeleteModal
-      model: assignment
-      collection: user.getAssignments()
-      parentView: @
-
-    @appendChild deleteView
-
-    $('#delete_modal').modal
-      show: true
-      keyboard: true
-      backdrop: 'static'
-
 
   addUserToProject: (event) ->
     event.preventDefault()
@@ -62,8 +41,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         project_id: @model.id
         proposed: false
       , success: (model, response) =>
-          model.set "client_id", @model.get("client_id")
-          @appendAssignmentView model
+          @onSaveSuccessful(model, response)
           
       , error: (model, xhr, options) ->
           alert "Error adding that user."
@@ -73,12 +51,16 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
         user_id: targetUser.id
         proposed: false
       , success: (model, response) =>
-          model.set "client_id", @model.get("client_id")
-          @appendAssignmentView model
+          @onSaveSuccessful(model, response)
           
       , error: (model, xhr, options) ->
           alert "Error adding TBD user."
-    
+  
+  onSaveSuccessful: (model, response) ->
+    model.set "client_id", @model.get("client_id")
+    @appendAssignmentView model
+    @renderUnassignedUsers()
+  
   renderHeader: ->
     client = StaffPlan.clients.get( @model.get( "client_id" ) )
     @$el.find('header').append StaffPlan.Templates.Projects.show.header
@@ -137,6 +119,8 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
     # If there are users not assigned to this project in the current company, show them here
     unassignedUsers = @model.getUnassignedUsers().select (user) ->
       !user.get('membership').archived && !user.get('membership').disabled
+    
+    @$el.find('#unassignedUserChoices').remove();
     @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
       unassignedUsers: unassignedUsers.map (u) -> u.attributes
       projectId: @model.id

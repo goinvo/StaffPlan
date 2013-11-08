@@ -19,14 +19,16 @@ _templates =
       </div>
     '''
     addSomeone: '''
-      <select class="unassigned-users">
-        <option value="-1">TBD</option>
-        {{#unassignedUsers}}
-          <option value="{{id}}">{{first_name}} {{last_name}}</option>
-        {{/unassignedUsers}}
-      </select>
-      <a href="/assignments" class="btn btn-mini" data-action="add-user"><i class="icon-plus"></i></a>
-      <a href="/projects/{{projectId}}/edit" class="btn btn-mini">Edit project</a>
+      <div id="unassignedUserChoices">
+        <select class="unassigned-users">
+          <option value="-1">TBD</option>
+          {{#unassignedUsers}}
+            <option value="{{id}}">{{first_name}} {{last_name}}</option>
+          {{/unassignedUsers}}
+        </select>
+        <a href="/assignments" class="btn btn-mini" data-action="add-user"><i class="icon-plus"></i></a>
+        <a href="/projects/{{projectId}}/edit" class="btn btn-mini">Edit project</a>
+      </div>
       '''
 
   new: '''
