@@ -53,7 +53,13 @@ window.StaffPlan =
     $('a:not([data-bypass])').live 'click', (event) =>
       event.preventDefault()
       href = $(event.currentTarget).attr('href').slice(1)
+      
+      ga('send', 'pageview',
+        'page': href
+      )
+      
       Backbone.history.navigate(href, true)
+      
   checkPresence: ->
     $.ajax
       url: "/api/presence/ping"
