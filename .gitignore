@@ -21,3 +21,5 @@ coverage
 config/database.yml
 .powenv
 public/assets/*
+# Ignore application configuration
+/config/application.yml

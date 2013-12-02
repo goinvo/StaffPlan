@@ -30,6 +30,9 @@ GEM
       multi_json (~> 1.0)
     addressable (2.3.2)
     arel (3.0.2)
+    asset_sync (1.0.0)
+      activemodel
+      fog (>= 1.8.0)
     awesome_print (1.0.2)
     backbone-support (0.3.0)
     bcrypt-ruby (3.0.1)
@@ -73,6 +76,20 @@ GEM
       railties (>= 3.0.0)
     faker (1.0.1)
       i18n (~> 0.4)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
+    fog (1.10.0)
+      builder
+      excon (~> 0.14)
+      formatador (~> 0.2.0)
+      mime-types
+      multi_json (~> 1.0)
+      net-scp (~> 1.1)
+      net-ssh (>= 2.1.3)
+      nokogiri (~> 1.5.0)
+      ruby-hmac
+    formatador (0.2.4)
     fssm (0.2.9)
     git (1.2.5)
     haml (3.1.7)
@@ -112,6 +129,9 @@ GEM
     mocha (0.14.0)
       metaclass (~> 0.0.1)
     multi_json (1.8.2)
+    net-scp (1.1.2)
+      net-ssh (>= 2.6.5)
+    net-ssh (2.7.0)
     netrc (0.7.7)
     newrelic_rpm (3.6.2.96)
     nokogiri (1.5.5)
@@ -175,6 +195,7 @@ GEM
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
       rspec-mocks (~> 2.14.0)
+    ruby-hmac (0.4.0)
     rubyzip (0.9.9)
     sass (3.2.1)
     sass-rails (3.2.5)
@@ -219,6 +240,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  asset_sync
   awesome_print
   backbone-support (= 0.3.0)
   bcrypt-ruby (~> 3.0.1)
@@ -231,6 +253,7 @@ DEPENDENCIES
   draper (= 0.18.0)
   factory_girl_rails
   faker
+  figaro
   git
   haml
   haml-rails

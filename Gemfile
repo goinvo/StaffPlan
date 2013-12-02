@@ -26,6 +26,8 @@ gem 'newrelic_rpm'
 gem 'compass'
 gem 'compass-rails'
 gem 'git'
+gem 'figaro'
+gem 'asset_sync'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2'
