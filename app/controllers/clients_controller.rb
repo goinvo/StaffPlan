@@ -6,6 +6,7 @@ class ClientsController < ApplicationController
   end
 
   def index
+    respond_with(current_user.current_company.decorate.clients_as_json)
   end
 
   def show

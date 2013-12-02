@@ -9,6 +9,8 @@
 //= require moment
 //= require d3.v2
 //= require bootstrap
+//= require async
+//= require string
 
 //= require lodash
 //= require backbone

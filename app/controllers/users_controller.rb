@@ -4,11 +4,11 @@ class UsersController < ApplicationController
   end
   
   def index
-    @users = current_user.current_company.users 
-    
     respond_to do |format|
-      format.html
-      format.json { render json: @users }
+      format.html {}
+      format.json {
+        render(json: current_user.current_company.decorate.users_json)
+      }
     end
   end
 

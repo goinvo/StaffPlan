@@ -1,0 +1,14 @@
+<%= JSON.generate(
+      @assignments.map do |assignment|
+        {
+          id: assignment.id,
+          user_id: assignment.user_id,
+          project_id: assignment.project_id,
+          client_id: assignment.project.client_id,
+          archived: assignment.archived,
+          proposed: assignment.proposed,
+          work_weeks: assignment.work_weeks.map { |ww| [ww.id, ww.actual_hours, ww.estimated_hours, ww.beginning_of_week, assignment.proposed] }
+        }
+      end
+    ).html_safe
+%>

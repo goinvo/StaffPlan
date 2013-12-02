@@ -38,8 +38,8 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
       , {}
     @collection.create userAttributes,
       success: (model, response) =>
-        membership = new window.StaffPlan.Models.Membership {user_id: model.id, company_id: window.StaffPlan.currentCompany.id},
-          company_id: window.StaffPlan.currentCompany.id
+        membership = new window.StaffPlan.Models.Membership {user_id: model.id, company_id: window.StaffPlan.currentCompany.get('id')},
+          company_id: window.StaffPlan.currentCompany.get('id')
           parent: model
         membership.save membershipAttributes,
           success: (resource, response) ->

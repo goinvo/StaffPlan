@@ -57,5 +57,6 @@ end
 
 group :production do
   gem 'memcache-client'
+  gem 'unicorn'
 end
 

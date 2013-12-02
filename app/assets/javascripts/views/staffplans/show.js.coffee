@@ -36,7 +36,14 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
       items: 12
 
   gatherClientsByAssignments: ->
-    _.uniq @model.getAssignments().select((assignment) -> !assignment.get('archived')).map((assignment) -> assignment.get('client_id')).map (clientId) -> StaffPlan.clients.get clientId
+    _.uniq @model.getAssignments()
+                 .select((assignment) ->
+                   # non-archived
+                   !assignment.get('archived')
+                 ).map((assignment) ->
+                   assignment.get('client_id')
+                 ).map (clientId) ->
+                   StaffPlan.clients.get clientId
 
   initialize: ->
     _.extend @, StaffPlan.Mixins.Events.weeks

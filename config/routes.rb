@@ -16,7 +16,7 @@ StaffPlan::Application.routes.draw do
   
   # An assignment is the relation between a user and a project
   # That's where the work weeks reside
-  resources :assignments, :only => [:update, :create, :destroy] do
+  resources :assignments, :only => [:update, :create, :destroy, :index] do
     resources :work_weeks, :only => [:show, :update, :create]
   end
   
@@ -24,7 +24,7 @@ StaffPlan::Application.routes.draw do
   resources :clients
 
   # Companies have users (members/employees), projects and clients
-  resources :companies, only: [:new, :create] do
+  resources :companies, only: [:new, :create, :index] do
     resources :memberships, :only => [:create, :update, :destroy]
   end
 

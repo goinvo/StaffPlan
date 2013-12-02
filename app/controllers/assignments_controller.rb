@@ -1,7 +1,11 @@
 class AssignmentsController < ApplicationController
   
   respond_to :json, :html
-
+  
+  def index
+    @assignments = Assignment.includes(:work_weeks).where(:project_id => current_user.current_company.projects.map(&:id))
+  end
+  
   def create
     if params[:assignment][:user_id].present?
       @target_user = User.where(:id => params[:assignment][:user_id]).first

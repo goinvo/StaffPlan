@@ -34,7 +34,7 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
   updateProject: (clientId, formValues) ->
     # Each model should expose a whitelistedAttributes so that we only transmit what's needed
     projectAttributes = _.extend (_.pick formValues.project, ['name', 'active', 'payment_frequency', 'cost']),
-      company_id: window.StaffPlan.currentCompany.id
+      company_id: window.StaffPlan.currentCompany.get('id')
       client_id: clientId
     @model.save projectAttributes,
       success: (model, response) ->

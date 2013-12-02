@@ -94,7 +94,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
       router: @
       clients: window.StaffPlan.clients
       collection: window.StaffPlan.projects
-      currentUser: window.StaffPlan.users.get(@currentUser.id)
+      currentUser: window.StaffPlan.users.get(@currentUser.get("id"))
     @swap projectNew
   
   projectEdit: (projectId) ->
@@ -102,7 +102,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     projectEdit = new window.StaffPlan.Views.Projects.Edit
       router: @
       clients: window.StaffPlan.clients
-      currentUser: window.StaffPlan.users.get(@currentUser.id)
+      currentUser: window.StaffPlan.users.get(@currentUser.get('id'))
       model: project
       collection: window.StaffPlan.projects
     @swap projectEdit

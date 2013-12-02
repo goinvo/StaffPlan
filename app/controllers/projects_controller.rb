@@ -4,6 +4,10 @@ class ProjectsController < ApplicationController
   
   before_filter :find_target, only: [:show, :edit, :update, :destroy]
   
+  def index
+    render(json: current_user.current_company.decorate.projects_as_json)
+  end
+  
   def show
   end
 

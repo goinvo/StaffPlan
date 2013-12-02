@@ -49,7 +49,7 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
     @remove()
 
   render: ->
-    displayDates = StaffPlan.users.get(StaffPlan.currentUser.id).preferences.get("display_dates")
+    displayDates = StaffPlan.users.get(StaffPlan.currentUser.get('id')).preferences.get("display_dates")
     data = _.map @collection, (timestamp) ->
       m = moment(timestamp)
       weekNumber = Math.ceil(m.date() / 7)

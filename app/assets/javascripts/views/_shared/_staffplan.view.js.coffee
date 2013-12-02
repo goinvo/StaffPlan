@@ -4,9 +4,9 @@ class StaffPlan.View extends Support.CompositeView
     @$el.empty()
 
     @$el.html StaffPlan.Templates.Layouts.application
-      currentUserId: StaffPlan.currentUser.id
+      currentUserId: StaffPlan.currentUser.get('id')
 
-    if StaffPlan.userCompanies.length > 1
+    if StaffPlan.companies.length > 1
       companySwitcher = new StaffPlan.Views.Shared.CompanySwitcher
       @$el.find('header .inner ul:first').append companySwitcher.render().el
 

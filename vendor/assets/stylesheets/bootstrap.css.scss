@@ -5743,11 +5743,11 @@ a.badge:hover {
 }
 
 .progress.active .bar {
-  -webkit-animation: progress-bar-stripes 2s linear infinite;
-     -moz-animation: progress-bar-stripes 2s linear infinite;
-      -ms-animation: progress-bar-stripes 2s linear infinite;
-       -o-animation: progress-bar-stripes 2s linear infinite;
-          animation: progress-bar-stripes 2s linear infinite;
+  -webkit-animation: progress-bar-stripes 0.5s linear infinite;
+     -moz-animation: progress-bar-stripes 0.5s linear infinite;
+      -ms-animation: progress-bar-stripes 0.5s linear infinite;
+       -o-animation: progress-bar-stripes 0.5s linear infinite;
+          animation: progress-bar-stripes 0.5s linear infinite;
 }
 
 .progress-danger .bar,

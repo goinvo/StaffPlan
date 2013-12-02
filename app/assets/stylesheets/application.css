@@ -5,3 +5,9 @@
  *= require bootstrap
  *= require screen
 */
+
+.progress {
+  width: 50%;
+  margin: auto;
+  margin-top: 10%;
+}

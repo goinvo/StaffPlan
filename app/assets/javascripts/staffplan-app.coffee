@@ -18,47 +18,102 @@ window.StaffPlan =
     Clients: {}
   Routers: {}
   Dispatcher: _.extend {}, Backbone.Events
-
+  
+  loadData: (type, callback) ->
+    $.ajax "/#{type}.json",
+      success: (json) =>
+        console.log("loaded #{type}")
+        @[type] = new StaffPlan.Collections[S(type).capitalize().toString()] json
+        @addProgress()
+        callback(null, type);
+        
+      error: =>
+        console.log("failed to load #{type}")
+        callback("failed to load data for #{type}")
+  
+  loadAssignments: (callback) ->
+    $.ajax "/assignments.json",
+      success: (json) =>
+        console.log("loaded assignments")
+        
+        _.forEach json, (assignment) ->
+          work_weeks = assignment.work_weeks
+          delete assignment.work_weeks
+          assignment.work_weeks = _.map work_weeks, (work_week) -> _.object(['id', 'actual_hours', 'estimated_hours', 'beginning_of_week', 'proposed'], work_week)
+        
+        # work_weeks are sent as an array of arrays with a specific ordering to cut down on bytes sent over the wire.
+        @assignments = new StaffPlan.Collections.Assignments json
+        
+        @addProgress()
+        
+        # @[type] = new StaffPlan.Collections[S(type).capitalize().toString()] json
+        callback(null, "assignments");
+        
+      error: =>
+        console.log("failed to load assignments")
+        callback("failed to load data for assignments")
+  
+  addProgress: ->
+    barElement = $('.progress .bar')
+    
+    if barElement.attr('style') == undefined
+      newWidth = "20%"
+    else
+      newWidth = parseInt(barElement.attr("style").replace(/[\D]*/, ''), 10) + 20 + "%"
+    
+    barElement.attr("style", "width: #{newWidth}")
+    
   initialize: (data) ->
-    @users = new StaffPlan.Collections.Users data.users
-    @projects = new StaffPlan.Collections.Projects data.projects
-    @userCompanies = data.userCompanies
-    @clients = new StaffPlan.Collections.Clients data.clients
-    @assignments = new StaffPlan.Collections.Assignments data.assignments
-    @currentCompany = data.currentCompany
-    @currentUser = data.currentUser
-    @relevantYears = _.reject( _.uniq(_.flatten(StaffPlan.assignments.reduce (memo, assignment) ->
-                        memo.push _.uniq(assignment.work_weeks.map (week) -> moment(week.get("beginning_of_week")).year())
-                        memo
-                      , [])), (year) ->
-                        year == 1970 # lol don't ask
-                      )
-    year = parseInt(localStorage.getItem("yearFilter"), 10)
-    if _.include(@relevantYears, year)
-      StaffPlan.assignments.each (assignment) ->
-        assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
-          moment(week.get("beginning_of_week")).year() is year
-
-    @router = new StaffPlan.Routers.StaffPlan
-      users: @users
-      projects: @projects
-      clients: @clients
-      currentCompany: @currentCompany
-      currentUser: @currentUser
-    $ -> Backbone.history.start(pushState: true)
-
-    @checkPresence()
-
-
-    $('a:not([data-bypass])').live 'click', (event) =>
-      event.preventDefault()
-      href = $(event.currentTarget).attr('href').slice(1)
+    # show modal blocker
+    $(document.body).append(
+      '<div class="modal-backdrop"><div class="progress progress-striped"><div class="bar"></div></div></div>'
+    )
+    
+    async.parallel([
+      (callback) => @loadAssignments(callback)
+      (callback) => @loadData('users', callback)
+      (callback) => @loadData('projects', callback)
+      (callback) => @loadData('clients', callback)
+      ]
+      =>
+        @addProgress()
+        @companies = new Backbone.Collection data.userCompanies
+        @currentCompany = @companies.get(data.currentCompanyId)
+        @currentUser = @users.get(data.currentUserId)
+        @relevantYears = _.reject( _.uniq(_.flatten(StaffPlan.assignments.reduce (memo, assignment) ->
+                            memo.push _.uniq(assignment.work_weeks.map (week) -> moment(week.get("beginning_of_week")).year())
+                            memo
+                          , [])), (year) ->
+                            year == 1970 # lol don't ask
+                          )
+        year = parseInt(localStorage.getItem("yearFilter"), 10)
+        if _.include(@relevantYears, year)
+          StaffPlan.assignments.each (assignment) ->
+            assignment.set "filteredWeeks", assignment.work_weeks.select (week) ->
+              moment(week.get("beginning_of_week")).year() is year
+    
+        @router = new StaffPlan.Routers.StaffPlan
+          users: @users
+          projects: @projects
+          clients: @clients
+          currentCompany: @currentCompany
+          currentUser: @currentUser
+        $ -> Backbone.history.start(pushState: true)
+    
+        @checkPresence()
+    
+    
+        $('a:not([data-bypass])').live 'click', (event) =>
+          event.preventDefault()
+          href = $(event.currentTarget).attr('href').slice(1)
       
-      ga('send', 'pageview',
-        'page': href
-      )
+          unless typeof ga is "undefined"
+            ga('send', 'pageview',
+              'page': href
+            )
       
-      Backbone.history.navigate(href, true)
+          Backbone.history.navigate(href, true)
+    )
       
   checkPresence: ->
     $.ajax

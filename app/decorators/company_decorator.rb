@@ -11,24 +11,6 @@ class CompanyDecorator < Draper::Base
       end
     end
   end
-  
-  def assignments_as_json
-    
-    assignments = Assignment.includes(:work_weeks).where(
-      :project_id => self.projects.map(&:id)
-    )
-
-    Jbuilder.encode do |json|
-      json.array! assignments do |json, assignment|
-        json.(assignment, :id, :user_id, :project_id, :proposed, :archived)
-        json.client_id assignment.project.client_id
-        json.work_weeks assignment.work_weeks do |json, work_week|
-          json.(work_week, :id, :actual_hours, :estimated_hours, :beginning_of_week) 
-          json.proposed assignment.proposed 
-        end
-      end
-    end
-  end
 
   def self_as_json
     Jbuilder.encode do |json|
