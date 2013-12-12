@@ -7,9 +7,8 @@ class window.StaffPlan.Views.Shared.Totals extends Support.CompositeView
     
   render: ->
     hours = @weeks.reduce (memo, ww) ->
-      unless ww.inFuture()
-        memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
-        memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
+      memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
+      memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
       memo
     , {estimated: 0, actual: 0}
     

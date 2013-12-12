@@ -8,15 +8,13 @@ class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Support.Composi
     
   render: ->
     hours = _.reduce(@model.work_weeks.models, (memo, ww) ->
-      
-      unless ww.inFuture()
-        memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
-        memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
-      
+      memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
+      memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
       memo
     , {estimated: 0, actual: 0})
     
     hours.delta = hours.actual - hours.estimated
+    
     @$el.html StaffPlan.Templates.StaffPlans.assignment_totals
       hours: hours
     @
