@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby "2.0.0"
+ruby "2.1.2"
 
-gem 'rails', '3.2.15'
+gem 'rails', '3.2.18'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
@@ -15,7 +15,7 @@ gem 'jbuilder'
 gem 'mobile-fu'
 gem 'paper_trail',       '~> 2.7'
 gem 'pg'
-gem 'rails-behaviors'
+gem "bower-rails",       "~> 0.7.3"
 gem 'sass-rails',        '~> 3.2'
 gem 'thin'
 gem 'newrelic_rpm'
@@ -31,29 +31,25 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'
+  gem 'pry'
+  gem 'pry-nav'
+  gem 'pry-remote',                               require: 'pry-remote'
 end
 
 group :development do
   gem 'awesome_print',                            require: 'ap'
-  gem 'pry'
-  gem 'pry-nav'
-  gem 'pry-remote',                               require: 'pry-remote'
   gem 'quiet_assets'
   gem 'sqlite3'
   gem 'taps'
 end
 
-group :test do 
+group :test do
   gem 'factory_girl_rails'
   gem 'mocha',                                   require: false
   gem 'nokogiri'
-  gem 'pry'
-  gem 'pry-nav'
-  gem 'pry-remote',                               require: 'pry-remote'
 end
 
 group :production do
   gem 'memcache-client'
   gem 'unicorn'
 end
-
