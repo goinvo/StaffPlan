@@ -1,11 +1,16 @@
 class ProjectsController < ApplicationController
   
-  respond_to :json
+  respond_to :html, :json
   
   before_filter :find_target, only: [:show, :edit, :update, :destroy]
   
   def index
-    render(json: current_user.current_company.decorate.projects_as_json)
+    respond_to do |format|
+      format.html {}
+      format.json do
+        render(json: current_user.current_company.projects)
+      end
+    end
   end
   
   def show

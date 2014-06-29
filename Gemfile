@@ -23,6 +23,7 @@ gem 'compass-rails'
 gem 'git'
 gem 'figaro'
 gem 'asset_sync'
+gem 'active_model_serializers'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2'
