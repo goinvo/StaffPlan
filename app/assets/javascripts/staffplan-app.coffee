@@ -103,7 +103,7 @@ window.StaffPlan =
         @checkPresence()
     
     
-        $('a:not([data-bypass])').live 'click', (event) =>
+        $(document.body).on 'click', 'a:not([data-bypass])', (event) =>
           event.preventDefault()
           href = $(event.currentTarget).attr('href').slice(1)
       

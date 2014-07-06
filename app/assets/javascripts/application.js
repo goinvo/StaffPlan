@@ -34,11 +34,11 @@ $( document ).ready(function() {
     headers: {'X-CSRF-Token': tokenValue}
   });
   
-  $( 'select#user_current_company_id' ).live( 'change', function() {
+  $(document.body).on('change', 'select#user_current_company_id', function() {
     $( this ).closest( 'form' ).submit();
   });
   
-  $( 'a.chill-out').live('click', function(event) {
+  $(document.body).on('click', 'a.chill-out', function(event) {
     event.stopPropagation();
     event.preventDefault();
     return false;
@@ -52,7 +52,7 @@ $( document ).ready(function() {
     }, 100);
   });
   
-  $('.quick-jump').live('submit', function(event) {
+  $(document.body).on('submit', '.quick-jump', function(event) {
     event.stopPropagation();
     event.preventDefault();
     StaffPlan.onTypeAhead($(this));
