@@ -2,14 +2,14 @@ class StaffPlan.Views.WeeklyAggregates extends Support.CompositeView
 
   WEEK_IN_MILLISECONDS = 7 * 86400 * 1000
 
-  initialize: ->
-    @scaleChart = @options.scaleChart
-    @begin      = @options.begin.valueOf()
-    @count      = @options.count
-    @height     = @options.height or 75
-    @barWidth   = @options.barWidth or 35
+  initialize: (options={}) ->
+    @scaleChart = options.scaleChart
+    @begin      = options.begin.valueOf()
+    @count      = options.count
+    @height     = options.height or 75
+    @barWidth   = options.barWidth or 35
     @chartWidth = @count * 40
-    @maxHeight  = @options.maxHeight
+    @maxHeight  = options.maxHeight
 
     @on "date:changed", (message) =>
       @begin = message.begin
@@ -188,4 +188,3 @@ roundRect = (x, y, width, height, tl = 0, tr = 0, br = 0, bl = 0) ->
   "L" + p(x + bl, y + height) + "Q" + p(x, y + height) + p(x, y + height - bl) +
   "L" + p(x, y + tl) + "Q" + p(x, y) + p(x + tl, y) +
   "Z"
-

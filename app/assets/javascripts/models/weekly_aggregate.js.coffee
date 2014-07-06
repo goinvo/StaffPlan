@@ -1,5 +1,5 @@
 class window.StaffPlan.Models.WeeklyAggregate extends StaffPlan.Model
-  initialize: (options) ->
+  initialize: (options={}) ->
     @set "cweek",         options.cweek
     @set "year",          options.year
     @set "timestamp",     new XDate().setWeek(options.cweek, options.year).getTime()

@@ -45,7 +45,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
                  ).map (clientId) ->
                    StaffPlan.clients.get clientId
 
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     if window.location.hash.length
       @startDate = moment(parseInt(window.location.hash.slice(1).split("=")[1], 10))
@@ -73,7 +73,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     @on "week:updated", (message) => @staffplanChartView.trigger "week:updated"
     @on "year:changed", (message) => @yearChanged(parseInt(message.year, 10))
 
-    @model = @options.user
+    @model = options.user
     @model.view = @
 
   getYearsAndWeeks: ->
@@ -155,4 +155,3 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     timestampAtBeginningOfWeek = m.utc().startOf('day').subtract('days', m.day() - 1)
 
     @
-

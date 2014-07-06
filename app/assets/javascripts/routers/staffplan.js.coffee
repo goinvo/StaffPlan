@@ -29,21 +29,30 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
   staffplanShow: (userId) ->
     user = @users.get userId
     alert 'no user with that ID found' unless user?
-    staffplanShow = new window.StaffPlan.Views.StaffPlans.Show(router: @, user: user)
+    staffplanShow = new window.StaffPlan.Views.StaffPlans.Show
+      router: @
+      user: user
     @swap staffplanShow
     
   staffplanIndex: ->
-    staffplanIndex = new window.StaffPlan.Views.StaffPlans.Index(router: @, users: @users)
+    staffplanIndex = new window.StaffPlan.Views.StaffPlans.Index
+      router: @
+      users: @users
     @swap staffplanIndex
 
   # Clients
   clientIndex: ->
-    clientIndex = new window.StaffPlan.Views.Clients.Index(router: @, collection: @clients, currentCompany: @currentCompany)
+    clientIndex = new window.StaffPlan.Views.Clients.Index
+      router: @
+      collection: @clients
+      currentCompany: @currentCompany
     @swap clientIndex
 
   clientShow: (clientId) ->
     client = @clients.get clientId
-    clientShow = new window.StaffPlan.Views.Clients.Show(router: @, model: client)
+    clientShow = new window.StaffPlan.Views.Clients.Show
+      router: @
+      model: client
     @swap clientShow
 
   clientNew: ->
@@ -66,7 +75,9 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
   # Users
   userShow: (userId) ->
     user = @users.get userId
-    userShow = new window.StaffPlan.Views.Users.Show(router: @, model: user)
+    userShow = new window.StaffPlan.Views.Users.Show
+      router: @
+      model: user
     @swap userShow
 
   userNew: ->

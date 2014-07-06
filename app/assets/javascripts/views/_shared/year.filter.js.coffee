@@ -2,9 +2,9 @@ class StaffPlan.Views.Shared.YearFilter extends Support.CompositeView
   tagName: "li"
   className: "year-filter"
     
-  initialize: ->
-    @years = @options.years
-    @parent = @options.parent
+  initialize: (options={}) ->
+    @years = options.years
+    @parent = options.parent
 
   events:
     "click a.filter": "updateYearFilter"

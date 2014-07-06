@@ -1,8 +1,8 @@
 class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
   className: "list-item"
 
-  initialize: ->
-    @parent = @options.parent
+  initialize: (options={}) ->
+    @parent = options.parent
     @rendered = false
     
     # In this case we simply relay the message to the relevant child view

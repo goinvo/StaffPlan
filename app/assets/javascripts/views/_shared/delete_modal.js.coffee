@@ -9,7 +9,7 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
         X
       </button>
       <h3>
-        Delete {{resourceName}}? 
+        Delete {{resourceName}}?
       </h3>
     </div>
     '''
@@ -28,8 +28,8 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
     "click a.btn-warning": "deleteResource"
     "click a.btn-info": "showCollection"
     
-  initialize: ->
-    @parentView = @options.parentView
+  initialize: (options={}) ->
+    @parentView = options.parentView
     
   deleteResource: (event) ->
     event.preventDefault()
@@ -57,5 +57,3 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
       collectionName: @collection.NAME
     
     @
-
-

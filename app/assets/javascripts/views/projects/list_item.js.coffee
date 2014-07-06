@@ -1,8 +1,8 @@
 class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
   className: "project-list-item list-item"
 
-  initialize: ->
-    @startDate = @options.start
+  initialize: (options={}) ->
+    @startDate = options.start
     @model.on "change", (event) =>
       @render()
     

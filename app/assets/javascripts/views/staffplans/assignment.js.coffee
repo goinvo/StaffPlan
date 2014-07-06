@@ -13,12 +13,12 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     @off()
     @remove()
 
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    @model = @options.model
-    @user = @options.user
-    @index = @options.index
-    @startDate = @options.startDate
+    @model = options.model
+    @user = options.user
+    @index = options.index
+    @startDate = options.startDate
     
     @on "date:changed", (message) =>
       @ensureWorkWeekRange()

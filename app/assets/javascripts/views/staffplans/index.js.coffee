@@ -13,7 +13,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     @off()
     @remove()
 
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     _.extend @, StaffPlan.Mixins.Events.memberships
     _.extend @, StaffPlan.Mixins.Events.users
@@ -36,7 +36,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     # TODO: Maybe make it so that the set of users defined by the
     # user's filter is shown by default instead
     localStorage.setItem("staffplanFilter", "active")
-    @users = new StaffPlan.Collections.Users @options.users.active()
+    @users = new StaffPlan.Collections.Users options.users.active()
     @users.reset @users.sortBy (user) -> user.workload()
 
     @setStartDate()
@@ -154,4 +154,3 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
         @users.sortBy (user) -> user.get("first_name")
 
     @users.reset (if @sort.order is "asc" then sorted else sorted.reverse())
-

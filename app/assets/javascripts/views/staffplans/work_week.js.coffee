@@ -2,12 +2,12 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Support.CompositeView
   className: "work-weeks"
   tagName: "section"
       
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    @assignment = @options.parent
-    @client = @options.client
-    @user = @options.user
-    @startDate = @options.startDate
+    @assignment = options.parent
+    @client = options.client
+    @user = options.user
+    @startDate = options.startDate
     
     @on "window:resized", => @render()
     @on "date:changed", (message) =>
@@ -89,7 +89,7 @@ class window.StaffPlan.Views.StaffPlans.WorkWeeks extends Support.CompositeView
       .offset(offset)
 
   hideRowFiller: (event) ->
-    @zeroToBlank event # NOTE: Can't bind multiple methods to the same event via Backbone 
+    @zeroToBlank event # NOTE: Can't bind multiple methods to the same event via Backbone
     event.currentTarget.type = "text"
     @_lastFocused = event.currentTarget
     @_rowFillerTimer = setTimeout =>

@@ -6,11 +6,11 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
 
   tagName: "form"
 
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.ValidationHandlers
     @newClient = false
-    @clients = @options.clients
-    @currentUser = @options.currentUser
+    @clients = options.clients
+    @currentUser = options.currentUser
      
   events: ->
     "change select#client-picker": "clientSelectionChanged"

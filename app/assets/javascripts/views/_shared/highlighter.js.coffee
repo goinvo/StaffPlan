@@ -1,11 +1,11 @@
 class StaffPlan.Views.Shared.Highlighter extends Support.CompositeView
   className: "highlighter"
 
-  initialize: ->
-    @offset = @options.offset
-    @height = @options.height
-    @width = @options.width
-    @zindex = @options.zindex
+  initialize: (options={}) ->
+    @offset = options.offset
+    @height = options.height
+    @width = options.width
+    @zindex = options.zindex
 
   render: ->
     @$el.css
@@ -13,7 +13,7 @@ class StaffPlan.Views.Shared.Highlighter extends Support.CompositeView
       left: @offset.left
       height: "#{@height}px"
       width: "#{@width}px"
-    if @zindex? 
+    if @zindex?
       @$el.css
         'z-index': @zindex
-    @ 
+    @

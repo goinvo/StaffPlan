@@ -2,16 +2,16 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
   className: "client zebra"
   tagName: "section"
     
-  initialize: ->
+  initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
-    @model = @options.model
-    @user = @options.user
-    @startDate = @options.startDate
+    @model = options.model
+    @user = options.user
+    @startDate = options.startDate
     
     @on "date:changed", (message) => @dateChanged(message.action)
     @on "window:resized", => @onWindowResized()
     
-    @assignments = new window.StaffPlan.Collections.Assignments @options.assignments || [],
+    @assignments = new window.StaffPlan.Collections.Assignments options.assignments || [],
       parent: @
     
     @assignments.bind 'add', (assignment) => @render()

@@ -5,10 +5,10 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
     @workWeeksView.collection = @model.work_weeks.between(begin, begin + @numberOfBars * 7 * 86400 * 1000)
     @workWeeksView.render()
   
-  initialize: ->
-    @parent = @options.parent
+  initialize: (options={}) ->
+    @parent = options.parent
     @model.collection.on "change:user_id", (event) => @render()
-    @startDate = @options.start.valueOf()
+    @startDate = options.start.valueOf()
 
     @on "date:changed", (message) =>
       @workWeeksView.trigger "date:changed", message
