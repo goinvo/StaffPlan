@@ -6,7 +6,8 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
 
   initialize: (options={}) ->
     @collection.bind 'change:id', => @render()
-
+    @options = options
+    
   events: ->
     "click a[data-action=delete]": "deleteClient"
 
@@ -35,7 +36,7 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
             hash[project.id] = project.get('name')
             hash
           , {})
-      currentCompany: options.currentCompany
+      currentCompany: @options.currentCompany
 
     @$main.append StaffPlan.Templates.Clients.index.actions.addClient
 
