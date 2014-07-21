@@ -17,7 +17,7 @@ class window.StaffPlan.Views.StaffPlans.Client extends Support.CompositeView
     @assignments.bind 'add', (assignment) => @render()
     
     if @model.isNew()
-      @assignments.add()
+      @assignments.add({})
       @model.bind 'change:id', (client) =>
         @parent.renderClientsAssignmentsWorkWeeks()
     
