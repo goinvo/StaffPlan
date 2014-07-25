@@ -57,6 +57,6 @@ class window.StaffPlan.Views.Users.New extends StaffPlan.View
   render: ->
     super
     
-    @$el.find('section.main').html StaffPlan.Templates.Users.new.newUser
+    @$el.find('section.main').html HandlebarsTemplates["users/new/user_new"]
 
     @

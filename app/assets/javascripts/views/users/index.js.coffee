@@ -1,4 +1,4 @@
-class window.StaffPlan.Views.Users.Index extends StaffPlan.View  
+class window.StaffPlan.Views.Users.Index extends StaffPlan.View
   className: "short"
     
   initialize: ->
@@ -33,7 +33,7 @@ class window.StaffPlan.Views.Users.Index extends StaffPlan.View
   render: ->
     super
     
-    @$el.find('header').append StaffPlan.Templates.Users.index.header
+    @$el.find('header').append HandlebarsTemplates["users/index/header"]
     
     @$el.find('section.main').append('<ul class="user-list slick short">')
     @collection.each (user) =>
@@ -42,6 +42,6 @@ class window.StaffPlan.Views.Users.Index extends StaffPlan.View
         model: user
       @appendChildTo view, @$el.find("section.main ul.slick")
     
-    @$el.find('section.main ul').append StaffPlan.Templates.Users.index.actions.addUser
+    @$el.find('section.main ul').append HandlebarsTemplates["users/index/actions/add_user"]
 
     @

@@ -1,0 +1,12 @@
+<div class="grid-row-element client-name-and-project-name fixed-180 sexy">
+  <a href="/clients/{{client.id}}">{{client.name}}</a>
+  {{#if showAddProject}}
+  <div class='btn-group pull-right'>
+    <a class='add-project btn btn-mini' title="Click to add a new project assignment for {{client.name}}."><i class='icon-plus-sign'></i></a>
+  </div>
+  {{/if}}
+</div>
+<div class="grid-row-element fixed-180 sexy client-name-and-project-name assignment-actions-target">
+  <a href="/projects/{{project.id}}">{{project.name}}</a>
+</div>
+<div class="grid-row-element flex work-weeks-container"></div>

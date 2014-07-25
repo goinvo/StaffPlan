@@ -24,6 +24,7 @@ gem 'git'
 gem 'figaro'
 gem 'asset_sync'
 gem 'active_model_serializers'
+gem 'handlebars_assets'
 
 group :assets do
   gem 'coffee-rails', '~> 3.2'

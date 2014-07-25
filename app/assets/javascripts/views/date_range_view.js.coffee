@@ -3,32 +3,8 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
   attributes:
     class: "date-range"
 
-  templates:
-    dates: '''
-      <a href="#" class="pagination previous" data-action=previous>&lt;</a>
-      <div class="week-numbers">
-        {{#each weeks}}
-          {{#if this.highlight}}
-            <span class="week-number current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
-          {{else}}
-            <span class="week-number" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
-          {{/if}}
-        {{/each}}
-      </div>
-      <div class="month-names">
-        {{#each months}}
-          {{#if this.highlight}}
-            <span class="month-name current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.month}}</span> 
-          {{else}}
-            <span class="month-name" data-timestamp="{{this.timestamp}}">{{this.month}}</span> 
-          {{/if}}
-        {{/each}}
-      </div>
-      <a href="#" class="pagination next" data-action=next>&gt;</a>
-    '''
-
   initialize: ->
-    @dateRangeTemplate = Handlebars.compile(@templates.dates)
+    @dateRangeTemplate = HandlebarsTemplates["date_range_view/dates"]
 
     @on "date:changed", (message) ->
       @collection = _.range(message.begin, message.begin + message.count * 7 * 86400 * 1000, 7 * 86400 * 1000)
@@ -64,11 +40,11 @@ class StaffPlan.Views.DateRangeView extends Support.CompositeView
             week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
           else
-            month: "&nbsp;"
+            month: Handlebars.SafeString("&nbsp;")
             week: if displayDates then m.format("M/D") else "W" + weekNumber
             timestamp: timestamp
         else
-          month: "&nbsp;"
+          month: Handlebars.SafeString("&nbsp;")
           week: if displayDates then m.format("M/D") else "W" + weekNumber
           timestamp: timestamp
     m = moment()

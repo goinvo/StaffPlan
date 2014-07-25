@@ -15,10 +15,10 @@ class StaffPlan.Views.Assignments.ListItem extends Support.CompositeView
   
   render: ->
     if _.isNumber @model.get("user_id")
-      @$el.html StaffPlan.Templates.Assignments.userItem
+      @$el.html HandlebarsTemplates["assignments/user_item"]
         user: StaffPlan.users.get(@model.get("user_id")).attributes
     else
-      @$el.html StaffPlan.Templates.Assignments.userItem
+      @$el.html HandlebarsTemplates["assignments/user_item"]
         user:
           id: 0
           gravatar: "https://secure.gravatar.com/avatar/ee56924c10943ba1af0e004b90f3a095"

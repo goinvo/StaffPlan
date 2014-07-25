@@ -11,7 +11,7 @@ class window.StaffPlan.Views.Projects.ListItem extends Support.CompositeView
     
 
   render: ->
-    @$el.html StaffPlan.Templates.Projects.index.listItem
+    @$el.html HandlebarsTemplates["projects/index/list_item"]
       project: @model.toJSON()
       client: StaffPlan.clients.get(@model.get('client_id')).toJSON()
     @$el.find("svg.user-chart").empty()

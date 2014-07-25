@@ -2,28 +2,7 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
   className: "modal"
   attributes:
     id: "delete_modal"
-  templates:
-    header: '''
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">
-        X
-      </button>
-      <h3>
-        Delete {{resourceName}}?
-      </h3>
-    </div>
-    '''
-    body: '''
-    <div class="modal-body">
-      <p>This action cannot be undone, proceed with caution...</p>
-    </div>
-    '''
-    actions: '''
-    <div class="modal-footer">
-      <a href="#" data-dismiss="modal" class="btn btn-warning">Delete {{resourceName}}</a>
-      <a href="#" class="btn btn-info">Back to list of {{collectionName}}</a>
-    </div>
-    '''
+  
   events:
     "click a.btn-warning": "deleteResource"
     "click a.btn-info": "showCollection"
@@ -49,10 +28,10 @@ class window.StaffPlan.Views.Shared.DeleteModal extends Support.CompositeView
     @remove()
 
   render: =>
-    @$el.append Handlebars.compile(@templates.header)
+    @$el.append HandlebarsTemplates["delete_modal/header"]
       resourceName: @model.NAME
-    @$el.append Handlebars.compile(@templates.body)
-    @$el.append Handlebars.compile(@templates.actions)
+    @$el.append HandlebarsTemplates["delete_modal/body"]
+    @$el.append HandlebarsTemplates["delete_modal/actions"]
       resourceName: @model.NAME
       collectionName: @collection.NAME
     

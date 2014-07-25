@@ -14,12 +14,12 @@ class window.StaffPlan.Views.StaffPlans.AssignmentTotals extends Support.Composi
         memo.currentAndPastEstimated += parseInt(ww.get('actual_hours', 10) || 0)
         
       memo.estimated += parseInt(ww.get('estimated_hours'), 10) || 0
-      memo.actual += parseInt(ww.get('actual_hours'), 10) || 0  
+      memo.actual += parseInt(ww.get('actual_hours'), 10) || 0
       memo
     , {estimated: 0, actual: 0, currentAndPastEstimated: 0, currentAndPastActual: 0})
     
     hours.delta = hours.currentAndPastActual - hours.currentAndPastEstimated
     
-    @$el.html StaffPlan.Templates.StaffPlans.assignment_totals
+    @$el.html HandlebarsTemplates["staffplans/assignment/totals"]
       hours: hours
     @

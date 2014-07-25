@@ -81,7 +81,7 @@ class window.StaffPlan.Views.Projects.New extends StaffPlan.View
       
   render: ->
     super
-    @$el.find("section.main").append StaffPlan.Templates.Projects.new
+    @$el.find("section.main").append HandlebarsTemplates["projects/new"]
       clients: @clients.map (client) -> client.toJSON()
 
     @

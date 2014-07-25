@@ -11,7 +11,7 @@ class window.StaffPlan.Views.Users.Show extends StaffPlan.View
       projectId: assignment.get("project_id")
       projectName: window.StaffPlan.projects.get(assignment.get("project_id")).get('name')
       
-    @$el.find('section.main').html StaffPlan.Templates.Users.show.userInfo
+    @$el.find('section.main').html HandlebarsTemplates["users/show/user_info"]
       user: @model.attributes
       projects: userProjects
 

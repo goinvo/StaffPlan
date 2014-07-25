@@ -18,7 +18,7 @@ class window.StaffPlan.Views.StaffPlans.AssignmentActions extends Support.Compos
       fullName: "#{user.get('first_name').charAt(0).toUpperCase()}. #{user.get('last_name')}"
       id: user.get("id")
 
-    @$el.html StaffPlan.Templates.StaffPlans.assignment_actions
+    @$el.html HandlebarsTemplates["staffplans/assignment/actions"]
       displayReassign: @model.reAssignable()
       companyUsers: otherUsers
       isDeletable: @model.isDeletable()

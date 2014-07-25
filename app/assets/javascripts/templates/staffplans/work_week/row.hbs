@@ -1,0 +1,25 @@
+<div class='row-filler'>
+  <a href='#'>&rarr;</a>
+</div>
+<div class="grid-row flex">
+  <div class='row-label'>Plan</div>
+  {{#each visibleWorkWeeks}}
+    {{#if highlight}}
+  <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual current-week-highlight' />
+    {{else}}
+  <input type="text" size="2" data-work-week-input data-current-value="{{estimated_hours}}" data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="estimated_hours" value="{{estimated_hours}}" class='estimated-actual' />
+    {{/if}}
+  {{/each}}
+</div>
+<div class="grid-row flex">
+  <div class='row-label'>Actual</div>
+  {{#each visibleWorkWeeks}}
+    {{#if hasPassedOrIsCurrent}}
+      {{#if highlight}}
+    <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual current-week-highlight' />
+      {{else}}
+    <input type="text" size="2" data-work-week-input data-current-value="{{actual_hours}} data-proposed="{{proposed}}" data-timestamp="{{beginning_of_week}}" data-cid="{{cid}}" data-attribute="actual_hours" value="{{actual_hours}}" class='estimated-actual' />
+      {{/if}}
+    {{/if}}
+  {{/each}}
+</div>

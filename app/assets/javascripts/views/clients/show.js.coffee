@@ -7,7 +7,7 @@ class window.StaffPlan.Views.Clients.Show extends StaffPlan.View
   render: ->
     super
     
-    @$el.find('section.main').html StaffPlan.Templates.Clients.show.clientInfo
+    @$el.find('section.main').html HandlebarsTemplates["clients/show"]
       client: @model.attributes
       projects: @model.get("projects")
     @

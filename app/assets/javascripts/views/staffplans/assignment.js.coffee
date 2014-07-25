@@ -51,7 +51,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
     
     if @model.isNew()
       isNewClient = if @client() == undefined then true else @client().isNew()
-      @$el.html StaffPlan.Templates.StaffPlans.assignment_new
+      @$el.html HandlebarsTemplates["staffplans/assignment/new"]
         showClientInput: isNewClient
 
       @$el.find('input[data-model=Project]').typeahead
@@ -64,7 +64,7 @@ class window.StaffPlan.Views.StaffPlans.Assignment extends Support.CompositeView
           @$el.find("input.#{if isNewClient then "client" else "project"}-name-input").focus()
         
     else
-      @$el.html StaffPlan.Templates.StaffPlans.assignment_show
+      @$el.html HandlebarsTemplates["staffplans/assignment/show"]
         showAddProject: @index == 0
         client:
           name: if @index == 0 then @client().get('name') else ""

@@ -15,7 +15,7 @@
 //= require lodash
 //= require backbone
 //= require backbone-support
-//= require handlebars
+//= require handlebars.runtime
 //= require keymaster
 
 //= require staffplan-app
@@ -24,6 +24,7 @@
 //= require_tree ./models
 //= require_tree ./collections
 //= require_tree ./views
+//= require templates/helpers
 //= require_tree ./templates
 //= require_tree ./routers
 

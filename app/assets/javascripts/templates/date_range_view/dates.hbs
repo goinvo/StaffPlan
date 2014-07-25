@@ -1,0 +1,20 @@
+<a href="#" class="pagination previous" data-action=previous>&lt;</a>
+<div class="week-numbers">
+  {{#each weeks}}
+    {{#if this.highlight}}
+      <span class="week-number current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
+    {{else}}
+      <span class="week-number" data-timestamp="{{this.timestamp}}">{{this.week}}</span>
+    {{/if}}
+  {{/each}}
+</div>
+<div class="month-names">
+  {{#each months}}
+    {{#if this.highlight}}
+      <span class="month-name current-week-highlight" data-timestamp="{{this.timestamp}}">{{this.month}}</span>
+    {{else}}
+      <span class="month-name" data-timestamp="{{this.timestamp}}">{{this.month}}</span>
+    {{/if}}
+  {{/each}}
+</div>
+<a href="#" class="pagination next" data-action=next>&gt;</a>

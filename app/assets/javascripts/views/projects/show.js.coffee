@@ -63,16 +63,16 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
   
   renderHeader: ->
     client = StaffPlan.clients.get( @model.get( "client_id" ) )
-    @$el.find('header').append StaffPlan.Templates.Projects.show.header
+    @$el.find('header').append HandlebarsTemplates["projects/header"]
       name: @model.get "name"
       client_name: client.get "name"
       client_id: client.get('id')
   
   calculateNumberOfBars: ->
     # Each line is a list-item with 25 pixels of left margin
-    # Each line has a 180 pixels-wide user information component and a 60px-wide 
+    # Each line has a 180 pixels-wide user information component and a 60px-wide
     # totals component.
-    # Since we have actuals and estimates, we also have a 
+    # Since we have actuals and estimates, we also have a
     # 35 pixels-wide labels div before the inputs
     # Adding 40ox of "buffer space" to the tally for security
     @numberOfBars = Math.floor ( ($('body').width() - 360) / 40 )
@@ -121,7 +121,7 @@ class StaffPlan.Views.Projects.Show extends StaffPlan.View
       !user.get('membership').archived && !user.get('membership').disabled
     
     @$el.find('#unassignedUserChoices').remove();
-    @$el.find('section.main').append StaffPlan.Templates.Projects.show.addSomeone
+    @$el.find('section.main').append HandlebarsTemplates["projects/add_someone"]
       unassignedUsers: unassignedUsers.map (u) -> u.attributes
       projectId: @model.id
   

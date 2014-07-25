@@ -17,7 +17,7 @@ class window.StaffPlan.Views.Shared.Totals extends Support.CompositeView
     
     hours.delta = hours.currentAndPastActual - hours.currentAndPastEstimated
     
-    @$el.html StaffPlan.Templates.StaffPlans.assignment_totals
+    @$el.html HandlebarsTemplates["staffplans/assignment/totals"]
       hours: hours
     
     @

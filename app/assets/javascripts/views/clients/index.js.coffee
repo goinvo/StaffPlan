@@ -29,7 +29,7 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
 
     @$main ||= @$el.find('section.main')
 
-    @$main.html StaffPlan.Templates.Clients.index.clientInfo
+    @$main.html HandlebarsTemplates["clients/index"]
       clients: @collection.map (client) ->
         _.extend client.attributes,
           projects: client.getProjects().reduce((hash, project) ->
@@ -38,6 +38,6 @@ class window.StaffPlan.Views.Clients.Index extends StaffPlan.View
           , {})
       currentCompany: @options.currentCompany
 
-    @$main.append StaffPlan.Templates.Clients.index.actions.addClient
+    @$main.append HandlebarsTemplates["clients/actions/add"]
 
     @

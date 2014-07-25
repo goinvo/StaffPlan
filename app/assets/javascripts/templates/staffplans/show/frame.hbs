@@ -1,0 +1,24 @@
+<div class="lower">
+  <div id="user-select" class="grid-row user-info">
+    <div class="grid-row-element fixed-360">
+      <img class="gravatar" src="{{user.gravatar}}" />
+      <span class='name'>
+        <a href="/users/{{user.id}}">{{user.full_name}}</a>
+      </span>
+    </div>
+    <div id="user-chart" class="grid-row-element chart-wrapper top-0">
+      <div class="flex chart-container margin-left-35"><svg class="user-chart"></svg></div>
+    </div>
+  </div>
+</div>
+
+<div class='header grid-row padded'>
+  <div class='grid-row-element fixed-180 client-name-and-project-name title'><span>Client</span>
+    <div class='btn-group pull-right'>
+      <a href='#' class='btn btn-mini chill-out add-client' title="Add a new client and assignment for {{user.full_name}}"><i class='icon-plus-sign'></i></a>
+    </div>
+    
+  </div>
+  <div class='grid-row-element fixed-180 title'><span>Project</span></div>
+  <div class="grid-row-element flex date-range-target date-paginator" id="interval-width-target"></div>
+</div>

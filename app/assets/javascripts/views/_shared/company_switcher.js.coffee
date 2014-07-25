@@ -1,4 +1,4 @@
-class StaffPlan.Views.Shared.CompanySwitcher extends Backbone.View 
+class StaffPlan.Views.Shared.CompanySwitcher extends Backbone.View
   tagName: "li"
   className: "company-switcher"
     
@@ -16,9 +16,9 @@ class StaffPlan.Views.Shared.CompanySwitcher extends Backbone.View
       success: (model, response, options) ->
         window.location.href = "/staffplans/#{user.id}"
     , error: (model, xhr, options) ->
-        alert "An error occurred while switching companies. Please try again." 
+        alert "An error occurred while switching companies. Please try again."
   render: ->
-    @$el.html StaffPlan.Templates.Shared.companySwitcher
+    @$el.html HandlebarsTemplates["shared/company_switcher"]
       userId: StaffPlan.currentUser.get("id")
       companies: StaffPlan.companies.select (obj) -> (obj.id isnt StaffPlan.currentCompany.get("id"))
       currentCompanyName: StaffPlan.currentCompany.get("name")

@@ -1,0 +1,64 @@
+<div data-model=client>
+  <div class="control-group">
+    <label class="control-label" for="client-name">
+      Client
+    </label>
+    <div class="controls">
+      <select data-model=client data-attribute=id id="client-picker">
+        {{#clients}}
+          <option value="{{id}}">{{name}}</option>
+        {{/clients}}
+        <option class="new-client" value="newclient">New Client</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="control-group hidden">
+    <label class="control-label" for="client-name">
+      Client Name
+    </label>
+    <div class="controls">
+      <input data-model=client data-attribute=name id="client-name" type="text" placeholder="Client Name">
+    </div>
+  </div>
+</div>
+
+<div data-model=project>
+  <div class="control-group">
+    <label class="control-label" for="project-name">
+      Project Name
+    </label>
+    <div class="controls">
+      <input data-model=project data-attribute=name id="project-name" type="text" placeholder="Project Name">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label" for="project-active">Active</label>
+    <div class="controls">
+      <input data-model=project data-attribute=active id="project-active" type="checkbox">
+    </div>
+  </div>
+
+  <div class="control-group">
+    <label class="control-label">
+      Payment Frequency
+    </label>
+    <radiogroup data-model=project data-attribute=payment_frequency>
+      <input data-model=project data-attribute=payment_frequency type="radio" name="project_payment" checked="checked" value="monthly"> Monthly
+      <input data-model=project data-attribute=payment_frequency type="radio" name="project_payment" value="total"> Total
+    </radiogroup>
+  </div>
+
+   <div class="control-group">
+     <label class="control-label" for="project-cost">Cost</label>
+     <div class="controls">
+       <input data-model=project data-attribute=cost id="project-cost" size="10" type="number">
+     </div>
+   </div>
+</div>
+
+<div class="form-actions">
+  <a href="/projects" data-action="create" class="btn btn-primary">Create Project</a>
+  <a href="/projects" data-action="cancel" class="btn">Back to Projects</a>
+</div>

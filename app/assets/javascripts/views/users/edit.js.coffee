@@ -67,7 +67,7 @@ class window.StaffPlan.Views.Users.Edit extends StaffPlan.View
   render: ->
     super
 
-    @$el.find('section.main').html StaffPlan.Templates.Users.edit.userEdit
+    @$el.find('section.main').html HandlebarsTemplates["users/edit/user_edit"]
       user: @model.attributes
       emailReminder: @model.preferences.get("email_reminder")
       displayDates: @model.preferences.get("display_dates")

@@ -44,7 +44,7 @@ class StaffPlan.Views.StaffPlans.ListItem extends Support.CompositeView
     if @rendered
       @renderChart()
     else
-      @$el.html StaffPlan.Templates.StaffPlans.listItem
+      @$el.html HandlebarsTemplates["staffplans/list_item"]
         user: @model.pick ["id", "gravatar", "full_name"]
       
       @renderTotals()

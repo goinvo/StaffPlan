@@ -1,0 +1,12 @@
+<div class='user-info fixed-180 medium' data-user-id="{{user.id}}">
+  <a href="/staffplans/{{user.id}}">
+    <img alt="{{user.full_name}}" class="gravatar" src="{{user.gravatar}}" />
+    <span class='name'>
+      <a href="/staffplans/{{user.id}}">{{user.full_name}}</a>
+    </span>
+  </a>
+</div>
+<div class="chart-container flex">
+  <svg class="user-chart"></svg>
+</div>
+<div class="totals fixed-60"></div>

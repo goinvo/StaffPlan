@@ -125,7 +125,7 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
 
   renderStaffPlanFrame: ->
     # staffplan layout
-    @$el.find('header').append StaffPlan.Templates.StaffPlans.show_frame
+    @$el.find('header').append HandlebarsTemplates["staffplans/show/frame"]
       user: @model.attributes
 
   renderFYSelect: ->

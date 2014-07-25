@@ -15,7 +15,7 @@ class window.StaffPlan.Views.Clients.New extends StaffPlan.View
   render: ->
     super
     
-    @$el.find('section.main').html StaffPlan.Templates.Clients.new.newClient
+    @$el.find('section.main').html HandlebarsTemplates["clients/new"]
       clientDescription: @model.get("description") || ""
       clientName: @model.get("name") || ""
       clientActive: if @model.get("active") then "checked=\"checked\"" else ""
@@ -23,7 +23,7 @@ class window.StaffPlan.Views.Clients.New extends StaffPlan.View
       
     @
 
-  # Checkboxes don't transmit their values as expected 
+  # Checkboxes don't transmit their values as expected
   # Making sure we're always sending something to the server regardless
   updateCheckbox: ->
     elem = @$el.find("input#client_active")

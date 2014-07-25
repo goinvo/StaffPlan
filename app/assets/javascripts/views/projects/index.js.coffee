@@ -87,7 +87,7 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
       @$main ||= @$el.find('section.main')
       @$main.append @$list = jQuery('<div class="list" />')
 
-      $lower.append StaffPlan.Templates.Projects.index.header
+      $lower.append HandlebarsTemplates["projects/index/header"]
 
       @renderFYSelect()
     
@@ -97,9 +97,8 @@ class window.StaffPlan.Views.Projects.Index extends StaffPlan.View
 
       @renderDates()
 
-      @$main.append StaffPlan.Templates.Projects.index.actions.addProject
+      @$main.append HandlebarsTemplates["projects/index/add_project"]
     
       @rendered = true
     
     @
-

@@ -107,7 +107,7 @@ class window.StaffPlan.Views.Projects.Edit extends StaffPlan.View
         .prop "checked", attrs["active"]
   render: ->
     super
-    @$el.find("section.main").html StaffPlan.Templates.Projects.edit
+    @$el.find("section.main").html HandlebarsTemplates["projects/edit"]
       clients: @clients.map (client) -> client.toJSON()
     @populateFields()
 

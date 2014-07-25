@@ -107,7 +107,7 @@ class window.StaffPlan.Views.Projects.WorkWeeks extends Support.CompositeView
 
     templateData = _.map weeks, (week) ->
       week.formatForTemplate()
-    @$el.append StaffPlan.Templates.StaffPlans.work_week_row
+    @$el.append HandlebarsTemplates["staffplans/work_week/row"]
       visibleWorkWeeks: templateData
     @rowFiller = @$el.find('.row-filler').hide()
     

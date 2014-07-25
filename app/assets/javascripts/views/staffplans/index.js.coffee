@@ -99,9 +99,9 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     unless @rendered
       $lower = jQuery('<div class="lower" />')
       @$el.find('header').append $lower
-      $lower.append StaffPlan.Templates.StaffPlans.index.pagination
+      $lower.append HandlebarsTemplates["staffplans/index/pagination"]
     
-    @$el.find('.lower .btn-toolbar').html StaffPlan.Templates.StaffPlans.index.sortButtonGroup
+    @$el.find('.lower .btn-toolbar').html HandlebarsTemplates["staffplans/index/sort_button_group"]
         sortASC: @sort.order == "asc"
         byWorkload: @sort.field == "workload"
       
@@ -130,7 +130,7 @@ class window.StaffPlan.Views.StaffPlans.Index extends StaffPlan.View
     
       @renderUsers()
 
-      @$main.append StaffPlan.Templates.StaffPlans.index.addStaff
+      @$main.append HandlebarsTemplates["staffplans/index/add_staff"]
 
       @renderDates()
       

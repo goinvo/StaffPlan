@@ -10,6 +10,6 @@ class window.StaffPlan.Views.Users.ListItem extends Support.CompositeView
       @render()
 
   render: ->
-    @$el.html StaffPlan.Templates.Users.listItem.userListItem
+    @$el.html HandlebarsTemplates["users/list_item"]
       user: @model.attributes
     @
