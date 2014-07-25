@@ -26,7 +26,7 @@
 //= require_tree ./views
 //= require templates/helpers
 //= require_tree ./templates
-//= require_tree ./routers
+//= require router
 
 $( document ).ready(function() {
   var tokenValue = $("meta[name='csrf-token']").attr('content');
