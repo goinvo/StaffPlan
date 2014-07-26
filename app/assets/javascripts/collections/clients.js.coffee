@@ -3,6 +3,10 @@ class window.StaffPlan.Collections.Clients extends Backbone.Collection
   
   url: ->
     "/clients"
-
+  
+  active: ->
+    @select (client) ->
+      client.get('active')
+  
   comparator: (client) ->
     client.get("name")?.toLowerCase()

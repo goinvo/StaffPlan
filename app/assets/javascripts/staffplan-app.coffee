@@ -16,6 +16,7 @@ window.StaffPlan =
     Projects:
       WorkWeeks: {}
     Clients: {}
+    Planning: {}
   Routers: {}
   Dispatcher: _.extend {}, Backbone.Events
   
