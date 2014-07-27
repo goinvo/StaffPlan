@@ -23,7 +23,7 @@ window.StaffPlan =
   loadData: (type, callback) ->
     $.ajax "/#{type}.json",
       success: (json) =>
-        console.log("loaded #{type}")
+        # console.log("loaded #{type}")
         @[type] = new StaffPlan.Collections[S(type).capitalize().toString()] json
         @addProgress()
         callback(null, type);
@@ -35,7 +35,7 @@ window.StaffPlan =
   loadAssignments: (callback) ->
     $.ajax "/assignments.json",
       success: (json) =>
-        console.log("loaded assignments")
+        # console.log("loaded assignments")
         
         _.forEach json, (assignment) ->
           work_weeks = assignment.work_weeks
