@@ -3,6 +3,13 @@ class window.StaffPlan.Views.Staffing.Show extends StaffPlan.View
     id: "staffing-show"
     class: "extra-short"
   
+  events:
+    "click [data-toggle='popover']": 'showPopover'
+    
+  showPopover: (event) ->
+    $('.popover:visible').fadeOut 'fast'
+    @$el.find(event.target).popover().popover('show')
+    
   initialize: (options={}) ->
     _.extend @, StaffPlan.Mixins.Events.weeks
     
@@ -139,8 +146,5 @@ class window.StaffPlan.Views.Staffing.Show extends StaffPlan.View
     @renderUsers()
     
     @renderClients()
-    
-    $('.popover').popover
-      trigger: 'hover'
     
     @
