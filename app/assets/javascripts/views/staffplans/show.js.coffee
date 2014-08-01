@@ -5,7 +5,6 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
     class: "tall"
 
   events:
-    "click a[data-change-page]": "changePage"
     "click a.add-client": "onAddClientClicked"
     "change input[data-model=\"Client\"]": "updateProjectTypeAheadOptionList"
     "blur input[data-model=\"Client\"]": "updateProjectTypeAheadOptionList"
@@ -78,12 +77,6 @@ class window.StaffPlan.Views.StaffPlans.Show extends StaffPlan.View
 
   getYearsAndWeeks: ->
     _.range(@startDate.valueOf(), @startDate.valueOf() + @numberOfBars * 7 * 86400 * 1000, 7 * 86400 * 1000)
-
-  changePage: (event) ->
-    event.preventDefault()
-    event.stopPropagation()
-
-    @dateChanged event
 
   calculateNumberOfBars: ->
     # calculate usable width for inputs

@@ -20,7 +20,7 @@ StaffPlan::Application.routes.draw do
     resources :work_weeks, :only => [:show, :update, :create]
   end
   
-  # A project involves a company, a client and a user (through a given assignment) 
+  # A project involves a company, a client and a user (through a given assignment)
   resources :clients
 
   # Companies have users (members/employees), projects and clients
@@ -28,7 +28,7 @@ StaffPlan::Application.routes.draw do
     resources :memberships, :only => [:create, :update, :destroy]
   end
 
-  # The staff plan is the compound of hours and involvement in projects 
+  # The staff plan is the compound of hours and involvement in projects
   # by a given user for a given client and a given company
   resources :staffplans, :only => [:show, :index] do
     get 'inactive', :on => :collection
@@ -49,6 +49,8 @@ StaffPlan::Application.routes.draw do
   resources :sessions, :only => [:new, :create, :destroy]
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
+  
+  resource :staffing, controller: :staffing
   
   root :to => 'staffplans#my_staffplan'
 end

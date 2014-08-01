@@ -14,7 +14,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
     "projects/new"      : "projectNew"
     "projects/:id"      : "projectShow"
     "projects/:id/edit" : "projectEdit"
-    "planning"          : "planningShow"
+    "staffing"          : "staffingShow"
     
     
   initialize: (data) ->
@@ -132,7 +132,7 @@ class StaffPlan.Routers.StaffPlan extends Support.SwappingRouter
       collection: window.StaffPlan.projects
     @swap projectIndex
   
-  planningShow: ->
-    planningShow = new window.StaffPlan.Views.Planning.Show
+  staffingShow: ->
+    staffingShow = new window.StaffPlan.Views.Staffing.Show
       router: @
-    @swap planningShow
+    @swap staffingShow

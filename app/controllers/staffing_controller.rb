@@ -1,0 +1,2 @@
+class StaffingController < ApplicationController
+end
