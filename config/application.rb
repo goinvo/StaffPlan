@@ -57,8 +57,9 @@ module StaffPlan
     end
 
     # https://gist.github.com/1184843
-    config.assets.precompile << 'jquery-ui-1.8.17.css'
     config.assets.precompile << /(^[^_]|\/[^_])[^\/]*/
     config.sass.preferred_syntax = :sass
+    
+    I18n.enforce_available_locales = false
   end
 end
