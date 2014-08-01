@@ -41,9 +41,9 @@ describe User do
     it "should assign the employment status of full-time employee to a default user" do
       m = @user.memberships.where(company_id: @company.id).first
       m.employment_status.should eq("fte")
-    end 
+    end
 
-    it "should provide a convenience methods to assign employment status" do 
+    it "should provide a convenience methods to assign employment status" do
       [[:interning_at!, "intern"], [:employee_of!, "fte"], [:contractor_for!, "contractor"]].each do |msg, role|
         @user.send(msg, @company)
         m = @user.memberships.where(company_id: @company.id).first
@@ -75,82 +75,10 @@ describe User do
     end
   end
 
-  # describe '#plan_for' do
-  #   before(:each) do
-  #     @user = User.new(email: Faker::Internet.email, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name, password: "23kj23k2j")
-  #     @company = FactoryGirl.create(:company)
-  #     @company.users << @user
-  #     @user.current_company_id = @company.id
-  #     @user.save
-
-  #     @client = Client.new(name: Faker::Company.name, description: Faker::Lorem.sentences(2), active: true)
-  #     @client.company_id = @company.id
-  #     @client.save
-
-  #     @project = Project.new(name: Faker::Company.name, name: Faker::Company.bs)
-  #     @project.company_id = @company.id
-  #     @project.client_id = @client.id
-  #     @project.save
-
-  #     @project_ids = @company.projects.map(&:id)
-  #   end 
-
-  #   it "should return 0 when I try to get the number of estimated hours for a new user" do
-  #     @user.plan_for(@company.id, Date.today).should eq(0)
-  #   end
-
-  #   it "should return 0 when the user hasn't put any estimates for the future" do
-  #     @work_week = WorkWeek.new(cweek: 2.months.ago(Date.today).cweek, year: Date.today.year, estimated_hours: 20, actual_hours: 12)
-  #     @work_week.project_id = @project.id
-  #     @work_week.user_id = @user.id
-  #     @work_week.save
-  #     @user.plan_for(@project_ids, Date.today).should eq(0)
-  #   end
-
-  #   it "should return the sum of workload estimates for the future" do
-  #     @w1 = WorkWeek.new(cweek: 2.months.from_now(Date.today).cweek, year: Date.today.year, estimated_hours: 20, actual_hours: 12)
-  #     @w1.project_id = @project.id
-
-  #     @w2 = WorkWeek.new(cweek: 1, year: 3.years.from_now(Date.today).year, estimated_hours: 80, actual_hours: 12)
-  #     @w2.project_id = @project.id
-
-  #     @user.work_weeks << [@w1, @w2]
-  #     @user.save
-  #     @user.plan_for(@project_ids, Date.today).should eq(100)
-  #   end
-  # end
-
   describe '#current_company' do
     it "should return false if the company isn't associated with the user"
     it "should set current_company_id to the company's id"
   end
-
-  describe "after_update callback" do
-    it "should update the updated_at timestamp for a user that modifies another user" do
-      User.destroy_all
-      with_versioning do
-        @source = FactoryGirl.create(:user)
-        time = @source.updated_at
-        @target = FactoryGirl.create(:user)
-        PaperTrail.whodunnit = @source.id.to_s
-        @target.update_attributes(first_name: Faker::Name.first_name)
-        @source.reload.updated_at.should > time
-      end
-    end
-    it "should NOT update the updated_at timestamp for user A if user B modifies something about user C" do
-      User.destroy_all
-      with_versioning do
-        @source = FactoryGirl.create(:user)
-        source_time = @source.updated_at
-        @target = FactoryGirl.create(:user)
-        @bystander = FactoryGirl.create(:user)
-        bystander_time = @bystander.updated_at
-        PaperTrail.whodunnit = @source.id.to_s
-        @target.update_attributes(first_name: Faker::Name.first_name)
-        @bystander.reload.updated_at.should == bystander_time
-      end
-    end
-  end  
 
   describe '#save_unconfirmed_user' do
     it "should save the user if all required fields (except password) are present" do
