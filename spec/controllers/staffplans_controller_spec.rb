@@ -13,42 +13,6 @@ describe StaffplansController do
     end
   end
 
-  describe 'GET#inactive' do
-    before(:each) do 
-      @company.users << user_with_clients_and_projects
-    end
-    it "should return an empty user collection if no user is either disabled or archived for that company" do
-      @company.memberships.each do |m|
-        m.disabled = false
-        m.archived = false
-        m.save
-      end
-
-      get :inactive
-      response.should be_success
-      assigns[:users].should be_empty
-    end
-
-    it "should return the disabled users" do
-      Membership.any_instance.expects(:disabled?).at_least_once.returns(true)
-      
-      get :inactive
-      response.should be_success
-      assigns[:users].should_not be_empty
-      assigns[:users].count.should eq(@company.memberships.count)
-    end
-
-    it "should return the archived users" do
-      Membership.any_instance.expects(:archived?).at_least_once.returns(true)
-      
-      get :inactive
-      response.should be_success
-      assigns[:users].should_not be_empty
-      assigns[:users].count.should eq(@company.memberships.count)
-
-    end
-  end 
-
   # describe 'GET#show' do
   #   it "should redirect to root_url if a user can't be found" do
   #     get :show, :id => "bogus"
@@ -81,7 +45,7 @@ describe StaffplansController do
 
   #     get :show, id: @current_user.id
 
-  #     # Current company is @company, which has one client (@client1), which has two projects 
+  #     # Current company is @company, which has one client (@client1), which has two projects
   #     assigns[:clients].should_not be_nil
   #     assigns[:clients].first.class.should eq(String)
   #     assigns[:target_user].should == @current_user
@@ -102,7 +66,7 @@ describe StaffplansController do
 
   #     @current_user.current_company.clients.should_not include(@client_1)
   #     @current_user.current_company.clients.size.should eq(2)
-  #     get :show, id: @current_user.id 
+  #     get :show, id: @current_user.id
 
   #     assigns[:clients].should_not be_nil
   #     assigns[:target_user].should eq(@current_user)
@@ -116,7 +80,7 @@ describe StaffplansController do
   #     end
 
   #     it "should assign the beginning of the current week to @date if the user doesn't pass any date parameter" do
-  #       get :show, @parameters 
+  #       get :show, @parameters
   #       assigns[:date].should eq(Date.today.at_beginning_of_week)
   #     end
 
@@ -127,7 +91,7 @@ describe StaffplansController do
   #     end
 
   #     it "should assign the beginning of the current week to @date if the user supplies an invalid date parameter" do
-  #       get :show, @parameters.merge(date: "bogus") 
+  #       get :show, @parameters.merge(date: "bogus")
   #       assigns[:date].should eq(Date.today.at_beginning_of_week)
   #     end
 
@@ -135,7 +99,7 @@ describe StaffplansController do
   #       get :show, @parameters
   #       assigns[:projects].should be_a(Hash)
   #       assigns[:projects].all? do |client_name, projects|
-  #         projects.all? do |project| 
+  #         projects.all? do |project|
   #           project.client.name.should eq(client_name)
   #         end
   #       end
@@ -156,7 +120,7 @@ describe StaffplansController do
     end
   end
 
-  # describe "GET#index" do 
+  # describe "GET#index" do
   #   context "General" do
   #     it "should assign @users with a list of users ordered by ascending estimated workload in the future" do
   #       @company.users << Array.new(3) { user_with_clients_and_projects }
@@ -184,7 +148,7 @@ describe StaffplansController do
   #     it "should assign an array of Date objects to @date_range" do
   #       get :index
   #       assigns[:date_range].should be_a(Array)
-  #       assigns[:date_range].all? do |date| 
+  #       assigns[:date_range].all? do |date|
   #         date.should be_a(Date)
   #       end
   #     end
@@ -207,11 +171,11 @@ describe StaffplansController do
 
   #     it "should assign the time frame going from one week before the given date to the week before 3 months after that date to @date_range" do
   #       from_date = rand(1..100).days.ago.strftime("%Y-%m-%d")
-  #       get :index, from: from_date 
+  #       get :index, from: from_date
   #       assigns[:from].should eq(1.week.ago(Date.parse(from_date).at_beginning_of_week))
   #       assigns[:date_range].first.should eq(assigns[:from])
   #       assigns[:date_range].last.should < 3.month.from_now(assigns[:from])
-  #     end 
+  #     end
   #   end
   # end
 

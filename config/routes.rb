@@ -30,9 +30,7 @@ StaffPlan::Application.routes.draw do
 
   # The staff plan is the compound of hours and involvement in projects
   # by a given user for a given client and a given company
-  resources :staffplans, :only => [:show, :index] do
-    get 'inactive', :on => :collection
-  end
+  resources :staffplans, :only => [:show, :index]
   
   resources :password_resets, except: [:destroy, :show, :index]
   

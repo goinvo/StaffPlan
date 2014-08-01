@@ -10,9 +10,6 @@ class StaffplansController < ApplicationController
     end
   end
  
-  def inactive
-  end
-
   def index
     respond_to do |format|
       format.html {}
