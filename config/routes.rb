@@ -50,7 +50,7 @@ StaffPlan::Application.routes.draw do
   
   match '/my_staffplan' => "staffplans#my_staffplan", via: :get, as: "my_staffplan"
   
-  resource :planning, controller: :planning
+  resource :staffing, controller: :staffing
   
   root :to => 'staffplans#my_staffplan'
 end

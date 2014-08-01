@@ -1,0 +1,10 @@
+<div class='grid-row staffing-row'>
+  <div class="name-or-client"><a href="/clients/{{client_id}}">{{name}}</a></div>
+  <div class="flex staffing-work-weeks">
+    {{#each weekly_totals}}
+      <div class="staffing-work-week">
+        {{total_hours}}
+      </div>
+    {{/each}}
+  </div>
+</div>

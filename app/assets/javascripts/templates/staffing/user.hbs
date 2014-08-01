@@ -1,0 +1,17 @@
+<div class='grid-row staffing-row'>
+  <div class="name-or-client"><a href="/staffplans/{{user_id}}">{{first_name}} {{last_name}}</a></div>
+  <div class="flex staffing-work-weeks">
+    {{#each weekly_totals}}
+      <div class="staffing-work-week">
+        {{total_hours}}
+        <div class="popover top">
+          <div class="arrow"></div>
+          <h3 class="popover-title">Popover top</h3>
+          <div class="popover-content">
+            <p>Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</p>
+          </div>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>
