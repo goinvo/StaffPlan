@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130221193221) do
+ActiveRecord::Schema.define(:version => 20130227192027) do
 
   create_table "assignments", :force => true do |t|
     t.integer  "user_id"
@@ -107,5 +107,7 @@ ActiveRecord::Schema.define(:version => 20130221193221) do
     t.integer  "assignment_id"
     t.decimal  "beginning_of_week",              :precision => 15, :scale => 0
   end
+
+  add_index "work_weeks", ["assignment_id", "beginning_of_week"], :name => "index_work_weeks_on_assignment_id_and_beginning_of_week", :unique => true
 
 end
