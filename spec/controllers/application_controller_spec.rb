@@ -18,7 +18,7 @@ describe ApplicationController do
       
       it "should look up a User by session[:user_id] if present" do
         session[:user_id] = bogus_user_id = 'bogus'
-        User.expects(:find).with(bogus_user_id).returns(nil).twice
+        UserDecorator.expects(:find_by_id).with(bogus_user_id).returns(nil).twice
         get :index
         response.should redirect_to(new_session_url)
       end

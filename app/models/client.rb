@@ -1,5 +1,4 @@
 class Client < ActiveRecord::Base
-  include StaffPlan::AuditMethods
   has_paper_trail
   
   DEFAULT_CLIENT_NAME = "N/A"
@@ -11,8 +10,6 @@ class Client < ActiveRecord::Base
   validates_uniqueness_of :name, case_sensitive: false, scope: :company_id
 
   default_scope(order: "name ASC")
-
-  after_update :update_originator_timestamp
 
   def staff_plan_json
     Jbuilder.encode do |json|

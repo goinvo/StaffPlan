@@ -6,15 +6,6 @@ describe ClientsController do
     @current_user, @company = login_user
     # @company.users << @current_user
   end
-  
-  describe "GET index" do
-    it "assigns all clients as @clients" do
-      client = FactoryGirl.create(:client)
-      @company.clients << client
-      get :index
-      assigns(:clients).should eq([client])
-    end
-  end
 
   describe "GET show" do
     it "assigns the requested client as @client" do
@@ -62,25 +53,18 @@ describe ClientsController do
       end
 
       it "redirects to the created client" do
-        post :create, :client => FactoryGirl.attributes_for(:client)
+        post :create, :client => FactoryGirl.attributes_for(:client), format: "json"
         # Due to the default_scope being ORDER BY name DESC we need to bypass the scope here
-        response.should redirect_to(Client.send(:with_exclusive_scope){Client.last})
+        response.should be_success
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved client as @client" do
         # Trigger the behavior that occurs when invalid params are submitted
-        Client.any_instance.expects(:save).returns(false)
+        Client.any_instance.expects(:save!).returns(false)
         post :create, :client => {}
         assigns(:client).should be_a_new(Client)
-      end
-
-      it "re-renders the 'new' template" do
-        # Trigger the behavior that occurs when invalid params are submitted
-        Client.any_instance.expects(:save).returns(false)
-        post :create, :client => {}
-        response.should render_template("new")
       end
     end
   end
@@ -105,13 +89,6 @@ describe ClientsController do
         put :update, :id => client.id, :client => FactoryGirl.attributes_for(:client)
         assigns(:client).should eq(client)
       end
-
-      it "redirects to the client" do
-        client = FactoryGirl.create(:client)
-        @company.clients << client
-        put :update, :id => client.id, :client => FactoryGirl.attributes_for(:client)
-        response.should redirect_to(client)
-      end
     end
 
     context "with invalid params" do
@@ -122,15 +99,6 @@ describe ClientsController do
         Client.any_instance.expects(:save).returns(false)
         put :update, :id => client.id, :client => {}
         assigns(:client).should eq(client)
-      end
-
-      it "re-renders the 'edit' template" do
-        client = FactoryGirl.create(:client)
-        @company.clients << client
-        # Trigger the behavior that occurs when invalid params are submitted
-        Client.any_instance.expects(:save).returns(false)
-        put :update, :id => client.id, :client => {}
-        response.should render_template("edit")
       end
     end
   end

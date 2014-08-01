@@ -1,5 +1,4 @@
 class Company < ActiveRecord::Base
-  include StaffPlan::AuditMethods
   has_paper_trail
   attr_accessible :name
   
@@ -13,11 +12,9 @@ class Company < ActiveRecord::Base
   validates_presence_of :name
   validates_uniqueness_of :name
 
-  after_update :update_originator_timestamp 
-  
   # Goes as follows:
   # We're deleting a company. Before that happens, we'll take all that company's users
-  # and set their current_company_id to any other company they're a member of, or to 
+  # and set their current_company_id to any other company they're a member of, or to
   # nil if they don't have any left beyond the one we're deleting
   before_destroy do |record|
     record.users.where(current_company_id: record.id).all.each do |user|

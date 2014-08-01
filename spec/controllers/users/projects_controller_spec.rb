@@ -8,16 +8,16 @@ describe Users::ProjectsController do
   
   describe 'all actions' do
     it "should redirect if @target_user isn't found" do
-      User.expects(:find_by_id).with(anything).times(3)
+      UserDecorator.expects(:find_by_id).with(anything).at_least(3)
       
       post :create, :user_id => @user.id
-      response.should redirect_to(root_url)
+      response.should redirect_to(new_session_url)
       
       put :update, :user_id => @user.id, :id => 'anything'
-      response.should redirect_to(root_url)
+      response.should redirect_to(new_session_url)
       
       delete :destroy, :user_id => @user.id, :id => 'anything'
-      response.should redirect_to(root_url)
+      response.should redirect_to(new_session_url)
     end
   end
   
@@ -107,7 +107,8 @@ describe Users::ProjectsController do
     end
     
     it "should render OK JSON if the project updates" do
-      put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
+      @project = FactoryGirl.create(:project, company: @company, :users => [@user])
+      put :update, :user_id => @user.id, :id => @project.id, project: @project.attributes
       response.should be_success
       response.body.match("\"status\":\"ok\"").should_not be_nil
       response.body.match("\"clients\":").should_not be_nil
@@ -115,7 +116,6 @@ describe Users::ProjectsController do
     end
     
     it "should render FAIL JSON if the project doesn't update" do
-      Assignment.any_instance.expects(:update_attributes).with(anything).returns(false)
       put :update, :user_id => @user.id, :id => FactoryGirl.create(:project, company: @company, :users => [@user]).id
       response.should be_success
       response.body.match("\"status\":\"fail\"").should_not be_nil

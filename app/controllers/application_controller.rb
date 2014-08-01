@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   
   before_filter :require_current_user, :require_current_company, :set_mobile_view
 
-  protected 
+  protected
 
   def find_target
     return unless %w(projects users clients).include? controller_name
@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
   helper_method :current_user
   
-  def require_current_user 
+  def require_current_user
     unless current_user.present?
       if request.get? && !request.xhr?
         cookies[:original_request] = {value: Marshal.dump(request.path_parameters), expires: 2.minutes.from_now}
@@ -52,6 +52,8 @@ class ApplicationController < ActionController::Base
       session[:mobile_view] = params[:mobile_view] == "true"
       set_mobile_format
     end
+    
+    true
   end
 
 end

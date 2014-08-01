@@ -1,7 +1,7 @@
 class ClientsController < ApplicationController
   respond_to :json
   
-  before_filter only: [:show, :edit, :update, :destroy] do |c| 
+  before_filter only: [:show, :edit, :update, :destroy] do |c|
     c.find_target
   end
 

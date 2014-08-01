@@ -49,6 +49,7 @@ group :test do
   gem 'factory_girl_rails'
   gem 'mocha',                                   require: false
   gem 'nokogiri'
+  gem 'timecop'
 end
 
 group :production do
