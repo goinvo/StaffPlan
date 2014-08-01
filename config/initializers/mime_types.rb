@@ -1,3 +1,3 @@
 # Be sure to restart your server when you modify this file.
 
-Mime::Type.register_alias "text/html", :mobile
+# Mime::Type.register_alias "text/html", :mobile
