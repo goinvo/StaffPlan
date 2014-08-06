@@ -1,0 +1,13 @@
+%p Hi #{@user.first_name}
+
+%p Thank you for registering an account on StaffPlan. Please click the link below to activate your account:
+
+- registration_url = confirm_registration_url(token: @user.registration_token)
+%p #{link_to("Click here to confirm", registration_url)}
+
+%p Plan away,
+
+%p
+  The StaffPlan Team,
+  %br
+  http://www.staffplan.com

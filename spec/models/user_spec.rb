@@ -4,7 +4,7 @@ describe User do
 
   describe 'validations' do
     it "should not be valid? for new instances" do
-      User.new.valid?.should be_false
+      User.new.valid?.should be_falsy
     end
 
     it "should be valid? with valid attributes" do
@@ -14,7 +14,7 @@ describe User do
         email: Faker::Internet.email,
         password: 'password',
         password_confirmation: 'password'
-      ).valid?.should be_true
+      ).valid?.should be_truthy
     end
 
     it "should validate the email format" do
@@ -55,7 +55,7 @@ describe User do
       {:administrates! => :admin, :handles_financials_of! => :financials}.each do |msg, perm|
         @user.send(msg, @company)
         m = @user.memberships.where(company_id: @company.id).first
-        m.permissions?(perm).should be_true
+        m.permissions?(perm).should be_truthy
       end
     end
 
@@ -64,14 +64,14 @@ describe User do
       @user.update_permissions(nil, @company) # The user has NO permissions for that company
       m.permissions << :admin
       m.save
-      @user.administrates?(@company).should be_true
-      @user.handles_financials_of?(@company).should be_false
+      @user.administrates?(@company).should be_truthy
+      @user.handles_financials_of?(@company).should be_falsy
       m.permissions.delete :admin
       m.save
-      @user.administrates?(@company).should be_false
+      @user.administrates?(@company).should be_falsy
       m.permissions << :financials
       m.save
-      @user.handles_financials_of?(@company).should be_true
+      @user.handles_financials_of?(@company).should be_truthy
     end
   end
 
@@ -84,14 +84,14 @@ describe User do
     it "should save the user if all required fields (except password) are present" do
       lambda {
         user = FactoryGirl.build(:user, password: nil, password_confirmation: nil)
-        user.save_unconfirmed_user.should be_true
+        user.save_unconfirmed_user.should be_truthy
       }.should change(User, :count).by(1)
     end
 
     it "should not save if first/last name or email are missing" do
       lambda {
         user = FactoryGirl.build(:user, password: nil, password_confirmation: nil, email: nil)
-        user.save_unconfirmed_user.should be_false
+        user.save_unconfirmed_user.should be_falsy
       }.should_not change(User, :count)
     end
   end

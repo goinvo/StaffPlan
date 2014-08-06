@@ -25,7 +25,7 @@ describe RegistrationsController do
 
         assigns(:user).should be_a_new(User)
         assigns(:company).should be_a_new(Company)
-        assigns(:navigation_bar).should be_false
+        assigns(:navigation_bar).should be_falsy
         response.should be_success
         response.should render_template(:new)
       end

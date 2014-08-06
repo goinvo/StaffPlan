@@ -9,7 +9,6 @@ gem 'json', '~> 1.7'
 gem 'bitmask_attributes'
 gem 'coffee-filter'
 gem 'draper',             '0.18.0'
-gem 'faker'
 gem 'haml-rails'
 gem 'jbuilder'
 gem 'mobile-fu'
@@ -32,10 +31,11 @@ group :assets do
 end
 
 group :development, :test do
-  gem 'rspec-rails', '~> 2.0'
+  gem 'rspec-rails', '~> 2.99'
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote',                               require: 'pry-remote'
+  gem 'faker'
 end
 
 group :development do
@@ -50,6 +50,13 @@ group :test do
   gem 'mocha',                                   require: false
   gem 'nokogiri'
   gem 'timecop'
+  gem 'capybara',                   github: 'chronophasiac/capybara'
+  gem 'capybara-email',             github: 'dockyard/capybara-email'
+  gem 'capybara-screenshot'
+  gem 'selenium-webdriver'
+  gem 'email_spec'
+  gem 'capybara-webkit'
+  gem 'database_cleaner'
 end
 
 group :production do

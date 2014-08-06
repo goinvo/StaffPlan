@@ -3,7 +3,7 @@ require 'spec_helper'
 describe WorkWeek do
   describe 'validations' do
     it "should not be valid? for new instances" do
-      WorkWeek.new.valid?.should be_false
+      WorkWeek.new.valid?.should be_falsy
     end
     
     it "should be valid? with valid attributes" do
@@ -21,7 +21,7 @@ describe WorkWeek do
       work_week.update_attributes(
         estimated_hours: -1,
         actual_hours: -1
-      ).should be_false
+      ).should be_falsy
 
       work_week.errors[:estimated_hours].should_not be_empty
       work_week.errors[:actual_hours].should_not be_empty
