@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
-ruby "2.1.2"
+ruby "2.1.3"
 
-gem 'rails', '3.2.18'
+gem 'rails', '3.2.20'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
@@ -24,6 +24,7 @@ gem 'figaro'
 gem 'asset_sync'
 gem 'active_model_serializers'
 gem 'handlebars_assets'
+gem "airbrake"
 
 group :assets do
   gem 'coffee-rails', '~> 3.2'
@@ -50,7 +51,7 @@ group :test do
   gem 'mocha',                                   require: false
   gem 'nokogiri'
   gem 'timecop'
-  gem 'capybara',                   github: 'chronophasiac/capybara'
+  gem 'capybara'
   gem 'capybara-email',             github: 'dockyard/capybara-email'
   gem 'capybara-screenshot'
   gem 'selenium-webdriver'
