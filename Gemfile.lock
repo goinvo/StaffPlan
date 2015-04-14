@@ -252,6 +252,7 @@ GEM
     sinatra (1.0)
       rack (>= 1.0)
     slop (3.3.2)
+    spring (1.2.0)
     sprockets (2.2.3)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -330,6 +331,7 @@ DEPENDENCIES
   rspec-rails (~> 2.99)
   sass-rails (~> 3.2)
   selenium-webdriver
+  spring
   sqlite3
   taps
   thin

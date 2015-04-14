@@ -37,6 +37,7 @@ group :development, :test do
   gem 'pry-nav'
   gem 'pry-remote',                               require: 'pry-remote'
   gem 'faker'
+  gem 'spring'
 end
 
 group :development do
