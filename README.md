@@ -28,3 +28,5 @@
   1. bootstrap local database using prod data: `heroku pg:transfer --to postgres://localhost/staff_plan_development --app staffplan`
     1. (You may heroku credentials for this. You'll also need to be given permission explicitly.)
   1. run the app!: `bundle exec rails s`
+
+### For guidance to incorporate StaffPlan into your organization, contact us at hello@goinvo.com. ###
