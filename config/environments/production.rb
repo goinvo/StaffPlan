@@ -13,7 +13,7 @@ StaffPlan::Application.configure do
 
   # Compress JavaScripts and CSS
   config.assets.compress = false
-  
+
   # Set the mailer options needed to send emails
   config.action_mailer.default_url_options = {host: "www.staffplan.com"}
 
@@ -60,4 +60,6 @@ StaffPlan::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
+
+  config.assets.compile = false # Disables security vulnerability
 end
