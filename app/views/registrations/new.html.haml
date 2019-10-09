@@ -1,9 +1,12 @@
 - content_for(:stylesheets) do
   = stylesheet_link_tag('registrations')
 
+= content_for :recaptcha_js do
+  = include_recaptcha_js
+
 %section
   %h1 Create your StaffPlan
-  
+
   = form_for @user, url: registrations_path, method: :post, html: {:id => "new_registration", :class => "new_registration"} do |f|
     .user.first-name.field
       = f.label :first_name, "Your first name:"
@@ -27,3 +30,5 @@
         = c.text_field :name
     .submit
       = f.submit "Create account"
+
+    = recaptcha_execute('register')

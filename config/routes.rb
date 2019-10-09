@@ -34,12 +34,12 @@ StaffPlan::Application.routes.draw do
 
   resources :password_resets, except: [:destroy, :show, :index]
 
-  # resources :registrations, only: [:new, :create] do
-  #   post :complete, on: :collection
-  #   get :confirm, on: :collection
-  # end
+  resources :registrations, only: [:new, :create] do
+    post :complete, on: :collection
+    get :confirm, on: :collection
+  end
 
-  # match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
+  match "/registrations/:token" => "registrations#confirm", via: :get, as: "confirm_registration"
 
   get "/api/companies/:secret" => "api/companies#index", format: :json
   get "/api/presence/ping" => "api/presence#ping", format: :json

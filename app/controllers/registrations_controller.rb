@@ -10,38 +10,44 @@ class RegistrationsController < ApplicationController
   def create
     @user = User.new(params[:user])
     @company = Company.new(params[:company])
-    
+
+    unless verify_recaptcha?(params[:recaptcha_token], 'register')
+      flash.now[:error] = "reCAPTCHA Authorization Failed. Please try again later."
+      redirect_to new_registration_path
+      return
+    end
+
     # Heavily inspired from CompaniesController, DRTW
     Company.transaction do
       if @company.save and @user.save
-        @company.users << @user 
+        @company.users << @user
         @user.current_company = @company if @user.current_company.nil?
       else
         raise ActiveRecord::Rollback
       end
     end
-    
+
     if @company.persisted?
       RegistrationMailer.registration_notification(@user, @company).deliver
       @user.send_registration_confirmation
       render template: "registrations/email_sent"
     else
-      # I have to call valid? here or I don't get the error messages for the user 
+      # I have to call valid? here or I don't get the error messages for the user
       flash[:errors] = {}
-      [@user, @company].each do |obj| 
+      [@user, @company].each do |obj|
         flash[:errors].merge!(obj.class.name.downcase => obj.errors) unless obj.valid?
       end
       redirect_to new_registration_path
     end
   end
-  
+
   def complete
-    if u = User.with_registration_token(params[:token]) 
+    if u = User.with_registration_token(params[:token])
       @user = UserDecorator.new(u)
       @user.password = params[:user] ? params[:user][:password] : nil
       @user.password_confirmation = nil
       @user.registration_token = nil
-      
+
       if @user.save
         session[:user_id] = @user.id
         redirect_to staffplan_path(@user), notice: "Hi #{@user.full_name}, welcome to StaffPlan!"
@@ -50,16 +56,16 @@ class RegistrationsController < ApplicationController
           @user.errors.delete(:password_digest)
           @user.errors.add(:password, "can't be blank.")
         end
-        
+
         flash[:errors] = {"user" => @user.errors}
         redirect_to confirm_registration_path(token: params[:token])
       end
     else
       redirect_to new_registration_path, notice: "Welcome to StaffPlan, please register!"
     end
-    
+
   end
-  
+
   def confirm
     unless @user = User.with_registration_token(params[:token])
       redirect_to new_registration_path, notice: "Welcome to StaffPlan, please register!"
