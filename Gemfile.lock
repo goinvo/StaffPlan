@@ -103,7 +103,7 @@ GEM
       mail (~> 2.2)
     erubis (2.7.0)
     eventmachine (0.12.10)
-    excon (0.37.0)
+    excon (0.71.0)
     execjs (1.4.0)
       multi_json (~> 1.0)
     factory_girl (4.0.0)
