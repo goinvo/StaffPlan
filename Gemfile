@@ -5,7 +5,7 @@ gem 'rails', '3.2.20'
 
 gem 'backbone-support',  '0.3.0'
 gem 'bcrypt-ruby',       '~> 3.0.1'
-gem 'json', '~> 1.7'
+gem 'json', '~> 2.3'
 gem 'bitmask_attributes'
 gem 'coffee-filter'
 gem 'draper',             '0.18.0'
