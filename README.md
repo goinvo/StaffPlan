@@ -1,5 +1,3 @@
-[ ![Codeship Status for rescuedcode/StaffPlan](https://codeship.io/projects/f2256780-fbb7-0131-9c0c-6695216aa8a8/status)](https://codeship.io/projects/29230)
-
       _________ __          _____  _______________.__
      /   _____//  |______ _/ ____\/ ____\______   \  | _____    ____  
      \_____  \\   __\__  \\   __\\   __\ |     ___/  | \__  \  /    \
