@@ -1,9 +1,9 @@
 GIT
-  remote: git://github.com/dockyard/capybara-email.git
-  revision: 238d7d7b0374b1fc742b273474c659ae05cd99fa
+  remote: https://github.com/dockyard/capybara-email.git
+  revision: 668f5a35205ef872b7152a57cf4d4f2a3567fa53
   specs:
-    capybara-email (2.4.0)
-      capybara (~> 2.4)
+    capybara-email (3.0.2)
+      capybara (>= 2.4, < 4.0)
       mail
 
 GEM
@@ -278,7 +278,7 @@ GEM
     treetop (1.4.15)
       polyglot
       polyglot (>= 0.3.1)
-    tzinfo (0.3.42)
+    tzinfo (0.3.61)
     uglifier (1.2.7)
       execjs (>= 0.3.0)
       multi_json (~> 1.3)
